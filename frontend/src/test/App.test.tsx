@@ -6,13 +6,79 @@ import App from '../App';
 // Mock the game store
 vi.mock('../stores/useGameStore', () => ({
   useGameStore: () => ({
+    // UI State
     currentTab: 'dashboard',
     showTutorial: false,
     showMemorial: false,
     showMissionModal: false,
     showMissionResults: false,
     showEventModal: false,
+    selectedDaemons: new Set(),
+    currentPlanet: null,
+    memorialDaemon: null,
+    missionResults: null,
+    currentEvent: null,
+    notifications: [],
+    
+    // Game State - properties used by Dashboard
+    activeMission: null,
+    daemons: [],
+    corporateEvents: [],
+    corporateTier: {
+      id: 'associate',
+      name: 'Associate',
+      level: 1,
+      requirements: {},
+      unlocks: { resources: [], mechanics: [], apartmentRooms: [], eventTypes: [] }
+    },
+    complianceTasks: [],
+    daysPassed: 0,
+    legacyBook: {},
+    hallOfInfamy: [],
+    
+    // Game State - other required properties
+    resources: {
+      credits: 500,
+      soulEssence: 0,
+      bureaucraticLeverage: 0,
+      rawMaterials: 0,
+    },
+    equipment: [],
+    rooms: [],
+    planets: [],
+    recruitmentPool: [],
+    gameModifiers: {
+      passiveIncome: 0,
+      recruitmentDiscount: 0,
+      equipmentRepairDiscount: 0,
+      missionSuccessBonus: 0,
+      missionSpeedBonus: 0,
+      equipmentDurabilityBonus: 0,
+      daemonHealthBonus: 0,
+      daemonMoraleBonus: 0,
+    },
+    gameStarted: false,
+    tutorialCompleted: false,
+    promotionProgress: {},
+    complianceDeadlines: {},
+    endgameState: {
+      hasTriggered: false,
+      managementStyle: null,
+      finalScore: 0,
+      achievements: [],
+    },
+    unlockedContent: {
+      apartmentRooms: [],
+      equipmentTypes: [],
+      daemonTypes: [],
+      eventTypes: [],
+    },
+    corporateRivals: [],
+    
+    // Actions
     initializeGame: vi.fn(),
+    triggerRandomEvent: vi.fn(),
+    meetsRequirements: vi.fn().mockReturnValue(false),
   }),
 }));
 
@@ -42,7 +108,7 @@ describe('App Component', () => {
 
   it('renders the dashboard by default', () => {
     render(<App />);
-    expect(screen.getByText('Corporate Overview')).toBeDefined();
+    expect(screen.getByText('Days in Operation')).toBeDefined();
   });
 
   it('renders game controls', () => {
