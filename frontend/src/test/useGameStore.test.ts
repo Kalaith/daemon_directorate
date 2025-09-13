@@ -5,6 +5,9 @@ import { useGameStore } from '../stores/useGameStore';
 
 describe('useGameStore', () => {
   beforeEach(() => {
+    // Clear localStorage to ensure clean state
+    localStorage.clear();
+    
     // Reset the store before each test
     const { result } = renderHook(() => useGameStore());
     act(() => {

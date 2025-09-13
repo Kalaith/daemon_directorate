@@ -5,6 +5,12 @@ import { useGameStore } from '../../stores/useGameStore';
 const Header: React.FC = () => {
   const { resources } = useGameStore();
 
+  // Handle case where resources might be undefined during initialization
+  const credits = resources?.credits ?? 0;
+  const soulEssence = resources?.soulEssence ?? 0;
+  const bureaucraticLeverage = resources?.bureaucraticLeverage ?? 0;
+  const rawMaterials = resources?.rawMaterials ?? 0;
+
   return (
     <header className="bg-slate-900 text-cream-100 py-6 border-b border-brown-600/20">
       <div className="container mx-auto px-4">
@@ -21,7 +27,7 @@ const Header: React.FC = () => {
             <div className="text-center">
               <div className="font-semibold text-slate-300 mb-1">Credits</div>
               <div className="text-amber-400 text-lg font-bold">
-                {resources.credits}
+                {credits}
               </div>
             </div>
             <div className="text-center">
@@ -29,7 +35,7 @@ const Header: React.FC = () => {
                 Soul Essence
               </div>
               <div className="text-purple-400 text-lg font-bold">
-                {resources.soulEssence}
+                {soulEssence}
               </div>
             </div>
             <div className="text-center">
@@ -37,7 +43,7 @@ const Header: React.FC = () => {
                 Bureaucratic Leverage
               </div>
               <div className="text-teal-400 text-lg font-bold">
-                {resources.bureaucraticLeverage}
+                {bureaucraticLeverage}
               </div>
             </div>
             <div className="text-center">
@@ -45,7 +51,7 @@ const Header: React.FC = () => {
                 Raw Materials
               </div>
               <div className="text-orange-400 text-lg font-bold">
-                {resources.rawMaterials}
+                {rawMaterials}
               </div>
             </div>
           </div>
