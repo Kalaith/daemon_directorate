@@ -158,6 +158,25 @@ export interface GameState {
   tutorialCompleted: boolean;
   gameIntervalId?: number;
 
+  // Corporate Progression System
+  corporateTier: CorporateTier;
+  promotionProgress: Record<string, number>;
+
+  // Compliance System
+  complianceTasks: ComplianceTask[];
+  complianceDeadlines: Record<string, number>;
+
+  // Legacy System
+  legacyBook: Record<string, DaemonLegacy>;
+  hallOfInfamy: LegacyStory[];
+
+  // Endgame System
+  endgameState: EndgameState;
+  unlockedContent: UnlockedContent;
+
+  // Corporate Rivals
+  corporateRivals: CorporateRival[];
+
   // UI State
   currentTab: 'dashboard' | 'team' | 'missions' | 'apartment' | 'equipment';
   selectedDaemons: Set<string>;
@@ -183,6 +202,127 @@ export interface StarterData {
   apartment_rooms: Omit<Room, 'id'>[];
 }
 
+// Corporate Tier System
+export interface CorporateTier {
+  id: string;
+  name: string;
+  level: number;
+  requirements: {
+    planetsControlled?: number;
+    daysLived?: number;
+    legacyGenerations?: number;
+    defeatedRivals?: number;
+    complianceAudits?: number;
+    completedHRReviews?: number;
+  };
+  unlocks: {
+    resources?: string[];
+    mechanics?: string[];
+    apartmentRooms?: string[];
+    eventTypes?: string[];
+  };
+}
+
+// Compliance System
+export interface ComplianceTask {
+  id: string;
+  type: 'performance_review' | 'budget_cut' | 'mandatory_training' | 'audit';
+  title: string;
+  description: string;
+  deadline: number; // days
+  requirements: {
+    daemonsRequired?: number;
+    resourceCost?: Partial<GameResources>;
+    duration?: number;
+  };
+  penalties: {
+    moraleLoss?: number;
+    resourceFines?: Partial<GameResources>;
+    daemonReassignment?: boolean;
+  };
+  completed?: boolean;
+}
+
+// Legacy System
+export interface DaemonLegacy {
+  daemonId: string;
+  bloodline: string;
+  generation: number;
+  stories: LegacyStory[];
+  legends: LegacyLegend[];
+  achievements: string[];
+}
+
+export interface LegacyStory {
+  id: string;
+  title: string;
+  description: string;
+  category: 'heroic' | 'tragic' | 'absurd' | 'legendary';
+  timestamp: number;
+}
+
+export interface LegacyLegend {
+  name: string;
+  description: string;
+  effects: {
+    type: string;
+    value: number;
+    applies_to: 'bloodline' | 'company' | 'global';
+  }[];
+}
+
+// Endgame System
+export interface EndgameState {
+  managementStyle: 'profit' | 'cult' | 'compliance' | 'collapse' | 'none';
+  endingAchieved: boolean;
+  endingType: string;
+  prestigeLevel: number;
+  permanentBonuses: PrestigeBonus[];
+}
+
+export interface PrestigeBonus {
+  id: string;
+  name: string;
+  description: string;
+  effects: GameModifier[];
+  unlockedBy: string;
+}
+
+export interface GameModifier {
+  type: string;
+  value: number;
+  description: string;
+}
+
+// Surreal Events
+export interface SurrealEvent {
+  id: string;
+  title: string;
+  description: string;
+  type: 'choice' | 'automatic';
+  tierLevel: number;
+  choices?: EventChoice[];
+  effects?: EventEffect[];
+}
+
+// Corporate Rivals
+export interface CorporateRival {
+  id: string;
+  name: string;
+  strength: number;
+  specialty: string;
+  threat: 'low' | 'medium' | 'high';
+  defeated: boolean;
+}
+
+// Unlocked Content
+export interface UnlockedContent {
+  daemonArchetypes: string[];
+  factions: string[];
+  events: string[];
+  tierFeatures: string[];
+}
+
 // Type aliases for clarity
 export type DifficultyLevel = 'Easy' | 'Medium' | 'Hard';
 export type SpecializationType = 'Infiltration' | 'Combat' | 'Sabotage';
@@ -193,3 +333,4 @@ export type TabType =
   | 'apartment'
   | 'equipment';
 export type NotificationType = 'success' | 'error' | 'warning' | 'info';
+export type ManagementStyle = 'profit' | 'cult' | 'compliance' | 'collapse';

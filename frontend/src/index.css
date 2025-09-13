@@ -1,4 +1,4 @@
-@import 'tailwindcss';
+@import 'tailwindcss' layer(base, components, utilities);
 
 :root {
   /* Primitive Color Tokens */
@@ -301,7 +301,7 @@
   --color-info-rgb: var(--color-slate-500-rgb);
 }
 
-/* Base styles */
+/* Base styles - simplified with Tailwind approach */
 html {
   font-size: var(--font-size-base);
   font-family: var(--font-family-base);
@@ -313,8 +313,22 @@ html {
 }
 
 body {
+  /* Using Tailwind classes in HTML/components instead: 
+     bg-background text-text font-base m-0 p-0 min-h-screen */
+  background: var(--color-background);
+  color: var(--color-text);
+  font-family: var(--font-family-base);
   margin: 0;
   padding: 0;
+  min-height: 100vh;
+}
+
+#app {
+  /* Using Tailwind classes in HTML/components instead: 
+     min-h-screen flex flex-col */
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
 *,
@@ -612,106 +626,11 @@ select.form-control {
     rgba(var(--color-info-rgb, 98, 108, 113), var(--status-border-opacity));
 }
 
-/* Container layout */
-.container {
-  width: 100%;
-  margin-right: auto;
-  margin-left: auto;
-  padding-right: var(--space-16);
-  padding-left: var(--space-16);
-}
+/* Container layout - can be replaced with Tailwind container classes */
+/* Use: container mx-auto px-4 sm:max-w-sm md:max-w-md lg:max-w-lg xl:max-w-xl */
 
-@media (min-width: 640px) {
-  .container {
-    max-width: var(--container-sm);
-  }
-}
-@media (min-width: 768px) {
-  .container {
-    max-width: var(--container-md);
-  }
-}
-@media (min-width: 1024px) {
-  .container {
-    max-width: var(--container-lg);
-  }
-}
-@media (min-width: 1280px) {
-  .container {
-    max-width: var(--container-xl);
-  }
-}
-
-/* Utility classes */
-.flex {
-  display: flex;
-}
-.flex-col {
-  flex-direction: column;
-}
-.items-center {
-  align-items: center;
-}
-.justify-center {
-  justify-content: center;
-}
-.justify-between {
-  justify-content: space-between;
-}
-.gap-4 {
-  gap: var(--space-4);
-}
-.gap-8 {
-  gap: var(--space-8);
-}
-.gap-16 {
-  gap: var(--space-16);
-}
-
-.m-0 {
-  margin: 0;
-}
-.mt-8 {
-  margin-top: var(--space-8);
-}
-.mb-8 {
-  margin-bottom: var(--space-8);
-}
-.mx-8 {
-  margin-left: var(--space-8);
-  margin-right: var(--space-8);
-}
-.my-8 {
-  margin-top: var(--space-8);
-  margin-bottom: var(--space-8);
-}
-
-.p-0 {
-  padding: 0;
-}
-.py-8 {
-  padding-top: var(--space-8);
-  padding-bottom: var(--space-8);
-}
-.px-8 {
-  padding-left: var(--space-8);
-  padding-right: var(--space-8);
-}
-.py-16 {
-  padding-top: var(--space-16);
-  padding-bottom: var(--space-16);
-}
-.px-16 {
-  padding-left: var(--space-16);
-  padding-right: var(--space-16);
-}
-
-.block {
-  display: block;
-}
-.hidden {
-  display: none;
-}
+/* Note: Most utility classes now handled by Tailwind CSS
+   Keeping only custom utilities that don't have direct Tailwind equivalents */
 
 /* Accessibility */
 .sr-only {
@@ -743,200 +662,17 @@ select.form-control {
 }
 
 /* END PERPLEXITY DESIGN SYSTEM */
-/* Game-specific styles for Daemon Directorate */
+/* Game-specific styles for Daemon Directorate - converted to complement Tailwind */
 
-body {
-  background: var(--color-background);
-  color: var(--color-text);
-  font-family: var(--font-family-base);
-  margin: 0;
-  padding: 0;
-  min-height: 100vh;
-}
+/* Keep only complex components that benefit from custom CSS */
 
-#app {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-}
+/* Header Styles - using Tailwind classes in components instead */
+/* Tab Navigation - using Tailwind classes in components instead */
+/* Dashboard Grid - using Tailwind classes in components instead */
 
-/* Header Styles */
-.game-header {
-  background: var(--color-surface);
-  border-bottom: 2px solid var(--color-border);
-  padding: var(--space-20);
-  text-align: center;
-  position: sticky;
-  top: 0;
-  z-index: 100;
-}
+/* Specialized game components that should remain as custom CSS */
 
-.game-header h1 {
-  font-size: var(--font-size-4xl);
-  margin: 0;
-  color: var(--color-primary);
-  text-shadow: 0 0 10px rgba(var(--color-teal-500-rgb), 0.3);
-}
-
-.corporate-tagline {
-  font-size: var(--font-size-sm);
-  color: var(--color-text-secondary);
-  font-style: italic;
-  margin-top: var(--space-4);
-}
-
-.resource-bar {
-  display: flex;
-  justify-content: center;
-  gap: var(--space-24);
-  margin-top: var(--space-16);
-  flex-wrap: wrap;
-}
-
-.resource {
-  background: var(--color-bg-1);
-  padding: var(--space-8) var(--space-16);
-  border-radius: var(--radius-base);
-  font-weight: var(--font-weight-medium);
-  font-size: var(--font-size-sm);
-  border: 1px solid var(--color-border);
-}
-
-/* Tab Navigation */
-.tab-nav {
-  background: var(--color-surface);
-  display: flex;
-  justify-content: center;
-  border-bottom: 1px solid var(--color-border);
-  padding: 0 var(--space-16);
-  gap: var(--space-4);
-  overflow-x: auto;
-}
-
-.tab-btn {
-  background: transparent;
-  border: none;
-  color: var(--color-text-secondary);
-  padding: var(--space-16) var(--space-20);
-  cursor: pointer;
-  font-weight: var(--font-weight-medium);
-  font-size: var(--font-size-sm);
-  border-bottom: 2px solid transparent;
-  transition: all var(--duration-fast) var(--ease-standard);
-  white-space: nowrap;
-}
-
-.tab-btn:hover {
-  color: var(--color-text);
-  background: var(--color-secondary);
-}
-
-.tab-btn.active {
-  color: var(--color-primary);
-  border-bottom-color: var(--color-primary);
-}
-
-/* Tab Content */
-.tab-content {
-  flex: 1;
-  padding: var(--space-24);
-  max-width: var(--container-xl);
-  margin: 0 auto;
-  width: 100%;
-}
-
-.tab-content.hidden {
-  display: none;
-}
-
-/* Dashboard Grid */
-.dashboard-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: var(--space-24);
-}
-
-.dashboard-card {
-  background: var(--color-bg-2);
-}
-
-.corporate-memo {
-  margin-top: var(--space-16);
-  padding: var(--space-12);
-  background: var(--color-bg-4);
-  border-left: 4px solid var(--color-warning);
-  border-radius: var(--radius-sm);
-  font-size: var(--font-size-sm);
-}
-
-.corporate-text {
-  color: var(--color-text-secondary);
-  font-size: var(--font-size-sm);
-  line-height: var(--line-height-normal);
-  margin-bottom: var(--space-16);
-}
-
-/* Daemon Cards */
-.daemon-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: var(--space-16);
-  margin-bottom: var(--space-24);
-}
-
-.daemon-card {
-  background: var(--color-surface);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-lg);
-  padding: var(--space-16);
-  transition: all var(--duration-normal) var(--ease-standard);
-}
-
-.daemon-card:hover {
-  border-color: var(--color-primary);
-  box-shadow: var(--shadow-md);
-}
-
-.daemon-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  margin-bottom: var(--space-12);
-}
-
-.daemon-name {
-  font-weight: var(--font-weight-semibold);
-  color: var(--color-text);
-  margin: 0;
-}
-
-.daemon-specialization {
-  background: var(--color-primary);
-  color: var(--color-btn-primary-text);
-  padding: var(--space-2) var(--space-8);
-  border-radius: var(--radius-full);
-  font-size: var(--font-size-xs);
-  font-weight: var(--font-weight-medium);
-}
-
-.daemon-stats {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: var(--space-8);
-  margin-bottom: var(--space-12);
-}
-
-.stat-bar {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-4);
-}
-
-.stat-label {
-  font-size: var(--font-size-xs);
-  color: var(--color-text-secondary);
-  font-weight: var(--font-weight-medium);
-}
+/* Progress bar components - keep these as they're game-specific */
 
 .progress-bar {
   width: 100%;

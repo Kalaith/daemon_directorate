@@ -103,6 +103,42 @@ const initialState: GameState = {
   gameStarted: false,
   tutorialCompleted: false,
 
+  // Corporate Progression System
+  corporateTier: {
+    id: 'intern',
+    name: 'Intern',
+    level: 1,
+    requirements: {},
+    unlocks: { resources: [], mechanics: [], apartmentRooms: [], eventTypes: [] }
+  },
+  promotionProgress: {},
+
+  // Compliance System
+  complianceTasks: [],
+  complianceDeadlines: {},
+
+  // Legacy System
+  legacyBook: {},
+  hallOfInfamy: [],
+
+  // Endgame System
+  endgameState: {
+    managementStyle: 'none',
+    endingAchieved: false,
+    endingType: '',
+    prestigeLevel: 0,
+    permanentBonuses: []
+  },
+  unlockedContent: {
+    daemonArchetypes: ['digital', 'bureaucratic', 'chaos'],
+    factions: [],
+    events: [],
+    tierFeatures: []
+  },
+
+  // Corporate Rivals
+  corporateRivals: [],
+
   // UI State
   currentTab: 'dashboard',
   selectedDaemons: new Set(),

@@ -1,4 +1,4 @@
-import type { StarterData } from '../types/game';
+import type { StarterData, CorporateTier, ComplianceTask, PrestigeBonus, CorporateRival } from '../types/game';
 
 // Game configuration constants
 export const GAME_CONFIG = {
@@ -797,4 +797,353 @@ export const DIFFICULTY_MODIFIERS = {
   Easy: { rewardMultiplier: 1.0, casualtyChance: 0.1 },
   Medium: { rewardMultiplier: 1.5, casualtyChance: 0.25 },
   Hard: { rewardMultiplier: 2.0, casualtyChance: 0.4 },
+};
+
+// Corporate Tier System
+export const ASSOCIATE_TIER: CorporateTier = {
+  id: 'associate',
+  name: 'Associate',
+  level: 1,
+  requirements: {}, // Default tier
+  unlocks: {
+    mechanics: ['basic_missions', 'equipment_crafting'],
+    apartmentRooms: ['living_quarters', 'command_center'],
+    resources: ['credits']
+  }
+};
+
+export const MANAGER_TIER: CorporateTier = {
+  id: 'manager',
+  name: 'Manager',
+  level: 2,
+  requirements: {
+    planetsControlled: 1,
+    daysLived: 20
+  },
+  unlocks: {
+    mechanics: ['hr_reviews', 'team_disputes'],
+    apartmentRooms: ['training_hall'],
+    eventTypes: ['management_events']
+  }
+};
+
+export const DIRECTOR_TIER: CorporateTier = {
+  id: 'director',
+  name: 'Director',
+  level: 3,
+  requirements: {
+    planetsControlled: 2,
+    completedHRReviews: 3
+  },
+  unlocks: {
+    mechanics: ['planetary_reports', 'large_teams', 'surreal_events'],
+    apartmentRooms: ['expanded_command_center'],
+    eventTypes: ['absurd_bureaucracy']
+  }
+};
+
+export const VP_TIER: CorporateTier = {
+  id: 'vice_president',
+  name: 'Vice President',
+  level: 4,
+  requirements: {
+    planetsControlled: 3,
+    legacyGenerations: 2
+  },
+  unlocks: {
+    resources: ['soul_essence', 'bureaucratic_leverage'],
+    mechanics: ['corporate_rivalries', 'hall_of_infamy'],
+    apartmentRooms: ['war_room'],
+    eventTypes: ['rival_corporations']
+  }
+};
+
+export const BOARD_MEMBER_TIER: CorporateTier = {
+  id: 'board_member',
+  name: 'Board Member',
+  level: 5,
+  requirements: {
+    defeatedRivals: 1,
+    complianceAudits: 5
+  },
+  unlocks: {
+    mechanics: ['board_compliance', 'company_policies', 'endgame_paths'],
+    apartmentRooms: ['executive_suite'],
+    eventTypes: ['apocalyptic_bureaucracy'],
+    resources: ['executive_power']
+  }
+};
+
+export const CORPORATE_TIERS = [
+  ASSOCIATE_TIER,
+  MANAGER_TIER,
+  DIRECTOR_TIER,
+  VP_TIER,
+  BOARD_MEMBER_TIER
+];
+
+// Compliance System Templates
+export const COMPLIANCE_TEMPLATES: ComplianceTask[] = [
+  {
+    id: 'performance_review_mandatory',
+    type: 'performance_review',
+    title: 'Quarterly Performance Reviews',
+    description: 'All daemons must undergo rigorous performance evaluations.',
+    deadline: 7,
+    requirements: {
+      daemonsRequired: 2,
+      duration: 3
+    },
+    penalties: {
+      moraleLoss: 15,
+      resourceFines: { credits: 200 }
+    }
+  },
+  {
+    id: 'budget_cuts_immediate',
+    type: 'budget_cut',
+    title: 'Emergency Budget Restructuring',
+    description: 'Corporate demands immediate cost reduction measures.',
+    deadline: 5,
+    requirements: {
+      resourceCost: { credits: 150 }
+    },
+    penalties: {
+      resourceFines: { credits: 300, bureaucraticLeverage: 2 }
+    }
+  },
+  {
+    id: 'mandatory_training_session',
+    type: 'mandatory_training',
+    title: 'Synergy Enhancement Workshop',
+    description: 'All staff must attend mandatory corporate culture training.',
+    deadline: 10,
+    requirements: {
+      daemonsRequired: 3,
+      duration: 5
+    },
+    penalties: {
+      moraleLoss: 10,
+      daemonReassignment: true
+    }
+  },
+  {
+    id: 'compliance_audit',
+    type: 'audit',
+    title: 'Infernal Revenue Service Audit',
+    description: 'Your department is subject to a comprehensive audit.',
+    deadline: 14,
+    requirements: {
+      resourceCost: { bureaucraticLeverage: 5 }
+    },
+    penalties: {
+      resourceFines: { credits: 500, rawMaterials: 2 }
+    }
+  }
+];
+
+// Surreal Corporate Events by Tier
+export const SURREAL_EVENTS = {
+  ASSOCIATE: [
+    {
+      id: 'copier_jam',
+      title: 'The Great Copier Jam of Sector 7',
+      description: 'A critical copier malfunction threatens quarterly reports.',
+      type: 'choice' as const,
+      tierLevel: 1,
+      choices: [
+        {
+          label: 'Send your best technician',
+          description: 'Sacrifice daemon efficiency',
+          effects: [{ type: 'daemon_skill_loss', value: -10, description: 'Daemon loses skills' }]
+        },
+        {
+          label: 'Ignore it and hope it resolves itself',
+          description: 'Take the bureaucratic hit',
+          effects: [{ type: 'bureaucratic_penalty', value: -50, description: 'Lose bureaucratic leverage' }]
+        }
+      ]
+    },
+    {
+      id: 'stapler_shortage',
+      title: 'Critical Stapler Shortage',
+      description: 'The office supply closet has been mysteriously emptied.',
+      type: 'automatic' as const,
+      tierLevel: 1,
+      effects: [
+        { type: 'equipment_durability', value: -5, description: 'Equipment degrades faster' },
+        { type: 'morale', value: -8, description: 'Frustration spreads' }
+      ]
+    }
+  ],
+  MANAGER: [
+    {
+      id: 'team_building_disaster',
+      title: 'Trust Fall Catastrophe',
+      description: 'Mandatory team building exercise results in actual casualties.',
+      type: 'choice' as const,
+      tierLevel: 2,
+      choices: [
+        {
+          label: 'Cover up the incident',
+          description: 'Protect company reputation',
+          effects: [
+            { type: 'credits', value: -100, description: 'Hush money' },
+            { type: 'morale', value: -12, description: 'Team loses trust' }
+          ]
+        },
+        {
+          label: 'Report it to corporate',
+          description: 'Follow proper channels',
+          effects: [
+            { type: 'bureaucratic_leverage', value: 2, description: 'Gain political points' },
+            { type: 'daemon_retirement', value: 1, description: 'One daemon reassigned' }
+          ]
+        }
+      ]
+    }
+  ],
+  DIRECTOR: [
+    {
+      id: 'planetary_merger',
+      title: 'Interdimensional Restructuring',
+      description: 'Corporate has decided to merge three planets into one department.',
+      type: 'automatic' as const,
+      tierLevel: 3,
+      effects: [
+        { type: 'chaos_bonus', value: 100, description: 'Massive organizational chaos' },
+        { type: 'credits', value: 300, description: 'Efficiency savings' }
+      ]
+    }
+  ],
+  VP: [
+    {
+      id: 'rival_acquisition',
+      title: 'Hostile Takeover Defense',
+      description: 'A rival corporation attempts to acquire your soul essence reserves.',
+      type: 'choice' as const,
+      tierLevel: 4,
+      choices: [
+        {
+          label: 'Deploy corporate lawyers',
+          description: 'Fight fire with bureaucracy',
+          effects: [
+            { type: 'bureaucratic_leverage', value: -5, description: 'Spend political capital' },
+            { type: 'soul_essence', value: 3, description: 'Protect reserves' }
+          ]
+        },
+        {
+          label: 'Negotiate a merger',
+          description: 'Join forces strategically',
+          effects: [
+            { type: 'corporate_rival_defeated', value: 1, description: 'Gain rival company' },
+            { type: 'daemon_transfer', value: 2, description: 'Gain new daemons' }
+          ]
+        }
+      ]
+    }
+  ],
+  BOARD_MEMBER: [
+    {
+      id: 'reality_restructure',
+      title: 'Reality Reorganization Initiative',
+      description: 'The Board has voted to restructure the fundamental nature of existence.',
+      type: 'automatic' as const,
+      tierLevel: 5,
+      effects: [
+        { type: 'universe_reboot', value: 1, description: 'Everything changes' },
+        { type: 'prestige_point', value: 1, description: 'Gain prestige for next run' }
+      ]
+    }
+  ]
+};
+
+// Corporate Rivals
+export const RIVAL_CORPORATIONS: CorporateRival[] = [
+  {
+    id: 'synergy_syndicate',
+    name: 'The Synergy Syndicate',
+    strength: 75,
+    specialty: 'Bureaucratic Manipulation',
+    threat: 'medium',
+    defeated: false
+  },
+  {
+    id: 'efficiency_empire',
+    name: 'Efficiency Empire LLC',
+    strength: 90,
+    specialty: 'Resource Optimization',
+    threat: 'high',
+    defeated: false
+  },
+  {
+    id: 'chaos_consulting',
+    name: 'Chaos Consulting Group',
+    strength: 60,
+    specialty: 'Disruptive Innovation',
+    threat: 'low',
+    defeated: false
+  }
+];
+
+// Prestige Bonuses
+export const PRESTIGE_BONUSES: PrestigeBonus[] = [
+  {
+    id: 'veteran_manager',
+    name: 'Veteran Manager',
+    description: 'Your experience shows in improved daemon management',
+    effects: [
+      { type: 'daemon_lifespan_bonus', value: 5, description: '+5 days daemon lifespan' },
+      { type: 'morale_bonus', value: 10, description: '+10 starting morale' }
+    ],
+    unlockedBy: 'Complete game as Manager tier'
+  },
+  {
+    id: 'compliance_master',
+    name: 'Compliance Master',
+    description: 'You know how to navigate corporate bureaucracy',
+    effects: [
+      { type: 'bureaucratic_leverage_bonus', value: 2, description: '+2 daily bureaucratic leverage' },
+      { type: 'audit_resistance', value: 0.5, description: '50% chance to avoid audits' }
+    ],
+    unlockedBy: 'Complete all compliance tasks in one run'
+  },
+  {
+    id: 'legacy_builder',
+    name: 'Legacy Builder',
+    description: 'Your daemon bloodlines carry enhanced traits',
+    effects: [
+      { type: 'inherited_trait_bonus', value: 1, description: '+1 inherited trait per generation' },
+      { type: 'equipment_legacy_bonus', value: 10, description: '+10% equipment legacy bonus' }
+    ],
+    unlockedBy: 'Reach 5th generation daemon'
+  }
+];
+
+// Ending Scenarios
+export const ENDING_SCENARIOS = {
+  profit: {
+    id: 'profit_maximizer',
+    title: 'The Profit Maximizer',
+    description: 'You have optimized every aspect of your operation for maximum revenue.',
+    unlocks: ['efficiency_bonuses', 'resource_multipliers']
+  },
+  cult: {
+    id: 'cult_of_personality',
+    title: 'Cult of Personality',
+    description: 'Your daemons worship you as their infernal deity.',
+    unlocks: ['loyalty_bonuses', 'charisma_effects']
+  },
+  compliance: {
+    id: 'compliance_survivor',
+    title: 'The Compliance Survivor',
+    description: 'You have mastered the art of corporate bureaucracy.',
+    unlocks: ['bureaucracy_mastery', 'audit_immunity']
+  },
+  collapse: {
+    id: 'burnout_collapse',
+    title: 'Glorious Burnout',
+    description: 'Your operation collapsed in spectacular fashion.',
+    unlocks: ['chaos_bonuses', 'failure_benefits']
+  }
 };

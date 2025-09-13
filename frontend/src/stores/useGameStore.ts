@@ -7,6 +7,12 @@ import type {
   Equipment,
   MissionResult,
   CorporateEvent,
+  CorporateTier,
+  ComplianceTask,
+  DaemonLegacy,
+  LegacyStory,
+  ManagementStyle,
+  SurrealEvent,
 } from '../types/game';
 import {
   STARTER_DATA,
@@ -16,6 +22,11 @@ import {
   CORPORATE_EVENTS,
   DAEMON_BLOODLINES,
   INHERITED_TRAITS,
+  CORPORATE_TIERS,
+  ASSOCIATE_TIER,
+  COMPLIANCE_TEMPLATES,
+  SURREAL_EVENTS,
+  RIVAL_CORPORATIONS,
 } from '../constants/gameData';
 
 interface GameStore extends GameState {
@@ -74,6 +85,32 @@ interface GameStore extends GameState {
   // Daily Updates
   processDailyUpdate: () => void;
 
+  // Corporate Progression
+  checkPromotion: () => void;
+  promotePlayer: (newTier: CorporateTier) => void;
+  meetsRequirements: (requirements: CorporateTier['requirements']) => boolean;
+  unlockTierFeatures: (tier: CorporateTier) => void;
+
+  // Compliance System
+  generateComplianceTask: () => void;
+  processComplianceDeadlines: () => void;
+  applyCompliancePenalties: (task: ComplianceTask) => void;
+  completeComplianceTask: (taskId: string) => void;
+
+  // Legacy System
+  addLegacyStory: (daemonId: string, story: Omit<LegacyStory, 'id' | 'timestamp'>) => void;
+  generateLegacyLegend: (bloodline: string) => void;
+  createNewLegacy: (daemon: Daemon) => DaemonLegacy;
+
+  // Surreal Events
+  triggerSurrealEvent: () => void;
+  showEventWithEscalatedAbsurdity: (event: SurrealEvent, tierLevel: number) => void;
+
+  // Endgame System
+  calculateManagementStyle: () => ManagementStyle;
+  triggerEnding: (style: ManagementStyle) => void;
+  performCorporateRestructuring: () => void;
+
   // Utility
   generateId: () => string;
   addNotification: (
@@ -109,6 +146,36 @@ const initialState: GameState = {
   daysPassed: 0,
   gameStarted: false,
   tutorialCompleted: false,
+
+  // Corporate Progression System
+  corporateTier: ASSOCIATE_TIER,
+  promotionProgress: {},
+
+  // Compliance System
+  complianceTasks: [],
+  complianceDeadlines: {},
+
+  // Legacy System
+  legacyBook: {},
+  hallOfInfamy: [],
+
+  // Endgame System
+  endgameState: {
+    managementStyle: 'none',
+    endingAchieved: false,
+    endingType: '',
+    prestigeLevel: 0,
+    permanentBonuses: [],
+  },
+  unlockedContent: {
+    daemonArchetypes: [],
+    factions: [],
+    events: [],
+    tierFeatures: [],
+  },
+
+  // Corporate Rivals
+  corporateRivals: [...RIVAL_CORPORATIONS],
 
   // UI State
   currentTab: 'dashboard',
@@ -562,8 +629,33 @@ export const useGameStore = create<GameStore>()(
             const updatedLegacy = { ...daemon.legacy };
             if (success) {
               updatedLegacy.successfulMissions += 1;
-              if (planet.conquered) {
+              if (!planet.conquered) {
                 updatedLegacy.planetsConquered += 1;
+                
+                // Add legacy story for planet conquest
+                get().addLegacyStory(daemon.id, {
+                  title: `Conquest of ${planet.name}`,
+                  description: `${daemon.name} led the successful conquest of ${planet.name}, overcoming ${planet.resistance}`,
+                  category: 'heroic'
+                });
+              }
+              
+              // Add legacy story for significant mission milestones
+              if (updatedLegacy.successfulMissions === 5) {
+                get().addLegacyStory(daemon.id, {
+                  title: 'Veteran Status Achieved',
+                  description: `${daemon.name} has completed 5 successful missions and earned veteran status`,
+                  category: 'legendary'
+                });
+              }
+            } else {
+              // Add story for dramatic failures
+              if (Math.random() < 0.3) {
+                get().addLegacyStory(daemon.id, {
+                  title: `The ${planet.name} Incident`,
+                  description: `${daemon.name} faced overwhelming odds on ${planet.name} but lived to tell the tale`,
+                  category: 'tragic'
+                });
               }
             }
 
@@ -894,6 +986,10 @@ export const useGameStore = create<GameStore>()(
           daysPassed,
           gameModifiers,
           addResources,
+          checkPromotion,
+          processComplianceDeadlines,
+          generateComplianceTask,
+          corporateTier,
         } = get();
 
         if (!gameStarted) return;
@@ -967,9 +1063,25 @@ export const useGameStore = create<GameStore>()(
           gameModifiers: updatedModifiers,
         });
 
+        // Check for promotion eligibility
+        checkPromotion();
+
+        // Process compliance deadlines
+        processComplianceDeadlines();
+
+        // Random compliance task generation (higher chance for higher tiers)
+        if (Math.random() < (0.05 + corporateTier.level * 0.02)) {
+          generateComplianceTask();
+        }
+
         // Random corporate events (8% chance per day, increased from 5%)
         if (Math.random() < 0.08) {
           get().triggerRandomEvent();
+        }
+
+        // Random surreal events (3% chance, scales with tier)
+        if (Math.random() < (0.03 + corporateTier.level * 0.01)) {
+          get().triggerSurrealEvent();
         }
       },
 
@@ -999,6 +1111,312 @@ export const useGameStore = create<GameStore>()(
             ),
           }));
         }, notification.duration);
+      },
+
+      // Corporate Progression System
+      checkPromotion: () => {
+        const { corporateTier, meetsRequirements, promotePlayer } = get();
+        const nextTier = CORPORATE_TIERS[corporateTier.level];
+        
+        if (nextTier && meetsRequirements(nextTier.requirements)) {
+          promotePlayer(nextTier);
+        }
+      },
+
+      promotePlayer: (newTier: CorporateTier) => {
+        const { unlockTierFeatures, addNotification } = get();
+        set({ corporateTier: newTier });
+        unlockTierFeatures(newTier);
+        addNotification(`Promoted to ${newTier.name}!`, 'success');
+      },
+
+      meetsRequirements: (requirements: CorporateTier['requirements']) => {
+        const { planets, daysPassed, legacyBook, corporateRivals, promotionProgress } = get();
+        
+        const conqueredPlanets = planets.filter(p => p.conquered).length;
+        const maxGeneration = Math.max(0, ...Object.values(legacyBook).map(l => l.generation));
+        const defeatedRivals = corporateRivals.filter(r => r.defeated).length;
+        const completedHRReviews = promotionProgress.hrReviews || 0;
+        const complianceAudits = promotionProgress.complianceAudits || 0;
+
+        return (
+          (!requirements.planetsControlled || conqueredPlanets >= requirements.planetsControlled) &&
+          (!requirements.daysLived || daysPassed >= requirements.daysLived) &&
+          (!requirements.legacyGenerations || maxGeneration >= requirements.legacyGenerations) &&
+          (!requirements.defeatedRivals || defeatedRivals >= requirements.defeatedRivals) &&
+          (!requirements.complianceAudits || complianceAudits >= requirements.complianceAudits) &&
+          (!requirements.completedHRReviews || completedHRReviews >= requirements.completedHRReviews)
+        );
+      },
+
+      unlockTierFeatures: (tier: CorporateTier) => {
+        const { addNotification } = get();
+        
+        // Unlock new mechanics, rooms, resources based on tier
+        tier.unlocks.mechanics?.forEach(mechanic => {
+          addNotification(`New mechanic unlocked: ${mechanic}`, 'info');
+        });
+
+        tier.unlocks.apartmentRooms?.forEach(room => {
+          addNotification(`New apartment room available: ${room}`, 'info');
+        });
+
+        tier.unlocks.resources?.forEach(resource => {
+          addNotification(`New resource type unlocked: ${resource}`, 'info');
+        });
+      },
+
+      // Compliance System
+      generateComplianceTask: () => {
+        const { generateId, corporateTier } = get();
+        
+        // Higher tiers get more complex compliance tasks
+        const availableTemplates = COMPLIANCE_TEMPLATES.filter(() => 
+          Math.random() < (0.3 + corporateTier.level * 0.1)
+        );
+        
+        if (availableTemplates.length === 0) return;
+        
+        const template = availableTemplates[Math.floor(Math.random() * availableTemplates.length)];
+        const deadline = get().daysPassed + template.deadline;
+        
+        const task: ComplianceTask = {
+          ...template,
+          id: generateId(),
+          deadline,
+          completed: false
+        };
+
+        set(state => ({
+          complianceTasks: [...state.complianceTasks, task],
+          complianceDeadlines: { ...state.complianceDeadlines, [task.id]: deadline }
+        }));
+
+        get().addNotification(`New compliance task: ${task.title}`, 'warning');
+      },
+
+      processComplianceDeadlines: () => {
+        const { complianceTasks, daysPassed, applyCompliancePenalties } = get();
+        
+        complianceTasks.forEach(task => {
+          if (daysPassed >= task.deadline && !task.completed) {
+            applyCompliancePenalties(task);
+            // Mark as completed to avoid repeated penalties
+            set(state => ({
+              complianceTasks: state.complianceTasks.map(t => 
+                t.id === task.id ? { ...t, completed: true } : t
+              )
+            }));
+          }
+        });
+      },
+
+      applyCompliancePenalties: (task: ComplianceTask) => {
+        const { daemons, resources, addNotification } = get();
+        
+        // Apply morale loss
+        if (task.penalties.moraleLoss) {
+          const updatedDaemons = daemons.map(daemon => ({
+            ...daemon,
+            morale: Math.max(0, daemon.morale - task.penalties.moraleLoss!)
+          }));
+          set({ daemons: updatedDaemons });
+        }
+
+        // Apply resource fines
+        if (task.penalties.resourceFines) {
+          const updatedResources = { ...resources };
+          Object.entries(task.penalties.resourceFines).forEach(([resource, amount]) => {
+            const resourceKey = resource as keyof typeof updatedResources;
+            if (amount && resourceKey in updatedResources) {
+              updatedResources[resourceKey] = Math.max(0, updatedResources[resourceKey] - (amount as number));
+            }
+          });
+          set({ resources: updatedResources });
+        }
+
+        // Apply daemon reassignment
+        if (task.penalties.daemonReassignment && daemons.length > 0) {
+          const randomDaemon = daemons[Math.floor(Math.random() * daemons.length)];
+          get().processDaemonDeath(randomDaemon);
+        }
+
+        addNotification(`Compliance penalty applied for: ${task.title}`, 'error');
+      },
+
+      completeComplianceTask: (taskId: string) => {
+        set(state => ({
+          complianceTasks: state.complianceTasks.map(task => 
+            task.id === taskId ? { ...task, completed: true } : task
+          )
+        }));
+        
+        // Update promotion progress
+        set(state => ({
+          promotionProgress: {
+            ...state.promotionProgress,
+            complianceAudits: (state.promotionProgress.complianceAudits || 0) + 1
+          }
+        }));
+
+        get().addNotification('Compliance task completed successfully!', 'success');
+      },
+
+      // Legacy System
+      addLegacyStory: (daemonId: string, story: Omit<LegacyStory, 'id' | 'timestamp'>) => {
+        const { legacyBook, hallOfInfamy, generateId, daemons, createNewLegacy } = get();
+        const daemon = daemons.find(d => d.id === daemonId);
+        
+        if (daemon && daemon.bloodline) {
+          const newStory: LegacyStory = {
+            id: generateId(),
+            timestamp: Date.now(),
+            ...story
+          };
+          
+          const bloodlineLegacy = legacyBook[daemon.bloodline] || createNewLegacy(daemon);
+          bloodlineLegacy.stories.push(newStory);
+          
+          set({
+            legacyBook: { ...legacyBook, [daemon.bloodline]: bloodlineLegacy },
+            hallOfInfamy: [...hallOfInfamy, newStory]
+          });
+        }
+      },
+
+      generateLegacyLegend: (bloodline: string) => {
+        const { legacyBook } = get();
+        const legacy = legacyBook[bloodline];
+        
+        if (legacy && legacy.stories.length >= 5) {
+          // Create a legend based on the stories
+          const legend = {
+            name: `Legend of ${bloodline}`,
+            description: `A legendary tale born from ${legacy.stories.length} epic stories`,
+            effects: [
+              {
+                type: 'bloodline_bonus',
+                value: legacy.stories.length * 2,
+                applies_to: 'bloodline' as const
+              }
+            ]
+          };
+          
+          legacy.legends.push(legend);
+          set(state => ({
+            legacyBook: { ...state.legacyBook, [bloodline]: legacy }
+          }));
+        }
+      },
+
+      createNewLegacy: (daemon: Daemon): DaemonLegacy => {
+        return {
+          daemonId: daemon.id,
+          bloodline: daemon.bloodline || 'Unknown House',
+          generation: daemon.generation,
+          stories: [],
+          legends: [],
+          achievements: []
+        };
+      },
+
+      // Surreal Events System
+      triggerSurrealEvent: () => {
+        const { corporateTier, showEventWithEscalatedAbsurdity } = get();
+        const tierEvents = SURREAL_EVENTS[corporateTier.name.toUpperCase() as keyof typeof SURREAL_EVENTS] || [];
+        
+        if (tierEvents.length > 0) {
+          const event = tierEvents[Math.floor(Math.random() * tierEvents.length)];
+          showEventWithEscalatedAbsurdity(event, corporateTier.level);
+        }
+      },
+
+      showEventWithEscalatedAbsurdity: (event: SurrealEvent, tierLevel: number) => {
+        const { setShowEventModal, generateId } = get();
+        
+        // Scale absurdity based on corporate tier
+        const escalatedEvent = {
+          ...event,
+          description: `${event.description} ${tierLevel > 2 ? '(Corporate bureaucracy intensifies...)' : ''}`,
+          effects: event.effects?.map(effect => ({
+            ...effect,
+            value: Math.floor(effect.value * (1 + tierLevel * 0.3))
+          }))
+        };
+        
+        // Convert to CorporateEvent format for existing modal
+        const corporateEvent: CorporateEvent = {
+          id: generateId(),
+          title: escalatedEvent.title,
+          description: escalatedEvent.description,
+          type: escalatedEvent.type,
+          timestamp: Date.now(),
+          resolved: false,
+          effects: escalatedEvent.effects,
+          choices: escalatedEvent.choices
+        };
+
+        set(state => ({
+          corporateEvents: [...state.corporateEvents, corporateEvent]
+        }));
+
+        setShowEventModal(true, corporateEvent);
+      },
+
+      // Endgame System
+      calculateManagementStyle: (): ManagementStyle => {
+        const { corporateEvents, daemons, resources } = get();
+        
+        // Simple calculation based on player choices and game state
+        const profitFocus = resources.credits / 1000; // Focus on credits
+        const cultBehavior = daemons.filter(d => d.morale > 80).length; // High morale daemons
+        const complianceRate = corporateEvents.filter(e => e.resolved).length; // Resolved events
+        const burnoutLevel = daemons.filter(d => d.health < 30).length; // Low health daemons
+        
+        if (burnoutLevel > profitFocus && burnoutLevel > cultBehavior && burnoutLevel > complianceRate) {
+          return 'collapse';
+        } else if (profitFocus > cultBehavior && profitFocus > complianceRate) {
+          return 'profit';
+        } else if (cultBehavior > complianceRate) {
+          return 'cult';
+        } else {
+          return 'compliance';
+        }
+      },
+
+      triggerEnding: (style: ManagementStyle) => {
+        const { endgameState, addNotification } = get();
+        
+        set({
+          endgameState: {
+            ...endgameState,
+            managementStyle: style,
+            endingAchieved: true,
+            endingType: `ending_${style}`,
+            prestigeLevel: endgameState.prestigeLevel + 1
+          }
+        });
+        
+        addNotification(`Game ended as: ${style.toUpperCase()}`, 'success');
+      },
+
+      performCorporateRestructuring: () => {
+        const { endgameState, startNewGame } = get();
+        
+        // Reset game with prestige bonuses
+        const newGameState = {
+          ...initialState,
+          endgameState: {
+            ...endgameState,
+            endingAchieved: false,
+            endingType: ''
+          }
+        };
+        
+        set(newGameState);
+        startNewGame();
+        
+        get().addNotification('Corporate restructuring complete! New game started with prestige bonuses.', 'success');
       },
     }),
     {
