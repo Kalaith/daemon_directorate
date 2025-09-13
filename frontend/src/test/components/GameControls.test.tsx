@@ -25,7 +25,7 @@ describe('GameControls Component', () => {
     render(<GameControls />);
     
     expect(screen.getByText('Save Progress')).toBeDefined();
-    expect(screen.getByText('Load Game')).toBeDefined();
+    expect(screen.getByText('Load Progress')).toBeDefined();
     expect(screen.getByText('New Corporate Restructure')).toBeDefined();
   });
 
@@ -41,7 +41,7 @@ describe('GameControls Component', () => {
   it('calls loadGame when load button is clicked', () => {
     render(<GameControls />);
     
-    const loadButton = screen.getByText('Load Game');
+    const loadButton = screen.getByText('Load Progress');
     fireEvent.click(loadButton);
     
     expect(mockStore.loadGame).toHaveBeenCalledOnce();

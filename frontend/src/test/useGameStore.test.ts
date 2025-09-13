@@ -8,10 +8,11 @@ describe('useGameStore', () => {
     // Clear localStorage to ensure clean state
     localStorage.clear();
     
-    // Reset the store before each test
+    // Clear any existing zustand state
     const { result } = renderHook(() => useGameStore());
     act(() => {
-      result.current.resetGame();
+      // Use resetToInitialState for tests to avoid startNewGame
+      result.current.resetToInitialState();
     });
   });
 

@@ -43,7 +43,7 @@ describe('TabNavigation Component', () => {
     render(<TabNavigation />);
     
     const activeTab = screen.getByText('Team Management');
-    expect(activeTab.className).toContain('bg-cream-200');
+    expect(activeTab.className).toContain('bg-cream-50');
   });
 
   it('shows correct button states for inactive tabs', () => {
@@ -51,8 +51,8 @@ describe('TabNavigation Component', () => {
     render(<TabNavigation />);
     
     const inactiveTab = screen.getByText('Team Management');
-    expect(inactiveTab.className).toContain('bg-cream-100');
-    expect(inactiveTab.className).toContain('hover:bg-cream-150');
+    expect(inactiveTab.className).toContain('border-transparent');
+    expect(inactiveTab.className).toContain('hover:bg-cream-50/50');
   });
 
   it('has correct navigation structure', () => {

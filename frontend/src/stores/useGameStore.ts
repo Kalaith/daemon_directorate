@@ -50,6 +50,7 @@ interface GameStore extends GameState {
   saveGame: () => void;
   loadGame: () => boolean;
   resetGame: () => void;
+  resetToInitialState: () => void;
 
   // Resource Management
   canAfford: (cost: number) => boolean;
@@ -319,6 +320,10 @@ export const useGameStore = create<GameStore>()(
       resetGame: () => {
         set(initialState);
         get().startNewGame();
+      },
+
+      resetToInitialState: () => {
+        set(initialState);
       },
 
       canAfford: cost => {
