@@ -11,7 +11,7 @@ const TabNavigation: React.FC = () => {
     { id: 'team' as TabType, label: 'Team Management' },
     { id: 'missions' as TabType, label: 'Planetary Operations' },
     { id: 'apartment' as TabType, label: 'Apartment HQ' },
-    { id: 'equipment' as TabType, label: 'Equipment Depot' }
+    { id: 'equipment' as TabType, label: 'Equipment Depot' },
   ];
 
   return (

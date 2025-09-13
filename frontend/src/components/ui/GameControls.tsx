@@ -6,7 +6,11 @@ const GameControls: React.FC = () => {
   const { saveGame, loadGame, resetGame } = useGameStore();
 
   const handleReset = () => {
-    if (window.confirm('Are you sure you want to start a new corporate restructure? All progress will be lost.')) {
+    if (
+      window.confirm(
+        'Are you sure you want to start a new corporate restructure? All progress will be lost.'
+      )
+    ) {
       resetGame();
     }
   };

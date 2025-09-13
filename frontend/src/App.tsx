@@ -24,7 +24,7 @@ const App: React.FC = () => {
     showMissionModal,
     showMissionResults,
     showEventModal,
-    initializeGame
+    initializeGame,
   } = useGameStore();
 
   useEffect(() => {
@@ -52,9 +52,7 @@ const App: React.FC = () => {
     <div className="min-h-screen bg-black text-gray-100">
       <Header />
       <TabNavigation />
-      <main className="container mx-auto px-4 py-6">
-        {renderCurrentTab()}
-      </main>
+      <main className="container mx-auto px-4 py-6">{renderCurrentTab()}</main>
       <GameControls />
 
       {/* Modals */}

@@ -9,9 +9,12 @@ const Equipment: React.FC = () => {
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-2xl font-bold text-teal-300 mb-2">Equipment Depot</h2>
+        <h2 className="text-2xl font-bold text-teal-300 mb-2">
+          Equipment Depot
+        </h2>
         <p className="text-gray-400 mb-6">
-          Manage corporate-issued equipment and supplies. Note: Equipment degradation is normal and expected.
+          Manage corporate-issued equipment and supplies. Note: Equipment
+          degradation is normal and expected.
         </p>
       </div>
 
@@ -26,18 +29,24 @@ const Equipment: React.FC = () => {
             </div>
 
             <div className="mb-3 text-gray-300">
-              <span className="text-teal-400 font-medium">Ability:</span> {item.ability}
+              <span className="text-teal-400 font-medium">Ability:</span>{' '}
+              {item.ability}
             </div>
 
             <div className="mb-4">
               <div className="flex justify-between text-sm mb-1">
-                <span className="text-gray-400">Durability: {item.durability}%</span>
+                <span className="text-gray-400">
+                  Durability: {item.durability}%
+                </span>
               </div>
               <div className="w-full bg-gray-800 rounded-full h-2">
                 <div
                   className={`h-2 rounded-full ${
-                    item.durability > 70 ? 'bg-teal-500' :
-                    item.durability > 30 ? 'bg-yellow-500' : 'bg-red-500'
+                    item.durability > 70
+                      ? 'bg-teal-500'
+                      : item.durability > 30
+                        ? 'bg-yellow-500'
+                        : 'bg-red-500'
                   }`}
                   style={{ width: `${item.durability}%` }}
                 ></div>
@@ -59,7 +68,8 @@ const Equipment: React.FC = () => {
 
             {item.assignedTo && (
               <div className="mt-2 text-sm text-gray-400">
-                Assigned to: <span className="text-teal-400">{item.assignedTo}</span>
+                Assigned to:{' '}
+                <span className="text-teal-400">{item.assignedTo}</span>
               </div>
             )}
           </Card>
@@ -68,7 +78,9 @@ const Equipment: React.FC = () => {
 
       <div className="bg-gray-900 border border-gray-700 rounded-lg p-6">
         <h3 className="text-xl font-semibold text-teal-300 mb-4">Item Forge</h3>
-        <p className="text-gray-400 mb-4">Craft new equipment using planetary resources:</p>
+        <p className="text-gray-400 mb-4">
+          Craft new equipment using planetary resources:
+        </p>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <button
@@ -76,9 +88,15 @@ const Equipment: React.FC = () => {
             disabled={!canAfford(100)}
             className="p-4 bg-gray-800 border border-gray-700 rounded hover:bg-gray-750 hover:border-teal-600 disabled:bg-gray-900 disabled:border-gray-800 disabled:cursor-not-allowed text-left transition-all"
           >
-            <div className="font-semibold text-teal-300">Standard Issue Briefcase</div>
-            <div className="text-sm text-gray-400 mt-1">Infiltration - Blend In (+15 stealth)</div>
-            <div className="text-sm text-teal-400 mt-2 font-medium">Cost: 100 Credits</div>
+            <div className="font-semibold text-teal-300">
+              Standard Issue Briefcase
+            </div>
+            <div className="text-sm text-gray-400 mt-1">
+              Infiltration - Blend In (+15 stealth)
+            </div>
+            <div className="text-sm text-teal-400 mt-2 font-medium">
+              Cost: 100 Credits
+            </div>
           </button>
 
           <button
@@ -86,9 +104,15 @@ const Equipment: React.FC = () => {
             disabled={!canAfford(75)}
             className="p-4 bg-gray-800 border border-gray-700 rounded hover:bg-gray-750 hover:border-teal-600 disabled:bg-gray-900 disabled:border-gray-800 disabled:cursor-not-allowed text-left transition-all"
           >
-            <div className="font-semibold text-teal-300">Corporate Tie of Binding</div>
-            <div className="text-sm text-gray-400 mt-1">Combat - Intimidate (+10 combat)</div>
-            <div className="text-sm text-teal-400 mt-2 font-medium">Cost: 75 Credits</div>
+            <div className="font-semibold text-teal-300">
+              Corporate Tie of Binding
+            </div>
+            <div className="text-sm text-gray-400 mt-1">
+              Combat - Intimidate (+10 combat)
+            </div>
+            <div className="text-sm text-teal-400 mt-2 font-medium">
+              Cost: 75 Credits
+            </div>
           </button>
 
           <button
@@ -97,8 +121,12 @@ const Equipment: React.FC = () => {
             className="p-4 bg-gray-800 border border-gray-700 rounded hover:bg-gray-750 hover:border-teal-600 disabled:bg-gray-900 disabled:border-gray-800 disabled:cursor-not-allowed text-left transition-all"
           >
             <div className="font-semibold text-teal-300">Cursed Calculator</div>
-            <div className="text-sm text-gray-400 mt-1">Sabotage - Data Corruption (+20 sabotage)</div>
-            <div className="text-sm text-teal-400 mt-2 font-medium">Cost: 125 Credits + 1 Raw Material</div>
+            <div className="text-sm text-gray-400 mt-1">
+              Sabotage - Data Corruption (+20 sabotage)
+            </div>
+            <div className="text-sm text-teal-400 mt-2 font-medium">
+              Cost: 125 Credits + 1 Raw Material
+            </div>
           </button>
         </div>
       </div>

@@ -1,4 +1,4 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
 :root {
   /* Primitive Color Tokens */
@@ -82,10 +82,12 @@
   --color-info-rgb: 98, 108, 113;
 
   /* Typography */
-  --font-family-base: "FKGroteskNeue", "Geist", "Inter", -apple-system,
-    BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  --font-family-mono: "Berkeley Mono", ui-monospace, SFMono-Regular, Menlo,
-    Monaco, Consolas, monospace;
+  --font-family-base:
+    'FKGroteskNeue', 'Geist', 'Inter', -apple-system, BlinkMacSystemFont,
+    'Segoe UI', Roboto, sans-serif;
+  --font-family-mono:
+    'Berkeley Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+    monospace;
   --font-size-xs: 11px;
   --font-size-sm: 12px;
   --font-size-base: 14px;
@@ -127,12 +129,12 @@
   /* Shadows */
   --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.02);
   --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.04), 0 1px 2px rgba(0, 0, 0, 0.02);
-  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.04),
-    0 2px 4px -1px rgba(0, 0, 0, 0.02);
-  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.04),
-    0 4px 6px -2px rgba(0, 0, 0, 0.02);
-  --shadow-inset-sm: inset 0 1px 0 rgba(255, 255, 255, 0.15),
-    inset 0 -1px 0 rgba(0, 0, 0, 0.03);
+  --shadow-md:
+    0 4px 6px -1px rgba(0, 0, 0, 0.04), 0 2px 4px -1px rgba(0, 0, 0, 0.02);
+  --shadow-lg:
+    0 10px 15px -3px rgba(0, 0, 0, 0.04), 0 4px 6px -2px rgba(0, 0, 0, 0.02);
+  --shadow-inset-sm:
+    inset 0 1px 0 rgba(255, 255, 255, 0.15), inset 0 -1px 0 rgba(0, 0, 0, 0.03);
 
   /* Animation */
   --duration-fast: 150ms;
@@ -185,8 +187,8 @@
     --color-btn-primary-text: var(--color-slate-900);
     --color-card-border: rgba(var(--color-gray-400-rgb), 0.2);
     --color-card-border-inner: rgba(var(--color-gray-400-rgb), 0.15);
-    --shadow-inset-sm: inset 0 1px 0 rgba(255, 255, 255, 0.1),
-      inset 0 -1px 0 rgba(0, 0, 0, 0.15);
+    --shadow-inset-sm:
+      inset 0 1px 0 rgba(255, 255, 255, 0.1), inset 0 -1px 0 rgba(0, 0, 0, 0.15);
     --button-border-secondary: rgba(var(--color-gray-400-rgb), 0.2);
     --color-border-secondary: rgba(var(--color-gray-400-rgb), 0.2);
     --color-select-caret: rgba(var(--color-gray-200-rgb), 0.8);
@@ -208,7 +210,7 @@
 }
 
 /* Data attribute for manual theme switching */
-[data-color-scheme="dark"] {
+[data-color-scheme='dark'] {
   /* RGB versions for opacity control (dark mode) */
   --color-gray-400-rgb: 119, 124, 124;
   --color-teal-300-rgb: 50, 184, 198;
@@ -245,8 +247,8 @@
   --color-btn-primary-text: var(--color-slate-900);
   --color-card-border: rgba(var(--color-gray-400-rgb), 0.15);
   --color-card-border-inner: rgba(var(--color-gray-400-rgb), 0.15);
-  --shadow-inset-sm: inset 0 1px 0 rgba(255, 255, 255, 0.1),
-    inset 0 -1px 0 rgba(0, 0, 0, 0.15);
+  --shadow-inset-sm:
+    inset 0 1px 0 rgba(255, 255, 255, 0.1), inset 0 -1px 0 rgba(0, 0, 0, 0.15);
   --color-border-secondary: rgba(var(--color-gray-400-rgb), 0.2);
   --color-select-caret: rgba(var(--color-gray-200-rgb), 0.8);
 
@@ -265,7 +267,7 @@
   --color-info-rgb: var(--color-gray-300-rgb);
 }
 
-[data-color-scheme="light"] {
+[data-color-scheme='light'] {
   /* RGB versions for opacity control (light mode) */
   --color-brown-600-rgb: 94, 82, 64;
   --color-teal-500-rgb: 33, 128, 141;
@@ -482,7 +484,8 @@ pre code {
   background-color: var(--color-surface);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-base);
-  transition: border-color var(--duration-fast) var(--ease-standard),
+  transition:
+    border-color var(--duration-fast) var(--ease-standard),
     box-shadow var(--duration-fast) var(--ease-standard);
 }
 
@@ -511,11 +514,11 @@ select.form-control {
 }
 
 /* Also handle data-color-scheme */
-[data-color-scheme="dark"] select.form-control {
+[data-color-scheme='dark'] select.form-control {
   background-image: var(--select-caret-dark);
 }
 
-[data-color-scheme="light"] select.form-control {
+[data-color-scheme='light'] select.form-control {
   background-image: var(--select-caret-light);
 }
 
@@ -729,7 +732,7 @@ select.form-control {
 }
 
 /* Dark mode specifics */
-[data-color-scheme="dark"] .btn--outline {
+[data-color-scheme='dark'] .btn--outline {
   border: 1px solid var(--color-border-secondary);
 }
 
@@ -949,9 +952,15 @@ body {
   transition: width var(--duration-normal) var(--ease-standard);
 }
 
-.progress-fill.health { background: var(--color-success); }
-.progress-fill.morale { background: var(--color-primary); }
-.progress-fill.lifespan { background: var(--color-warning); }
+.progress-fill.health {
+  background: var(--color-success);
+}
+.progress-fill.morale {
+  background: var(--color-primary);
+}
+.progress-fill.lifespan {
+  background: var(--color-warning);
+}
 
 .daemon-quirks {
   margin-top: var(--space-12);
@@ -1271,35 +1280,43 @@ body {
   border-radius: 50%;
 }
 
-.status-active { background: var(--color-success); }
-.status-warning { background: var(--color-warning); }
-.status-critical { background: var(--color-error); }
-.status-inactive { background: var(--color-text-secondary); }
+.status-active {
+  background: var(--color-success);
+}
+.status-warning {
+  background: var(--color-warning);
+}
+.status-critical {
+  background: var(--color-error);
+}
+.status-inactive {
+  background: var(--color-text-secondary);
+}
 
 /* Responsive Design */
 @media (max-width: 768px) {
   .tab-nav {
     padding: 0 var(--space-8);
   }
-  
+
   .tab-btn {
     padding: var(--space-12) var(--space-16);
     font-size: var(--font-size-xs);
   }
-  
+
   .resource-bar {
     gap: var(--space-12);
   }
-  
+
   .resource {
     font-size: var(--font-size-xs);
     padding: var(--space-6) var(--space-12);
   }
-  
+
   .tab-content {
     padding: var(--space-16);
   }
-  
+
   .game-controls {
     position: relative;
     bottom: auto;
@@ -1307,14 +1324,14 @@ body {
     margin: var(--space-20);
     justify-content: center;
   }
-  
+
   .daemon-grid,
   .planet-grid,
   .room-grid,
   .equipment-grid {
     grid-template-columns: 1fr;
   }
-  
+
   .dashboard-grid {
     grid-template-columns: 1fr;
   }
@@ -1322,9 +1339,15 @@ body {
 
 /* Animation for successful actions */
 @keyframes pulse {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.05); }
-  100% { transform: scale(1); }
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+  }
 }
 
 .pulse-animation {
@@ -1333,12 +1356,17 @@ body {
 
 /* Dark corporate vibes */
 .corporate-header {
-  background: linear-gradient(135deg, var(--color-slate-900), var(--color-charcoal-800));
+  background: linear-gradient(
+    135deg,
+    var(--color-slate-900),
+    var(--color-charcoal-800)
+  );
   color: var(--color-text);
 }
 
 .infernal-border {
-  border-image: linear-gradient(45deg, var(--color-primary), var(--color-error)) 1;
+  border-image: linear-gradient(45deg, var(--color-primary), var(--color-error))
+    1;
 }
 
 /* Memorial styling */

@@ -21,17 +21,27 @@ const Missions: React.FC = () => {
 
   return (
     <div>
-      <h2 className="text-2xl font-bold mb-4 text-slate-900">Planetary Conquest Operations</h2>
+      <h2 className="text-2xl font-bold mb-4 text-slate-900">
+        Planetary Conquest Operations
+      </h2>
       <p className="text-slate-600 mb-6 bg-cream-50 p-4 rounded border border-brown-600/10">
-        Select target planets for corporate expansion. Mission success depends on team composition and equipment readiness.
+        Select target planets for corporate expansion. Mission success depends
+        on team composition and equipment readiness.
       </p>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {planets.map(planet => (
-          <Card key={planet.id} className="bg-cream-100 border-brown-600/12 hover:shadow-lg transition-shadow">
+          <Card
+            key={planet.id}
+            className="bg-cream-100 border-brown-600/12 hover:shadow-lg transition-shadow"
+          >
             <div className="flex justify-between items-start mb-4">
-              <h3 className="font-bold text-lg text-slate-900">{planet.name}</h3>
-              <span className={`px-3 py-1 text-xs rounded-full font-semibold ${getDifficultyBadge(planet.difficulty)}`}>
+              <h3 className="font-bold text-lg text-slate-900">
+                {planet.name}
+              </h3>
+              <span
+                className={`px-3 py-1 text-xs rounded-full font-semibold ${getDifficultyBadge(planet.difficulty)}`}
+              >
                 {planet.difficulty}
               </span>
             </div>
@@ -55,8 +65,12 @@ const Missions: React.FC = () => {
             </div>
 
             <div className="mb-4 p-3 bg-slate-50 rounded border border-slate-200">
-              <div className="text-sm text-slate-600 font-medium mb-1">Expected Rewards:</div>
-              <div className="text-slate-900 font-semibold">{planet.reward}</div>
+              <div className="text-sm text-slate-600 font-medium mb-1">
+                Expected Rewards:
+              </div>
+              <div className="text-slate-900 font-semibold">
+                {planet.reward}
+              </div>
             </div>
 
             <button

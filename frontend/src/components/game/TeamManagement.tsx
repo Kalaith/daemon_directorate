@@ -9,7 +9,7 @@ const TeamManagement: React.FC = () => {
     recruitmentPool,
     recruitDaemon,
     refreshRecruitmentPool,
-    canAfford
+    canAfford,
   } = useGameStore();
 
   const activeDaemons = daemons.filter(d => d.isActive);
@@ -35,10 +35,15 @@ const TeamManagement: React.FC = () => {
   return (
     <div className="space-y-8">
       <div>
-        <h2 className="text-2xl font-bold mb-4 text-slate-900">Active Daemon Operatives</h2>
+        <h2 className="text-2xl font-bold mb-4 text-slate-900">
+          Active Daemon Operatives
+        </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {activeDaemons.map(daemon => (
-            <Card key={daemon.id} className="bg-cream-100 border-brown-600/12 hover:shadow-md transition-shadow">
+            <Card
+              key={daemon.id}
+              className="bg-cream-100 border-brown-600/12 hover:shadow-md transition-shadow"
+            >
               <div className="flex justify-between items-start mb-3">
                 <h4 className="font-semibold text-slate-900">{daemon.name}</h4>
                 <span className="text-sm text-slate-600 bg-slate-100 px-2 py-1 rounded font-medium">
@@ -50,7 +55,9 @@ const TeamManagement: React.FC = () => {
                 <div>
                   <div className="flex justify-between text-sm mb-1">
                     <span className="text-slate-600">Health</span>
-                    <span className="font-semibold text-slate-900">{daemon.health}%</span>
+                    <span className="font-semibold text-slate-900">
+                      {daemon.health}%
+                    </span>
                   </div>
                   <div className="w-full bg-slate-200 rounded-full h-2">
                     <div
@@ -63,7 +70,9 @@ const TeamManagement: React.FC = () => {
                 <div>
                   <div className="flex justify-between text-sm mb-1">
                     <span className="text-slate-600">Morale</span>
-                    <span className="font-semibold text-slate-900">{daemon.morale}%</span>
+                    <span className="font-semibold text-slate-900">
+                      {daemon.morale}%
+                    </span>
                   </div>
                   <div className="w-full bg-slate-200 rounded-full h-2">
                     <div
@@ -74,7 +83,9 @@ const TeamManagement: React.FC = () => {
                 </div>
 
                 <div className="text-sm">
-                  <span className={`font-medium ${getLifespanColor(daemon.lifespanDays)}`}>
+                  <span
+                    className={`font-medium ${getLifespanColor(daemon.lifespanDays)}`}
+                  >
                     Lifespan: {daemon.lifespanDays} days
                   </span>
                 </div>
@@ -82,7 +93,11 @@ const TeamManagement: React.FC = () => {
 
               <div className="flex flex-wrap gap-2 mb-4">
                 {daemon.quirks.map((quirk, index) => (
-                  <span key={index} className="px-2 py-1 bg-brown-600/10 text-xs rounded text-slate-700" title={typeof quirk === 'object' ? quirk.description : ''}>
+                  <span
+                    key={index}
+                    className="px-2 py-1 bg-brown-600/10 text-xs rounded text-slate-700"
+                    title={typeof quirk === 'object' ? quirk.description : ''}
+                  >
                     {typeof quirk === 'object' ? quirk.name : quirk}
                   </span>
                 ))}
@@ -102,14 +117,20 @@ const TeamManagement: React.FC = () => {
       </div>
 
       <div>
-        <h3 className="text-xl font-semibold mb-4 text-slate-900">Recruitment Department</h3>
+        <h3 className="text-xl font-semibold mb-4 text-slate-900">
+          Recruitment Department
+        </h3>
         <p className="text-slate-600 mb-6 bg-cream-50 p-4 rounded border border-brown-600/10">
-          HR has identified suitable candidates for daemon operative positions. Background checks and soul assessments completed.
+          HR has identified suitable candidates for daemon operative positions.
+          Background checks and soul assessments completed.
         </p>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
           {recruitmentPool.map(daemon => (
-            <Card key={daemon.id} className="bg-cream-100 border-brown-600/12 hover:shadow-md transition-shadow">
+            <Card
+              key={daemon.id}
+              className="bg-cream-100 border-brown-600/12 hover:shadow-md transition-shadow"
+            >
               <div className="flex justify-between items-start mb-3">
                 <h4 className="font-semibold text-slate-900">{daemon.name}</h4>
                 <span className="text-sm text-slate-600 bg-slate-100 px-2 py-1 rounded font-medium">
@@ -121,7 +142,9 @@ const TeamManagement: React.FC = () => {
                 <div>
                   <div className="flex justify-between text-sm mb-1">
                     <span className="text-slate-600">Health</span>
-                    <span className="font-semibold text-slate-900">{daemon.health}%</span>
+                    <span className="font-semibold text-slate-900">
+                      {daemon.health}%
+                    </span>
                   </div>
                   <div className="w-full bg-slate-200 rounded-full h-2">
                     <div
@@ -134,7 +157,9 @@ const TeamManagement: React.FC = () => {
                 <div>
                   <div className="flex justify-between text-sm mb-1">
                     <span className="text-slate-600">Morale</span>
-                    <span className="font-semibold text-slate-900">{daemon.morale}%</span>
+                    <span className="font-semibold text-slate-900">
+                      {daemon.morale}%
+                    </span>
                   </div>
                   <div className="w-full bg-slate-200 rounded-full h-2">
                     <div
@@ -153,7 +178,11 @@ const TeamManagement: React.FC = () => {
 
               <div className="flex flex-wrap gap-2 mb-4">
                 {daemon.quirks.map((quirk, index) => (
-                  <span key={index} className="px-2 py-1 bg-brown-600/10 text-xs rounded text-slate-700" title={typeof quirk === 'object' ? quirk.description : ''}>
+                  <span
+                    key={index}
+                    className="px-2 py-1 bg-brown-600/10 text-xs rounded text-slate-700"
+                    title={typeof quirk === 'object' ? quirk.description : ''}
+                  >
                     {typeof quirk === 'object' ? quirk.name : quirk}
                   </span>
                 ))}

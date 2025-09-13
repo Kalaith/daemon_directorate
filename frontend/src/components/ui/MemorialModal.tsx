@@ -11,7 +11,7 @@ const MemorialModal: React.FC = () => {
     `Completed ${Math.floor(Math.random() * 5) + 1} successful missions`,
     `Maintained ${memorialDaemon.morale > 70 ? 'excellent' : memorialDaemon.morale > 40 ? 'adequate' : 'poor'} workplace morale`,
     `Specialized in ${memorialDaemon.specialization} operations`,
-    `Known for: ${memorialDaemon.quirks.join(', ')}`
+    `Known for: ${memorialDaemon.quirks.join(', ')}`,
   ];
 
   return (
@@ -19,11 +19,17 @@ const MemorialModal: React.FC = () => {
       <div className="bg-gray-900 border border-red-500 rounded-lg p-6 max-w-md w-full mx-4 shadow-2xl">
         <h2 className="text-xl font-bold text-red-400 mb-4">In Memoriam</h2>
         <div className="mb-6">
-          <div className="text-lg font-semibold text-teal-300 mb-2">{memorialDaemon.name}</div>
-          <p className="italic text-gray-400 mb-4">"A dedicated servant of the Corporate Hierarchy"</p>
+          <div className="text-lg font-semibold text-teal-300 mb-2">
+            {memorialDaemon.name}
+          </div>
+          <p className="italic text-gray-400 mb-4">
+            "A dedicated servant of the Corporate Hierarchy"
+          </p>
 
           <div>
-            <h4 className="font-semibold text-gray-300 mb-2">Service Record:</h4>
+            <h4 className="font-semibold text-gray-300 mb-2">
+              Service Record:
+            </h4>
             <div className="text-gray-400 space-y-1">
               {achievements.map((achievement, index) => (
                 <div key={index}>• {achievement}</div>
@@ -32,8 +38,14 @@ const MemorialModal: React.FC = () => {
           </div>
 
           <div className="mt-4 p-3 bg-gray-800 border border-gray-700 rounded">
-            <span className="text-teal-400 font-semibold">Corporate Legacy:</span>
-            <span className="text-gray-300"> Their dedication to bureaucratic excellence will be remembered in the employee handbook.</span>
+            <span className="text-teal-400 font-semibold">
+              Corporate Legacy:
+            </span>
+            <span className="text-gray-300">
+              {' '}
+              Their dedication to bureaucratic excellence will be remembered in
+              the employee handbook.
+            </span>
           </div>
         </div>
         <button

@@ -13,18 +13,21 @@ const NotificationSystem: React.FC = () => {
   const [notifications, setNotifications] = useState<Notification[]>([]);
 
   // Function to add a notification (can be called from other components)
-  const addNotification = useCallback((notification: Omit<Notification, 'id'>) => {
-    const id = Date.now().toString();
-    const newNotification = { ...notification, id };
-    
-    setNotifications(prev => [...prev, newNotification]);
+  const addNotification = useCallback(
+    (notification: Omit<Notification, 'id'>) => {
+      const id = Date.now().toString();
+      const newNotification = { ...notification, id };
 
-    // Auto-remove after duration (default 5 seconds)
-    const duration = notification.duration || 5000;
-    setTimeout(() => {
-      removeNotification(id);
-    }, duration);
-  }, []);
+      setNotifications(prev => [...prev, newNotification]);
+
+      // Auto-remove after duration (default 5 seconds)
+      const duration = notification.duration || 5000;
+      setTimeout(() => {
+        removeNotification(id);
+      }, duration);
+    },
+    []
+  );
 
   const removeNotification = (id: string) => {
     setNotifications(prev => prev.filter(notif => notif.id !== id));
@@ -32,9 +35,12 @@ const NotificationSystem: React.FC = () => {
 
   // Expose the addNotification function globally for easy access
   useEffect(() => {
-    (window as Window & { addNotification?: typeof addNotification }).addNotification = addNotification;
+    (
+      window as Window & { addNotification?: typeof addNotification }
+    ).addNotification = addNotification;
     return () => {
-      delete (window as Window & { addNotification?: typeof addNotification }).addNotification;
+      delete (window as Window & { addNotification?: typeof addNotification })
+        .addNotification;
     };
   }, [addNotification]);
 
@@ -86,7 +92,9 @@ const NotificationSystem: React.FC = () => {
               </span>
               <div className="flex-1">
                 <h4 className="font-semibold text-sm">{notification.title}</h4>
-                <p className="text-xs mt-1 opacity-90">{notification.message}</p>
+                <p className="text-xs mt-1 opacity-90">
+                  {notification.message}
+                </p>
               </div>
             </div>
             <button

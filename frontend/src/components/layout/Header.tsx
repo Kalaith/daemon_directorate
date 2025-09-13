@@ -10,25 +10,43 @@ const Header: React.FC = () => {
       <div className="container mx-auto px-4">
         <div className="flex justify-between items-center">
           <div>
-            <h1 className="text-4xl font-bold text-cream-100 mb-1">Daemon Directorate</h1>
-            <div className="text-slate-500 text-sm font-medium">Excellence Through Eternal Suffering™</div>
+            <h1 className="text-4xl font-bold text-cream-100 mb-1">
+              Daemon Directorate
+            </h1>
+            <div className="text-slate-500 text-sm font-medium">
+              Excellence Through Eternal Suffering™
+            </div>
           </div>
           <div className="flex gap-8 text-sm">
             <div className="text-center">
               <div className="font-semibold text-slate-300 mb-1">Credits</div>
-              <div className="text-amber-400 text-lg font-bold">{resources.credits}</div>
+              <div className="text-amber-400 text-lg font-bold">
+                {resources.credits}
+              </div>
             </div>
             <div className="text-center">
-              <div className="font-semibold text-slate-300 mb-1">Soul Essence</div>
-              <div className="text-purple-400 text-lg font-bold">{resources.soulEssence}</div>
+              <div className="font-semibold text-slate-300 mb-1">
+                Soul Essence
+              </div>
+              <div className="text-purple-400 text-lg font-bold">
+                {resources.soulEssence}
+              </div>
             </div>
             <div className="text-center">
-              <div className="font-semibold text-slate-300 mb-1">Bureaucratic Leverage</div>
-              <div className="text-teal-400 text-lg font-bold">{resources.bureaucraticLeverage}</div>
+              <div className="font-semibold text-slate-300 mb-1">
+                Bureaucratic Leverage
+              </div>
+              <div className="text-teal-400 text-lg font-bold">
+                {resources.bureaucraticLeverage}
+              </div>
             </div>
             <div className="text-center">
-              <div className="font-semibold text-slate-300 mb-1">Raw Materials</div>
-              <div className="text-orange-400 text-lg font-bold">{resources.rawMaterials}</div>
+              <div className="font-semibold text-slate-300 mb-1">
+                Raw Materials
+              </div>
+              <div className="text-orange-400 text-lg font-bold">
+                {resources.rawMaterials}
+              </div>
             </div>
           </div>
         </div>

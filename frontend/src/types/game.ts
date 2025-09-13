@@ -25,7 +25,7 @@ export interface Daemon {
   equipment: string | null;
   isActive: boolean;
   cost?: number; // For recruitment pool daemons
-  
+
   // Legacy system
   generation: number;
   bloodline?: string;
@@ -46,7 +46,7 @@ export interface Equipment {
   durability: number;
   ability: string;
   assignedTo: string | null;
-  
+
   // Legacy system
   forgedBy?: string; // ID of daemon who created it
   generation: number; // How many times it's been inherited
@@ -155,7 +155,8 @@ export interface GameState {
   gameModifiers: GameModifiers;
   daysPassed: number;
   gameStarted: boolean;
-  
+  tutorialCompleted: boolean;
+
   // UI State
   currentTab: 'dashboard' | 'team' | 'missions' | 'apartment' | 'equipment';
   selectedDaemons: Set<string>;
@@ -172,7 +173,10 @@ export interface GameState {
 }
 
 export interface StarterData {
-  starter_daemons: Omit<Daemon, 'id' | 'assignments' | 'equipment' | 'isActive'>[];
+  starter_daemons: Omit<
+    Daemon,
+    'id' | 'assignments' | 'equipment' | 'isActive'
+  >[];
   starter_equipment: Omit<Equipment, 'id' | 'assignedTo'>[];
   planets: Omit<Planet, 'id' | 'conquered' | 'lastMission'>[];
   apartment_rooms: Omit<Room, 'id'>[];
@@ -181,5 +185,10 @@ export interface StarterData {
 // Type aliases for clarity
 export type DifficultyLevel = 'Easy' | 'Medium' | 'Hard';
 export type SpecializationType = 'Infiltration' | 'Combat' | 'Sabotage';
-export type TabType = 'dashboard' | 'team' | 'missions' | 'apartment' | 'equipment';
+export type TabType =
+  | 'dashboard'
+  | 'team'
+  | 'missions'
+  | 'apartment'
+  | 'equipment';
 export type NotificationType = 'success' | 'error' | 'warning' | 'info';
