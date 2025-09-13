@@ -10,6 +10,9 @@ const TeamManagement: React.FC = () => {
     recruitDaemon,
     refreshRecruitmentPool,
     canAfford,
+    corporateTier,
+    conductHRReview,
+    isHRReviewAvailable,
   } = useGameStore();
 
   const activeDaemons = daemons.filter(d => d.isActive);
@@ -104,11 +107,22 @@ const TeamManagement: React.FC = () => {
               </div>
 
               <div className="flex gap-2">
+                {corporateTier.level >= 2 && (
+                  <button 
+                    onClick={() => conductHRReview(daemon.id)}
+                    disabled={!isHRReviewAvailable()}
+                    className={`flex-1 px-3 py-2 text-cream-100 text-sm rounded transition-colors ${
+                      isHRReviewAvailable() 
+                        ? 'bg-purple-600 hover:bg-purple-700' 
+                        : 'bg-gray-400 cursor-not-allowed'
+                    }`}
+                    title={isHRReviewAvailable() ? 'Conduct Performance Review' : 'HR Reviews available every 5 days'}
+                  >
+                    📊 Review
+                  </button>
+                )}
                 <button className="flex-1 px-3 py-2 bg-slate-600 text-cream-100 text-sm rounded hover:bg-slate-700 transition-colors">
                   Equipment
-                </button>
-                <button className="flex-1 px-3 py-2 bg-teal-600 text-cream-100 text-sm rounded hover:bg-teal-700 transition-colors">
-                  Details
                 </button>
               </div>
             </Card>

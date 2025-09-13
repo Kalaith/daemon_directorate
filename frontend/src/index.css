@@ -1,4 +1,5 @@
 @import 'tailwindcss' layer(base, components, utilities);
+@import './styles/game-components.css';
 
 :root {
   /* Primitive Color Tokens */
@@ -193,14 +194,6 @@
     --color-border-secondary: rgba(var(--color-gray-400-rgb), 0.2);
     --color-select-caret: rgba(var(--color-gray-200-rgb), 0.8);
 
-    /* Common style patterns - updated for dark mode */
-    --focus-ring: 0 0 0 3px var(--color-focus-ring);
-    --focus-outline: 2px solid var(--color-primary);
-    --status-bg-opacity: 0.15;
-    --status-border-opacity: 0.25;
-    --select-caret-light: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23134252' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
-    --select-caret-dark: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23f5f5f5' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
-
     /* RGB versions for dark mode */
     --color-success-rgb: var(--color-teal-300-rgb);
     --color-error-rgb: var(--color-red-400-rgb);
@@ -211,23 +204,21 @@
 
 /* Data attribute for manual theme switching */
 [data-color-scheme='dark'] {
-  /* RGB versions for opacity control (dark mode) */
+  /* Same dark mode variables as above */
   --color-gray-400-rgb: 119, 124, 124;
   --color-teal-300-rgb: 50, 184, 198;
   --color-gray-300-rgb: 167, 169, 169;
   --color-gray-200-rgb: 245, 245, 245;
 
-  /* Colorful background palette - Dark Mode */
-  --color-bg-1: rgba(29, 78, 216, 0.15); /* Dark blue */
-  --color-bg-2: rgba(180, 83, 9, 0.15); /* Dark yellow */
-  --color-bg-3: rgba(21, 128, 61, 0.15); /* Dark green */
-  --color-bg-4: rgba(185, 28, 28, 0.15); /* Dark red */
-  --color-bg-5: rgba(107, 33, 168, 0.15); /* Dark purple */
-  --color-bg-6: rgba(194, 65, 12, 0.15); /* Dark orange */
-  --color-bg-7: rgba(190, 24, 93, 0.15); /* Dark pink */
-  --color-bg-8: rgba(8, 145, 178, 0.15); /* Dark cyan */
+  --color-bg-1: rgba(29, 78, 216, 0.15);
+  --color-bg-2: rgba(180, 83, 9, 0.15);
+  --color-bg-3: rgba(21, 128, 61, 0.15);
+  --color-bg-4: rgba(185, 28, 28, 0.15);
+  --color-bg-5: rgba(107, 33, 168, 0.15);
+  --color-bg-6: rgba(194, 65, 12, 0.15);
+  --color-bg-7: rgba(190, 24, 93, 0.15);
+  --color-bg-8: rgba(8, 145, 178, 0.15);
 
-  /* Semantic Color Tokens (Dark Mode) */
   --color-background: var(--color-charcoal-700);
   --color-surface: var(--color-charcoal-800);
   --color-text: var(--color-gray-200);
@@ -252,15 +243,6 @@
   --color-border-secondary: rgba(var(--color-gray-400-rgb), 0.2);
   --color-select-caret: rgba(var(--color-gray-200-rgb), 0.8);
 
-  /* Common style patterns - updated for dark mode */
-  --focus-ring: 0 0 0 3px var(--color-focus-ring);
-  --focus-outline: 2px solid var(--color-primary);
-  --status-bg-opacity: 0.15;
-  --status-border-opacity: 0.25;
-  --select-caret-light: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23134252' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
-  --select-caret-dark: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23f5f5f5' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
-
-  /* RGB versions for dark mode */
   --color-success-rgb: var(--color-teal-300-rgb);
   --color-error-rgb: var(--color-red-400-rgb);
   --color-warning-rgb: var(--color-orange-400-rgb);
@@ -268,12 +250,10 @@
 }
 
 [data-color-scheme='light'] {
-  /* RGB versions for opacity control (light mode) */
   --color-brown-600-rgb: 94, 82, 64;
   --color-teal-500-rgb: 33, 128, 141;
   --color-slate-900-rgb: 19, 52, 59;
 
-  /* Semantic Color Tokens (Light Mode) */
   --color-background: var(--color-cream-50);
   --color-surface: var(--color-cream-100);
   --color-text: var(--color-slate-900);
@@ -294,365 +274,125 @@
   --color-info: var(--color-slate-500);
   --color-focus-ring: rgba(var(--color-teal-500-rgb), 0.4);
 
-  /* RGB versions for light mode */
   --color-success-rgb: var(--color-teal-500-rgb);
   --color-error-rgb: var(--color-red-500-rgb);
   --color-warning-rgb: var(--color-orange-500-rgb);
   --color-info-rgb: var(--color-slate-500-rgb);
 }
 
-/* Base styles - simplified with Tailwind approach */
-html {
-  font-size: var(--font-size-base);
-  font-family: var(--font-family-base);
-  line-height: var(--line-height-normal);
-  color: var(--color-text);
-  background-color: var(--color-background);
-  -webkit-font-smoothing: antialiased;
-  box-sizing: border-box;
-}
+@layer base {
+  html {
+    font-size: var(--font-size-base);
+    font-family: var(--font-family-base);
+    line-height: var(--line-height-normal);
+    color: var(--color-text);
+    background-color: var(--color-background);
+    -webkit-font-smoothing: antialiased;
+    box-sizing: border-box;
+  }
 
-body {
-  /* Using Tailwind classes in HTML/components instead: 
-     bg-background text-text font-base m-0 p-0 min-h-screen */
-  background: var(--color-background);
-  color: var(--color-text);
-  font-family: var(--font-family-base);
-  margin: 0;
-  padding: 0;
-  min-height: 100vh;
-}
+  body {
+    background: var(--color-background);
+    color: var(--color-text);
+    font-family: var(--font-family-base);
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+  }
 
-#app {
-  /* Using Tailwind classes in HTML/components instead: 
-     min-h-screen flex flex-col */
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-}
+  #app {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
 
-*,
-*::before,
-*::after {
-  box-sizing: inherit;
-}
+  *,
+  *::before,
+  *::after {
+    box-sizing: inherit;
+  }
 
-/* Typography */
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  margin: 0;
-  font-weight: var(--font-weight-semibold);
-  line-height: var(--line-height-tight);
-  color: var(--color-text);
-  letter-spacing: var(--letter-spacing-tight);
-}
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    margin: 0;
+    font-weight: var(--font-weight-semibold);
+    line-height: var(--line-height-tight);
+    color: var(--color-text);
+    letter-spacing: var(--letter-spacing-tight);
+  }
 
-h1 {
-  font-size: var(--font-size-4xl);
-}
-h2 {
-  font-size: var(--font-size-3xl);
-}
-h3 {
-  font-size: var(--font-size-2xl);
-}
-h4 {
-  font-size: var(--font-size-xl);
-}
-h5 {
-  font-size: var(--font-size-lg);
-}
-h6 {
-  font-size: var(--font-size-md);
-}
+  h1 {
+    font-size: var(--font-size-4xl);
+  }
+  h2 {
+    font-size: var(--font-size-3xl);
+  }
+  h3 {
+    font-size: var(--font-size-2xl);
+  }
+  h4 {
+    font-size: var(--font-size-xl);
+  }
+  h5 {
+    font-size: var(--font-size-lg);
+  }
+  h6 {
+    font-size: var(--font-size-md);
+  }
 
-p {
-  margin: 0 0 var(--space-16) 0;
-}
+  p {
+    margin: 0 0 var(--space-16) 0;
+  }
 
-a {
-  color: var(--color-primary);
-  text-decoration: none;
-  transition: color var(--duration-fast) var(--ease-standard);
-}
+  a {
+    color: var(--color-primary);
+    text-decoration: none;
+    transition: color var(--duration-fast) var(--ease-standard);
+  }
 
-a:hover {
-  color: var(--color-primary-hover);
-}
+  a:hover {
+    color: var(--color-primary-hover);
+  }
 
-code,
-pre {
-  font-family: var(--font-family-mono);
-  font-size: calc(var(--font-size-base) * 0.95);
-  background-color: var(--color-secondary);
-  border-radius: var(--radius-sm);
-}
+  code,
+  pre {
+    font-family: var(--font-family-mono);
+    background-color: var(--color-bg-2);
+    border-radius: var(--radius-sm);
+    font-size: calc(var(--font-size-base) * 0.95);
+  }
 
-code {
-  padding: var(--space-1) var(--space-4);
-}
+  code {
+    padding: var(--space-1) var(--space-4);
+  }
 
-pre {
-  padding: var(--space-16);
-  margin: var(--space-16) 0;
-  overflow: auto;
-  border: 1px solid var(--color-border);
-}
+  pre {
+    padding: var(--space-16);
+    margin: var(--space-16) 0;
+    overflow: auto;
+    border: 1px solid var(--color-border);
+  }
 
-pre code {
-  background: none;
-  padding: 0;
-}
-
-/* Buttons */
-.btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: var(--space-8) var(--space-16);
-  border-radius: var(--radius-base);
-  font-size: var(--font-size-base);
-  font-weight: 500;
-  line-height: 1.5;
-  cursor: pointer;
-  transition: all var(--duration-normal) var(--ease-standard);
-  border: none;
-  text-decoration: none;
-  position: relative;
-}
-
-.btn:focus-visible {
-  outline: none;
-  box-shadow: var(--focus-ring);
-}
-
-.btn--primary {
-  background: var(--color-primary);
-  color: var(--color-btn-primary-text);
-}
-
-.btn--primary:hover {
-  background: var(--color-primary-hover);
-}
-
-.btn--primary:active {
-  background: var(--color-primary-active);
-}
-
-.btn--secondary {
-  background: var(--color-secondary);
-  color: var(--color-text);
-}
-
-.btn--secondary:hover {
-  background: var(--color-secondary-hover);
-}
-
-.btn--secondary:active {
-  background: var(--color-secondary-active);
-}
-
-.btn--outline {
-  background: transparent;
-  border: 1px solid var(--color-border);
-  color: var(--color-text);
-}
-
-.btn--outline:hover {
-  background: var(--color-secondary);
-}
-
-.btn--sm {
-  padding: var(--space-4) var(--space-12);
-  font-size: var(--font-size-sm);
-  border-radius: var(--radius-sm);
-}
-
-.btn--lg {
-  padding: var(--space-10) var(--space-20);
-  font-size: var(--font-size-lg);
-  border-radius: var(--radius-md);
-}
-
-.btn--full-width {
-  width: 100%;
-}
-
-.btn:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
-/* Form elements */
-.form-control {
-  display: block;
-  width: 100%;
-  padding: var(--space-8) var(--space-12);
-  font-size: var(--font-size-md);
-  line-height: 1.5;
-  color: var(--color-text);
-  background-color: var(--color-surface);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-base);
-  transition:
-    border-color var(--duration-fast) var(--ease-standard),
-    box-shadow var(--duration-fast) var(--ease-standard);
-}
-
-textarea.form-control {
-  font-family: var(--font-family-base);
-  font-size: var(--font-size-base);
-}
-
-select.form-control {
-  padding: var(--space-8) var(--space-12);
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
-  background-image: var(--select-caret-light);
-  background-repeat: no-repeat;
-  background-position: right var(--space-12) center;
-  background-size: 16px;
-  padding-right: var(--space-32);
-}
-
-/* Add a dark mode specific caret */
-@media (prefers-color-scheme: dark) {
-  select.form-control {
-    background-image: var(--select-caret-dark);
+  pre code {
+    background: transparent;
+    padding: 0;
   }
 }
 
-/* Also handle data-color-scheme */
-[data-color-scheme='dark'] select.form-control {
-  background-image: var(--select-caret-dark);
-}
+@layer utilities {
+  .sr-only {
+    @apply absolute w-1 h-1 p-0 -m-1 overflow-hidden whitespace-nowrap border-0;
+    clip: rect(0, 0, 0, 0);
+  }
 
-[data-color-scheme='light'] select.form-control {
-  background-image: var(--select-caret-light);
-}
-
-.form-control:focus {
-  border-color: var(--color-primary);
-  outline: var(--focus-outline);
-}
-
-.form-label {
-  display: block;
-  margin-bottom: var(--space-8);
-  font-weight: var(--font-weight-medium);
-  font-size: var(--font-size-sm);
-}
-
-.form-group {
-  margin-bottom: var(--space-16);
-}
-
-/* Card component */
-.card {
-  background-color: var(--color-surface);
-  border-radius: var(--radius-lg);
-  border: 1px solid var(--color-card-border);
-  box-shadow: var(--shadow-sm);
-  overflow: hidden;
-  transition: box-shadow var(--duration-normal) var(--ease-standard);
-}
-
-.card:hover {
-  box-shadow: var(--shadow-md);
-}
-
-.card__body {
-  padding: var(--space-16);
-}
-
-.card__header,
-.card__footer {
-  padding: var(--space-16);
-  border-bottom: 1px solid var(--color-card-border-inner);
-}
-
-/* Status indicators - simplified with CSS variables */
-.status {
-  display: inline-flex;
-  align-items: center;
-  padding: var(--space-6) var(--space-12);
-  border-radius: var(--radius-full);
-  font-weight: var(--font-weight-medium);
-  font-size: var(--font-size-sm);
-}
-
-.status--success {
-  background-color: rgba(
-    var(--color-success-rgb, 33, 128, 141),
-    var(--status-bg-opacity)
-  );
-  color: var(--color-success);
-  border: 1px solid
-    rgba(var(--color-success-rgb, 33, 128, 141), var(--status-border-opacity));
-}
-
-.status--error {
-  background-color: rgba(
-    var(--color-error-rgb, 192, 21, 47),
-    var(--status-bg-opacity)
-  );
-  color: var(--color-error);
-  border: 1px solid
-    rgba(var(--color-error-rgb, 192, 21, 47), var(--status-border-opacity));
-}
-
-.status--warning {
-  background-color: rgba(
-    var(--color-warning-rgb, 168, 75, 47),
-    var(--status-bg-opacity)
-  );
-  color: var(--color-warning);
-  border: 1px solid
-    rgba(var(--color-warning-rgb, 168, 75, 47), var(--status-border-opacity));
-}
-
-.status--info {
-  background-color: rgba(
-    var(--color-info-rgb, 98, 108, 113),
-    var(--status-bg-opacity)
-  );
-  color: var(--color-info);
-  border: 1px solid
-    rgba(var(--color-info-rgb, 98, 108, 113), var(--status-border-opacity));
-}
-
-/* Container layout - can be replaced with Tailwind container classes */
-/* Use: container mx-auto px-4 sm:max-w-sm md:max-w-md lg:max-w-lg xl:max-w-xl */
-
-/* Note: Most utility classes now handled by Tailwind CSS
-   Keeping only custom utilities that don't have direct Tailwind equivalents */
-
-/* Accessibility */
-.sr-only {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-  border-width: 0;
-}
-
-:focus-visible {
-  outline: var(--focus-outline);
-  outline-offset: 2px;
-}
-
-/* Dark mode specifics */
-[data-color-scheme='dark'] .btn--outline {
-  border: 1px solid var(--color-border-secondary);
+  :focus-visible {
+    outline: var(--focus-outline);
+    outline-offset: 2px;
+  }
 }
 
 @font-face {
@@ -661,473 +401,21 @@ select.form-control {
     format('woff2');
 }
 
-/* END PERPLEXITY DESIGN SYSTEM */
-/* Game-specific styles for Daemon Directorate - converted to complement Tailwind */
-
-/* Keep only complex components that benefit from custom CSS */
-
-/* Header Styles - using Tailwind classes in components instead */
-/* Tab Navigation - using Tailwind classes in components instead */
-/* Dashboard Grid - using Tailwind classes in components instead */
-
-/* Specialized game components that should remain as custom CSS */
-
-/* Progress bar components - keep these as they're game-specific */
-
-.progress-bar {
-  width: 100%;
-  height: 8px;
-  background: var(--color-secondary);
-  border-radius: var(--radius-full);
-  overflow: hidden;
-}
-
-.progress-fill {
-  height: 100%;
-  border-radius: var(--radius-full);
-  transition: width var(--duration-normal) var(--ease-standard);
-}
-
-.progress-fill.health {
-  background: var(--color-success);
-}
-.progress-fill.morale {
-  background: var(--color-primary);
-}
-.progress-fill.lifespan {
-  background: var(--color-warning);
-}
-
-.daemon-quirks {
-  margin-top: var(--space-12);
-}
-
-.quirk-tag {
-  display: inline-block;
-  background: var(--color-bg-3);
-  color: var(--color-text-secondary);
-  padding: var(--space-2) var(--space-8);
-  border-radius: var(--radius-full);
-  font-size: var(--font-size-xs);
-  margin: var(--space-2) var(--space-2) 0 0;
-}
-
-.daemon-actions {
-  margin-top: var(--space-12);
-  display: flex;
-  gap: var(--space-8);
-}
-
-.recruit-btn {
-  width: 100%;
-}
-
-.lifespan-critical {
-  color: var(--color-error);
-  font-weight: var(--font-weight-semibold);
-}
-
-.lifespan-warning {
-  color: var(--color-warning);
-}
-
-/* Planet Grid */
-.planet-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-  gap: var(--space-20);
-}
-
-.planet-card {
-  background: var(--color-surface);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-lg);
-  padding: var(--space-20);
-  transition: all var(--duration-normal) var(--ease-standard);
-}
-
-.planet-card:hover {
-  border-color: var(--color-primary);
-  box-shadow: var(--shadow-lg);
-}
-
-.planet-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: var(--space-12);
-}
-
-.planet-name {
-  font-size: var(--font-size-lg);
-  font-weight: var(--font-weight-semibold);
-  margin: 0;
-}
-
-.difficulty-badge {
-  padding: var(--space-4) var(--space-12);
-  border-radius: var(--radius-full);
-  font-size: var(--font-size-xs);
-  font-weight: var(--font-weight-semibold);
-}
-
-.difficulty-easy {
-  background: var(--color-bg-3);
-  color: var(--color-success);
-}
-
-.difficulty-medium {
-  background: var(--color-bg-2);
-  color: var(--color-warning);
-}
-
-.difficulty-hard {
-  background: var(--color-bg-4);
-  color: var(--color-error);
-}
-
-.planet-info {
-  margin-bottom: var(--space-16);
-  font-size: var(--font-size-sm);
-  color: var(--color-text-secondary);
-}
-
-.planet-reward {
-  background: var(--color-bg-1);
-  padding: var(--space-12);
-  border-radius: var(--radius-sm);
-  margin-bottom: var(--space-16);
-}
-
-/* Room Grid */
-.room-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: var(--space-20);
-}
-
-.room-card {
-  background: var(--color-surface);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-lg);
-  padding: var(--space-20);
-}
-
-.room-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: var(--space-12);
-}
-
-.room-level {
-  background: var(--color-secondary);
-  padding: var(--space-4) var(--space-8);
-  border-radius: var(--radius-full);
-  font-size: var(--font-size-xs);
-  font-weight: var(--font-weight-semibold);
-}
-
-.room-bonus {
-  background: var(--color-bg-5);
-  padding: var(--space-8);
-  border-radius: var(--radius-sm);
-  margin-bottom: var(--space-12);
-  font-size: var(--font-size-sm);
-}
-
-.room-actions {
-  display: flex;
-  gap: var(--space-8);
-}
-
-/* Equipment Grid */
-.equipment-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: var(--space-16);
-  margin-bottom: var(--space-24);
-}
-
-.equipment-card {
-  background: var(--color-surface);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-lg);
-  padding: var(--space-16);
-}
-
-.equipment-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  margin-bottom: var(--space-12);
-}
-
-.equipment-type {
-  background: var(--color-bg-6);
-  color: var(--color-text);
-  padding: var(--space-2) var(--space-8);
-  border-radius: var(--radius-full);
-  font-size: var(--font-size-xs);
-}
-
-.equipment-ability {
-  background: var(--color-bg-8);
-  padding: var(--space-8);
-  border-radius: var(--radius-sm);
-  margin-bottom: var(--space-12);
-  font-size: var(--font-size-sm);
-}
-
-.durability-bar {
-  margin-bottom: var(--space-12);
-}
-
-.durability-low {
-  background: var(--color-error);
-}
-
-.durability-medium {
-  background: var(--color-warning);
-}
-
-.durability-high {
-  background: var(--color-success);
-}
-
-/* Crafting Section */
-.crafting-section {
-  margin-top: var(--space-32);
-  padding: var(--space-20);
-  background: var(--color-bg-7);
-  border-radius: var(--radius-lg);
-  border: 1px solid var(--color-border);
-}
-
-.crafting-recipes {
-  display: flex;
-  gap: var(--space-12);
-  flex-wrap: wrap;
-}
-
-/* Mission Results */
-.mission-results {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 1000;
-  width: 90%;
-  max-width: 500px;
-}
-
-.mission-results.hidden {
-  display: none;
-}
-
-/* Modals */
-.modal {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.7);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
-}
-
-.modal.hidden {
-  display: none;
-}
-
-.modal-content {
-  background: var(--color-surface);
-  border-radius: var(--radius-lg);
-  padding: var(--space-24);
-  width: 90%;
-  max-width: 600px;
-  max-height: 80vh;
-  overflow-y: auto;
-  border: 1px solid var(--color-border);
-}
-
-.modal-actions {
-  display: flex;
-  gap: var(--space-12);
-  margin-top: var(--space-20);
-  justify-content: flex-end;
-}
-
-/* Game Controls */
-.game-controls {
-  position: fixed;
-  bottom: var(--space-20);
-  right: var(--space-20);
-  display: flex;
-  gap: var(--space-8);
-  z-index: 100;
-}
-
-/* Team Selection in Mission Modal */
-.team-selection {
-  margin: var(--space-16) 0;
-}
-
-.selectable-daemon {
-  display: flex;
-  align-items: center;
-  padding: var(--space-12);
-  background: var(--color-bg-1);
-  border-radius: var(--radius-base);
-  margin-bottom: var(--space-8);
-  cursor: pointer;
-  border: 2px solid transparent;
-  transition: all var(--duration-fast) var(--ease-standard);
-}
-
-.selectable-daemon:hover {
-  background: var(--color-bg-2);
-}
-
-.selectable-daemon.selected {
-  border-color: var(--color-primary);
-  background: var(--color-bg-3);
-}
-
-.daemon-checkbox {
-  margin-right: var(--space-12);
-}
-
-/* Status Indicators */
-.status-indicator {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--space-4);
-  font-size: var(--font-size-xs);
-  font-weight: var(--font-weight-medium);
-}
-
-.status-dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-}
-
-.status-active {
-  background: var(--color-success);
-}
-.status-warning {
-  background: var(--color-warning);
-}
-.status-critical {
-  background: var(--color-error);
-}
-.status-inactive {
-  background: var(--color-text-secondary);
-}
-
-/* Responsive Design */
-@media (max-width: 768px) {
-  .tab-nav {
-    padding: 0 var(--space-8);
-  }
-
-  .tab-btn {
-    padding: var(--space-12) var(--space-16);
-    font-size: var(--font-size-xs);
-  }
-
-  .resource-bar {
-    gap: var(--space-12);
-  }
-
-  .resource {
-    font-size: var(--font-size-xs);
-    padding: var(--space-6) var(--space-12);
-  }
-
-  .tab-content {
-    padding: var(--space-16);
-  }
-
-  .game-controls {
-    position: relative;
-    bottom: auto;
-    right: auto;
-    margin: var(--space-20);
-    justify-content: center;
-  }
-
-  .daemon-grid,
-  .planet-grid,
-  .room-grid,
-  .equipment-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .dashboard-grid {
-    grid-template-columns: 1fr;
+/* Dark mode form overrides */
+@media (prefers-color-scheme: dark) {
+  select.form-control {
+    background-image: var(--select-caret-dark);
   }
 }
 
-/* Animation for successful actions */
-@keyframes pulse {
-  0% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.05);
-  }
-  100% {
-    transform: scale(1);
-  }
+[data-color-scheme='dark'] select.form-control {
+  background-image: var(--select-caret-dark);
 }
 
-.pulse-animation {
-  animation: pulse 0.3s ease-in-out;
+[data-color-scheme='light'] select.form-control {
+  background-image: var(--select-caret-light);
 }
 
-/* Dark corporate vibes */
-.corporate-header {
-  background: linear-gradient(
-    135deg,
-    var(--color-slate-900),
-    var(--color-charcoal-800)
-  );
-  color: var(--color-text);
-}
-
-.infernal-border {
-  border-image: linear-gradient(45deg, var(--color-primary), var(--color-error))
-    1;
-}
-
-/* Memorial styling */
-.memorial-content {
-  text-align: center;
-  padding: var(--space-20);
-}
-
-.memorial-daemon {
-  font-size: var(--font-size-xl);
-  color: var(--color-primary);
-  margin-bottom: var(--space-8);
-}
-
-.memorial-achievements {
-  background: var(--color-bg-1);
-  padding: var(--space-16);
-  border-radius: var(--radius-base);
-  margin: var(--space-16) 0;
-}
-
-.inheritance-item {
-  background: var(--color-bg-5);
-  padding: var(--space-8);
-  border-radius: var(--radius-sm);
-  margin: var(--space-4) 0;
-  font-size: var(--font-size-sm);
+[data-color-scheme='dark'] .btn--outline {
+  border: 1px solid var(--color-border-secondary);
 }

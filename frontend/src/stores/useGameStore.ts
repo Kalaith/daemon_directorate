@@ -111,6 +111,15 @@ interface GameStore extends GameState {
   triggerEnding: (style: ManagementStyle) => void;
   performCorporateRestructuring: () => void;
 
+  // Corporate Rivals
+  engageRival: (rivalId: string) => void;
+  defeatRival: (rivalId: string) => void;
+  calculateRivalSuccessChance: (rivalId: string) => number;
+
+  // HR Reviews
+  conductHRReview: (daemonId: string) => void;
+  isHRReviewAvailable: () => boolean;
+
   // Utility
   generateId: () => string;
   addNotification: (
@@ -1083,6 +1092,36 @@ export const useGameStore = create<GameStore>()(
         if (Math.random() < (0.03 + corporateTier.level * 0.01)) {
           get().triggerSurrealEvent();
         }
+
+        // Check for endgame triggers (only at Board Member tier or after significant milestones)
+        if (corporateTier.level >= 5 || daysPassed >= 200) {
+          const { calculateManagementStyle, triggerEnding, endgameState } = get();
+          
+          if (!endgameState.endingAchieved) {
+            // Trigger ending based on various conditions
+            const managementStyle = calculateManagementStyle();
+            const activeDaemons = daemons.filter(d => d.isActive);
+            const burnoutDaemons = activeDaemons.filter(d => d.health < 20).length;
+            
+            // Burnout collapse ending (high priority)
+            if (burnoutDaemons >= 3 || (activeDaemons.length === 0 && daysPassed > 50)) {
+              triggerEnding('collapse');
+            }
+            // Board Member tier with specific conditions
+            else if (corporateTier.level >= 5) {
+              // Random chance to trigger ending after reaching Board Member
+              if (Math.random() < 0.05) { // 5% chance per day
+                triggerEnding(managementStyle);
+              }
+            }
+            // Extended play ending (200+ days)
+            else if (daysPassed >= 200) {
+              if (Math.random() < 0.1) { // 10% chance per day after 200 days
+                triggerEnding(managementStyle);
+              }
+            }
+          }
+        }
       },
 
       generateId: () => {
@@ -1361,6 +1400,191 @@ export const useGameStore = create<GameStore>()(
         }));
 
         setShowEventModal(true, corporateEvent);
+      },
+
+      // Corporate Rivals System
+      calculateRivalSuccessChance: (rivalId: string) => {
+        const { corporateRivals, daemons, corporateTier, resources } = get();
+        const rival = corporateRivals.find(r => r.id === rivalId);
+        if (!rival || rival.defeated) return 0;
+
+        const activeDaemons = daemons.filter(d => d.isActive);
+        const teamStrength = activeDaemons.reduce((sum, d) => sum + d.health + d.morale, 0);
+        const corporatePower = corporateTier.level * 20; // Tier level bonus
+        const resourceAdvantage = Math.min(resources.bureaucraticLeverage * 5, 50); // Max 50 bonus
+        
+        const playerStrength = teamStrength + corporatePower + resourceAdvantage;
+        const successChance = Math.min(Math.max(playerStrength / (rival.strength * 2), 0.1), 0.9);
+        
+        return successChance;
+      },
+
+      engageRival: (rivalId: string) => {
+        const { 
+          calculateRivalSuccessChance, 
+          defeatRival, 
+          addNotification,
+          spendCredits,
+          addResources,
+          daemons
+        } = get();
+        
+        const successChance = calculateRivalSuccessChance(rivalId);
+        const success = Math.random() < successChance;
+        const rival = get().corporateRivals.find(r => r.id === rivalId);
+        
+        if (!rival) return;
+
+        if (success) {
+          defeatRival(rivalId);
+          // Rewards for victory
+          const rewards = {
+            credits: 500 + rival.strength * 5,
+            soulEssence: 2,
+            bureaucraticLeverage: 3
+          };
+          addResources(rewards.credits, rewards.soulEssence, rewards.bureaucraticLeverage);
+          addNotification(`Victory! ${rival.name} has been absorbed into your corporate empire!`, 'success');
+        } else {
+          // Penalties for failure
+          const penalties = {
+            credits: 200,
+            bureaucraticLeverage: 1
+          };
+          spendCredits(penalties.credits);
+          if (get().resources.bureaucraticLeverage > 0) {
+            addResources(0, 0, -penalties.bureaucraticLeverage);
+          }
+          
+          // Damage active daemons
+          const activeDaemons = daemons.filter(d => d.isActive);
+          activeDaemons.forEach(daemon => {
+            const healthLoss = Math.floor(Math.random() * 20) + 10;
+            const moraleLoss = Math.floor(Math.random() * 15) + 5;
+            
+            set(state => ({
+              daemons: state.daemons.map(d => 
+                d.id === daemon.id 
+                  ? { 
+                      ...d, 
+                      health: Math.max(d.health - healthLoss, 1),
+                      morale: Math.max(d.morale - moraleLoss, 0)
+                    }
+                  : d
+              )
+            }));
+          });
+          
+          addNotification(`Defeat! ${rival.name} has outmaneuvered your corporate strategy.`, 'error');
+        }
+      },
+
+      defeatRival: (rivalId: string) => {
+        set(state => ({
+          corporateRivals: state.corporateRivals.map(rival =>
+            rival.id === rivalId ? { ...rival, defeated: true } : rival
+          )
+        }));
+        
+        // Update promotion progress
+        set(state => ({
+          promotionProgress: {
+            ...state.promotionProgress,
+            defeatedRivals: (state.promotionProgress.defeatedRivals || 0) + 1
+          }
+        }));
+        
+        get().checkPromotion();
+      },
+
+      // HR Review System
+      isHRReviewAvailable: () => {
+        const { corporateTier, daysPassed, promotionProgress } = get();
+        
+        // Available from Manager tier onwards
+        if (corporateTier.level < 2) return false;
+        
+        // Can only do one review every 5 days
+        const lastReview = promotionProgress.lastHRReview || 0;
+        return daysPassed - lastReview >= 5;
+      },
+
+      conductHRReview: (daemonId: string) => {
+        const { daemons, isHRReviewAvailable, addNotification } = get();
+        
+        if (!isHRReviewAvailable()) {
+          addNotification('HR Reviews not available yet. Wait 5 days between reviews.', 'warning');
+          return;
+        }
+
+        const daemon = daemons.find(d => d.id === daemonId);
+        if (!daemon || !daemon.isActive) {
+          addNotification('Cannot review inactive daemon', 'error');
+          return;
+        }
+
+        // HR Review outcomes
+        const outcomes = [
+          {
+            type: 'positive',
+            chance: 0.4,
+            effects: { morale: 15, health: 5 },
+            message: `${daemon.name} received a glowing performance review and feels motivated!`
+          },
+          {
+            type: 'neutral',
+            chance: 0.4,
+            effects: { morale: 0, health: 0 },
+            message: `${daemon.name} received a standard performance review. Status quo maintained.`
+          },
+          {
+            type: 'negative', 
+            chance: 0.2,
+            effects: { morale: -10, health: -5, lifespan: -2 },
+            message: `${daemon.name} received harsh criticism during their review and feels demoralized.`
+          }
+        ];
+
+        const random = Math.random();
+        let cumulativeChance = 0;
+        let selectedOutcome = outcomes[0];
+
+        for (const outcome of outcomes) {
+          cumulativeChance += outcome.chance;
+          if (random <= cumulativeChance) {
+            selectedOutcome = outcome;
+            break;
+          }
+        }
+
+        // Apply effects
+        set(state => ({
+          daemons: state.daemons.map(d => 
+            d.id === daemonId 
+              ? {
+                  ...d,
+                  morale: Math.max(0, Math.min(100, d.morale + selectedOutcome.effects.morale)),
+                  health: Math.max(1, Math.min(100, d.health + selectedOutcome.effects.health)),
+                  lifespanDays: selectedOutcome.effects.lifespan 
+                    ? Math.max(1, d.lifespanDays + selectedOutcome.effects.lifespan)
+                    : d.lifespanDays
+                }
+              : d
+          ),
+          promotionProgress: {
+            ...state.promotionProgress,
+            hrReviews: (state.promotionProgress.hrReviews || 0) + 1,
+            lastHRReview: state.daysPassed
+          }
+        }));
+
+        // Give bureaucratic leverage reward
+        get().addResources(0, 0, 1);
+        
+        addNotification(selectedOutcome.message, selectedOutcome.type === 'positive' ? 'success' : selectedOutcome.type === 'negative' ? 'error' : 'info');
+        
+        // Check for promotion
+        get().checkPromotion();
       },
 
       // Endgame System

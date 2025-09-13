@@ -3,7 +3,12 @@ import { useGameStore } from '../../stores/useGameStore';
 import Card from '../ui/Card';
 
 export const CorporateRivals: React.FC = () => {
-  const { corporateRivals, corporateTier } = useGameStore();
+  const { 
+    corporateRivals, 
+    corporateTier, 
+    engageRival, 
+    calculateRivalSuccessChance 
+  } = useGameStore();
 
   const activerivals = corporateRivals.filter(rival => !rival.defeated);
   const defeatedRivals = corporateRivals.filter(rival => rival.defeated);
@@ -76,12 +81,14 @@ export const CorporateRivals: React.FC = () => {
                       
                       <div className="text-right">
                         <button
+                          onClick={() => engageRival(rival.id)}
                           className="px-3 py-1 bg-orange-600 hover:bg-orange-500 text-white text-sm rounded transition-colors"
-                          disabled
                         >
                           Engage
                         </button>
-                        <p className="text-xs text-gray-400 mt-1">Coming Soon</p>
+                        <p className="text-xs text-gray-400 mt-1">
+                          {Math.round(calculateRivalSuccessChance(rival.id) * 100)}% success
+                        </p>
                       </div>
                     </div>
 

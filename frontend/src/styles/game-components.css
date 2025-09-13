@@ -1,0 +1,257 @@
+/* Game-specific component styles for Daemon Directorate */
+@layer components {
+  /* Room and Equipment grids with responsive breakpoints */
+  .room-grid,
+  .equipment-grid {
+    @apply grid gap-16 mb-24;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  }
+
+  .room-grid {
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    @apply gap-20;
+  }
+
+  .room-card,
+  .equipment-card {
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: var(--space-16);
+  }
+
+  .room-card {
+    @apply p-20;
+  }
+
+  .room-header,
+  .equipment-header {
+    @apply flex justify-between items-center mb-12;
+  }
+
+  .equipment-header {
+    @apply items-start;
+  }
+
+  .room-level {
+    background-color: var(--color-bg-2);
+    padding: var(--space-8) var(--space-8);
+    border-radius: var(--radius-full);
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-semibold);
+  }
+
+  .equipment-type {
+    background-color: var(--color-bg-6);
+    color: var(--color-text);
+    padding: var(--space-2) var(--space-8);
+    border-radius: var(--radius-full);
+    font-size: var(--font-size-xs);
+  }
+
+  .room-bonus,
+  .equipment-ability {
+    background-color: var(--color-bg-5);
+    padding: var(--space-8);
+    border-radius: var(--radius-sm);
+    margin-bottom: var(--space-12);
+    font-size: var(--font-size-sm);
+  }
+
+  .equipment-ability {
+    background-color: var(--color-bg-8);
+  }
+
+  .room-actions {
+    @apply flex gap-8;
+  }
+
+  /* Durability indicators */
+  .durability-bar {
+    @apply mb-12;
+  }
+
+  .durability-low {
+    background-color: var(--color-error);
+  }
+
+  .durability-medium {
+    background-color: var(--color-warning);
+  }
+
+  .durability-high {
+    background-color: var(--color-success);
+  }
+
+  /* Crafting section */
+  .crafting-section {
+    margin-top: var(--space-32);
+    padding: var(--space-20);
+    background-color: var(--color-bg-7);
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--color-border);
+  }
+
+  .crafting-recipes {
+    @apply flex gap-12 flex-wrap;
+  }
+
+  /* Mission system components */
+  .mission-results {
+    @apply fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50 w-11/12 max-w-lg;
+  }
+
+  .mission-results.hidden {
+    @apply hidden;
+  }
+
+  /* Modal system */
+  .modal {
+    @apply fixed inset-0 w-full h-full bg-black/70 flex justify-center items-center z-50;
+  }
+
+  .modal.hidden {
+    @apply hidden;
+  }
+
+  .modal-content {
+    background-color: var(--color-surface);
+    border-radius: var(--radius-lg);
+    padding: var(--space-24);
+    width: 91.6667%;
+    max-width: 42rem;
+    max-height: 80vh;
+    overflow-y: auto;
+    border: 1px solid var(--color-border);
+  }
+
+  .modal-actions {
+    @apply flex gap-12 mt-20 justify-end;
+  }
+
+  /* Game controls */
+  .game-controls {
+    @apply fixed bottom-20 right-20 flex gap-8 z-25;
+  }
+
+  /* Team selection in mission modal */
+  .team-selection {
+    @apply my-16;
+  }
+
+  .selectable-daemon {
+    display: flex;
+    align-items: center;
+    padding: var(--space-12);
+    background-color: var(--color-bg-1);
+    border-radius: var(--radius-base);
+    margin-bottom: var(--space-8);
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: all var(--duration-fast) var(--ease-standard);
+  }
+
+  .selectable-daemon:hover {
+    background-color: var(--color-bg-2);
+  }
+
+  .selectable-daemon.selected {
+    border-color: var(--color-primary);
+    background-color: var(--color-bg-3);
+  }
+
+  .daemon-checkbox {
+    @apply mr-12;
+  }
+
+  /* Status indicators */
+  .status-indicator {
+    @apply inline-flex items-center gap-4 text-xs font-medium;
+  }
+
+  .status-dot {
+    @apply w-2 h-2 rounded-full;
+  }
+
+  .status-active {
+    background-color: var(--color-success);
+  }
+  
+  .status-warning {
+    background-color: var(--color-warning);
+  }
+  
+  .status-critical {
+    background-color: var(--color-error);
+  }
+  
+  .status-inactive {
+    background-color: var(--color-text-secondary);
+  }
+
+  /* Corporate themed elements */
+  .corporate-header {
+    color: var(--color-text);
+    background: linear-gradient(135deg, var(--color-slate-900), var(--color-charcoal-800));
+  }
+
+  .infernal-border {
+    border-image: linear-gradient(45deg, var(--color-primary), var(--color-error)) 1;
+  }
+
+  /* Memorial styling */
+  .memorial-content {
+    @apply text-center p-20;
+  }
+
+  .memorial-daemon {
+    font-size: var(--font-size-xl);
+    color: var(--color-primary);
+    margin-bottom: var(--space-8);
+  }
+
+  .memorial-achievements {
+    background-color: var(--color-bg-1);
+    padding: var(--space-16);
+    border-radius: var(--radius-base);
+    margin: var(--space-16) 0;
+  }
+
+  .inheritance-item {
+    background-color: var(--color-bg-5);
+    padding: var(--space-8);
+    border-radius: var(--radius-sm);
+    margin: var(--space-4) 0;
+    font-size: var(--font-size-sm);
+  }
+}
+
+/* Animation keyframes */
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.pulse-animation {
+  animation: pulse 0.3s ease-in-out;
+}
+
+/* Responsive design for mobile */
+@media (max-width: 768px) {
+  .game-controls {
+    @apply relative bottom-auto right-auto m-20 justify-center;
+  }
+
+  .room-grid,
+  .equipment-grid,
+  .planet-grid {
+    grid-template-columns: 1fr;
+  }
+}

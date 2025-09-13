@@ -14,6 +14,7 @@ import MemorialModal from './components/ui/MemorialModal';
 import MissionModal from './components/ui/MissionModal';
 import MissionResults from './components/ui/MissionResults';
 import { CorporateEventModal } from './components/ui/CorporateEventModal';
+import { EndgameModal } from './components/ui/EndgameModal';
 import NotificationSystem from './components/ui/NotificationSystem';
 
 const App: React.FC = () => {
@@ -61,6 +62,7 @@ const App: React.FC = () => {
       {showMissionModal && <MissionModal />}
       {showMissionResults && <MissionResults />}
       {showEventModal && <CorporateEventModal />}
+      <EndgameModal />
 
       {/* Notifications */}
       <NotificationSystem />
