@@ -82,8 +82,8 @@ const TeamManagement: React.FC = () => {
 
               <div className="flex flex-wrap gap-2 mb-4">
                 {daemon.quirks.map((quirk, index) => (
-                  <span key={index} className="px-2 py-1 bg-brown-600/10 text-xs rounded text-slate-700">
-                    {quirk}
+                  <span key={index} className="px-2 py-1 bg-brown-600/10 text-xs rounded text-slate-700" title={typeof quirk === 'object' ? quirk.description : ''}>
+                    {typeof quirk === 'object' ? quirk.name : quirk}
                   </span>
                 ))}
               </div>
@@ -153,8 +153,8 @@ const TeamManagement: React.FC = () => {
 
               <div className="flex flex-wrap gap-2 mb-4">
                 {daemon.quirks.map((quirk, index) => (
-                  <span key={index} className="px-2 py-1 bg-brown-600/10 text-xs rounded text-slate-700">
-                    {quirk}
+                  <span key={index} className="px-2 py-1 bg-brown-600/10 text-xs rounded text-slate-700" title={typeof quirk === 'object' ? quirk.description : ''}>
+                    {typeof quirk === 'object' ? quirk.name : quirk}
                   </span>
                 ))}
               </div>

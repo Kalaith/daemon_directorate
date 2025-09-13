@@ -188,7 +188,7 @@ export const useGameStore = create<GameStore>()(
           equipment,
           rooms,
           planets,
-          gameStarted: false
+          gameStarted: true
         });
 
         get().generateRecruitmentPool();
