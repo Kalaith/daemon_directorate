@@ -182,10 +182,13 @@ export const useGameStore = create<GameStore>()(
         }
 
         // Start daily updates
-        setInterval(
+        const intervalId = setInterval(
           () => get().processDailyUpdate(),
           GAME_CONFIG.DAILY_UPDATE_INTERVAL
         );
+        
+        // Store interval ID for cleanup if needed
+        set({ gameIntervalId: intervalId });
       },
 
       startNewGame: () => {

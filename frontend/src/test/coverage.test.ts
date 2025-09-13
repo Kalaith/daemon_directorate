@@ -42,6 +42,6 @@ describe('Test Coverage Examples', () => {
   it('demonstrates number and string matching', () => {
     expect(Math.PI).toBeCloseTo(3.14, 2);
     expect('hello world').toMatch(/world/);
-    expect('test@example.com').toMatch(/^[\w\.-]+@[\w\.-]+\.\w+$/);
+    expect('test@example.com').toMatch(/^[\w.-]+@[\w.-]+\.\w+$/);
   });
 });

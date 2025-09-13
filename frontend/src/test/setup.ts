@@ -30,7 +30,7 @@ Object.defineProperty(window, 'confirm', {
 
 // Mock setInterval/clearInterval for game timers
 Object.defineProperty(globalThis, 'setInterval', {
-  value: vi.fn((_fn: () => void) => {
+  value: vi.fn(() => {
     // Return a mock timer ID
     return 1;
   }),

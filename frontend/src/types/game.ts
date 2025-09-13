@@ -156,6 +156,7 @@ export interface GameState {
   daysPassed: number;
   gameStarted: boolean;
   tutorialCompleted: boolean;
+  gameIntervalId?: number;
 
   // UI State
   currentTab: 'dashboard' | 'team' | 'missions' | 'apartment' | 'equipment';
