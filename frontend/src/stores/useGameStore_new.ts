@@ -89,8 +89,19 @@ const initialState: GameState = {
   recruitmentPool: [],
   activeMission: null,
   corporateEvents: [],
+  gameModifiers: {
+    passiveIncome: 0,
+    recruitmentDiscount: 0,
+    equipmentRepairDiscount: 0,
+    missionSuccessBonus: 0,
+    managementStress: false,
+    hrInvestigation: 0,
+    productivityBonus: 0,
+    productivityBonusRemainingMissions: 0,
+  },
   daysPassed: 0,
   gameStarted: false,
+  tutorialCompleted: false,
 
   // UI State
   currentTab: 'dashboard',
@@ -100,8 +111,10 @@ const initialState: GameState = {
   showMemorial: false,
   showMissionModal: false,
   showMissionResults: false,
+  showEventModal: false,
   memorialDaemon: null,
   missionResults: null,
+  currentEvent: null,
   notifications: [],
 };
 
@@ -307,6 +320,14 @@ export const useGameStore = create<GameStore>()(
             assignments: [],
             equipment: null,
             isActive: true,
+            generation: 1,
+            inheritedTraits: [],
+            legacy: {
+              successfulMissions: 0,
+              planetsConquered: 0,
+              equipmentCreated: 0,
+              yearsServed: 0,
+            },
           };
           pool.push(daemon);
         }
@@ -566,6 +587,9 @@ export const useGameStore = create<GameStore>()(
             durability: 100,
             ability: recipe.ability,
             assignedTo: null,
+            generation: 1,
+            legacyBonus: 0,
+            history: [],
           };
 
           set({ equipment: [...equipment, newEquipment] });
@@ -583,6 +607,7 @@ export const useGameStore = create<GameStore>()(
             title: 'Performance Review',
             description:
               'All daemons must attend mandatory performance evaluation',
+            type: 'automatic' as const,
             effect: 'All daemons lose 1 lifespan day but gain efficiency bonus',
             timestamp: Date.now(),
           },
@@ -591,6 +616,7 @@ export const useGameStore = create<GameStore>()(
             title: 'Team Building Exercise',
             description:
               'Corporate mandated trust falls and bonding activities',
+            type: 'automatic' as const,
             effect: 'All daemons gain morale but costs credits',
             timestamp: Date.now(),
           },
