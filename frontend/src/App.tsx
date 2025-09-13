@@ -13,6 +13,7 @@ import Tutorial from './components/ui/Tutorial';
 import MemorialModal from './components/ui/MemorialModal';
 import MissionModal from './components/ui/MissionModal';
 import MissionResults from './components/ui/MissionResults';
+import { CorporateEventModal } from './components/ui/CorporateEventModal';
 import NotificationSystem from './components/ui/NotificationSystem';
 
 const App: React.FC = () => {
@@ -22,6 +23,7 @@ const App: React.FC = () => {
     showMemorial,
     showMissionModal,
     showMissionResults,
+    showEventModal,
     initializeGame
   } = useGameStore();
 
@@ -60,6 +62,7 @@ const App: React.FC = () => {
       {showMemorial && <MemorialModal />}
       {showMissionModal && <MissionModal />}
       {showMissionResults && <MissionResults />}
+      {showEventModal && <CorporateEventModal />}
 
       {/* Notifications */}
       <NotificationSystem />

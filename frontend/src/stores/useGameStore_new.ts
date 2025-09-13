@@ -1,7 +1,7 @@
 // stores/useGameStore.ts
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import type { GameState, Daemon, Equipment, Planet, MissionResult, CorporateEvent } from '../types/game';
+import type { GameState, Daemon, Equipment, MissionResult } from '../types/game';
 import { STARTER_DATA, GAME_CONFIG, DAEMON_NAMES, DAEMON_QUIRKS } from '../constants/gameData';
 
 interface GameStore extends GameState {
@@ -225,7 +225,7 @@ export const useGameStore = create<GameStore>()(
         if (daemon && daemon.cost && spendCredits(daemon.cost)) {
           const newRecruitmentPool = recruitmentPool.filter(d => d.id !== daemonId);
           const newDaemon = { ...daemon };
-          delete (newDaemon as any).cost;
+          delete newDaemon.cost;
           newDaemon.assignments = [];
           newDaemon.equipment = null;
 
@@ -365,9 +365,9 @@ export const useGameStore = create<GameStore>()(
         // Apply results
         get().addResources(
           rewards.credits || 0, 
-          (rewards as any).soulEssence || 0, 
-          (rewards as any).bureaucraticLeverage || 0, 
-          (rewards as any).rawMaterials || 0
+          'soulEssence' in rewards ? rewards.soulEssence || 0 : 0, 
+          'bureaucraticLeverage' in rewards ? rewards.bureaucraticLeverage || 0 : 0, 
+          'rawMaterials' in rewards ? rewards.rawMaterials || 0 : 0
         );
 
         // Damage to team
@@ -544,7 +544,7 @@ export const useGameStore = create<GameStore>()(
         const updatedDaemons = daemons.map(daemon => {
           if (!daemon.isActive) return daemon;
 
-          let newLifespan = Math.max(0, daemon.lifespanDays - 1);
+          const newLifespan = Math.max(0, daemon.lifespanDays - 1);
 
           // Check for natural death
           if (newLifespan <= 0) {

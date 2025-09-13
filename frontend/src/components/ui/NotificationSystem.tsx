@@ -1,5 +1,5 @@
 // components/ui/NotificationSystem.tsx
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 
 interface Notification {
   id: string;
@@ -13,7 +13,7 @@ const NotificationSystem: React.FC = () => {
   const [notifications, setNotifications] = useState<Notification[]>([]);
 
   // Function to add a notification (can be called from other components)
-  const addNotification = (notification: Omit<Notification, 'id'>) => {
+  const addNotification = useCallback((notification: Omit<Notification, 'id'>) => {
     const id = Date.now().toString();
     const newNotification = { ...notification, id };
     
@@ -24,7 +24,7 @@ const NotificationSystem: React.FC = () => {
     setTimeout(() => {
       removeNotification(id);
     }, duration);
-  };
+  }, []);
 
   const removeNotification = (id: string) => {
     setNotifications(prev => prev.filter(notif => notif.id !== id));
@@ -32,11 +32,11 @@ const NotificationSystem: React.FC = () => {
 
   // Expose the addNotification function globally for easy access
   useEffect(() => {
-    (window as any).addNotification = addNotification;
+    (window as Window & { addNotification?: typeof addNotification }).addNotification = addNotification;
     return () => {
-      delete (window as any).addNotification;
+      delete (window as Window & { addNotification?: typeof addNotification }).addNotification;
     };
-  }, []);
+  }, [addNotification]);
 
   const getNotificationStyles = (type: Notification['type']) => {
     switch (type) {

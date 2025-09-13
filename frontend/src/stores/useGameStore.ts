@@ -1,8 +1,8 @@
 // stores/useGameStore.ts
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import type { GameState, Daemon, Equipment, Planet, MissionResult, CorporateEvent } from '../types/game';
-import { STARTER_DATA, GAME_CONFIG, DAEMON_NAMES, DAEMON_QUIRKS } from '../constants/gameData';
+import type { GameState, Daemon, Equipment, MissionResult, CorporateEvent } from '../types/game';
+import { STARTER_DATA, GAME_CONFIG, DAEMON_NAMES, DAEMON_QUIRKS, CORPORATE_EVENTS, DAEMON_BLOODLINES, INHERITED_TRAITS } from '../constants/gameData';
 
 interface GameStore extends GameState {
   // Actions
@@ -14,6 +14,7 @@ interface GameStore extends GameState {
   setShowMemorial: (show: boolean, daemon?: Daemon) => void;
   setShowMissionModal: (show: boolean) => void;
   setShowMissionResults: (show: boolean, result?: MissionResult) => void;
+  setShowEventModal: (show: boolean, event?: CorporateEvent) => void;
 
   // Game Actions
   initializeGame: () => void;
@@ -46,6 +47,7 @@ interface GameStore extends GameState {
 
   // Events
   triggerRandomEvent: () => void;
+  resolveEvent: (eventId: string, choiceIndex?: number) => void;
 
   // Daily Updates
   processDailyUpdate: () => void;
@@ -69,6 +71,16 @@ const initialState: GameState = {
   recruitmentPool: [],
   activeMission: null,
   corporateEvents: [],
+  gameModifiers: {
+    passiveIncome: 0,
+    recruitmentDiscount: 0,
+    equipmentRepairDiscount: 0,
+    missionSuccessBonus: 0,
+    managementStress: false,
+    hrInvestigation: 0,
+    productivityBonus: 0,
+    productivityBonusRemainingMissions: 0
+  },
   daysPassed: 0,
   gameStarted: false,
   
@@ -80,8 +92,10 @@ const initialState: GameState = {
   showMemorial: false,
   showMissionModal: false,
   showMissionResults: false,
+  showEventModal: false,
   memorialDaemon: null,
   missionResults: null,
+  currentEvent: null,
   notifications: []
 };
 
@@ -119,6 +133,11 @@ export const useGameStore = create<GameStore>()(
       setShowMissionResults: (show, result) => set({
         showMissionResults: show,
         missionResults: result || null
+      }),
+
+      setShowEventModal: (show, event) => set({
+        showEventModal: show,
+        currentEvent: event || null
       }),
 
       initializeGame: () => {
@@ -225,7 +244,7 @@ export const useGameStore = create<GameStore>()(
         if (daemon && daemon.cost && spendCredits(daemon.cost)) {
           const newRecruitmentPool = recruitmentPool.filter(d => d.id !== daemonId);
           const newDaemon = { ...daemon };
-          delete (newDaemon as any).cost;
+          delete newDaemon.cost;
           newDaemon.assignments = [];
           newDaemon.equipment = null;
 
@@ -263,7 +282,16 @@ export const useGameStore = create<GameStore>()(
             cost: Math.floor(Math.random() * 100) + 100,
             assignments: [],
             equipment: null,
-            isActive: true
+            isActive: true,
+            generation: 1,
+            bloodline: DAEMON_BLOODLINES[Math.floor(Math.random() * DAEMON_BLOODLINES.length)],
+            inheritedTraits: [],
+            legacy: {
+              successfulMissions: 0,
+              planetsConquered: 0,
+              equipmentCreated: 0,
+              yearsServed: 0
+            }
           };
           pool.push(daemon);
         }
@@ -272,14 +300,14 @@ export const useGameStore = create<GameStore>()(
       },
 
       processDaemonDeath: (daemon) => {
-        const { daemons, equipment, setShowMemorial } = get();
+        const { daemons, equipment, setShowMemorial, generateRecruitmentPool, generateId } = get();
 
         // Mark as inactive
         const updatedDaemons = daemons.map(d =>
           d.id === daemon.id ? { ...d, isActive: false, lifespanDays: 0 } : d
         );
 
-        // Legacy effects - equipment gets durability boost
+        // Enhanced legacy effects - equipment gets legacy bonus and durability boost
         let updatedEquipment = equipment;
         if (daemon.equipment) {
           updatedEquipment = equipment.map(e => {
@@ -287,17 +315,77 @@ export const useGameStore = create<GameStore>()(
               return {
                 ...e,
                 durability: Math.min(100, e.durability + 20),
-                assignedTo: null
+                assignedTo: null,
+                generation: e.generation + 1,
+                legacyBonus: e.legacyBonus + 5, // +5% effectiveness per inheritance
+                history: [...e.history, `Inherited from ${daemon.name} (Gen ${daemon.generation})`]
               };
             }
             return e;
           });
         }
 
+        // Check if daemon qualifies for creating a successor
+        const shouldCreateSuccessor = daemon.legacy.successfulMissions >= 3 || 
+                                     daemon.legacy.planetsConquered >= 1 ||
+                                     daemon.generation >= 2;
+
+        if (shouldCreateSuccessor) {
+          // Generate a successor daemon from the same bloodline
+          const successorName = `${DAEMON_NAMES[Math.floor(Math.random() * DAEMON_NAMES.length)]}-${Math.floor(Math.random() * 9999) + 1000}`;
+          
+          // Determine inherited traits
+          // eslint-disable-next-line prefer-const
+          let inheritedTraits = [...daemon.inheritedTraits];
+          
+          // Chance to gain new inherited trait based on accomplishments
+          if (daemon.legacy.successfulMissions >= 5 && Math.random() < 0.3) {
+            const availableTraits = INHERITED_TRAITS.filter(trait => !inheritedTraits.includes(trait));
+            if (availableTraits.length > 0) {
+              inheritedTraits.push(availableTraits[Math.floor(Math.random() * availableTraits.length)]);
+            }
+          }
+
+          // Create successor daemon
+          const successor: Daemon = {
+            id: generateId(),
+            name: successorName,
+            specialization: daemon.specialization,
+            health: Math.min(100, 80 + (daemon.generation * 5)), // Better health each generation
+            morale: Math.min(100, 70 + (daemon.generation * 3)), // Better morale each generation
+            lifespanDays: Math.min(80, 40 + (daemon.generation * 2)), // Slightly longer lifespan
+            quirks: DAEMON_QUIRKS.sort(() => 0.5 - Math.random()).slice(0, 2),
+            assignments: [],
+            equipment: null,
+            isActive: true,
+            generation: daemon.generation + 1,
+            bloodline: daemon.bloodline,
+            mentor: daemon.id,
+            inheritedTraits,
+            legacy: {
+              successfulMissions: 0,
+              planetsConquered: 0,
+              equipmentCreated: 0,
+              yearsServed: 0
+            }
+          };
+
+          // Add successor to the team
+          updatedDaemons.push(successor);
+          
+          get().addNotification(
+            `${successor.name} joins your team, carrying on the legacy of ${daemon.bloodline}`,
+            'success'
+          );
+        }
+
         set({
           daemons: updatedDaemons,
           equipment: updatedEquipment
         });
+
+        // Trigger recruitment pool refresh to honor the fallen
+        generateRecruitmentPool();
 
         setShowMemorial(true, daemon);
       },
@@ -362,26 +450,36 @@ export const useGameStore = create<GameStore>()(
           rewards.credits = Math.floor(rewards.credits * 0.3);
         }
 
-        // Apply results
+        // Apply results and update legacy tracking
         get().addResources(
           rewards.credits || 0, 
-          (rewards as any).soulEssence || 0, 
-          (rewards as any).bureaucraticLeverage || 0, 
-          (rewards as any).rawMaterials || 0
+          'soulEssence' in rewards ? rewards.soulEssence || 0 : 0, 
+          'bureaucraticLeverage' in rewards ? rewards.bureaucraticLeverage || 0 : 0, 
+          'rawMaterials' in rewards ? rewards.rawMaterials || 0 : 0
         );
 
-        // Damage to team
+        // Update daemon legacy tracking
         const updatedDaemons = get().daemons.map(daemon => {
           if (selectedDaemons.has(daemon.id)) {
             const healthLoss = Math.floor(Math.random() * 20) + 5;
             const moraleLoss = Math.floor(Math.random() * 15) + 5;
             const lifespanLoss = Math.floor(Math.random() * 2) + 1;
             
+            // Update legacy statistics
+            const updatedLegacy = { ...daemon.legacy };
+            if (success) {
+              updatedLegacy.successfulMissions += 1;
+              if (planet.conquered) {
+                updatedLegacy.planetsConquered += 1;
+              }
+            }
+            
             return {
               ...daemon,
               health: Math.max(0, daemon.health - healthLoss),
               morale: Math.max(0, daemon.morale - moraleLoss),
-              lifespanDays: Math.max(0, daemon.lifespanDays - lifespanLoss)
+              lifespanDays: Math.max(0, daemon.lifespanDays - lifespanLoss),
+              legacy: updatedLegacy
             };
           }
           return daemon;
@@ -481,7 +579,10 @@ export const useGameStore = create<GameStore>()(
             type: recipe.type,
             durability: 100,
             ability: recipe.ability,
-            assignedTo: null
+            assignedTo: null,
+            generation: 0,
+            legacyBonus: 0,
+            history: ["Newly crafted"]
           };
 
           set({ equipment: [...equipment, newEquipment] });
@@ -490,61 +591,166 @@ export const useGameStore = create<GameStore>()(
       },
 
       triggerRandomEvent: () => {
-        const events = [
-          {
-            id: get().generateId(),
-            title: "Performance Review",
-            description: "All daemons must attend mandatory performance evaluation",
-            effect: "All daemons lose 1 lifespan day but gain efficiency bonus",
-            timestamp: Date.now()
-          },
-          {
-            id: get().generateId(),
-            title: "Team Building Exercise",
-            description: "Corporate mandated trust falls and bonding activities",
-            effect: "All daemons gain morale but costs credits",
-            timestamp: Date.now()
-          }
-        ];
+        const { generateId, setShowEventModal } = get();
+        
+        // Select a random event from the new corporate events
+        const randomEvent = CORPORATE_EVENTS[Math.floor(Math.random() * CORPORATE_EVENTS.length)];
+        
+        const eventInstance: CorporateEvent = {
+          id: generateId(),
+          title: randomEvent.title,
+          description: randomEvent.description,
+          type: randomEvent.type,
+          timestamp: Date.now(),
+          resolved: false,
+          effects: randomEvent.type === 'automatic' ? randomEvent.effects : undefined,
+          choices: randomEvent.type === 'choice' ? randomEvent.choices : undefined,
+          requirements: randomEvent.requirements
+        };
 
-        const randomEvent = events[Math.floor(Math.random() * events.length)];
-
-        // Apply event effects
-        if (randomEvent.title === "Performance Review") {
-          const { daemons, addResources } = get();
-          const updatedDaemons = daemons.map(d =>
-            d.isActive ? { ...d, lifespanDays: Math.max(0, d.lifespanDays - 1) } : d
-          );
-          set({ daemons: updatedDaemons });
-          addResources(50);
-        } else if (randomEvent.title === "Team Building Exercise") {
-          const { daemons } = get();
-          const updatedDaemons = daemons.map(d =>
-            d.isActive ? { ...d, morale: Math.min(100, d.morale + 10) } : d
-          );
-          set({ daemons: updatedDaemons });
-          get().spendCredits(100);
-        }
-
+        // Add to events log
         set(state => ({
-          corporateEvents: [...state.corporateEvents, randomEvent]
+          corporateEvents: [...state.corporateEvents, eventInstance]
         }));
 
+        // Show the event modal for player interaction
+        setShowEventModal(true, eventInstance);
+        
         get().addNotification(`Corporate Event: ${randomEvent.title}`, 'warning');
       },
 
+      resolveEvent: (eventId, choiceIndex) => {
+        const { corporateEvents, daemons, equipment, resources, gameModifiers } = get();
+        const event = corporateEvents.find(e => e.id === eventId);
+        
+        if (!event) return;
+
+        let effectsToApply = event.effects || [];
+        
+        // If it's a choice event, get the effects from the chosen option
+        if (event.type === 'choice' && event.choices && choiceIndex !== undefined) {
+          effectsToApply = event.choices[choiceIndex].effects;
+        }
+
+        // Apply all effects
+        let updatedDaemons = [...daemons];
+        let updatedEquipment = [...equipment];
+        // eslint-disable-next-line prefer-const
+        let updatedResources = { ...resources };
+        // eslint-disable-next-line prefer-const
+        let updatedModifiers = { ...gameModifiers };
+
+        effectsToApply.forEach(effect => {
+          switch (effect.type) {
+            case 'credits':
+              updatedResources.credits += effect.value;
+              break;
+            case 'soulEssence':
+              updatedResources.soulEssence += effect.value;
+              break;
+            case 'bureaucraticLeverage':
+              updatedResources.bureaucraticLeverage += effect.value;
+              break;
+            case 'rawMaterials':
+              updatedResources.rawMaterials += effect.value;
+              break;
+            case 'morale':
+              updatedDaemons = updatedDaemons.map(d =>
+                d.isActive ? { ...d, morale: Math.max(0, Math.min(100, d.morale + effect.value)) } : d
+              );
+              break;
+            case 'equipment_durability':
+              updatedEquipment = updatedEquipment.map(e => ({
+                ...e,
+                durability: Math.max(0, Math.min(100, e.durability + effect.value))
+              }));
+              break;
+            case 'passive_income':
+              updatedModifiers.passiveIncome += effect.value;
+              break;
+            case 'recruitment_discount':
+              updatedModifiers.recruitmentDiscount = effect.value;
+              break;
+            case 'equipment_discount':
+              updatedModifiers.equipmentRepairDiscount = effect.value;
+              break;
+            case 'productivity_bonus':
+              updatedModifiers.productivityBonus = effect.value;
+              updatedModifiers.productivityBonusRemainingMissions = 5;
+              break;
+            case 'management_stress':
+              updatedModifiers.managementStress = true;
+              break;
+            case 'hr_investigation':
+              updatedModifiers.hrInvestigation += effect.value;
+              break;
+            case 'daemon_retirement': {
+              // Find a random active daemon to retire
+              const activeDaemons = updatedDaemons.filter(d => d.isActive);
+              if (activeDaemons.length > 0) {
+                const randomDaemon = activeDaemons[Math.floor(Math.random() * activeDaemons.length)];
+                updatedDaemons = updatedDaemons.map(d =>
+                  d.id === randomDaemon.id ? { ...d, isActive: false, lifespanDays: 0 } : d
+                );
+                get().addNotification(`${randomDaemon.name} has been transferred to another department`, 'info');
+              }
+              break;
+            }
+            case 'equipment_upgrade': {
+              // Upgrade random equipment
+              const repairableEquipment = updatedEquipment.filter(e => e.durability < 100);
+              if (repairableEquipment.length > 0) {
+                const randomEquip = repairableEquipment[Math.floor(Math.random() * repairableEquipment.length)];
+                updatedEquipment = updatedEquipment.map(e =>
+                  e.id === randomEquip.id ? { ...e, durability: Math.min(100, e.durability + 20) } : e
+                );
+              }
+              break;
+            }
+          }
+        });
+
+        // Mark event as resolved
+        const updatedEvents = corporateEvents.map(e =>
+          e.id === eventId 
+            ? { ...e, resolved: true, chosenOption: choiceIndex?.toString() }
+            : e
+        );
+
+        set({
+          daemons: updatedDaemons,
+          equipment: updatedEquipment,
+          resources: updatedResources,
+          gameModifiers: updatedModifiers,
+          corporateEvents: updatedEvents
+        });
+      },
+
       processDailyUpdate: () => {
-        const { daemons, rooms, gameStarted, daysPassed } = get();
+        const { daemons, rooms, gameStarted, daysPassed, gameModifiers, addResources } = get();
 
         if (!gameStarted) return;
 
         const newDaysPassed = daysPassed + 1;
 
+        // Apply passive income from modifiers
+        if (gameModifiers.passiveIncome > 0) {
+          addResources(gameModifiers.passiveIncome);
+        }
+
         // Age all daemons
         const updatedDaemons = daemons.map(daemon => {
           if (!daemon.isActive) return daemon;
 
-          let newLifespan = Math.max(0, daemon.lifespanDays - 1);
+          // Base lifespan loss
+          let lifespanLoss = 1;
+          
+          // Management stress modifier
+          if (gameModifiers.managementStress) {
+            lifespanLoss += 1;
+          }
+
+          const newLifespan = Math.max(0, daemon.lifespanDays - lifespanLoss);
 
           // Check for natural death
           if (newLifespan <= 0) {
@@ -574,13 +780,22 @@ export const useGameStore = create<GameStore>()(
           };
         });
 
+        // Decay temporary modifiers
+        const updatedModifiers = {
+          ...gameModifiers,
+          productivityBonusRemainingMissions: Math.max(0, gameModifiers.productivityBonusRemainingMissions - 1),
+          productivityBonus: gameModifiers.productivityBonusRemainingMissions <= 1 ? 0 : gameModifiers.productivityBonus,
+          hrInvestigation: Math.max(0, gameModifiers.hrInvestigation - 0.5)
+        };
+
         set({
           daemons: updatedDaemons,
-          daysPassed: newDaysPassed
+          daysPassed: newDaysPassed,
+          gameModifiers: updatedModifiers
         });
 
-        // Random corporate events (5% chance per day)
-        if (Math.random() < 0.05) {
+        // Random corporate events (8% chance per day, increased from 5%)
+        if (Math.random() < 0.08) {
           get().triggerRandomEvent();
         }
       },
@@ -621,6 +836,7 @@ export const useGameStore = create<GameStore>()(
         planets: state.planets,
         recruitmentPool: state.recruitmentPool,
         corporateEvents: state.corporateEvents,
+        gameModifiers: state.gameModifiers,
         daysPassed: state.daysPassed,
         gameStarted: state.gameStarted
       })

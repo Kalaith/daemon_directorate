@@ -6,6 +6,13 @@ export interface GameResources {
   rawMaterials: number;
 }
 
+export interface DaemonQuirk {
+  name: string;
+  effect: string;
+  value: number;
+  description: string;
+}
+
 export interface Daemon {
   id: string;
   name: string;
@@ -13,11 +20,23 @@ export interface Daemon {
   health: number;
   morale: number;
   lifespanDays: number;
-  quirks: string[];
+  quirks: DaemonQuirk[];
   assignments: string[];
   equipment: string | null;
   isActive: boolean;
   cost?: number; // For recruitment pool daemons
+  
+  // Legacy system
+  generation: number;
+  bloodline?: string;
+  mentor?: string; // ID of the daemon who trained them
+  inheritedTraits: string[]; // Traits passed down from previous generations
+  legacy: {
+    successfulMissions: number;
+    planetsConquered: number;
+    equipmentCreated: number;
+    yearsServed: number;
+  };
 }
 
 export interface Equipment {
@@ -27,6 +46,12 @@ export interface Equipment {
   durability: number;
   ability: string;
   assignedTo: string | null;
+  
+  // Legacy system
+  forgedBy?: string; // ID of daemon who created it
+  generation: number; // How many times it's been inherited
+  legacyBonus: number; // Accumulated bonus from inheritance
+  history: string[]; // Notable achievements with this equipment
 }
 
 export interface Room {
@@ -78,8 +103,36 @@ export interface CorporateEvent {
   id: string;
   title: string;
   description: string;
-  effect: string;
+  type: 'automatic' | 'choice';
   timestamp: number;
+  effects?: EventEffect[];
+  choices?: EventChoice[];
+  requirements?: Partial<GameResources>;
+  resolved?: boolean;
+  chosenOption?: string;
+}
+
+export interface EventEffect {
+  type: string;
+  value: number;
+  description: string;
+}
+
+export interface EventChoice {
+  label: string;
+  description: string;
+  effects: EventEffect[];
+}
+
+export interface GameModifiers {
+  passiveIncome: number;
+  recruitmentDiscount: number;
+  equipmentRepairDiscount: number;
+  missionSuccessBonus: number;
+  managementStress: boolean;
+  hrInvestigation: number;
+  productivityBonus: number;
+  productivityBonusRemainingMissions: number;
 }
 
 export interface Notification {
@@ -99,6 +152,7 @@ export interface GameState {
   recruitmentPool: Daemon[];
   activeMission: Mission | null;
   corporateEvents: CorporateEvent[];
+  gameModifiers: GameModifiers;
   daysPassed: number;
   gameStarted: boolean;
   
@@ -110,8 +164,10 @@ export interface GameState {
   showMemorial: boolean;
   showMissionModal: boolean;
   showMissionResults: boolean;
+  showEventModal: boolean;
   memorialDaemon: Daemon | null;
   missionResults: MissionResult | null;
+  currentEvent: CorporateEvent | null;
   notifications: Notification[];
 }
 

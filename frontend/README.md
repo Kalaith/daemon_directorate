@@ -119,12 +119,12 @@ The game emphasizes strategic resource management and the tension between ambiti
 - ✅ Local persistence (Zustand + localStorage)
 
 ### Phase 2 – Depth & Systems Expansion
-- 🔄 Add more resources (soul essence, bureaucratic leverage)
-- 🔄 Introduce generational legacy/inheritance mechanics
+- ✅ Add more resources (soul essence, bureaucratic leverage)
+- ✅ Introduce generational legacy/inheritance mechanics
+- ✅ Expanded daemon quirks/personality traits that affect missions
+- ✅ Randomized corporate events with positive/negative outcomes
 - 📋 Expanded HQ rooms (Training Hall, Recovery Ward, War Room)
 - 📋 More mission variety: multiple objectives, branching outcomes
-- 📋 Expanded daemon quirks/personality traits that affect missions
-- 📋 Randomized corporate events with positive/negative outcomes
 
 ### Phase 3 – Aesthetic & UX Polish
 - 📋 Corporate UI polish: improved dashboard, animated mission reports

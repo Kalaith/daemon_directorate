@@ -33,8 +33,8 @@ const MissionResults: React.FC = () => {
             </div>
             <div>
               <span className="text-teal-400 font-medium">Casualties:</span>{' '}
-              <span className={missionResults.casualties.filter((c: any) => !c.survived).length > 0 ? 'text-red-400' : 'text-teal-400'}>
-                {missionResults.casualties.filter((c: any) => !c.survived).length}/{missionResults.casualties.length} operatives
+              <span className={missionResults.casualties.filter((c) => !c.survived).length > 0 ? 'text-red-400' : 'text-teal-400'}>
+                {missionResults.casualties.filter((c) => !c.survived).length}/{missionResults.casualties.length} operatives
               </span>
             </div>
 
