@@ -1,6 +1,6 @@
 // App.tsx
 import React, { useEffect } from 'react';
-import { useGameStore } from './stores/useGameStore';
+import { useGameStore } from './stores/composedStore';
 import Header from './components/layout/Header';
 import TabNavigation from './components/layout/TabNavigation';
 import Dashboard from './components/game/Dashboard';

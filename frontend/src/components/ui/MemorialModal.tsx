@@ -1,6 +1,7 @@
 // components/ui/MemorialModal.tsx
 import React from 'react';
-import { useGameStore } from '../../stores/useGameStore';
+import { useGameStore } from '../../stores/composedStore';
+import { DAEMON_BALANCE } from '../../constants/gameBalance';
 
 const MemorialModal: React.FC = () => {
   const { showMemorial, memorialDaemon, setShowMemorial } = useGameStore();
@@ -8,8 +9,8 @@ const MemorialModal: React.FC = () => {
   if (!showMemorial || !memorialDaemon) return null;
 
   const achievements = [
-    `Completed ${Math.floor(Math.random() * 5) + 1} successful missions`,
-    `Maintained ${memorialDaemon.morale > 70 ? 'excellent' : memorialDaemon.morale > 40 ? 'adequate' : 'poor'} workplace morale`,
+    `Completed ${Math.floor(Math.random() * DAEMON_BALANCE.MAX_MISSION_DISPLAY) + 1} successful missions`,
+    `Maintained ${memorialDaemon.morale > DAEMON_BALANCE.MORALE_THRESHOLDS.GOOD ? 'excellent' : memorialDaemon.morale > DAEMON_BALANCE.MORALE_THRESHOLDS.WARNING ? 'adequate' : 'poor'} workplace morale`,
     `Specialized in ${memorialDaemon.specialization} operations`,
     `Known for: ${memorialDaemon.quirks.join(', ')}`,
   ];

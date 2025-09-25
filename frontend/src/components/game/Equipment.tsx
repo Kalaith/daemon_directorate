@@ -1,6 +1,6 @@
 // components/game/Equipment.tsx
 import React from 'react';
-import { useGameStore } from '../../stores/useGameStore';
+import { useGameStore } from '../../stores/composedStore';
 import Card from '../ui/Card';
 
 const Equipment: React.FC = () => {

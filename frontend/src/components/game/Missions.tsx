@@ -1,21 +1,21 @@
 // components/game/Missions.tsx
 import React from 'react';
-import { useGameStore } from '../../stores/useGameStore';
-import Card from '../ui/Card';
+import { useGameStore } from '../../stores/composedStore';
+import { Card, Badge } from '../ui/DesignSystem';
 
 const Missions: React.FC = () => {
   const { planets, selectPlanetForMission } = useGameStore();
 
-  const getDifficultyBadge = (difficulty: string) => {
+  const getDifficultyVariant = (difficulty: string) => {
     switch (difficulty) {
       case 'Easy':
-        return 'bg-green-100 text-green-800 border border-green-200';
+        return 'easy';
       case 'Medium':
-        return 'bg-orange-100 text-orange-800 border border-orange-200';
+        return 'medium';
       case 'Hard':
-        return 'bg-red-100 text-red-800 border border-red-200';
+        return 'hard';
       default:
-        return 'bg-slate-100 text-slate-800 border border-slate-200';
+        return 'neutral';
     }
   };
 
@@ -39,11 +39,9 @@ const Missions: React.FC = () => {
               <h3 className="font-bold text-lg text-slate-900">
                 {planet.name}
               </h3>
-              <span
-                className={`px-3 py-1 text-xs rounded-full font-semibold ${getDifficultyBadge(planet.difficulty)}`}
-              >
+              <Badge variant={getDifficultyVariant(planet.difficulty) as 'easy' | 'medium' | 'hard' | 'neutral'}>
                 {planet.difficulty}
-              </span>
+              </Badge>
             </div>
 
             <div className="space-y-3 mb-4">

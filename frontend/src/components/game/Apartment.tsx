@@ -1,6 +1,6 @@
 // components/game/Apartment.tsx
 import React from 'react';
-import { useGameStore } from '../../stores/useGameStore';
+import { useGameStore } from '../../stores/composedStore';
 import Card from '../ui/Card';
 
 const Apartment: React.FC = () => {

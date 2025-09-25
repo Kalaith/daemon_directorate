@@ -1,6 +1,6 @@
 // components/ui/GameControls.tsx
 import React from 'react';
-import { useGameStore } from '../../stores/useGameStore';
+import { useGameStore } from '../../stores/composedStore';
 
 const GameControls: React.FC = () => {
   const { saveGame, loadGame, resetGame } = useGameStore();

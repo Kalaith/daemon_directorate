@@ -1,6 +1,6 @@
 // components/ui/MissionResults.tsx
 import React from 'react';
-import { useGameStore } from '../../stores/useGameStore';
+import { useGameStore } from '../../stores/composedStore';
 
 const MissionResults: React.FC = () => {
   const { showMissionResults, missionResults, setShowMissionResults } =

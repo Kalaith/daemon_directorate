@@ -1,5 +1,5 @@
 import React from 'react';
-import { useGameStore } from '../../stores/useGameStore';
+import { useGameStore } from '../../stores/composedStore';
 import { CORPORATE_TIERS } from '../../constants/gameData';
 import Card from '../ui/Card';
 import type { CorporateTier } from '../../types/game';

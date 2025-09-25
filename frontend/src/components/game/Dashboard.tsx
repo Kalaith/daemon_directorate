@@ -1,17 +1,20 @@
 // components/game/Dashboard.tsx
-import React from 'react';
-import { useGameStore } from '../../stores/useGameStore';
+import React, { useMemo } from 'react';
+import { useGameStore } from '../../stores/composedStore';
 import Card from '../ui/Card';
 import { CorporateLadder } from './CorporateLadder';
 import { ComplianceCenter } from './ComplianceCenter';
 import { HallOfInfamy } from './HallOfInfamy';
 import { CorporateRivals } from './CorporateRivals';
+import { getTierIcon } from '../../utils/gameHelpers';
+import { DashboardService } from '../../services/DashboardService';
+import { useMemo } from 'react';
 
 const Dashboard: React.FC = () => {
-  const { 
-    activeMission, 
-    daemons, 
-    corporateEvents, 
+  const {
+    activeMission,
+    daemons,
+    corporateEvents,
     triggerRandomEvent,
     corporateTier,
     complianceTasks,
@@ -20,37 +23,30 @@ const Dashboard: React.FC = () => {
     hallOfInfamy
   } = useGameStore();
 
-  const activeDaemons = daemons.filter(d => d.isActive);
-  const avgHealth =
-    activeDaemons.length > 0
-      ? Math.round(
-          activeDaemons.reduce((sum, d) => sum + d.health, 0) /
-            activeDaemons.length
-        )
-      : 0;
-  const avgMorale =
-    activeDaemons.length > 0
-      ? Math.round(
-          activeDaemons.reduce((sum, d) => sum + d.morale, 0) /
-            activeDaemons.length
-        )
-      : 0;
-  const criticalLifespans = activeDaemons.filter(
-    d => d.lifespanDays <= 10
-  ).length;
+  const dashboardStats = useMemo(() =>
+    DashboardService.calculateDashboardStats(
+      daemons,
+      corporateEvents,
+      complianceTasks,
+      daysPassed,
+      legacyBook,
+      hallOfInfamy
+    ), [daemons, corporateEvents, complianceTasks, daysPassed, legacyBook, hallOfInfamy]
+  );
 
-  const latestEvent = corporateEvents[corporateEvents.length - 1];
-  
-  // Corporate progression stats
-  const activeComplianceTasks = complianceTasks.filter(task => !task.completed);
-  const overdueComplianceTasks = activeComplianceTasks.filter(task => daysPassed >= task.deadline);
-  const totalBloodlines = Object.keys(legacyBook).length;
-  const recentStories = hallOfInfamy.slice(-3);
+  const {
+    activeDaemons,
+    avgHealth,
+    avgMorale,
+    criticalLifespans,
+    latestEvent,
+    activeComplianceTasks,
+    overdueComplianceTasks,
+    totalBloodlines,
+    recentStories,
+  } = dashboardStats;
 
-  const getTierIcon = (level: number) => {
-    const icons = ['👔', '📊', '🏢', '🌟', '👑'];
-    return icons[level - 1] || '👔';
-  };
+  // UI helper function now imported from utils
 
   return (
     <div className="space-y-6">
@@ -74,21 +70,12 @@ const Dashboard: React.FC = () => {
           </div>
         </Card>
 
-        <Card className={`bg-gradient-to-r text-white ${
-          overdueComplianceTasks.length > 0 
-            ? 'from-red-600 to-pink-600' 
-            : activeComplianceTasks.length > 0 
-            ? 'from-yellow-600 to-orange-600' 
-            : 'from-green-600 to-emerald-600'
-        }`}>
+        <Card className={`bg-gradient-to-r text-white ${DashboardService.getComplianceStatusClass(overdueComplianceTasks.length, activeComplianceTasks.length)}`}>
           <div className="text-center">
             <div className="text-2xl font-bold">{activeComplianceTasks.length}</div>
             <p className="text-sm opacity-90">Active Tasks</p>
             <div className="text-xs opacity-75 mt-1">
-              {overdueComplianceTasks.length > 0 
-                ? `${overdueComplianceTasks.length} Overdue!` 
-                : 'Compliance Status'
-              }
+              {DashboardService.getComplianceStatusText(overdueComplianceTasks.length)}
             </div>
           </div>
         </Card>
@@ -146,7 +133,7 @@ const Dashboard: React.FC = () => {
             <div className="flex justify-between">
               <span className="text-slate-600 font-medium">Average Health:</span>
               <span
-                className={`font-bold ${avgHealth >= 70 ? 'text-green-600' : avgHealth >= 40 ? 'text-orange-600' : 'text-red-600'}`}
+                className={`font-bold ${DashboardService.getHealthStatusClass(avgHealth)}`}
               >
                 {avgHealth}%
               </span>
@@ -154,7 +141,7 @@ const Dashboard: React.FC = () => {
             <div className="flex justify-between">
               <span className="text-slate-600 font-medium">Average Morale:</span>
               <span
-                className={`font-bold ${avgMorale >= 70 ? 'text-teal-600' : avgMorale >= 40 ? 'text-orange-600' : 'text-red-600'}`}
+                className={`font-bold ${DashboardService.getMoraleStatusClass(avgMorale)}`}
               >
                 {avgMorale}%
               </span>

@@ -1,6 +1,6 @@
 // components/ui/Tutorial.tsx
 import React from 'react';
-import { useGameStore } from '../../stores/useGameStore';
+import { useGameStore } from '../../stores/composedStore';
 
 const Tutorial: React.FC = () => {
   const { setShowTutorial, setTutorialCompleted } = useGameStore();

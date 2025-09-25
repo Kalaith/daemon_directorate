@@ -277,6 +277,11 @@ export const STARTER_DATA: StarterData = {
       type: 'Office Planet',
       resistance: 'Militant Accountants',
       reward: '150 Credits, 2 Soul Essence',
+      stability: 75,
+      corporatePresence: 0,
+      availableMissions: ['conquest', 'reconnaissance', 'sabotage'],
+      missionHistory: [],
+      specialFeatures: ['Paper Trail Security', 'Copy Machine Infrastructure'],
     },
     {
       name: 'Synergy-Prime',
@@ -284,6 +289,11 @@ export const STARTER_DATA: StarterData = {
       type: 'Corporate Headquarters',
       resistance: 'Executive Board',
       reward: '300 Credits, 5 Bureaucratic Leverage',
+      stability: 60,
+      corporatePresence: 0,
+      availableMissions: ['diplomacy', 'conquest', 'extraction'],
+      missionHistory: [],
+      specialFeatures: ['Board Room Politics', 'Executive Security'],
     },
     {
       name: 'Productivity-Nine',
@@ -291,6 +301,11 @@ export const STARTER_DATA: StarterData = {
       type: 'Factory World',
       resistance: 'Union Demons',
       reward: '500 Credits, 3 Raw Materials',
+      stability: 40,
+      corporatePresence: 0,
+      availableMissions: ['conquest', 'sabotage', 'diplomacy'],
+      missionHistory: [],
+      specialFeatures: ['Industrial Espionage Network', 'Worker Solidarity'],
     },
   ],
   apartment_rooms: [
@@ -299,30 +314,103 @@ export const STARTER_DATA: StarterData = {
       level: 1,
       bonus: 'Morale Recovery +5/day',
       upgrade_cost: 200,
+      assignedDaemons: [],
+      maxAssignments: 6,
+      roomType: 'utility',
+      unlocked: true,
+      synergyBonuses: [
+        {
+          requiredRooms: ['Recovery Ward'],
+          minLevel: 2,
+          bonus: 'Health & Morale Synergy',
+          effect: { type: 'morale_health_bonus', value: 10, appliesToDaemons: true }
+        }
+      ]
     },
     {
       name: 'Command Center',
       level: 1,
       bonus: 'Mission Success +5%',
       upgrade_cost: 300,
+      assignedDaemons: [],
+      maxAssignments: 3,
+      roomType: 'command',
+      unlocked: true,
+      synergyBonuses: [
+        {
+          requiredRooms: ['War Room'],
+          minLevel: 3,
+          bonus: 'Strategic Command Synergy',
+          effect: { type: 'mission_success_bonus', value: 15, appliesToMissions: true }
+        }
+      ]
     },
     {
       name: 'Training Hall',
       level: 0,
       bonus: 'Skill Development +10%',
       upgrade_cost: 400,
+      assignedDaemons: [],
+      maxAssignments: 4,
+      specialization: 'Combat',
+      roomType: 'training',
+      unlocked: true,
+      synergyBonuses: [
+        {
+          requiredRooms: ['Command Center'],
+          minLevel: 2,
+          bonus: 'Training & Command Synergy',
+          effect: { type: 'combat_training_bonus', value: 20, appliesToDaemons: true }
+        }
+      ]
     },
     {
       name: 'Recovery Ward',
       level: 0,
       bonus: 'Health Recovery +15/day',
       upgrade_cost: 350,
+      assignedDaemons: [],
+      maxAssignments: 4,
+      roomType: 'recovery',
+      unlocked: true,
+      synergyBonuses: [
+        {
+          requiredRooms: ['Living Quarters'],
+          minLevel: 2,
+          bonus: 'Comprehensive Care',
+          effect: { type: 'health_recovery_bonus', value: 10, appliesToDaemons: true }
+        }
+      ]
+    },
+    {
+      name: 'War Room',
+      level: 0,
+      bonus: 'Strategic Planning +10%',
+      upgrade_cost: 500,
+      assignedDaemons: [],
+      maxAssignments: 3,
+      specialization: 'Infiltration',
+      roomType: 'command',
+      unlocked: false, // Unlocked at Manager tier
+      synergyBonuses: [
+        {
+          requiredRooms: ['Command Center', 'Training Hall'],
+          minLevel: 4,
+          bonus: 'Military Command Complex',
+          effect: { type: 'elite_operations_bonus', value: 25, appliesToMissions: true }
+        }
+      ]
     },
     {
       name: 'Item Forge',
       level: 0,
       bonus: 'Equipment Repair -20% cost',
       upgrade_cost: 450,
+      assignedDaemons: [],
+      maxAssignments: 2,
+      specialization: 'Sabotage',
+      roomType: 'utility',
+      unlocked: true
     },
   ],
 };
@@ -755,6 +843,156 @@ export const CORPORATE_EVENTS = [
       },
     ],
   },
+
+  // Hostile Takeover and Defense Events
+  {
+    id: 'hostile_takeover_threat',
+    title: 'Hostile Takeover Threat',
+    description:
+      'A rival corporation has begun accumulating shares and positioning for a hostile takeover of your operations.',
+    type: 'choice' as const,
+    requirements: { bureaucraticLeverage: 8 },
+    choices: [
+      {
+        label: 'Defensive Restructuring',
+        description: 'Restructure operations to make takeover more difficult',
+        effects: [
+          { type: 'credits', value: -500, description: 'Legal and restructuring costs' },
+          { type: 'bureaucratic_leverage', value: 3, description: 'Strengthen corporate defenses' },
+          { type: 'takeover_defense', value: 25, description: 'Increased takeover resistance' }
+        ]
+      },
+      {
+        label: 'Counter-Acquisition',
+        description: 'Launch your own acquisition of the threatening corporation',
+        effects: [
+          { type: 'credits', value: -800, description: 'Acquisition costs' },
+          { type: 'soul_essence', value: 2, description: 'Absorb rival resources' },
+          { type: 'rival_defeat', value: 1, description: 'Neutralize takeover threat' }
+        ]
+      },
+      {
+        label: 'Poison Pill Strategy',
+        description: 'Make the company less attractive through strategic debt and obligations',
+        effects: [
+          { type: 'credits', value: -300, description: 'Strategic debt obligations' },
+          { type: 'daemon_retention', value: 1, description: 'Lock in key personnel' },
+          { type: 'takeover_immunity', value: 7, description: 'Temporary takeover immunity' }
+        ]
+      }
+    ]
+  },
+  {
+    id: 'board_coup_attempt',
+    title: 'Board Coup Attempt',
+    description:
+      'Disgruntled board members are attempting to remove you from your position through corporate maneuvering.',
+    type: 'choice' as const,
+    requirements: { corporateTier: 'director' },
+    choices: [
+      {
+        label: 'Political Maneuvering',
+        description: 'Use your bureaucratic connections to counter the coup',
+        effects: [
+          { type: 'bureaucratic_leverage', value: -5, description: 'Expend political capital' },
+          { type: 'board_loyalty', value: 20, description: 'Secure board loyalty' },
+          { type: 'corporate_control', value: 15, description: 'Strengthen position' }
+        ]
+      },
+      {
+        label: 'Expose Corruption',
+        description: 'Investigate and expose corruption among the coup leaders',
+        effects: [
+          { type: 'soul_essence', value: -1, description: 'Investigative costs' },
+          { type: 'reputation', value: 25, description: 'Public vindication' },
+          { type: 'coup_members_removed', value: 3, description: 'Remove threatening board members' }
+        ]
+      },
+      {
+        label: 'Strategic Resignation',
+        description: 'Resign strategically to maintain influence while avoiding coup',
+        effects: [
+          { type: 'corporate_tier_reduction', value: -1, description: 'Temporary demotion' },
+          { type: 'underground_network', value: 1, description: 'Maintain shadow influence' },
+          { type: 'comeback_opportunity', value: 30, description: 'Days to orchestrate return' }
+        ]
+      }
+    ]
+  },
+  {
+    id: 'corporate_espionage_discovery',
+    title: 'Corporate Espionage Discovered',
+    description:
+      'Your security team has discovered a sophisticated espionage operation targeting your most sensitive operations.',
+    type: 'choice' as const,
+    requirements: { raw_materials: 2 },
+    choices: [
+      {
+        label: 'Counter-Intelligence Operation',
+        description: 'Launch a counter-intelligence operation to track the spies',
+        effects: [
+          { type: 'raw_materials', value: -2, description: 'Counter-intel equipment costs' },
+          { type: 'intelligence_gained', value: 40, description: 'Learn rival corporation secrets' },
+          { type: 'double_agent', value: 1, description: 'Turn enemy spy into double agent' }
+        ]
+      },
+      {
+        label: 'Security Lockdown',
+        description: 'Implement comprehensive security measures',
+        effects: [
+          { type: 'credits', value: -400, description: 'Security upgrade costs' },
+          { type: 'espionage_immunity', value: 14, description: 'Days of enhanced security' },
+          { type: 'daemon_paranoia', value: -10, description: 'Reduced morale from security measures' }
+        ]
+      },
+      {
+        label: 'Misinformation Campaign',
+        description: 'Feed false information to the spies to mislead rivals',
+        effects: [
+          { type: 'bureaucratic_leverage', value: 2, description: 'Strategic advantage gained' },
+          { type: 'rival_confusion', value: 21, description: 'Rivals act on false intelligence' },
+          { type: 'reputation', value: 5, description: 'Reputation for cunning' }
+        ]
+      }
+    ]
+  },
+  {
+    id: 'insider_trading_allegation',
+    title: 'Insider Trading Allegations',
+    description:
+      'Regulatory authorities are investigating allegations of insider trading within your corporation.',
+    type: 'choice' as const,
+    requirements: { credits: 300 },
+    choices: [
+      {
+        label: 'Legal Defense',
+        description: 'Hire the best corporate lawyers to defend against charges',
+        effects: [
+          { type: 'credits', value: -600, description: 'Legal fees' },
+          { type: 'regulatory_protection', value: 1, description: 'Reduced regulatory scrutiny' },
+          { type: 'legal_precedent', value: 10, description: 'Establish favorable precedent' }
+        ]
+      },
+      {
+        label: 'Scapegoat Strategy',
+        description: 'Blame a mid-level manager to protect upper management',
+        effects: [
+          { type: 'daemon_sacrifice', value: 1, description: 'Sacrifice daemon to authorities' },
+          { type: 'corporate_reputation', value: -15, description: 'Internal morale damage' },
+          { type: 'investigation_ended', value: 1, description: 'Investigation concluded' }
+        ]
+      },
+      {
+        label: 'Regulatory Cooperation',
+        description: 'Cooperate fully with investigators to minimize penalties',
+        effects: [
+          { type: 'credits', value: -200, description: 'Cooperation costs and fines' },
+          { type: 'reputation', value: 10, description: 'Reputation for transparency' },
+          { type: 'regulatory_favor', value: 20, description: 'Improved regulatory relationship' }
+        ]
+      }
+    ]
+  }
 ];
 
 // Crafting recipes
@@ -1066,7 +1304,30 @@ export const RIVAL_CORPORATIONS: CorporateRival[] = [
     strength: 75,
     specialty: 'Bureaucratic Manipulation',
     threat: 'medium',
-    defeated: false
+    defeated: false,
+    aiPersonality: {
+      aggression: 40,
+      cunning: 85,
+      ambition: 70,
+      loyalty: 30,
+      adaptability: 75
+    },
+    currentStrategy: {
+      type: 'diplomatic_manipulation',
+      priority: 7,
+      duration: 15,
+      targetPlayer: true
+    },
+    resources: {
+      credits: 2500,
+      influence: 60,
+      intelligence: 40
+    },
+    ownedPlanets: [],
+    activeOperations: [],
+    relationshipWithPlayer: -20,
+    lastActionDay: 0,
+    strategicGoals: ['control_bureaucracy', 'influence_player_decisions', 'expand_political_network']
   },
   {
     id: 'efficiency_empire',
@@ -1074,7 +1335,31 @@ export const RIVAL_CORPORATIONS: CorporateRival[] = [
     strength: 90,
     specialty: 'Resource Optimization',
     threat: 'high',
-    defeated: false
+    defeated: false,
+    aiPersonality: {
+      aggression: 80,
+      cunning: 50,
+      ambition: 95,
+      loyalty: 60,
+      adaptability: 40
+    },
+    currentStrategy: {
+      type: 'aggressive_expansion',
+      priority: 9,
+      duration: 20,
+      targetPlanets: ['Productivity-Nine'],
+      targetPlayer: false
+    },
+    resources: {
+      credits: 4000,
+      influence: 45,
+      intelligence: 25
+    },
+    ownedPlanets: [],
+    activeOperations: [],
+    relationshipWithPlayer: -50,
+    lastActionDay: 0,
+    strategicGoals: ['dominate_resources', 'eliminate_competition', 'maximize_efficiency']
   },
   {
     id: 'chaos_consulting',
@@ -1082,7 +1367,30 @@ export const RIVAL_CORPORATIONS: CorporateRival[] = [
     strength: 60,
     specialty: 'Disruptive Innovation',
     threat: 'low',
-    defeated: false
+    defeated: false,
+    aiPersonality: {
+      aggression: 30,
+      cunning: 90,
+      ambition: 60,
+      loyalty: 20,
+      adaptability: 95
+    },
+    currentStrategy: {
+      type: 'shadow_operations',
+      priority: 8,
+      duration: 25,
+      targetPlayer: true
+    },
+    resources: {
+      credits: 1800,
+      influence: 70,
+      intelligence: 80
+    },
+    ownedPlanets: [],
+    activeOperations: [],
+    relationshipWithPlayer: 10,
+    lastActionDay: 0,
+    strategicGoals: ['disrupt_status_quo', 'gather_intelligence', 'create_opportunities']
   }
 ];
 
@@ -1119,6 +1427,257 @@ export const PRESTIGE_BONUSES: PrestigeBonus[] = [
     unlockedBy: 'Reach 5th generation daemon'
   }
 ];
+
+// Enhanced Mission System
+export const MISSION_TEMPLATES = {
+  conquest: {
+    id: 'conquest',
+    name: 'Corporate Conquest',
+    description: 'Establish complete corporate dominance over the target',
+    baseDuration: 60, // minutes
+    primaryObjective: {
+      type: 'primary' as const,
+      description: 'Neutralize all resistance forces',
+      requirements: { minTeamSize: 2 },
+      rewards: { credits: 200, bureaucraticLeverage: 2 }
+    },
+    secondaryObjectives: [
+      {
+        type: 'secondary' as const,
+        description: 'Capture key strategic locations',
+        requirements: { specialization: 'Combat' as const },
+        rewards: { credits: 100, rawMaterials: 1 }
+      },
+      {
+        type: 'secondary' as const,
+        description: 'Establish supply chains',
+        requirements: { minTeamSize: 3 },
+        rewards: { credits: 150, soulEssence: 1 }
+      }
+    ],
+    failureConsequences: ['reduced_stability', 'corporate_retaliation', 'reputation_loss']
+  },
+  sabotage: {
+    id: 'sabotage',
+    name: 'Corporate Sabotage',
+    description: 'Undermine competitor operations through covert means',
+    baseDuration: 45,
+    primaryObjective: {
+      type: 'primary' as const,
+      description: 'Disrupt critical infrastructure',
+      requirements: { specialization: 'Sabotage' as const },
+      rewards: { credits: 150, bureaucraticLeverage: 3 }
+    },
+    secondaryObjectives: [
+      {
+        type: 'secondary' as const,
+        description: 'Plant false evidence',
+        requirements: { equipment: ['Cursed Calculator'] },
+        rewards: { soulEssence: 2, reputation: 10 }
+      },
+      {
+        type: 'bonus' as const,
+        description: 'Remain undetected',
+        requirements: { specialization: 'Infiltration' as const },
+        rewards: { credits: 200, experience: 50 }
+      }
+    ],
+    failureConsequences: ['exposure_risk', 'security_increase', 'rival_attention']
+  },
+  diplomacy: {
+    id: 'diplomacy',
+    name: 'Corporate Diplomacy',
+    description: 'Negotiate favorable terms through political maneuvering',
+    baseDuration: 90,
+    primaryObjective: {
+      type: 'primary' as const,
+      description: 'Secure advantageous agreements',
+      requirements: { resources: { bureaucraticLeverage: 3 } },
+      rewards: { credits: 300, bureaucraticLeverage: 5 }
+    },
+    secondaryObjectives: [
+      {
+        type: 'secondary' as const,
+        description: 'Form strategic alliances',
+        requirements: { minTeamSize: 2 },
+        rewards: { reputation: 25, futureOpportunities: ['joint_ventures'] }
+      }
+    ],
+    failureConsequences: ['diplomatic_incident', 'alliance_breakdown', 'credibility_loss']
+  },
+  reconnaissance: {
+    id: 'reconnaissance',
+    name: 'Corporate Reconnaissance',
+    description: 'Gather intelligence on target operations',
+    baseDuration: 30,
+    primaryObjective: {
+      type: 'primary' as const,
+      description: 'Collect strategic intelligence',
+      requirements: { specialization: 'Infiltration' as const },
+      rewards: { bureaucraticLeverage: 4, experience: 30 }
+    },
+    secondaryObjectives: [
+      {
+        type: 'bonus' as const,
+        description: 'Identify key personnel',
+        requirements: { equipment: ['Standard Issue Briefcase'] },
+        rewards: { futureOpportunities: ['targeted_operations'] }
+      }
+    ],
+    failureConsequences: ['intelligence_leak', 'cover_blown']
+  },
+  extraction: {
+    id: 'extraction',
+    name: 'Asset Extraction',
+    description: 'Retrieve valuable corporate assets or personnel',
+    baseDuration: 75,
+    primaryObjective: {
+      type: 'primary' as const,
+      description: 'Secure and extract target assets',
+      requirements: { minTeamSize: 3, specialization: 'Combat' as const },
+      rewards: { credits: 400, rawMaterials: 2 }
+    },
+    secondaryObjectives: [
+      {
+        type: 'secondary' as const,
+        description: 'Minimize collateral damage',
+        requirements: { equipment: ['Corporate Tie of Binding'] },
+        rewards: { reputation: 15, bureaucraticLeverage: 1 }
+      }
+    ],
+    failureConsequences: ['asset_lost', 'security_escalation', 'extraction_blacklist']
+  }
+};
+
+// Mission Consequence Effects
+export const MISSION_CONSEQUENCES = {
+  // Immediate consequences
+  reduced_stability: {
+    id: 'reduced_stability',
+    type: 'immediate' as const,
+    description: 'Planet stability decreased by 20 points',
+    effects: { planets: ['target'], stability: -20 }
+  },
+  corporate_retaliation: {
+    id: 'corporate_retaliation',
+    type: 'delayed' as const,
+    description: 'Enemy corporation plans counter-attack',
+    effects: { corporateEvents: ['retaliation_strike'], reputation: -10 }
+  },
+  reputation_loss: {
+    id: 'reputation_loss',
+    type: 'immediate' as const,
+    description: 'Corporate reputation damaged',
+    effects: { reputation: -15, futureOpportunities: ['limited_access'] }
+  },
+  exposure_risk: {
+    id: 'exposure_risk',
+    type: 'delayed' as const,
+    description: 'Increased security scrutiny on future operations',
+    effects: { corporateEvents: ['security_audit'], reputation: -5 }
+  },
+  security_increase: {
+    id: 'security_increase',
+    type: 'permanent' as const,
+    description: 'Target planet permanently increases security measures',
+    effects: { planets: ['target'], difficulty: 'increase' }
+  },
+  rival_attention: {
+    id: 'rival_attention',
+    type: 'delayed' as const,
+    description: 'Rival corporations take notice of your activities',
+    effects: { rivalActions: ['investigation', 'interference'] }
+  },
+  diplomatic_incident: {
+    id: 'diplomatic_incident',
+    type: 'immediate' as const,
+    description: 'Failed negotiations create lasting tensions',
+    effects: { reputation: -20, corporateEvents: ['diplomatic_crisis'] }
+  },
+  alliance_breakdown: {
+    id: 'alliance_breakdown',
+    type: 'permanent' as const,
+    description: 'Potential alliances are permanently damaged',
+    effects: { futureOpportunities: ['alliance_blacklist'] }
+  },
+  credibility_loss: {
+    id: 'credibility_loss',
+    type: 'immediate' as const,
+    description: 'Corporate credibility questioned',
+    effects: { reputation: -10, bureaucraticLeverage: -2 }
+  },
+  intelligence_leak: {
+    id: 'intelligence_leak',
+    type: 'delayed' as const,
+    description: 'Your intelligence methods are compromised',
+    effects: { corporateEvents: ['counter_intelligence'], futureOpportunities: ['restricted_intel'] }
+  },
+  cover_blown: {
+    id: 'cover_blown',
+    type: 'immediate' as const,
+    description: 'Infiltration networks are exposed',
+    effects: { reputation: -5, corporateEvents: ['security_sweep'] }
+  },
+  asset_lost: {
+    id: 'asset_lost',
+    type: 'immediate' as const,
+    description: 'Target assets are lost or destroyed',
+    effects: { rawMaterials: -1, credits: -200 }
+  },
+  security_escalation: {
+    id: 'security_escalation',
+    type: 'permanent' as const,
+    description: 'All future missions face increased security',
+    effects: { planets: ['all'], difficulty: 'slight_increase' }
+  },
+  extraction_blacklist: {
+    id: 'extraction_blacklist',
+    type: 'permanent' as const,
+    description: 'Extraction operations become extremely difficult',
+    effects: { futureOpportunities: ['extraction_banned'] }
+  }
+};
+
+// Procedural Mission Generation Based on Territory Control
+export const PROCEDURAL_MISSIONS = {
+  // Missions that become available after conquering planets
+  territory_defense: {
+    id: 'territory_defense',
+    name: 'Territory Defense',
+    description: 'Defend conquered territory from corporate rivals',
+    triggerCondition: 'conquered_planets >= 1',
+    frequency: 0.15, // 15% chance per day per conquered planet
+    difficulty: 'Medium',
+    rewards: { credits: 250, bureaucraticLeverage: 2 }
+  },
+  expansion_opportunity: {
+    id: 'expansion_opportunity',
+    name: 'Expansion Opportunity',
+    description: 'New territories become available for conquest',
+    triggerCondition: 'corporate_presence >= 50',
+    frequency: 0.1, // 10% chance when presence threshold reached
+    difficulty: 'Variable',
+    rewards: 'unlocks_new_planets'
+  },
+  corporate_espionage: {
+    id: 'corporate_espionage',
+    name: 'Corporate Espionage',
+    description: 'Rival corporations attempt to steal trade secrets',
+    triggerCondition: 'bureaucratic_leverage >= 10',
+    frequency: 0.08, // 8% chance per day when threshold reached
+    difficulty: 'Hard',
+    consequences: ['intelligence_theft', 'competitive_disadvantage']
+  },
+  supply_chain_disruption: {
+    id: 'supply_chain_disruption',
+    name: 'Supply Chain Crisis',
+    description: 'Critical supply chains are under threat',
+    triggerCondition: 'conquered_planets >= 2',
+    frequency: 0.12,
+    difficulty: 'Medium',
+    consequences: ['resource_shortage', 'operations_slowdown']
+  }
+};
 
 // Ending Scenarios
 export const ENDING_SCENARIOS = {

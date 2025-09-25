@@ -13,6 +13,11 @@ import type {
   LegacyStory,
   ManagementStyle,
   SurrealEvent,
+  RivalOperation,
+  RivalStrategy,
+  RivalOperationEffect,
+  Mission,
+  MissionConsequence,
 } from '../types/game';
 import {
   STARTER_DATA,
@@ -27,7 +32,15 @@ import {
   COMPLIANCE_TEMPLATES,
   SURREAL_EVENTS,
   RIVAL_CORPORATIONS,
+  MISSION_CONSEQUENCES,
+  PROCEDURAL_MISSIONS,
 } from '../constants/gameData';
+import { DAEMON_BALANCE } from '../constants/gameBalance';
+import {
+  executeMissionLogic,
+  evaluateMissionObjectives as evaluateObjectives,
+  type MissionExecutionContext,
+} from '../utils/missionHelpers';
 
 interface GameStore extends GameState {
   // Actions
@@ -69,11 +82,18 @@ interface GameStore extends GameState {
   processDaemonDeath: (daemon: Daemon) => void;
 
   // Mission System
-  selectPlanetForMission: (planetId: string) => void;
-  executeMission: () => void;
+  selectPlanetForMission: (planetId: string, missionType?: string) => void;
+  executeMission: (missionType?: string, objectives?: string[]) => void;
+  generateProceduralMissions: () => void;
+  processMissionConsequences: (consequences: MissionConsequence[]) => void;
+  evaluateMissionObjectives: (mission: Mission, result: MissionResult) => void;
 
   // Room Management
   upgradeRoom: (roomId: string) => void;
+  assignDaemonToRoom: (daemonId: string, roomId: string) => void;
+  unassignDaemonFromRoom: (daemonId: string, roomId: string) => void;
+  calculateRoomSynergyBonuses: () => void;
+  unlockRoom: (roomId: string) => void;
 
   // Equipment Management
   repairEquipment: (equipmentId: string) => void;
@@ -116,6 +136,11 @@ interface GameStore extends GameState {
   engageRival: (rivalId: string) => void;
   defeatRival: (rivalId: string) => void;
   calculateRivalSuccessChance: (rivalId: string) => number;
+  processRivalAI: () => void;
+  executeRivalOperation: (rivalId: string, operation: RivalOperation) => void;
+  updateRivalStrategy: (rivalId: string) => void;
+  generateRivalOperation: (rivalId: string) => RivalOperation | null;
+  checkTakeoverThreats: () => void;
 
   // HR Reviews
   conductHRReview: (daemonId: string) => void;
@@ -152,10 +177,23 @@ const initialState: GameState = {
     hrInvestigation: 0,
     productivityBonus: 0,
     productivityBonusRemainingMissions: 0,
+    roomSynergyBonus: 0,
+    roomSynergyMissionBonus: 0,
+    takeoverDefense: 0,
+    espionageImmunity: 0,
+    boardLoyalty: 50, // Start with neutral board loyalty
+    corporateControl: 60, // Start with moderate control
+    regulatoryFavor: 50, // Start with neutral regulatory relationship
   },
   daysPassed: 0,
   gameStarted: false,
   tutorialCompleted: false,
+
+  // Enhanced mission system
+  reputation: 50, // Start with neutral reputation
+  availableProceduralMissions: [],
+  missionConsequences: [],
+  futureOpportunities: [],
 
   // Corporate Progression System
   corporateTier: ASSOCIATE_TIER,
@@ -191,6 +229,7 @@ const initialState: GameState = {
   currentTab: 'dashboard',
   selectedDaemons: new Set(),
   currentPlanet: null,
+  selectedMissionType: 'conquest',
   showTutorial: false,
   showMemorial: false,
   showMissionModal: false,
@@ -545,175 +584,145 @@ export const useGameStore = create<GameStore>()(
         setShowMemorial(true, daemon);
       },
 
-      selectPlanetForMission: planetId => {
+      selectPlanetForMission: (planetId, missionType = 'conquest') => {
         const { setCurrentPlanet, setShowMissionModal } = get();
         setCurrentPlanet(planetId);
         setShowMissionModal(true);
+
+        // Store selected mission type for execution
+        set({ selectedMissionType: missionType });
       },
 
       executeMission: () => {
-        const {
-          selectedDaemons,
-          currentPlanet,
-          daemons,
-          planets,
-          setShowMissionModal,
-          setShowMissionResults,
-          clearDaemonSelection,
-          setCurrentPlanet,
-        } = get();
+        try {
+          const {
+            selectedDaemons,
+            currentPlanet,
+            daemons,
+            planets,
+            equipment,
+            setShowMissionModal,
+            setShowMissionResults,
+            clearDaemonSelection,
+            setCurrentPlanet,
+            processMissionConsequences,
+            generateId,
+            addResources,
+            addNotification,
+            addLegacyStory,
+          } = get();
 
-        if (selectedDaemons.size === 0 || !currentPlanet) return;
+          const context: MissionExecutionContext = {
+            selectedDaemons,
+            currentPlanet,
+            daemons,
+            planets,
+            equipment,
+            selectedMissionType,
+          };
 
-        const planet = planets.find(p => p.id === currentPlanet);
-        if (!planet) return;
+          // Execute mission using extracted helper function
+          const {
+            success,
+            result,
+            updatedDaemons,
+            updatedPlanets,
+            missionInstance,
+          } = executeMissionLogic(context, generateId);
 
-        const selectedTeam = Array.from(selectedDaemons)
-          .map(id => daemons.find(d => d.id === id))
-          .filter(Boolean) as Daemon[];
+          // Apply resource rewards
+          addResources(
+            result.rewards.credits || 0,
+            result.rewards.soulEssence || 0,
+            result.rewards.bureaucraticLeverage || 0,
+            result.rewards.rawMaterials || 0
+          );
 
-        // Simple mission calculation
-        let successChance = 50;
-
-        // Team composition bonuses
-        const hasInfiltrator = selectedTeam.some(
-          d => d.specialization === 'Infiltration'
-        );
-        const hasCombat = selectedTeam.some(d => d.specialization === 'Combat');
-        const hasSaboteur = selectedTeam.some(
-          d => d.specialization === 'Sabotage'
-        );
-
-        if (planet.difficulty === 'Easy' && hasInfiltrator) successChance += 20;
-        if (planet.difficulty === 'Medium' && hasCombat) successChance += 15;
-        if (planet.difficulty === 'Hard' && hasSaboteur) successChance += 25;
-
-        // Team health and morale
-        const avgHealth =
-          selectedTeam.reduce((sum, d) => sum + d.health, 0) /
-          selectedTeam.length;
-        const avgMorale =
-          selectedTeam.reduce((sum, d) => sum + d.morale, 0) /
-          selectedTeam.length;
-        successChance += (avgHealth - 50) * 0.3;
-        successChance += (avgMorale - 50) * 0.2;
-
-        // Equipment bonus
-        selectedTeam.forEach(daemon => {
-          if (daemon.equipment) successChance += 10;
-        });
-
-        // Difficulty penalties
-        const difficultyPenalties = { Easy: 0, Medium: -15, Hard: -30 };
-        successChance += difficultyPenalties[planet.difficulty];
-
-        successChance = Math.max(10, Math.min(90, successChance));
-        const success = Math.random() * 100 < successChance;
-
-        // Calculate rewards
-        const baseRewards = {
-          Easy: { credits: 150, soulEssence: 2 },
-          Medium: { credits: 300, bureaucraticLeverage: 5 },
-          Hard: { credits: 500, rawMaterials: 3 },
-        };
-
-        const rewards = { ...baseRewards[planet.difficulty] };
-        if (!success) {
-          rewards.credits = Math.floor(rewards.credits * 0.3);
-        }
-
-        // Apply results and update legacy tracking
-        get().addResources(
-          rewards.credits || 0,
-          'soulEssence' in rewards ? rewards.soulEssence || 0 : 0,
-          'bureaucraticLeverage' in rewards
-            ? rewards.bureaucraticLeverage || 0
-            : 0,
-          'rawMaterials' in rewards ? rewards.rawMaterials || 0 : 0
-        );
-
-        // Update daemon legacy tracking
-        const updatedDaemons = get().daemons.map(daemon => {
-          if (selectedDaemons.has(daemon.id)) {
-            const healthLoss = Math.floor(Math.random() * 20) + 5;
-            const moraleLoss = Math.floor(Math.random() * 15) + 5;
-            const lifespanLoss = Math.floor(Math.random() * 2) + 1;
-
-            // Update legacy statistics
-            const updatedLegacy = { ...daemon.legacy };
-            if (success) {
-              updatedLegacy.successfulMissions += 1;
-              if (!planet.conquered) {
-                updatedLegacy.planetsConquered += 1;
-                
-                // Add legacy story for planet conquest
-                get().addLegacyStory(daemon.id, {
+          // Add legacy stories for mission events
+          Array.from(selectedDaemons).forEach(daemonId => {
+            const daemon = daemons.find(d => d.id === daemonId);
+            const planet = planets.find(p => p.id === currentPlanet);
+            if (daemon && planet) {
+              if (success && !planet.conquered) {
+                addLegacyStory(daemon.id, {
                   title: `Conquest of ${planet.name}`,
                   description: `${daemon.name} led the successful conquest of ${planet.name}, overcoming ${planet.resistance}`,
                   category: 'heroic'
                 });
               }
-              
-              // Add legacy story for significant mission milestones
-              if (updatedLegacy.successfulMissions === 5) {
-                get().addLegacyStory(daemon.id, {
+
+              // Check for veteran status
+              const updatedDaemon = updatedDaemons.find(d => d.id === daemon.id);
+              if (updatedDaemon && updatedDaemon.legacy.successfulMissions === DAEMON_BALANCE.LEGACY_REQUIREMENTS.VETERAN_STATUS_MISSIONS) {
+                addLegacyStory(daemon.id, {
                   title: 'Veteran Status Achieved',
-                  description: `${daemon.name} has completed 5 successful missions and earned veteran status`,
+                  description: `${daemon.name} has completed ${DAEMON_BALANCE.LEGACY_REQUIREMENTS.VETERAN_STATUS_MISSIONS} successful missions and earned veteran status`,
                   category: 'legendary'
                 });
               }
-            } else {
-              // Add story for dramatic failures
-              if (Math.random() < 0.3) {
-                get().addLegacyStory(daemon.id, {
+
+              // Add failure stories occasionally
+              if (!success && Math.random() < 0.3) {
+                addLegacyStory(daemon.id, {
                   title: `The ${planet.name} Incident`,
                   description: `${daemon.name} faced overwhelming odds on ${planet.name} but lived to tell the tale`,
                   category: 'tragic'
                 });
               }
             }
+          });
 
-            return {
-              ...daemon,
-              health: Math.max(0, daemon.health - healthLoss),
-              morale: Math.max(0, daemon.morale - moraleLoss),
-              lifespanDays: Math.max(0, daemon.lifespanDays - lifespanLoss),
-              legacy: updatedLegacy,
+          // Evaluate mission objectives and enhance rewards
+          const selectedTeam = Array.from(selectedDaemons)
+            .map(id => daemons.find(d => d.id === id))
+            .filter(Boolean) as Daemon[];
+
+          const finalResult = evaluateObjectives(missionInstance, result, selectedTeam, equipment);
+
+          // Apply any additional rewards from objectives
+          if (finalResult.rewards !== result.rewards) {
+            const additionalRewards = {
+              credits: (finalResult.rewards.credits || 0) - (result.rewards.credits || 0),
+              soulEssence: (finalResult.rewards.soulEssence || 0) - (result.rewards.soulEssence || 0),
+              bureaucraticLeverage: (finalResult.rewards.bureaucraticLeverage || 0) - (result.rewards.bureaucraticLeverage || 0),
+              rawMaterials: (finalResult.rewards.rawMaterials || 0) - (result.rewards.rawMaterials || 0),
             };
+            addResources(
+              additionalRewards.credits,
+              additionalRewards.soulEssence,
+              additionalRewards.bureaucraticLeverage,
+              additionalRewards.rawMaterials
+            );
           }
-          return daemon;
-        });
 
-        // Mark planet as conquered if successful
-        const updatedPlanets = planets.map(p =>
-          p.id === currentPlanet ? { ...p, conquered: success } : p
-        );
+          // Process mission consequences if mission failed
+          if (!success && missionInstance.consequences) {
+            processMissionConsequences(missionInstance.consequences);
+          }
 
-        const result: MissionResult = {
-          success,
-          successChance: Math.round(successChance),
-          narrative: success
-            ? `Mission accomplished! Your team successfully neutralized ${planet.resistance} on ${planet.name}.`
-            : `Mission failed. Your team encountered unexpected resistance from ${planet.resistance}.`,
-          rewards,
-          casualties: [],
-          equipmentDamage: [],
-        };
+          // Update game state
+          set({
+            daemons: updatedDaemons,
+            planets: updatedPlanets,
+          });
 
-        set({
-          daemons: updatedDaemons,
-          planets: updatedPlanets,
-        });
+          // Update UI
+          setShowMissionModal(false);
+          setShowMissionResults(true, finalResult);
+          clearDaemonSelection();
+          setCurrentPlanet(null);
 
-        setShowMissionModal(false);
-        setShowMissionResults(true, result);
-        clearDaemonSelection();
-        setCurrentPlanet(null);
-
-        get().addNotification(
-          success ? 'Mission successful!' : 'Mission failed',
-          success ? 'success' : 'error'
-        );
+          addNotification(
+            success ? 'Mission successful!' : 'Mission failed',
+            success ? 'success' : 'error'
+          );
+        } catch (error) {
+          console.error('Mission execution error:', error);
+          get().addNotification(
+            'Mission execution failed due to an error',
+            'error'
+          );
+        }
       },
 
       upgradeRoom: roomId => {
@@ -734,6 +743,115 @@ export const useGameStore = create<GameStore>()(
 
         set({ rooms: updatedRooms });
         get().addNotification(`${room.name} upgraded successfully!`, 'success');
+
+        // Recalculate synergy bonuses after upgrade
+        get().calculateRoomSynergyBonuses();
+      },
+
+      assignDaemonToRoom: (daemonId: string, roomId: string) => {
+        const { rooms, daemons } = get();
+        const room = rooms.find(r => r.id === roomId);
+        const daemon = daemons.find(d => d.id === daemonId);
+
+        if (!room || !daemon || !room.unlocked) return;
+
+        // Check if room has space
+        if (room.assignedDaemons.length >= room.maxAssignments) {
+          get().addNotification(`${room.name} is at capacity`, 'warning');
+          return;
+        }
+
+        // Remove daemon from any other rooms first
+        const updatedRooms = rooms.map(r => ({
+          ...r,
+          assignedDaemons: r.assignedDaemons.filter(id => id !== daemonId)
+        }));
+
+        // Add daemon to target room
+        const finalRooms = updatedRooms.map(r =>
+          r.id === roomId
+            ? { ...r, assignedDaemons: [...r.assignedDaemons, daemonId] }
+            : r
+        );
+
+        set({ rooms: finalRooms });
+        get().addNotification(`${daemon.name} assigned to ${room.name}`, 'success');
+        get().calculateRoomSynergyBonuses();
+      },
+
+      unassignDaemonFromRoom: (daemonId: string, roomId: string) => {
+        const { rooms, daemons } = get();
+        const daemon = daemons.find(d => d.id === daemonId);
+
+        const updatedRooms = rooms.map(r =>
+          r.id === roomId
+            ? { ...r, assignedDaemons: r.assignedDaemons.filter(id => id !== daemonId) }
+            : r
+        );
+
+        set({ rooms: updatedRooms });
+        if (daemon) {
+          get().addNotification(`${daemon.name} unassigned from room`, 'info');
+        }
+        get().calculateRoomSynergyBonuses();
+      },
+
+      calculateRoomSynergyBonuses: () => {
+        const { rooms, gameModifiers } = get();
+        const newModifiers = { ...gameModifiers };
+
+        // Reset room-based bonuses
+        newModifiers.roomSynergyBonus = 0;
+        newModifiers.missionSuccessBonus = Math.max(0, newModifiers.missionSuccessBonus - (newModifiers.roomSynergyMissionBonus || 0));
+        newModifiers.roomSynergyMissionBonus = 0;
+
+        // Calculate synergy bonuses
+        rooms.forEach(room => {
+          if (room.synergyBonuses && room.level > 0) {
+            room.synergyBonuses.forEach(synergy => {
+              // Check if required rooms meet minimum level
+              const requiredRoomLevels = synergy.requiredRooms.map(roomName => {
+                const reqRoom = rooms.find(r => r.name === roomName);
+                return reqRoom ? reqRoom.level : 0;
+              });
+
+              const totalRequiredLevel = requiredRoomLevels.reduce((sum, level) => sum + level, 0);
+
+              if (totalRequiredLevel >= synergy.minLevel) {
+                // Apply synergy bonus
+                switch (synergy.effect.type) {
+                  case 'mission_success_bonus':
+                  case 'elite_operations_bonus':
+                    newModifiers.roomSynergyMissionBonus = (newModifiers.roomSynergyMissionBonus || 0) + synergy.effect.value;
+                    break;
+                  case 'morale_health_bonus':
+                  case 'health_recovery_bonus':
+                  case 'combat_training_bonus':
+                    newModifiers.roomSynergyBonus = (newModifiers.roomSynergyBonus || 0) + synergy.effect.value;
+                    break;
+                }
+              }
+            });
+          }
+        });
+
+        // Apply accumulated mission bonuses
+        newModifiers.missionSuccessBonus += newModifiers.roomSynergyMissionBonus || 0;
+
+        set({ gameModifiers: newModifiers });
+      },
+
+      unlockRoom: (roomId: string) => {
+        const { rooms } = get();
+        const updatedRooms = rooms.map(room =>
+          room.id === roomId ? { ...room, unlocked: true } : room
+        );
+
+        const room = rooms.find(r => r.id === roomId);
+        if (room) {
+          set({ rooms: updatedRooms });
+          get().addNotification(`${room.name} is now available!`, 'success');
+        }
       },
 
       repairEquipment: equipmentId => {
@@ -973,6 +1091,59 @@ export const useGameStore = create<GameStore>()(
               }
               break;
             }
+
+            // Hostile takeover defense mechanics
+            case 'takeover_defense':
+              updatedModifiers.takeoverDefense = Math.min(100, updatedModifiers.takeoverDefense + effect.value);
+              break;
+
+            case 'rival_defeat':
+              // Defeat a random threatening rival
+              set(state => ({
+                corporateRivals: state.corporateRivals.map(rival =>
+                  rival.relationshipWithPlayer < -30 && !rival.defeated
+                    ? { ...rival, defeated: true }
+                    : rival
+                )
+              }));
+              break;
+
+            case 'takeover_immunity':
+              updatedModifiers.takeoverDefense = 100; // Temporary maximum protection
+              break;
+
+            case 'board_loyalty':
+              updatedModifiers.boardLoyalty = Math.min(100, Math.max(0, updatedModifiers.boardLoyalty + effect.value));
+              break;
+
+            case 'corporate_control':
+              updatedModifiers.corporateControl = Math.min(100, Math.max(0, updatedModifiers.corporateControl + effect.value));
+              break;
+
+            case 'espionage_immunity':
+              updatedModifiers.espionageImmunity = effect.value; // Days of protection
+              break;
+
+            case 'regulatory_favor':
+              updatedModifiers.regulatoryFavor = Math.min(100, Math.max(0, updatedModifiers.regulatoryFavor + effect.value));
+              break;
+
+            case 'daemon_sacrifice': {
+              // Remove a daemon for regulatory/legal reasons
+              const activeDaemons = updatedDaemons.filter(d => d.isActive);
+              if (activeDaemons.length > 0) {
+                const sacrificeDaemon = activeDaemons[Math.floor(Math.random() * activeDaemons.length)];
+                updatedDaemons = updatedDaemons.filter(d => d.id !== sacrificeDaemon.id);
+                get().addNotification(`${sacrificeDaemon.name} was sacrificed to authorities`, 'warning');
+              }
+              break;
+            }
+
+            case 'reputation':
+              set(state => ({
+                reputation: Math.max(0, Math.min(100, state.reputation + effect.value))
+              }));
+              break;
           }
         });
 
@@ -1046,7 +1217,36 @@ export const useGameStore = create<GameStore>()(
 
           const recoveryWard = rooms.find(r => r.name === 'Recovery Ward');
           if (recoveryWard && recoveryWard.level > 0 && daemon.health < 100) {
-            newHealth = Math.min(100, newHealth + recoveryWard.level * 15);
+            let healthBonus = recoveryWard.level * 15;
+
+            // Apply room assignment bonus
+            if (recoveryWard.assignedDaemons.includes(daemon.id)) {
+              healthBonus += 10; // Extra healing for assigned daemons
+            }
+
+            // Apply synergy bonus
+            healthBonus += gameModifiers.roomSynergyBonus || 0;
+
+            newHealth = Math.min(100, newHealth + healthBonus);
+          }
+
+          // Training Hall bonuses for assigned daemons
+          const trainingHall = rooms.find(r => r.name === 'Training Hall');
+          if (trainingHall && trainingHall.level > 0 && trainingHall.assignedDaemons.includes(daemon.id)) {
+            // Gradual skill improvement for daemons in training
+            if (daemon.specialization === 'Combat' || !trainingHall.specialization || trainingHall.specialization === daemon.specialization) {
+              // Slight health and morale boost from training
+              newHealth = Math.min(100, newHealth + 5);
+              newMorale = Math.min(100, newMorale + 3);
+            }
+          }
+
+          // War Room strategic planning bonuses
+          const warRoom = rooms.find(r => r.name === 'War Room');
+          if (warRoom && warRoom.level > 0 && warRoom.assignedDaemons.includes(daemon.id)) {
+            if (daemon.specialization === 'Infiltration' || !warRoom.specialization || warRoom.specialization === daemon.specialization) {
+              newMorale = Math.min(100, newMorale + 7); // Strategic planning boosts confidence
+            }
           }
 
           return {
@@ -1097,6 +1297,18 @@ export const useGameStore = create<GameStore>()(
         if (Math.random() < (0.03 + corporateTier.level * 0.01)) {
           get().triggerSurrealEvent();
         }
+
+        // Generate procedural missions (2% base chance, increases with conquered territory)
+        const conqueredCount = planets.filter(p => p.conquered).length;
+        if (Math.random() < (0.02 + conqueredCount * 0.01)) {
+          get().generateProceduralMissions();
+        }
+
+        // Process rival corporation AI (every day)
+        get().processRivalAI();
+
+        // Check for hostile takeover threats (based on vulnerability)
+        get().checkTakeoverThreats();
 
         // Check for endgame triggers (only at Board Member tier or after significant milestones)
         if (corporateTier.level >= 5 || daysPassed >= 200) {
@@ -1194,20 +1406,45 @@ export const useGameStore = create<GameStore>()(
       },
 
       unlockTierFeatures: (tier: CorporateTier) => {
-        const { addNotification } = get();
-        
+        const { addNotification, unlockRoom, rooms } = get();
+
         // Unlock new mechanics, rooms, resources based on tier
         tier.unlocks.mechanics?.forEach(mechanic => {
           addNotification(`New mechanic unlocked: ${mechanic}`, 'info');
         });
 
-        tier.unlocks.apartmentRooms?.forEach(room => {
-          addNotification(`New apartment room available: ${room}`, 'info');
+        // Unlock specific rooms based on tier
+        if (tier.level >= 2) {
+          // Manager tier unlocks War Room
+          const warRoom = rooms.find(r => r.name === 'War Room');
+          if (warRoom && !warRoom.unlocked) {
+            unlockRoom(warRoom.id);
+          }
+        }
+
+        if (tier.level >= 3) {
+          // Director tier unlocks expanded facilities
+          const expandedRooms = rooms.filter(r =>
+            ['Training Hall', 'Recovery Ward'].includes(r.name) && !r.unlocked
+          );
+          expandedRooms.forEach(room => {
+            if (!room.unlocked) unlockRoom(room.id);
+          });
+        }
+
+        tier.unlocks.apartmentRooms?.forEach(roomName => {
+          const room = rooms.find(r => r.name === roomName);
+          if (room && !room.unlocked) {
+            unlockRoom(room.id);
+          }
         });
 
         tier.unlocks.resources?.forEach(resource => {
           addNotification(`New resource type unlocked: ${resource}`, 'info');
         });
+
+        // Recalculate synergy bonuses after unlocking new rooms
+        get().calculateRoomSynergyBonuses();
       },
 
       // Compliance System
@@ -1502,6 +1739,347 @@ export const useGameStore = create<GameStore>()(
         get().checkPromotion();
       },
 
+      // Enhanced Rival AI System
+      processRivalAI: () => {
+        const { corporateRivals, daysPassed, planets } = get();
+
+        corporateRivals.forEach(rival => {
+          if (rival.defeated) return;
+
+          // Update rival resources based on owned planets
+          const resourceGrowth = Math.floor(rival.ownedPlanets.length * 100 + Math.random() * 200);
+          rival.resources.credits += resourceGrowth;
+          rival.resources.influence = Math.min(100, rival.resources.influence + Math.random() * 5);
+
+          // Process active operations
+          rival.activeOperations.forEach((operation, index) => {
+            operation.duration--;
+
+            if (operation.duration <= 0) {
+              // Execute operation
+              get().executeRivalOperation(rival.id, operation);
+
+              // Remove completed operation
+              rival.activeOperations.splice(index, 1);
+            }
+          });
+
+          // Consider new operations if not at capacity
+          if (rival.activeOperations.length < 3 && daysPassed - rival.lastActionDay >= 2) {
+            const newOperation = get().generateRivalOperation(rival.id);
+            if (newOperation) {
+              rival.activeOperations.push(newOperation);
+              rival.lastActionDay = daysPassed;
+            }
+          }
+
+          // Update strategy periodically
+          rival.currentStrategy.duration--;
+          if (rival.currentStrategy.duration <= 0 || Math.random() < 0.1) {
+            get().updateRivalStrategy(rival.id);
+          }
+
+          // React to player actions
+          if (rival.aiPersonality.adaptability > 70) {
+            const playerTerritoryCount = planets.filter(p => p.conquered).length;
+            if (playerTerritoryCount > rival.ownedPlanets.length && rival.relationshipWithPlayer > -50) {
+              rival.relationshipWithPlayer = Math.max(-100, rival.relationshipWithPlayer - 15);
+              if (rival.currentStrategy.type !== 'aggressive_expansion') {
+                get().updateRivalStrategy(rival.id);
+              }
+            }
+          }
+        });
+
+        set({ corporateRivals });
+      },
+
+      generateRivalOperation: (rivalId: string): RivalOperation | null => {
+        const { corporateRivals, planets, generateId } = get();
+        const rival = corporateRivals.find(r => r.id === rivalId);
+        if (!rival || rival.defeated) return null;
+
+        const availableTargets = planets.filter(p => !rival.ownedPlanets.includes(p.id));
+        if (availableTargets.length === 0) return null;
+
+        // Choose operation type based on AI personality and strategy
+        let operationType: RivalOperation['type'] = 'espionage';
+
+        if (rival.currentStrategy.type === 'aggressive_expansion' && rival.aiPersonality.aggression > 60) {
+          operationType = Math.random() < 0.6 ? 'planet_attack' : 'sabotage';
+        } else if (rival.currentStrategy.type === 'shadow_operations' && rival.aiPersonality.cunning > 70) {
+          operationType = Math.random() < 0.7 ? 'espionage' : 'sabotage';
+        } else if (rival.currentStrategy.type === 'diplomatic_manipulation') {
+          operationType = Math.random() < 0.5 ? 'alliance_formation' : 'trade_manipulation';
+        } else if (rival.currentStrategy.targetPlayer && rival.relationshipWithPlayer < -30) {
+          operationType = Math.random() < 0.4 ? 'sabotage' : 'counter_intelligence';
+        }
+
+        const targetId = rival.currentStrategy.targetPlayer ? 'player' :
+                         availableTargets[Math.floor(Math.random() * availableTargets.length)].id;
+
+        const operation: RivalOperation = {
+          id: generateId(),
+          type: operationType,
+          targetId,
+          duration: Math.floor(Math.random() * 5) + 3, // 3-7 days
+          successChance: Math.min(90, rival.strength + rival.aiPersonality.cunning - Math.random() * 30),
+          consequences: {
+            success: get().generateOperationEffects(operationType, targetId, true),
+            failure: get().generateOperationEffects(operationType, targetId, false)
+          }
+        };
+
+        return operation;
+      },
+
+      generateOperationEffects: (operationType: string, targetId: string, success: boolean): RivalOperationEffect[] => {
+        const effects: RivalOperationEffect[] = [];
+        const magnitude = success ? 1 : -0.5;
+
+        switch (operationType) {
+          case 'espionage':
+            effects.push({
+              type: 'intelligence_gain',
+              target: 'rival',
+              value: magnitude * 20,
+              description: success ? 'Gained valuable intelligence' : 'Operation compromised'
+            });
+            if (targetId === 'player') {
+              effects.push({
+                type: 'reputation_loss',
+                target: 'player',
+                value: magnitude * -10,
+                description: success ? 'Corporate secrets leaked' : 'Espionage attempt failed'
+              });
+            }
+            break;
+
+          case 'sabotage':
+            if (targetId === 'player') {
+              effects.push({
+                type: 'equipment_damage',
+                target: 'player',
+                value: magnitude * -15,
+                description: success ? 'Equipment sabotaged' : 'Sabotage attempt detected'
+              });
+            } else {
+              effects.push({
+                type: 'planet_stability',
+                target: 'planet',
+                value: magnitude * -20,
+                description: success ? 'Planet destabilized' : 'Sabotage operation failed'
+              });
+            }
+            break;
+
+          case 'planet_attack':
+            effects.push({
+              type: 'planet_control',
+              target: 'rival',
+              value: success ? 1 : 0,
+              description: success ? 'Planet conquered by rival' : 'Attack repelled'
+            });
+            break;
+
+          case 'trade_manipulation':
+            effects.push({
+              type: 'credit_loss',
+              target: 'player',
+              value: magnitude * -200,
+              description: success ? 'Trade routes disrupted' : 'Market manipulation failed'
+            });
+            break;
+
+          case 'counter_intelligence':
+            effects.push({
+              type: 'mission_difficulty',
+              target: 'player',
+              value: magnitude * 10,
+              description: success ? 'Player operations compromised' : 'Counter-intelligence thwarted'
+            });
+            break;
+        }
+
+        return effects;
+      },
+
+      executeRivalOperation: (rivalId: string, operation: RivalOperation) => {
+        const { corporateRivals, addNotification, equipment } = get();
+        const rival = corporateRivals.find(r => r.id === rivalId);
+        if (!rival) return;
+
+        const success = Math.random() * 100 < operation.successChance;
+        const effects = success ? operation.consequences.success : operation.consequences.failure;
+
+        effects.forEach(effect => {
+          switch (effect.type) {
+            case 'intelligence_gain':
+              rival.resources.intelligence = Math.min(100, rival.resources.intelligence + effect.value);
+              break;
+
+            case 'reputation_loss':
+              set(state => ({
+                reputation: Math.max(0, Math.min(100, state.reputation + effect.value))
+              }));
+              break;
+
+            case 'equipment_damage': {
+              const randomEquipment = equipment.filter(e => e.durability > 50);
+              if (randomEquipment.length > 0) {
+                const targetEquip = randomEquipment[Math.floor(Math.random() * randomEquipment.length)];
+                set(state => ({
+                  equipment: state.equipment.map(e =>
+                    e.id === targetEquip.id
+                      ? { ...e, durability: Math.max(10, e.durability + effect.value) }
+                      : e
+                  )
+                }));
+              }
+              break;
+            }
+
+            case 'planet_stability':
+              if (operation.targetId !== 'player') {
+                set(state => ({
+                  planets: state.planets.map(p =>
+                    p.id === operation.targetId
+                      ? {
+                          ...p,
+                          stability: Math.max(0, Math.min(100, (p.stability || 50) + effect.value))
+                        }
+                      : p
+                  )
+                }));
+              }
+              break;
+
+            case 'planet_control':
+              if (success && operation.targetId !== 'player') {
+                rival.ownedPlanets.push(operation.targetId);
+              }
+              break;
+
+            case 'credit_loss':
+              set(state => ({
+                resources: {
+                  ...state.resources,
+                  credits: Math.max(0, state.resources.credits + effect.value)
+                }
+              }));
+              break;
+          }
+        });
+
+        // Update relationship based on operation outcome
+        if (operation.targetId === 'player') {
+          rival.relationshipWithPlayer += success ? -5 : 3;
+          rival.relationshipWithPlayer = Math.max(-100, Math.min(100, rival.relationshipWithPlayer));
+        }
+
+        addNotification(
+          `${rival.name}: ${success ? 'successful' : 'failed'} ${operation.type.replace('_', ' ')} operation`,
+          success ? 'warning' : 'info'
+        );
+
+        set({ corporateRivals });
+      },
+
+      updateRivalStrategy: (rivalId: string) => {
+        const { corporateRivals, planets, resources } = get();
+        const rival = corporateRivals.find(r => r.id === rivalId);
+        if (!rival) return;
+
+        // Choose strategy based on personality and current game state
+        let preferredStrategy: RivalStrategy['type'] = 'defensive_consolidation';
+
+        if (rival.aiPersonality.ambition > 70 && rival.resources.credits > 3000) {
+          preferredStrategy = 'aggressive_expansion';
+        } else if (rival.aiPersonality.cunning > 80) {
+          preferredStrategy = 'shadow_operations';
+        } else if (rival.resources.influence > 60) {
+          preferredStrategy = 'diplomatic_manipulation';
+        } else if (rival.ownedPlanets.length > 0 && rival.relationshipWithPlayer < -50) {
+          preferredStrategy = 'defensive_consolidation';
+        }
+
+        const playerThreatLevel = planets.filter(p => p.conquered).length + (resources.bureaucraticLeverage / 10);
+
+        rival.currentStrategy = {
+          type: preferredStrategy,
+          priority: Math.floor(rival.aiPersonality.ambition / 10) + Math.floor(Math.random() * 3),
+          duration: 10 + Math.floor(Math.random() * 15),
+          targetPlayer: rival.relationshipWithPlayer < -30 || playerThreatLevel > rival.ownedPlanets.length + 2,
+          targetPlanets: preferredStrategy === 'aggressive_expansion' ?
+            planets.filter(p => !p.conquered && !rival.ownedPlanets.includes(p.id))
+              .slice(0, 2).map(p => p.id) : undefined
+        };
+
+        set({ corporateRivals });
+      },
+
+      checkTakeoverThreats: () => {
+        const { corporateRivals, gameModifiers, resources, corporateTier, daysPassed } = get();
+
+        // Calculate vulnerability score
+        const activeRivals = corporateRivals.filter(r => !r.defeated);
+        const hostileRivals = activeRivals.filter(r => r.relationshipWithPlayer < -40);
+
+        let vulnerabilityScore = 0;
+
+        // Low bureaucratic leverage increases vulnerability
+        if (resources.bureaucraticLeverage < 5) vulnerabilityScore += 20;
+
+        // Low board loyalty increases vulnerability
+        if (gameModifiers.boardLoyalty < 40) vulnerabilityScore += 15;
+
+        // Strong rivals increase threat
+        vulnerabilityScore += hostileRivals.length * 10;
+
+        // Low takeover defense increases vulnerability
+        if (gameModifiers.takeoverDefense < 25) vulnerabilityScore += 15;
+
+        // High corporate control reduces vulnerability
+        if (gameModifiers.corporateControl > 70) vulnerabilityScore -= 20;
+
+        // Directors and above face more sophisticated threats
+        if (corporateTier.level >= 3) vulnerabilityScore += 10;
+
+        // Check if takeover event should trigger
+        const takoverChance = Math.min(0.08, vulnerabilityScore / 500);
+
+        if (Math.random() < takoverChance && daysPassed > 15) {
+          // Trigger hostile takeover event
+          const takeoverEvents = ['hostile_takeover_threat', 'board_coup_attempt', 'corporate_espionage_discovery', 'insider_trading_allegation'];
+          const selectedEvent = takeoverEvents[Math.floor(Math.random() * takeoverEvents.length)];
+
+          // Find the event data
+          const eventData = CORPORATE_EVENTS.find(e => e.id === selectedEvent);
+          if (eventData) {
+            get().triggerCorporateEvent(eventData);
+          }
+        }
+
+        // Decay defensive bonuses over time
+        if (gameModifiers.espionageImmunity > 0) {
+          set(state => ({
+            gameModifiers: {
+              ...state.gameModifiers,
+              espionageImmunity: Math.max(0, state.gameModifiers.espionageImmunity - 1)
+            }
+          }));
+        }
+
+        if (gameModifiers.takeoverDefense > 0) {
+          set(state => ({
+            gameModifiers: {
+              ...state.gameModifiers,
+              takeoverDefense: Math.max(0, state.gameModifiers.takeoverDefense - 2) // Slower decay
+            }
+          }));
+        }
+      },
+
       // HR Review System
       isHRReviewAvailable: () => {
         const { corporateTier, daysPassed, promotionProgress } = get();
@@ -1587,9 +2165,182 @@ export const useGameStore = create<GameStore>()(
         get().addResources(0, 0, 1);
         
         addNotification(selectedOutcome.message, selectedOutcome.type === 'positive' ? 'success' : selectedOutcome.type === 'negative' ? 'error' : 'info');
-        
+
         // Check for promotion
         get().checkPromotion();
+      },
+
+      // Enhanced Mission System Implementation
+      generateProceduralMissions: () => {
+        const { planets, generateId } = get();
+        const conqueredPlanets = planets.filter(p => p.conquered).length;
+        const availableProceduralMissions: Mission[] = [];
+
+        // Check each procedural mission type
+        Object.values(PROCEDURAL_MISSIONS).forEach(template => {
+          let shouldTrigger = false;
+
+          // Evaluate trigger conditions
+          switch (template.triggerCondition) {
+            case 'conquered_planets >= 1':
+              shouldTrigger = conqueredPlanets >= 1;
+              break;
+            case 'corporate_presence >= 50':
+              shouldTrigger = planets.some(p => p.corporatePresence && p.corporatePresence >= 50);
+              break;
+            case 'bureaucratic_leverage >= 10':
+              shouldTrigger = resources.bureaucraticLeverage >= 10;
+              break;
+            case 'conquered_planets >= 2':
+              shouldTrigger = conqueredPlanets >= 2;
+              break;
+          }
+
+          // Generate mission if conditions are met and random chance succeeds
+          if (shouldTrigger && Math.random() < template.frequency) {
+            const mission: Mission = {
+              id: generateId(),
+              planetId: 'procedural', // Special identifier for procedural missions
+              teamIds: [],
+              startTime: Date.now(),
+              duration: 60, // Default 60 minutes
+              type: template.id as string,
+              procedural: true,
+              objectives: [{
+                id: generateId(),
+                type: 'primary',
+                description: template.description,
+                requirements: {},
+                rewards: template.rewards,
+                completed: false,
+                failed: false
+              }],
+              consequences: template.consequences?.map(consId => ({
+                id: generateId(),
+                triggerCondition: 'failure' as const,
+                type: 'immediate' as const,
+                effects: MISSION_CONSEQUENCES[consId]?.effects || {},
+                description: MISSION_CONSEQUENCES[consId]?.description || 'Unknown consequence'
+              })) || []
+            };
+            availableProceduralMissions.push(mission);
+          }
+        });
+
+        set({ availableProceduralMissions });
+      },
+
+      processMissionConsequences: (consequences: MissionConsequence[]) => {
+        const { addNotification } = get();
+
+        consequences.forEach(consequence => {
+          // Process immediate consequences
+          if (consequence.type === 'immediate') {
+            // Apply reputation changes
+            if (consequence.effects.reputation) {
+              set(state => ({ reputation: Math.max(0, Math.min(100, state.reputation + consequence.effects.reputation)) }));
+            }
+
+            // Apply planet effects
+            if (consequence.effects.planets) {
+              const updatedPlanets = planets.map(planet => {
+                if (consequence.effects.planets?.includes('all') || consequence.effects.planets?.includes(planet.id)) {
+                  return {
+                    ...planet,
+                    stability: consequence.effects.stability ?
+                      Math.max(0, Math.min(100, (planet.stability || 50) + consequence.effects.stability)) :
+                      planet.stability
+                  };
+                }
+                return planet;
+              });
+              set({ planets: updatedPlanets });
+            }
+
+            // Trigger corporate events if specified
+            if (consequence.effects.corporateEvents) {
+              // This would integrate with existing corporate event system
+              addNotification(`Corporate consequence: ${consequence.description}`, 'warning');
+            }
+          }
+
+          // Store delayed consequences for later processing
+          if (consequence.type === 'delayed' || consequence.type === 'permanent') {
+            set(state => ({
+              missionConsequences: [...state.missionConsequences, consequence]
+            }));
+          }
+        });
+      },
+
+      evaluateMissionObjectives: (mission: Mission, result: MissionResult) => {
+        const { selectedDaemons, daemons, equipment } = get();
+
+        if (!mission.objectives) return result;
+
+        const team = Array.from(selectedDaemons)
+          .map(id => daemons.find(d => d.id === id))
+          .filter(Boolean) as Daemon[];
+
+        let objectivesCompleted = 0;
+        const bonusRewards = { credits: 0, soulEssence: 0, bureaucraticLeverage: 0, rawMaterials: 0 };
+
+        mission.objectives.forEach(objective => {
+          let canComplete = true;
+
+          // Check objective requirements
+          if (objective.requirements.minTeamSize && team.length < objective.requirements.minTeamSize) {
+            canComplete = false;
+          }
+
+          if (objective.requirements.specialization &&
+              !team.some(d => d.specialization === objective.requirements.specialization)) {
+            canComplete = false;
+          }
+
+          if (objective.requirements.equipment &&
+              !objective.requirements.equipment.some(equipName =>
+                equipment.some(e => e.name === equipName && team.some(d => d.equipment === e.id)))) {
+            canComplete = false;
+          }
+
+          // Complete objective if requirements are met and mission was successful
+          // (or if it's a bonus objective with special conditions)
+          if (canComplete && (result.success || objective.type === 'bonus')) {
+            objective.completed = true;
+            objectivesCompleted++;
+
+            // Add objective rewards
+            Object.entries(objective.rewards).forEach(([key, value]) => {
+              if (key in bonusRewards && typeof value === 'number') {
+                bonusRewards[key as keyof typeof bonusRewards] += value;
+              }
+            });
+          } else {
+            objective.failed = true;
+          }
+        });
+
+        // Apply bonus rewards
+        get().addResources(
+          bonusRewards.credits,
+          bonusRewards.soulEssence,
+          bonusRewards.bureaucraticLeverage,
+          bonusRewards.rawMaterials
+        );
+
+        // Enhance mission result with objective information
+        return {
+          ...result,
+          narrative: `${result.narrative}\n\nObjectives completed: ${objectivesCompleted}/${mission.objectives.length}`,
+          rewards: {
+            ...result.rewards,
+            credits: (result.rewards.credits || 0) + bonusRewards.credits,
+            soulEssence: (result.rewards.soulEssence || 0) + bonusRewards.soulEssence,
+            bureaucraticLeverage: (result.rewards.bureaucraticLeverage || 0) + bonusRewards.bureaucraticLeverage,
+            rawMaterials: (result.rewards.rawMaterials || 0) + bonusRewards.rawMaterials
+          }
+        };
       },
 
       // Endgame System

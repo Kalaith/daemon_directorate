@@ -1,7 +1,9 @@
 // components/game/TeamManagement.tsx
 import React from 'react';
-import { useGameStore } from '../../stores/useGameStore';
+import { useGameStore } from '../../stores/composedStore';
 import Card from '../ui/Card';
+import { getLifespanColor, getProgressBarColor } from '../../utils/gameHelpers';
+import { CORPORATE_BALANCE } from '../../constants/gameBalance';
 
 const TeamManagement: React.FC = () => {
   const {
@@ -17,23 +19,7 @@ const TeamManagement: React.FC = () => {
 
   const activeDaemons = daemons.filter(d => d.isActive);
 
-  const getLifespanColor = (days: number) => {
-    if (days <= 10) return 'text-red-600';
-    if (days <= 20) return 'text-orange-600';
-    return 'text-slate-600';
-  };
-
-  const getProgressBarColor = (value: number, type: 'health' | 'morale') => {
-    if (type === 'health') {
-      if (value >= 70) return 'bg-green-500';
-      if (value >= 40) return 'bg-orange-400';
-      return 'bg-red-500';
-    } else {
-      if (value >= 70) return 'bg-teal-500';
-      if (value >= 40) return 'bg-orange-400';
-      return 'bg-red-500';
-    }
-  };
+  // UI helper functions now imported from utils
 
   return (
     <div className="space-y-8">
@@ -107,7 +93,7 @@ const TeamManagement: React.FC = () => {
               </div>
 
               <div className="flex gap-2">
-                {corporateTier.level >= 2 && (
+                {corporateTier.level >= CORPORATE_BALANCE.HR_REVIEW.MIN_TIER && (
                   <button 
                     onClick={() => conductHRReview(daemon.id)}
                     disabled={!isHRReviewAvailable()}
@@ -116,7 +102,7 @@ const TeamManagement: React.FC = () => {
                         ? 'bg-purple-600 hover:bg-purple-700' 
                         : 'bg-gray-400 cursor-not-allowed'
                     }`}
-                    title={isHRReviewAvailable() ? 'Conduct Performance Review' : 'HR Reviews available every 5 days'}
+                    title={isHRReviewAvailable() ? 'Conduct Performance Review' : `HR Reviews available every ${CORPORATE_BALANCE.HR_REVIEW.COOLDOWN_DAYS} days`}
                   >
                     📊 Review
                   </button>
@@ -215,10 +201,10 @@ const TeamManagement: React.FC = () => {
 
         <button
           onClick={refreshRecruitmentPool}
-          disabled={!canAfford(50)}
+          disabled={!canAfford(CORPORATE_BALANCE.RECRUITMENT_COST)}
           className="px-6 py-3 bg-slate-700 text-cream-100 rounded hover:bg-slate-800 disabled:bg-slate-400 disabled:cursor-not-allowed transition-colors font-medium"
         >
-          Request New Candidates (50 Credits)
+          Request New Candidates ({CORPORATE_BALANCE.RECRUITMENT_COST} Credits)
         </button>
       </div>
     </div>

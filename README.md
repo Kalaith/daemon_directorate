@@ -186,6 +186,12 @@ linter before committing your changes:
 npm run lint
 ```
 
+## License
+
+This project is licensed under the MIT License - see the individual component README files for details.
+
 ---
 
-Welcome to your Corporate Hell! �
+Welcome to your Corporate Hell! 🔥
+
+Part of the WebHatchery game collection.

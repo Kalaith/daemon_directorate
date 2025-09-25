@@ -1,5 +1,5 @@
 import React from 'react';
-import { useGameStore } from '../../stores/useGameStore';
+import { useGameStore } from '../../stores/composedStore';
 import Card from './Card';
 import type { EventChoice, EventEffect } from '../../types/game';
 

@@ -60,6 +60,26 @@ export interface Room {
   level: number;
   bonus: string;
   upgrade_cost: number;
+
+  // Enhanced room system
+  assignedDaemons: string[]; // IDs of daemons assigned to this room
+  maxAssignments: number; // Maximum daemons that can be assigned
+  specialization?: SpecializationType; // Room specialization bonus
+  roomType: 'utility' | 'training' | 'recovery' | 'command' | 'special';
+  synergyBonuses?: RoomSynergyBonus[];
+  unlocked: boolean; // Whether the room is available for use
+}
+
+export interface RoomSynergyBonus {
+  requiredRooms: string[]; // Room names that must be upgraded
+  minLevel: number; // Minimum combined level
+  bonus: string;
+  effect: {
+    type: string;
+    value: number;
+    appliesToDaemons?: boolean;
+    appliesToMissions?: boolean;
+  };
 }
 
 export interface Planet {
@@ -71,6 +91,11 @@ export interface Planet {
   reward: string;
   conquered: boolean;
   lastMission: string | null;
+  stability?: number; // 0-100, affects available missions
+  corporatePresence?: number; // 0-100, how established your company is
+  availableMissions?: string[]; // Mission types available on this planet
+  missionHistory?: string[]; // Previous mission IDs for consequences
+  specialFeatures?: string[]; // Unique planet characteristics
 }
 
 export interface Mission {
@@ -79,6 +104,42 @@ export interface Mission {
   teamIds: string[];
   startTime: number;
   duration: number;
+  type?: 'conquest' | 'sabotage' | 'diplomacy' | 'reconnaissance' | 'extraction';
+  objectives?: MissionObjective[];
+  consequences?: MissionConsequence[];
+  procedural?: boolean; // Generated based on conquered territories
+}
+
+export interface MissionObjective {
+  id: string;
+  type: 'primary' | 'secondary' | 'bonus';
+  description: string;
+  requirements: {
+    specialization?: SpecializationType;
+    minTeamSize?: number;
+    equipment?: string[];
+    resources?: Partial<GameResources>;
+  };
+  rewards: Partial<GameResources> & {
+    experience?: number;
+    reputation?: number;
+  };
+  completed?: boolean;
+  failed?: boolean;
+}
+
+export interface MissionConsequence {
+  id: string;
+  triggerCondition: 'success' | 'failure' | 'partial' | 'abandonment';
+  type: 'immediate' | 'delayed' | 'permanent';
+  effects: {
+    planets?: string[]; // Affects specific planets
+    reputation?: number;
+    futureOpportunities?: string[];
+    corporateEvents?: string[];
+    rivalActions?: string[];
+  };
+  description: string;
 }
 
 export interface MissionResult {
@@ -133,6 +194,17 @@ export interface GameModifiers {
   hrInvestigation: number;
   productivityBonus: number;
   productivityBonusRemainingMissions: number;
+
+  // Enhanced room system bonuses
+  roomSynergyBonus: number;
+  roomSynergyMissionBonus: number;
+
+  // Defensive countermeasures
+  takeoverDefense: number; // Resistance to hostile takeovers
+  espionageImmunity: number; // Days remaining of espionage protection
+  boardLoyalty: number; // Board member loyalty rating
+  corporateControl: number; // Level of control over corporation
+  regulatoryFavor: number; // Favor with regulatory authorities
 }
 
 export interface Notification {
@@ -158,6 +230,12 @@ export interface GameState {
   tutorialCompleted: boolean;
   gameIntervalId?: number;
 
+  // Enhanced mission system
+  reputation: number;
+  availableProceduralMissions: Mission[];
+  missionConsequences: MissionConsequence[];
+  futureOpportunities: string[];
+
   // Corporate Progression System
   corporateTier: CorporateTier;
   promotionProgress: Record<string, number>;
@@ -181,6 +259,7 @@ export interface GameState {
   currentTab: 'dashboard' | 'team' | 'missions' | 'apartment' | 'equipment';
   selectedDaemons: Set<string>;
   currentPlanet: string | null;
+  selectedMissionType: string;
   showTutorial: boolean;
   showMemorial: boolean;
   showMissionModal: boolean;
@@ -313,6 +392,55 @@ export interface CorporateRival {
   specialty: string;
   threat: 'low' | 'medium' | 'high';
   defeated: boolean;
+
+  // Enhanced AI system
+  aiPersonality: RivalPersonality;
+  currentStrategy: RivalStrategy;
+  resources: {
+    credits: number;
+    influence: number;
+    intelligence: number;
+  };
+  ownedPlanets: string[];
+  activeOperations: RivalOperation[];
+  relationshipWithPlayer: number; // -100 to 100, affects AI decisions
+  lastActionDay: number;
+  strategicGoals: string[];
+}
+
+export interface RivalPersonality {
+  aggression: number; // 0-100, affects likelihood of direct attacks
+  cunning: number; // 0-100, affects use of espionage and sabotage
+  ambition: number; // 0-100, affects expansion rate and resource allocation
+  loyalty: number; // 0-100, affects reliability in agreements
+  adaptability: number; // 0-100, affects response to player actions
+}
+
+export interface RivalStrategy {
+  type: 'aggressive_expansion' | 'economic_dominance' | 'shadow_operations' | 'diplomatic_manipulation' | 'defensive_consolidation';
+  priority: number; // 1-10, how committed they are to this strategy
+  duration: number; // Days remaining on this strategy
+  targetPlanets?: string[];
+  targetPlayer?: boolean;
+}
+
+export interface RivalOperation {
+  id: string;
+  type: 'espionage' | 'sabotage' | 'planet_attack' | 'trade_manipulation' | 'alliance_formation' | 'counter_intelligence';
+  targetId: string; // Planet ID or 'player' for operations against the player
+  duration: number; // Days to complete
+  successChance: number;
+  consequences: {
+    success: RivalOperationEffect[];
+    failure: RivalOperationEffect[];
+  };
+}
+
+export interface RivalOperationEffect {
+  type: string;
+  target: 'player' | 'planet' | 'rival';
+  value: number;
+  description: string;
 }
 
 // Unlocked Content

@@ -1,6 +1,6 @@
 // components/layout/TabNavigation.tsx
 import React from 'react';
-import { useGameStore } from '../../stores/useGameStore';
+import { useGameStore } from '../../stores/composedStore';
 import type { TabType } from '../../types/game';
 
 const TabNavigation: React.FC = () => {

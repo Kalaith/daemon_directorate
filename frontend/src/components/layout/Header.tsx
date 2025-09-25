@@ -1,6 +1,6 @@
 // components/layout/Header.tsx
 import React from 'react';
-import { useGameStore } from '../../stores/useGameStore';
+import { useGameStore } from '../../stores/composedStore';
 
 const Header: React.FC = () => {
   const { resources } = useGameStore();
