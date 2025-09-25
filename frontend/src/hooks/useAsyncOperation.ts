@@ -259,7 +259,7 @@ export const useBatchOperation = <T>(
         try {
           const result = await operation();
           results.push(result);
-        } catch (error) {
+        } catch {
           results.push(null);
           // Batch operation failed - using structured logging instead of console.warn
         }

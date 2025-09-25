@@ -179,6 +179,7 @@ export const UI_CONSTANTS = {
     },
   },
 
+  TIER_ICONS: ['👔', '📊', '🏢', '🌟', '👑'],
 } as const;
 
 export const CORPORATE_BALANCE = {
@@ -218,6 +219,4 @@ export const CORPORATE_BALANCE = {
     DAILY_ENDING_CHANCE_TIER5: 0.05,
     DAILY_ENDING_CHANCE_EXTENDED: 0.1,
   },
-
-  TIER_ICONS: ['👔', '📊', '🏢', '🌟', '👑'],
 } as const;

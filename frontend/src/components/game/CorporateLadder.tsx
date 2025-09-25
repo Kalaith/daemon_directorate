@@ -1,7 +1,6 @@
 import React from 'react';
 import { useGameStore } from '../../stores/composedStore';
 import { CORPORATE_TIERS } from '../../constants/gameData';
-import { CORPORATE_BALANCE } from '../../constants/gameBalance';
 import Card from '../ui/Card';
 import type { CorporateTier } from '../../types/game';
 import { CorporateProgressionService, type ProgressionRequirements } from '../../services/CorporateProgressionService';

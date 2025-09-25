@@ -106,7 +106,7 @@ class ConfigManager {
   // Get configuration value by path
   get<T = unknown>(path: string): T {
     const keys = path.split('.');
-    let value: any = this.config;
+    let value: unknown = this.config;
 
     for (const key of keys) {
       if (value && typeof value === 'object' && key in value) {
@@ -128,12 +128,12 @@ class ConfigManager {
       throw new Error('Invalid configuration path');
     }
 
-    let target: any = this.config;
+    let target: Record<string, unknown> = this.config as Record<string, unknown>;
     for (const key of keys) {
       if (!target[key] || typeof target[key] !== 'object') {
         target[key] = {};
       }
-      target = target[key];
+      target = target[key] as Record<string, unknown>;
     }
 
     target[lastKey] = value;
@@ -196,7 +196,7 @@ class ConfigManager {
     this.listeners.forEach(listener => {
       try {
         listener(this.config);
-      } catch (error) {
+      } catch {
         // Configuration listener error - using structured logging instead of console.error
       }
     });

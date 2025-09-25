@@ -1,6 +1,6 @@
 // services/CorporateProgressionService.ts - Business logic for corporate tier progression
-import type { CorporateTier, Daemon, Planet, CorporateRival } from '../types/game';
-import { CORPORATE_BALANCE } from '../constants/gameBalance';
+import type { CorporateTier, Planet, CorporateRival, DaemonLegacy } from '../types/game';
+import { UI_CONSTANTS } from '../constants/gameBalance';
 
 export interface ProgressionRequirements {
   planetsControlled: RequirementStatus;
@@ -25,7 +25,7 @@ export class CorporateProgressionService {
     requirements: CorporateTier['requirements'],
     planets: Planet[],
     daysPassed: number,
-    legacyBook: Record<string, any>,
+    legacyBook: Record<string, DaemonLegacy>,
     corporateRivals: CorporateRival[],
     promotionProgress: Record<string, number>
   ): ProgressionRequirements {
@@ -73,7 +73,7 @@ export class CorporateProgressionService {
    * Get the appropriate tier icon for a given level
    */
   static getTierIcon(level: number): string {
-    return CORPORATE_BALANCE.TIER_ICONS[level - 1] || CORPORATE_BALANCE.TIER_ICONS[0];
+    return UI_CONSTANTS.TIER_ICONS[level - 1] || UI_CONSTANTS.TIER_ICONS[0];
   }
 
   /**

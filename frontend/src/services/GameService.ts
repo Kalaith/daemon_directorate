@@ -25,9 +25,9 @@ interface GameServiceInterface {
 }
 
 class GameService implements GameServiceInterface {
-  private store: any; // Would be properly typed in real implementation
+  private store: unknown; // Store interface would be properly typed in real implementation
 
-  constructor(storeInstance: any) {
+  constructor(storeInstance: unknown) {
     this.store = storeInstance;
   }
 
@@ -155,7 +155,7 @@ class GameService implements GameServiceInterface {
 }
 
 // Factory function to create service instance
-export const createGameService = (storeInstance: any): GameServiceInterface => {
+export const createGameService = (storeInstance: unknown): GameServiceInterface => {
   return new GameService(storeInstance);
 };
 
