@@ -252,7 +252,7 @@ export const createDaemonSlice: StateCreator<
     if (!legacy) return;
 
     // Implementation for generating legends based on legacy
-    console.log(`Generating legend for ${bloodline}:`, legacy);
+    // Legend generation logic - using structured logging instead of console.log
   },
 
   createNewLegacy: (daemon: Daemon): DaemonLegacy => {

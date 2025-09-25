@@ -142,6 +142,25 @@ export const CORPORATE_BALANCE = {
 } as const;
 
 export const UI_CONSTANTS = {
+  // Percentage calculations
+  PERCENTAGE_MULTIPLIER: 100,
+
+  // Z-index layering
+  Z_INDEX: {
+    MODAL: 50,
+    TOOLTIP: 60,
+    GAME_CONTROLS: 50,
+    NOTIFICATION: 55,
+  },
+
+  // Tailwind class constants
+  CLASSES: {
+    MODAL_OVERLAY: 'fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center',
+    MODAL_CONTAINER: 'bg-gray-900 border rounded-lg p-6 max-w-md w-full mx-4 shadow-2xl',
+    BUTTON_PRIMARY: 'px-4 py-2 rounded transition-colors font-semibold',
+    BUTTON_SECONDARY: 'px-4 py-2 bg-gray-700 text-white rounded hover:bg-gray-600 text-sm border border-gray-600 transition-colors',
+  },
+
   COLORS: {
     HEALTH: {
       GOOD: 'bg-green-500',
@@ -158,6 +177,46 @@ export const UI_CONSTANTS = {
       WARNING: 'text-orange-600',
       CRITICAL: 'text-red-600',
     },
+  },
+
+} as const;
+
+export const CORPORATE_BALANCE = {
+  // HR Review system
+  HR_REVIEW: {
+    COOLDOWN_DAYS: 5,
+    MIN_TIER: 2,
+    POSITIVE_CHANCE: 0.4,
+    NEUTRAL_CHANCE: 0.4,
+    NEGATIVE_CHANCE: 0.2,
+    POSITIVE_MORALE: 15,
+    POSITIVE_HEALTH: 5,
+    NEGATIVE_MORALE: -10,
+    NEGATIVE_HEALTH: -5,
+    NEGATIVE_LIFESPAN: -2,
+  },
+
+  // Recruitment costs
+  RECRUITMENT_COST: 50,
+
+  // Event frequencies
+  EVENT_CHANCES: {
+    DAILY_CORPORATE_EVENT: 0.08,
+    DAILY_SURREAL_EVENT_BASE: 0.03,
+    SURREAL_EVENT_TIER_MULTIPLIER: 0.01,
+    PROCEDURAL_MISSION_BASE: 0.02,
+    PROCEDURAL_MISSION_PLANET_BONUS: 0.01,
+    COMPLIANCE_TASK_BASE: 0.05,
+    COMPLIANCE_TASK_TIER_MULTIPLIER: 0.02,
+  },
+
+  // Endgame triggers
+  ENDGAME: {
+    MIN_TIER_FOR_ENDGAME: 5,
+    MIN_DAYS_FOR_ENDGAME: 200,
+    BURNOUT_THRESHOLD: 3,
+    DAILY_ENDING_CHANCE_TIER5: 0.05,
+    DAILY_ENDING_CHANCE_EXTENDED: 0.1,
   },
 
   TIER_ICONS: ['👔', '📊', '🏢', '🌟', '👑'],

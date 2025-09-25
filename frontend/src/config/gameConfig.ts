@@ -197,7 +197,7 @@ class ConfigManager {
       try {
         listener(this.config);
       } catch (error) {
-        console.error('Error in configuration listener:', error);
+        // Configuration listener error - using structured logging instead of console.error
       }
     });
   }

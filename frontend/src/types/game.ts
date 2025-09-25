@@ -173,8 +173,21 @@ export interface CorporateEvent {
   chosenOption?: string;
 }
 
+export type EventEffectType =
+  | 'credits'
+  | 'soulEssence'
+  | 'bureaucraticLeverage'
+  | 'rawMaterials'
+  | 'morale'
+  | 'equipment_durability'
+  | 'recruitment_discount'
+  | 'equipment_discount'
+  | 'productivity_bonus'
+  | 'passive_income'
+  | 'daemon_retirement';
+
 export interface EventEffect {
-  type: string;
+  type: EventEffectType;
   value: number;
   description: string;
 }

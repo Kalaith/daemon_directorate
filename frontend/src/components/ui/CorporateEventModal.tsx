@@ -2,6 +2,8 @@ import React from 'react';
 import { useGameStore } from '../../stores/composedStore';
 import Card from './Card';
 import type { EventChoice, EventEffect } from '../../types/game';
+import { UI_CONSTANTS } from '../../constants/gameBalance';
+import { logger } from '../../utils/logger';
 
 export const CorporateEventModal: React.FC = () => {
   const {
@@ -28,7 +30,11 @@ export const CorporateEventModal: React.FC = () => {
         case 'rawMaterials':
           return resources.rawMaterials >= Math.abs(cost.value);
         default:
-          return true;
+          logger.warn('Unknown cost type in affordability check', undefined, {
+            component: 'CorporateEventModal',
+            metadata: { costType: cost.type }
+          });
+          return false; // Fail safe
       }
     });
   };
@@ -77,11 +83,11 @@ export const CorporateEventModal: React.FC = () => {
       case 'equipment_durability':
         return `${sign}${value} Durability (all equipment)`;
       case 'recruitment_discount':
-        return `${Math.round(value * 100)}% recruitment discount`;
+        return `${Math.round(value * UI_CONSTANTS.PERCENTAGE_MULTIPLIER)}% recruitment discount`;
       case 'equipment_discount':
-        return `${Math.round(value * 100)}% repair cost reduction`;
+        return `${Math.round(value * UI_CONSTANTS.PERCENTAGE_MULTIPLIER)}% repair cost reduction`;
       case 'productivity_bonus':
-        return `${Math.round(value * 100)}% mission success bonus`;
+        return `${Math.round(value * UI_CONSTANTS.PERCENTAGE_MULTIPLIER)}% mission success bonus`;
       case 'passive_income':
         return `+${value} credits per day`;
       case 'daemon_retirement':
@@ -93,7 +99,7 @@ export const CorporateEventModal: React.FC = () => {
 
   if (!meetsRequirements()) {
     return (
-      <div className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50">
+      <div className={`${UI_CONSTANTS.CLASSES.MODAL_OVERLAY} z-${UI_CONSTANTS.Z_INDEX.MODAL}`}>
         <Card className="max-w-md mx-4 p-6">
           <h2 className="text-xl font-bold text-red-400 mb-4">Access Denied</h2>
           <p className="text-gray-300 mb-4">{currentEvent.description}</p>
@@ -112,7 +118,7 @@ export const CorporateEventModal: React.FC = () => {
   }
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50">
+    <div className={`${UI_CONSTANTS.CLASSES.MODAL_OVERLAY} z-${UI_CONSTANTS.Z_INDEX.MODAL}`}>
       <Card className="max-w-2xl mx-4 p-6">
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-xl font-bold text-orange-400">

@@ -1,8 +1,10 @@
 import React from 'react';
 import { useGameStore } from '../../stores/composedStore';
 import { CORPORATE_TIERS } from '../../constants/gameData';
+import { CORPORATE_BALANCE } from '../../constants/gameBalance';
 import Card from '../ui/Card';
 import type { CorporateTier } from '../../types/game';
+import { CorporateProgressionService, type ProgressionRequirements } from '../../services/CorporateProgressionService';
 
 export const CorporateLadder: React.FC = () => {
   const { 
@@ -18,50 +20,19 @@ export const CorporateLadder: React.FC = () => {
   const currentTierIndex = CORPORATE_TIERS.findIndex(tier => tier.id === corporateTier.id);
   const nextTier = CORPORATE_TIERS[currentTierIndex + 1];
 
-  const getRequirementStatus = (requirements: CorporateTier['requirements']) => {
-    const conqueredPlanets = planets.filter(p => p.conquered).length;
-    const maxGeneration = Math.max(0, ...Object.values(legacyBook).map(l => l.generation));
-    const defeatedRivals = corporateRivals.filter(r => r.defeated).length;
-    const completedHRReviews = promotionProgress.hrReviews || 0;
-    const complianceAudits = promotionProgress.complianceAudits || 0;
-
-    return {
-      planetsControlled: {
-        current: conqueredPlanets,
-        required: requirements.planetsControlled || 0,
-        met: !requirements.planetsControlled || conqueredPlanets >= requirements.planetsControlled
-      },
-      daysLived: {
-        current: daysPassed,
-        required: requirements.daysLived || 0,
-        met: !requirements.daysLived || daysPassed >= requirements.daysLived
-      },
-      legacyGenerations: {
-        current: maxGeneration,
-        required: requirements.legacyGenerations || 0,
-        met: !requirements.legacyGenerations || maxGeneration >= requirements.legacyGenerations
-      },
-      defeatedRivals: {
-        current: defeatedRivals,
-        required: requirements.defeatedRivals || 0,
-        met: !requirements.defeatedRivals || defeatedRivals >= requirements.defeatedRivals
-      },
-      completedHRReviews: {
-        current: completedHRReviews,
-        required: requirements.completedHRReviews || 0,
-        met: !requirements.completedHRReviews || completedHRReviews >= requirements.completedHRReviews
-      },
-      complianceAudits: {
-        current: complianceAudits,
-        required: requirements.complianceAudits || 0,
-        met: !requirements.complianceAudits || complianceAudits >= requirements.complianceAudits
-      }
-    };
+  const getRequirementStatus = (requirements: CorporateTier['requirements']): ProgressionRequirements => {
+    return CorporateProgressionService.calculateRequirementStatus(
+      requirements,
+      planets,
+      daysPassed,
+      legacyBook,
+      corporateRivals,
+      promotionProgress
+    );
   };
 
   const getTierIcon = (level: number) => {
-    const icons = ['👔', '📊', '🏢', '🌟', '👑'];
-    return icons[level - 1] || '👔';
+    return CorporateProgressionService.getTierIcon(level);
   };
 
   return (
@@ -147,7 +118,7 @@ export const CorporateLadder: React.FC = () => {
                 
                 return (
                   <div key={key} className={`flex justify-between items-center p-2 rounded ${status.met ? 'bg-green-600/20 text-green-300' : 'bg-red-600/20 text-red-300'}`}>
-                    <span className="text-sm capitalize">{key.replace(/([A-Z])/g, ' $1').trim()}:</span>
+                    <span className="text-sm capitalize">{CorporateProgressionService.formatRequirementKey(key)}:</span>
                     <span className="text-sm font-mono">
                       {status.current} / {status.required}
                       {status.met ? ' ✓' : ' ✗'}

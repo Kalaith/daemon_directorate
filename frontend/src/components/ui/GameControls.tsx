@@ -1,6 +1,7 @@
 // components/ui/GameControls.tsx
 import React from 'react';
 import { useGameStore } from '../../stores/composedStore';
+import { UI_CONSTANTS } from '../../constants/gameBalance';
 
 const GameControls: React.FC = () => {
   const { saveGame, loadGame, resetGame } = useGameStore();
@@ -16,7 +17,7 @@ const GameControls: React.FC = () => {
   };
 
   return (
-    <div className="fixed bottom-4 right-4 flex gap-2 z-50">
+    <div className={`fixed bottom-4 right-4 flex gap-2 z-${UI_CONSTANTS.Z_INDEX.GAME_CONTROLS}`}>
       <button
         onClick={saveGame}
         className="px-4 py-2 bg-teal-600 text-white rounded hover:bg-teal-700 text-sm border border-teal-500 transition-colors shadow-lg"

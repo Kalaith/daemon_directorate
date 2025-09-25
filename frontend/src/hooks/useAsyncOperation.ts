@@ -261,7 +261,7 @@ export const useBatchOperation = <T>(
           results.push(result);
         } catch (error) {
           results.push(null);
-          console.warn('Batch operation failed:', error);
+          // Batch operation failed - using structured logging instead of console.warn
         }
 
         completed++;

@@ -1,6 +1,7 @@
 // components/ui/Tutorial.tsx
 import React from 'react';
 import { useGameStore } from '../../stores/composedStore';
+import { UI_CONSTANTS } from '../../constants/gameBalance';
 
 const Tutorial: React.FC = () => {
   const { setShowTutorial, setTutorialCompleted } = useGameStore();
@@ -11,7 +12,7 @@ const Tutorial: React.FC = () => {
   };
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 p-4">
+    <div className={`${UI_CONSTANTS.CLASSES.MODAL_OVERLAY} z-${UI_CONSTANTS.Z_INDEX.MODAL} p-4`}>
       <div className="bg-gray-900 border border-teal-500 rounded-lg p-6 max-w-md w-full mx-4 shadow-2xl">
         <h2 className="text-xl font-bold text-teal-300 mb-4">
           Welcome to Daemon Directorate
