@@ -1,7 +1,8 @@
 // hooks/useGameSelectors.ts - Optimized selectors to prevent unnecessary re-renders
 import { useMemo } from 'react';
-import { useGameStore } from '../stores/useGameStore';
+import { useGameStore } from '../stores/composedStore';
 import { DAEMON_BALANCE } from '../constants/gameBalance';
+import { DashboardService } from '../services/DashboardService';
 
 // Memoized selectors to prevent unnecessary re-renders
 export const useActiveDaemons = () => {
@@ -27,15 +28,16 @@ export const useDaemonStats = () => {
       };
     }
 
-    const avgHealth = Math.round(
-      activeDaemons.reduce((sum, d) => sum + d.health, 0) / activeDaemons.length
+    // Use DashboardService for consistent calculations
+    const stats = DashboardService.calculateDashboardStats(
+      activeDaemons,
+      [], // corporateEvents not needed for this calculation
+      [], // complianceTasks not needed
+      0,  // daysPassed not needed
+      {}, // legacyBook not needed
+      []  // hallOfInfamy not needed
     );
-    const avgMorale = Math.round(
-      activeDaemons.reduce((sum, d) => sum + d.morale, 0) / activeDaemons.length
-    );
-    const criticalLifespans = activeDaemons.filter(
-      d => d.lifespanDays <= DAEMON_BALANCE.THRESHOLDS.CRITICAL_LIFESPAN
-    ).length;
+
     const lowHealthCount = activeDaemons.filter(
       d => d.health < DAEMON_BALANCE.THRESHOLDS.LOW_HEALTH
     ).length;
@@ -44,9 +46,9 @@ export const useDaemonStats = () => {
     ).length;
 
     return {
-      avgHealth,
-      avgMorale,
-      criticalLifespans,
+      avgHealth: stats.avgHealth,
+      avgMorale: stats.avgMorale,
+      criticalLifespans: stats.criticalLifespans,
       lowHealthCount,
       lowMoraleCount,
     };

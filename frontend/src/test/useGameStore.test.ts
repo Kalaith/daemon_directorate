@@ -1,7 +1,7 @@
 // src/test/useGameStore.test.ts
 import { describe, it, expect, beforeEach } from 'vitest';
 import { act, renderHook } from '@testing-library/react';
-import { useGameStore } from '../stores/useGameStore';
+import { useGameStore } from '../stores/composedStore';
 
 describe('useGameStore', () => {
   beforeEach(() => {

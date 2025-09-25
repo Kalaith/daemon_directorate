@@ -8,7 +8,6 @@ import { HallOfInfamy } from './HallOfInfamy';
 import { CorporateRivals } from './CorporateRivals';
 import { getTierIcon } from '../../utils/gameHelpers';
 import { DashboardService } from '../../services/DashboardService';
-import { useMemo } from 'react';
 
 const Dashboard: React.FC = () => {
   const {

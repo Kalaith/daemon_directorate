@@ -1,6 +1,6 @@
 // App.enhanced.tsx - Enhanced App component with all improvements
 import React, { useEffect, Suspense } from 'react';
-import { useGameStore } from './stores/useGameStore';
+import { useGameStore } from './stores/composedStore';
 import { NotificationProvider } from './contexts/NotificationContext';
 import { AppErrorBoundary, FeatureErrorBoundary } from './components/ui/ErrorBoundary';
 import { PerformanceProfiler, PerformanceDashboard } from './utils/performance';

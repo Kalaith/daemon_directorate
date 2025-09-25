@@ -1,7 +1,7 @@
 // test/integration/criticalGameFlow.test.ts - Critical game flow integration tests
 import { describe, it, expect, beforeEach } from 'vitest';
 import { act, renderHook } from '@testing-library/react';
-import { useGameStore } from '../../stores/useGameStore';
+import { useGameStore } from '../../stores/composedStore';
 
 describe('Critical Game Flow Integration Tests', () => {
   beforeEach(() => {
