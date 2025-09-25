@@ -1,4 +1,4 @@
-@import 'tailwindcss' layer(base, components, utilities);
+@import 'tailwindcss';
 @import './styles/game-components.css';
 
 :root {

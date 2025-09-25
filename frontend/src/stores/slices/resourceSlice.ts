@@ -1,4 +1,4 @@
-// stores/slices/resourceSlice.ts - Resource management slice
+// stores/slices/resourceSlice.ts - Pure resource management
 import type { StateCreator } from 'zustand';
 import type { GameResources } from '../../types/game';
 
@@ -34,6 +34,10 @@ export interface ResourceActions {
   // Resource validation
   validateResourceTransaction: (resources: Partial<GameResources>) => boolean;
   getResourceDeficit: (required: Partial<GameResources>) => Partial<GameResources>;
+
+  // Resource utilities
+  getResourceValue: (resourceType: keyof GameResources) => number;
+  resetResources: () => void;
 }
 
 export type ResourceSlice = ResourceState & ResourceActions;
@@ -236,5 +240,16 @@ export const createResourceSlice: StateCreator<
     });
 
     return deficit;
+  },
+
+  getResourceValue: (resourceType: keyof GameResources) => {
+    return get().resources[resourceType];
+  },
+
+  resetResources: () => {
+    set({
+      resources: INITIAL_RESOURCES,
+      resourceHistory: [],
+    });
   },
 });

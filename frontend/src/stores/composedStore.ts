@@ -6,9 +6,14 @@ import { createDaemonSlice, type DaemonSlice } from './slices/daemonSlice';
 import { createResourceSlice, type ResourceSlice } from './slices/resourceSlice';
 import { createMissionSlice, type MissionSlice } from './slices/missionSlice';
 import { createUISlice, type UISlice } from './slices/uiSlice';
+import { createCorporateSlice, type CorporateSlice } from './slices/corporateSlice';
+import { createComplianceSlice, type ComplianceSlice } from './slices/complianceSlice';
+import { createEndgameSlice, type EndgameSlice } from './slices/endgameSlice';
+import { createApartmentSlice, type ApartmentSlice } from './slices/apartmentSlice';
+import { createEquipmentSlice, type EquipmentSlice } from './slices/equipmentSlice';
 
 // Combined store type
-export type ComposedGameStore = DaemonSlice & ResourceSlice & MissionSlice & UISlice;
+export type ComposedGameStore = DaemonSlice & ResourceSlice & MissionSlice & UISlice & CorporateSlice & ComplianceSlice & EndgameSlice & ApartmentSlice & EquipmentSlice;
 
 // Create the composed store
 export const useGameStore = create<ComposedGameStore>()(
@@ -18,26 +23,60 @@ export const useGameStore = create<ComposedGameStore>()(
       ...createResourceSlice(...a),
       ...createMissionSlice(...a),
       ...createUISlice(...a),
+      ...createCorporateSlice(...a),
+      ...createComplianceSlice(...a),
+      ...createEndgameSlice(...a),
+      ...createApartmentSlice(...a),
+      ...createEquipmentSlice(...a),
     })),
     {
       name: 'daemon-directorate-v2',
       version: 2,
       partialize: (state) => ({
-        // Core game data
+        // Resource slice
         resources: state.resources,
+        resourceHistory: state.resourceHistory,
+
+        // Daemon slice
         daemons: state.daemons,
         recruitmentPool: state.recruitmentPool,
         legacyBook: state.legacyBook,
         hallOfInfamy: state.hallOfInfamy,
 
-        // Mission data
+        // Mission slice
         planets: state.planets,
         completedMissions: state.completedMissions,
+
+        // Corporate slice
+        corporateTier: state.corporateTier,
+        promotionProgress: state.promotionProgress,
+        daysPassed: state.daysPassed,
+        corporateRivals: state.corporateRivals,
+
+        // Compliance slice
+        complianceTasks: state.complianceTasks,
+        complianceDeadlines: state.complianceDeadlines,
+        completedAudits: state.completedAudits,
+        hrReviewsCompleted: state.hrReviewsCompleted,
+
+        // Endgame slice
+        endgameState: state.endgameState,
+        prestigeBonuses: state.prestigeBonuses,
+        totalRestarts: state.totalRestarts,
+
+        // Apartment slice
+        rooms: state.rooms,
+        apartmentLevel: state.apartmentLevel,
+        totalRoomUpgrades: state.totalRoomUpgrades,
+
+        // Equipment slice
+        equipment: state.equipment,
+        totalEquipmentCrafted: state.totalEquipmentCrafted,
+        equipmentRepairCosts: state.equipmentRepairCosts,
 
         // UI state (selective)
         tutorialCompleted: state.tutorialCompleted,
         gameStarted: state.gameStarted,
-        daysPassed: state.daysPassed,
 
         // Exclude temporary/volatile state
         // selectedDaemons, currentTab, showModals, etc.
