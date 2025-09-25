@@ -1,5 +1,5 @@
 // stores/slices/uiSlice.ts - UI state management slice
-import { StateCreator } from 'zustand';
+import type { StateCreator } from 'zustand';
 import type { TabType, NotificationType, MissionResult, CorporateEvent } from '../../types/game';
 
 export interface UIState {

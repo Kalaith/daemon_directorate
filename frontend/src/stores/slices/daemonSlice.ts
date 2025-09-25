@@ -1,5 +1,5 @@
 // stores/slices/daemonSlice.ts - Daemon management slice
-import { StateCreator } from 'zustand';
+import type { StateCreator } from 'zustand';
 import type { Daemon, DaemonLegacy, LegacyStory } from '../../types/game';
 import { STARTER_DATA, DAEMON_NAMES, DAEMON_QUIRKS } from '../../constants/gameData';
 import { DAEMON_BALANCE } from '../../constants/gameBalance';

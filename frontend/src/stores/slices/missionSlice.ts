@@ -1,5 +1,5 @@
 // stores/slices/missionSlice.ts - Mission management slice
-import { StateCreator } from 'zustand';
+import type { StateCreator } from 'zustand';
 import type { Planet, Mission, MissionResult } from '../../types/game';
 import { STARTER_DATA } from '../../constants/gameData';
 import { executeMissionLogic } from '../../utils/missionHelpers';

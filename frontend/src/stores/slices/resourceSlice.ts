@@ -1,5 +1,5 @@
 // stores/slices/resourceSlice.ts - Resource management slice
-import { StateCreator } from 'zustand';
+import type { StateCreator } from 'zustand';
 import type { GameResources } from '../../types/game';
 
 export interface ResourceState {

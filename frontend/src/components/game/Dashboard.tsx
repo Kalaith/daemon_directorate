@@ -13,10 +13,6 @@ const Dashboard: React.FC = () => {
   const {
     activeMission,
     daemons,
-    corporateEvents,
-    triggerRandomEvent,
-    corporateTier,
-    complianceTasks,
     daysPassed,
     legacyBook,
     hallOfInfamy
@@ -24,13 +20,13 @@ const Dashboard: React.FC = () => {
 
   const dashboardStats = useMemo(() =>
     DashboardService.calculateDashboardStats(
-      daemons,
-      corporateEvents,
-      complianceTasks,
-      daysPassed,
-      legacyBook,
-      hallOfInfamy
-    ), [daemons, corporateEvents, complianceTasks, daysPassed, legacyBook, hallOfInfamy]
+      daemons || [],
+      [], // corporateEvents - not yet implemented
+      [], // complianceTasks - not yet implemented
+      daysPassed || 0,
+      legacyBook || {},
+      hallOfInfamy || []
+    ), [daemons, daysPassed, legacyBook, hallOfInfamy]
   );
 
   const {
@@ -53,9 +49,9 @@ const Dashboard: React.FC = () => {
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
         <Card className="bg-gradient-to-r from-purple-600 to-indigo-600 text-white">
           <div className="text-center">
-            <div className="text-3xl mb-2">{getTierIcon(corporateTier.level)}</div>
-            <h3 className="font-bold">{corporateTier.name}</h3>
-            <p className="text-sm opacity-90">Corporate Tier {corporateTier.level}</p>
+            <div className="text-3xl mb-2">{getTierIcon(1)}</div>
+            <h3 className="font-bold">Middle Management</h3>
+            <p className="text-sm opacity-90">Corporate Tier 1</p>
           </div>
         </Card>
 
@@ -178,10 +174,11 @@ const Dashboard: React.FC = () => {
             )}
           </div>
           <button
-            onClick={triggerRandomEvent}
+            onClick={() => console.log('Event processing not yet implemented')}
             className="w-full px-4 py-2 bg-slate-600 text-cream-100 rounded-md hover:bg-slate-700 transition-colors text-sm font-medium"
+            disabled
           >
-            Process Pending Events
+            Process Pending Events (Coming Soon)
           </button>
         </Card>
       </div>
