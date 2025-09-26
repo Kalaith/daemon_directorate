@@ -11,7 +11,9 @@ const MissionResults: React.FC = () => {
   return (
     <div className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 p-4">
       <div className="bg-gray-900 border border-teal-500 rounded-lg p-6 max-w-md w-full mx-4 shadow-2xl">
-        <h2 className="text-xl font-bold text-teal-300 mb-4">Performance Evaluation Report</h2>
+        <h2 className="text-xl font-bold text-teal-300 mb-4">
+          Performance Evaluation Report
+        </h2>
 
         <div
           className={`p-4 rounded mb-4 border ${
@@ -25,7 +27,9 @@ const MissionResults: React.FC = () => {
               missionResult.success ? 'text-teal-400' : 'text-red-400'
             }`}
           >
-            {missionResult.success ? 'QUARTERLY OBJECTIVES MET' : 'PERFORMANCE TARGETS MISSED'}
+            {missionResult.success
+              ? 'QUARTERLY OBJECTIVES MET'
+              : 'PERFORMANCE TARGETS MISSED'}
           </div>
         </div>
 
@@ -40,7 +44,9 @@ const MissionResults: React.FC = () => {
               {missionResult.successChance}%
             </div>
             <div>
-              <span className="text-teal-400 font-medium">Personnel Attrition:</span>{' '}
+              <span className="text-teal-400 font-medium">
+                Personnel Attrition:
+              </span>{' '}
               <span
                 className={
                   missionResult.casualties.filter(c => !c.survived).length > 0

@@ -26,13 +26,15 @@ export const DAEMON_QUIRKS = [
     name: 'Equipment anxiety disorder',
     effect: 'office_penalty',
     value: -5,
-    description: '-5% operational efficiency in technology-dependent environments',
+    description:
+      '-5% operational efficiency in technology-dependent environments',
   },
   {
     name: 'Assertive stakeholder engagement style',
     effect: 'combat_bonus',
     value: 15,
-    description: '+15% tactical effectiveness during confrontational negotiations',
+    description:
+      '+15% tactical effectiveness during confrontational negotiations',
   },
   {
     name: 'Office supply procurement specialist',
@@ -62,25 +64,29 @@ export const DAEMON_QUIRKS = [
     name: 'Strategic inventory accumulation',
     effect: 'resource_bonus',
     value: 10,
-    description: '+10% operational resource acquisition through stockpiling expertise',
+    description:
+      '+10% operational resource acquisition through stockpiling expertise',
   },
   {
     name: 'Alternative wellness methodology practitioner',
     effect: 'stress_reduction',
     value: 5,
-    description: '+5 daily workplace satisfaction through unconventional therapy techniques',
+    description:
+      '+5 daily workplace satisfaction through unconventional therapy techniques',
   },
   {
     name: 'Information architecture perfectionist',
     effect: 'infiltration_bonus',
     value: 15,
-    description: '+15% covert operations success through superior organizational skills',
+    description:
+      '+15% covert operations success through superior organizational skills',
   },
   {
     name: 'Beverage quality control deficiency',
     effect: 'team_morale_penalty',
     value: -2,
-    description: '-2 workplace satisfaction for all corporate assets in facility',
+    description:
+      '-2 workplace satisfaction for all corporate assets in facility',
   },
   {
     name: 'Interpersonal engagement optimization specialist',
@@ -92,103 +98,120 @@ export const DAEMON_QUIRKS = [
     name: 'Comprehensive risk assessment methodology',
     effect: 'analysis_bonus',
     value: 1,
-    description: '+1 Bureaucratic Leverage from post-failure process improvement analysis',
+    description:
+      '+1 Bureaucratic Leverage from post-failure process improvement analysis',
   },
   {
     name: 'Workspace optimization syndrome',
     effect: 'efficiency_bonus',
     value: 5,
-    description: '+5% facility productivity through continuous improvement initiatives',
+    description:
+      '+5% facility productivity through continuous improvement initiatives',
   },
   {
     name: 'Pressure-activated consumption disorder',
     effect: 'health_drain',
     value: -2,
-    description: '-2 corporeal integrity per day when workplace satisfaction below 50%',
+    description:
+      '-2 corporeal integrity per day when workplace satisfaction below 50%',
   },
   {
     name: 'Formal communication protocol adherence',
     effect: 'corporate_bonus',
     value: 3,
-    description: '+3 Bureaucratic Leverage per successful operation through documentation excellence',
+    description:
+      '+3 Bureaucratic Leverage per successful operation through documentation excellence',
   },
   {
     name: 'Cybersecurity hypervigilance disorder',
     effect: 'tech_penalty',
     value: -10,
-    description: '-10% operational efficiency with digital infrastructure due to trust issues',
+    description:
+      '-10% operational efficiency with digital infrastructure due to trust issues',
   },
   {
     name: 'Typography quality assurance specialist',
     effect: 'perfectionist',
     value: 10,
-    description: '+10% operational success rate but +1 day duration due to aesthetic standards',
+    description:
+      '+10% operational success rate but +1 day duration due to aesthetic standards',
   },
   {
     name: 'Environmental comfort requirement syndrome',
     effect: 'comfort_dependent',
     value: -1,
-    description: '-1 contract duration day unless facility has climate optimization systems',
+    description:
+      '-1 contract duration day unless facility has climate optimization systems',
   },
   {
     name: 'Comprehensive oversight methodology',
     effect: 'control_bonus',
     value: 12,
-    description: '+12% team operational success when designated as project lead through detailed supervision',
+    description:
+      '+12% team operational success when designated as project lead through detailed supervision',
   },
   {
     name: 'Strategic terminology optimization advocate',
     effect: 'synergy_bonus',
     value: 8,
-    description: '+8% operational success when collaborating with 2+ corporate assets through linguistic alignment',
+    description:
+      '+8% operational success when collaborating with 2+ corporate assets through linguistic alignment',
   },
   {
     name: 'Traditional methodology preference',
     effect: 'analog_specialist',
     value: 20,
-    description: '+20% effectiveness using manual processes, -50% with digital equipment',
+    description:
+      '+20% effectiveness using manual processes, -50% with digital equipment',
   },
   {
     name: 'Collaborative session dependency syndrome',
     effect: 'bureaucracy_master',
     value: 5,
-    description: '+5 Bureaucratic Leverage per week, -1 workplace satisfaction daily due to meeting overload',
+    description:
+      '+5 Bureaucratic Leverage per week, -1 workplace satisfaction daily due to meeting overload',
   },
   {
     name: 'Indirect communication methodology specialist',
     effect: 'psychological_warfare',
     value: 15,
-    description: '+15% operational success against corporate targets through subtle intimidation techniques',
+    description:
+      '+15% operational success against corporate targets through subtle intimidation techniques',
   },
   {
     name: 'Nutritional coordination disruption specialist',
     effect: 'team_saboteur',
     value: -5,
-    description: 'Generates random asset malfunction events among team members through social undermining',
+    description:
+      'Generates random asset malfunction events among team members through social undermining',
   },
   {
     name: 'Authentication credential maintenance negligence',
     effect: 'security_risk',
     value: 0.1,
-    description: '10% probability of triggering cybersecurity compliance review events',
+    description:
+      '10% probability of triggering cybersecurity compliance review events',
   },
   {
     name: 'Personal time off accumulation specialist',
     effect: 'longevity_bonus',
     value: 5,
-    description: '+5 initial contract duration days through strategic leave management',
+    description:
+      '+5 initial contract duration days through strategic leave management',
   },
   {
     name: 'Talent acquisition quality assurance paranoia',
     effect: 'veteran_insight',
     value: 0.05,
-    description: '5% probability of detecting operational security threats through recruitment skepticism',
+    description:
+      '5% probability of detecting operational security threats through recruitment skepticism',
   },
   {
     name: 'Performance evaluation optimization enthusiasm',
     effect: 'review_enthusiast',
     value: 10,
-    description: '+10% probability of beneficial corporate development opportunities',
+    description:
+      '+10% probability of beneficial corporate development opportunities',
   },
 ];
 
@@ -471,14 +494,14 @@ export const INHERITED_TRAITS = [
   'Veteran Negotiator (+10% mission success on diplomatic missions)',
   'Equipment Whisperer (+20% equipment durability)',
   'Corporate Bloodhound (+15% resource gathering)',
-  'Legacy of Leadership (+5 morale for all team members)',
-  'Ancient Wisdom (+1 extra day of lifespan)',
+  'Legacy of Leadership (+5 workplace satisfaction for all corporate assets)',
+  'Ancient Wisdom (+1 extra day of contract duration)',
   'Master Craftsman (+50% equipment creation speed)',
   'Tactical Genius (+25% combat effectiveness)',
   'Shadow Walker (+30% infiltration success)',
   'Data Oracle (+20% sabotage precision)',
   "Survivor's Instinct (+10% chance to survive failed missions)",
-  'Inspiring Presence (+5 morale to all daemons when active)',
+  'Inspiring Presence (+5 workplace satisfaction to all corporate assets when active)',
   'Corporate Memory (+10% bureaucratic leverage generation)',
   'Resource Magnet (+25% mission rewards)',
   'Equipment Bond (can use any equipment regardless of specialization)',
@@ -553,14 +576,20 @@ export const CORPORATE_EVENTS = [
     id: 'performance_review',
     title: 'Quarterly Soul Performance Evaluation',
     description:
-      'HR has mandated comprehensive performance reviews to assess productivity metrics and suffering quotas. Your daemons\' eternal employment contracts are under scrutiny.',
+      "HR has mandated comprehensive performance reviews to assess productivity metrics and suffering quotas. Your daemons' eternal employment contracts are under scrutiny.",
     type: 'choice' as const,
     choices: [
       {
         label: 'Embrace the Bureaucratic Excellence',
-        description: 'Demonstrate unwavering commitment to corporate compliance procedures',
+        description:
+          'Demonstrate unwavering commitment to corporate compliance procedures',
         effects: [
-          { type: 'morale', value: -5, description: 'Corporate assets experience workplace satisfaction reduction' },
+          {
+            type: 'morale',
+            value: -5,
+            description:
+              'Corporate assets experience workplace satisfaction reduction',
+          },
           {
             type: 'bureaucraticLeverage',
             value: 3,
@@ -570,14 +599,20 @@ export const CORPORATE_EVENTS = [
       },
       {
         label: 'Strategic Process Optimization',
-        description: 'Leverage regulatory ambiguities for competitive advantage',
+        description:
+          'Leverage regulatory ambiguities for competitive advantage',
         effects: [
           {
             type: 'morale',
             value: 10,
-            description: 'Corporate assets exhibit enhanced workplace satisfaction metrics',
+            description:
+              'Corporate assets exhibit enhanced workplace satisfaction metrics',
           },
-          { type: 'credits', value: 150, description: 'Productivity optimization dividends' },
+          {
+            type: 'credits',
+            value: 150,
+            description: 'Productivity optimization dividends',
+          },
           {
             type: 'corruption_risk',
             value: 0.1,
@@ -591,12 +626,13 @@ export const CORPORATE_EVENTS = [
     id: 'budget_restructuring',
     title: 'Fiscal Realignment Initiative',
     description:
-      'The Infernal Accounting Division has identified synergy opportunities through strategic budget optimization. Your department\'s resource allocation requires immediate stakeholder review.',
+      "The Infernal Accounting Division has identified synergy opportunities through strategic budget optimization. Your department's resource allocation requires immediate stakeholder review.",
     type: 'choice' as const,
     choices: [
       {
         label: 'Execute Strategic Budget Proposal',
-        description: 'Present comprehensive ROI justification through established hierarchical channels',
+        description:
+          'Present comprehensive ROI justification through established hierarchical channels',
         effects: [
           {
             type: 'bureaucraticLeverage',
@@ -622,7 +658,8 @@ export const CORPORATE_EVENTS = [
           {
             type: 'bureaucraticLeverage',
             value: 1,
-            description: 'Enhanced reputation for fiscal discipline among stakeholders',
+            description:
+              'Enhanced reputation for fiscal discipline among stakeholders',
           },
         ],
       },
@@ -637,29 +674,38 @@ export const CORPORATE_EVENTS = [
     choices: [
       {
         label: 'Implement Defensive Countermeasures',
-        description: 'Deploy comprehensive anti-takeover strategies utilizing all available corporate resources',
+        description:
+          'Deploy comprehensive anti-takeover strategies utilizing all available corporate resources',
         effects: [
           {
             type: 'soulEssence',
             value: -1,
-            description: 'Leverage metaphysical assets for competitive advantage',
+            description:
+              'Leverage metaphysical assets for competitive advantage',
           },
           {
             type: 'morale',
             value: 15,
-            description: 'Corporate assets demonstrate exceptional loyalty metrics',
+            description:
+              'Corporate assets demonstrate exceptional loyalty metrics',
           },
-          { type: 'credits', value: 200, description: 'Successful defense compensation package' },
+          {
+            type: 'credits',
+            value: 200,
+            description: 'Successful defense compensation package',
+          },
         ],
       },
       {
         label: 'Pursue Strategic Partnership',
-        description: 'Develop win-win stakeholder value proposition through collaborative framework',
+        description:
+          'Develop win-win stakeholder value proposition through collaborative framework',
         effects: [
           {
             type: 'bureaucraticLeverage',
             value: 2,
-            description: 'Expand strategic network within infernal business ecosystem',
+            description:
+              'Expand strategic network within infernal business ecosystem',
           },
           {
             type: 'daemon_retirement',
@@ -677,13 +723,21 @@ export const CORPORATE_EVENTS = [
       'The Infernal Revenue Optimization Department has initiated a full-scope audit of your departmental financial practices and soul-handling procedures. All documentation must meet Sarbanes-Oxley-Belphegor standards.',
     type: 'automatic' as const,
     effects: [
-      { type: 'credits', value: -100, description: 'Regulatory compliance costs and administrative penalties' },
+      {
+        type: 'credits',
+        value: -100,
+        description: 'Regulatory compliance costs and administrative penalties',
+      },
       {
         type: 'equipment_durability',
         value: -10,
         description: 'Corporate assets temporarily impounded for verification',
       },
-      { type: 'morale', value: -8, description: 'Workplace satisfaction impact from regulatory scrutiny' },
+      {
+        type: 'morale',
+        value: -8,
+        description: 'Workplace satisfaction impact from regulatory scrutiny',
+      },
     ],
   },
   {
@@ -713,14 +767,20 @@ export const CORPORATE_EVENTS = [
   {
     id: 'soul_market_crash',
     title: 'Metaphysical Asset Market Correction',
-    description: 'The Infernal Soul Exchange has experienced significant volatility due to market disruption events. Your spiritual investment portfolio requires immediate diversification strategies.',
+    description:
+      'The Infernal Soul Exchange has experienced significant volatility due to market disruption events. Your spiritual investment portfolio requires immediate diversification strategies.',
     type: 'automatic' as const,
     effects: [
-      { type: 'soulEssence', value: -2, description: 'Strategic asset revaluation adjustment' },
+      {
+        type: 'soulEssence',
+        value: -2,
+        description: 'Strategic asset revaluation adjustment',
+      },
       {
         type: 'equipment_discount',
         value: 0.3,
-        description: 'Opportunistic procurement discount on infrastructure maintenance',
+        description:
+          'Opportunistic procurement discount on infrastructure maintenance',
       },
     ],
   },
@@ -728,14 +788,20 @@ export const CORPORATE_EVENTS = [
     id: 'mandatory_training',
     title: 'Mandatory Cultural Enhancement Workshop',
     description:
-      'Human Resources has scheduled mandatory attendance for \'Optimizing Interpersonal Dynamics in Multi-Dimensional Corporate Environments\' to ensure compliance with modern workplace inclusivity standards.',
+      "Human Resources has scheduled mandatory attendance for 'Optimizing Interpersonal Dynamics in Multi-Dimensional Corporate Environments' to ensure compliance with modern workplace inclusivity standards.",
     type: 'choice' as const,
     choices: [
       {
         label: 'Demonstrate Proactive Engagement',
-        description: 'Exhibit exemplary corporate culture commitment and professional development enthusiasm',
+        description:
+          'Exhibit exemplary corporate culture commitment and professional development enthusiasm',
         effects: [
-          { type: 'morale', value: -5, description: 'Mandatory professional development impact on productivity metrics' },
+          {
+            type: 'morale',
+            value: -5,
+            description:
+              'Mandatory professional development impact on productivity metrics',
+          },
           {
             type: 'bureaucraticLeverage',
             value: 1,
@@ -744,23 +810,27 @@ export const CORPORATE_EVENTS = [
           {
             type: 'productivity_bonus',
             value: 0.1,
-            description: 'Temporary operational efficiency enhancement from cultural training',
+            description:
+              'Temporary operational efficiency enhancement from cultural training',
           },
         ],
       },
       {
         label: 'Pursue Alternative Priorities',
-        description: 'Optimize time allocation through strategic absence management',
+        description:
+          'Optimize time allocation through strategic absence management',
         effects: [
           {
             type: 'morale',
             value: 8,
-            description: 'Corporate assets value leadership decisiveness over compliance theater',
+            description:
+              'Corporate assets value leadership decisiveness over compliance theater',
           },
           {
             type: 'hr_investigation',
             value: 1,
-            description: 'Enhanced Human Resources monitoring protocols activated',
+            description:
+              'Enhanced Human Resources monitoring protocols activated',
           },
         ],
       },
@@ -769,7 +839,8 @@ export const CORPORATE_EVENTS = [
   {
     id: 'equipment_recall',
     title: 'Product Quality Assurance Notice',
-    description: 'Quality Control has identified manufacturing inconsistencies in standard-issue corporate assets. Remediation protocols have been activated per ISO-666 standards.',
+    description:
+      'Quality Control has identified manufacturing inconsistencies in standard-issue corporate assets. Remediation protocols have been activated per ISO-666 standards.',
     type: 'automatic' as const,
     effects: [
       {
@@ -777,7 +848,11 @@ export const CORPORATE_EVENTS = [
         value: 1,
         description: 'Asset optimization through defect remediation program',
       },
-      { type: 'credits', value: 75, description: 'Customer satisfaction settlement disbursement' },
+      {
+        type: 'credits',
+        value: 75,
+        description: 'Customer satisfaction settlement disbursement',
+      },
     ],
   },
   {
@@ -790,7 +865,8 @@ export const CORPORATE_EVENTS = [
     choices: [
       {
         label: 'Pursue Executive Advancement',
-        description: 'Deploy accumulated bureaucratic influence for hierarchical advancement',
+        description:
+          'Deploy accumulated bureaucratic influence for hierarchical advancement',
         effects: [
           {
             type: 'bureaucraticLeverage',
@@ -811,7 +887,8 @@ export const CORPORATE_EVENTS = [
       },
       {
         label: 'Maintain Current Positioning',
-        description: 'Continue focus on operational excellence within existing scope',
+        description:
+          'Continue focus on operational excellence within existing scope',
         effects: [
           {
             type: 'morale',
@@ -826,45 +903,57 @@ export const CORPORATE_EVENTS = [
   {
     id: 'office_party',
     title: 'Annual Corporate Celebration Event',
-    description: 'The Infernal Human Resources Division has organized the mandatory seasonal morale enhancement gathering. Attendance metrics will be tracked for performance evaluation purposes.',
+    description:
+      'The Infernal Human Resources Division has organized the mandatory seasonal workplace satisfaction enhancement gathering. Attendance metrics will be tracked for performance evaluation purposes.',
     type: 'choice' as const,
     choices: [
       {
         label: 'Execute Strategic Networking',
-        description: 'Maximize relationship-building opportunities with senior stakeholders',
+        description:
+          'Maximize relationship-building opportunities with senior stakeholders',
         effects: [
           {
             type: 'bureaucraticLeverage',
             value: 2,
-            description: 'Expand professional network within corporate hierarchy',
+            description:
+              'Expand professional network within corporate hierarchy',
           },
           {
             type: 'credits',
             value: -30,
-            description: 'Professional appearance and networking investment costs',
+            description:
+              'Professional appearance and networking investment costs',
           },
         ],
       },
       {
         label: 'Optimize Productivity Focus',
-        description: 'Prioritize operational efficiency over social engagement activities',
+        description:
+          'Prioritize operational efficiency over social engagement activities',
         effects: [
           {
             type: 'research_progress',
             value: 1,
             description: 'Accelerate strategic asset development initiatives',
           },
-          { type: 'morale', value: -3, description: 'Corporate assets experience social disconnect indicators' },
+          {
+            type: 'morale',
+            value: -3,
+            description:
+              'Corporate assets experience social disconnect indicators',
+          },
         ],
       },
       {
         label: 'Assume Event Leadership Role',
-        description: 'Demonstrate proactive management capabilities through event coordination',
+        description:
+          'Demonstrate proactive management capabilities through event coordination',
         effects: [
           {
             type: 'morale',
             value: 12,
-            description: 'Corporate assets exhibit enhanced loyalty and appreciation metrics',
+            description:
+              'Corporate assets exhibit enhanced loyalty and appreciation metrics',
           },
           {
             type: 'bureaucraticLeverage',
@@ -874,7 +963,8 @@ export const CORPORATE_EVENTS = [
           {
             type: 'stress',
             value: 1,
-            description: 'Single corporate asset experiences stress-related productivity impact',
+            description:
+              'Single corporate asset experiences stress-related productivity impact',
           },
         ],
       },
@@ -1070,7 +1160,8 @@ export const CORPORATE_EVENTS = [
           {
             type: 'daemon_paranoia',
             value: -10,
-            description: 'Reduced morale from security measures',
+            description:
+              'Reduced workplace satisfaction from security measures',
           },
         ],
       },
@@ -1130,12 +1221,12 @@ export const CORPORATE_EVENTS = [
           {
             type: 'daemon_sacrifice',
             value: 1,
-            description: 'Sacrifice daemon to authorities',
+            description: 'Sacrifice corporate asset to regulatory authorities',
           },
           {
             type: 'corporate_reputation',
             value: -15,
-            description: 'Internal morale damage',
+            description: 'Internal workplace satisfaction impact',
           },
           {
             type: 'investigation_ended',
@@ -1366,7 +1457,7 @@ export const SURREAL_EVENTS = {
       choices: [
         {
           label: 'Send your best technician',
-          description: 'Sacrifice daemon efficiency',
+          description: 'Sacrifice corporate asset operational efficiency',
           effects: [
             {
               type: 'daemon_skill_loss',
@@ -1433,7 +1524,7 @@ export const SURREAL_EVENTS = {
             {
               type: 'daemon_retirement',
               value: 1,
-              description: 'One daemon reassigned',
+              description: 'One corporate asset reassigned',
             },
           ],
         },
@@ -1637,14 +1728,18 @@ export const PRESTIGE_BONUSES: PrestigeBonus[] = [
   {
     id: 'veteran_manager',
     name: 'Veteran Manager',
-    description: 'Your experience shows in improved daemon management',
+    description: 'Your experience shows in improved corporate asset management',
     effects: [
       {
         type: 'daemon_lifespan_bonus',
         value: 5,
-        description: '+5 days daemon lifespan',
+        description: '+5 days corporate asset contract duration',
       },
-      { type: 'morale_bonus', value: 10, description: '+10 starting morale' },
+      {
+        type: 'morale_bonus',
+        value: 10,
+        description: '+10 starting workplace satisfaction',
+      },
     ],
     unlockedBy: 'Complete game as Manager tier',
   },
@@ -1669,7 +1764,7 @@ export const PRESTIGE_BONUSES: PrestigeBonus[] = [
   {
     id: 'legacy_builder',
     name: 'Legacy Builder',
-    description: 'Your daemon bloodlines carry enhanced traits',
+    description: 'Your corporate bloodlines carry enhanced traits',
     effects: [
       {
         type: 'inherited_trait_bonus',

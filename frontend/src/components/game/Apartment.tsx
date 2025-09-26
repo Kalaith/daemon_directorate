@@ -9,10 +9,13 @@ const Apartment: React.FC = () => {
   return (
     <div>
       <h2 className="text-2xl font-header font-bold mb-6 text-daemon-text-bright uppercase tracking-wide">
-Corporate Housing Division
+        Corporate Housing Division
       </h2>
       <p className="text-daemon-text mb-8 bg-daemon-surface p-6 rounded-lg border border-daemon-secondary">
-Welcome to your soul-crushing cubicle — now with 15% more despair absorption. Your assigned pit doubles as your office. Upgrades may slightly raise morale, or at least keep the screams from echoing quite so much.
+        Welcome to your soul-crushing cubicle — now with 15% more despair
+        absorption. Your assigned pit doubles as your office. Upgrades may
+        slightly raise morale, or at least keep the screams from echoing quite
+        so much.
       </p>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
