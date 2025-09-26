@@ -19,6 +19,7 @@ export interface MissionActions {
   // Mission execution
   executeMission: (missionType?: string) => void;
   selectPlanetForMission: (planetId: string, missionType?: string) => void;
+  setCurrentPlanet: (planetId: string) => void; // Alias for backward compatibility
   completeMission: (mission: Mission, result: MissionResult) => void;
 
   // Planet management
@@ -34,7 +35,7 @@ export interface MissionActions {
 export type MissionSlice = MissionState & MissionActions;
 
 export const createMissionSlice: StateCreator<
-  MissionSlice,
+  import('../composedStore').ComposedGameStore,
   [],
   [],
   MissionSlice
@@ -57,23 +58,25 @@ export const createMissionSlice: StateCreator<
     }
 
     try {
-      // This would integrate with the composed store's daemon and resource slices
+      // Access data from the composed store
       const context = {
-        selectedDaemons: new Set<string>(), // Would come from daemon slice
+        selectedDaemons: state.selectedDaemons,
         currentPlanet,
-        daemons: [], // Would come from daemon slice
+        daemons: state.daemons,
         planets: state.planets,
-        equipment: [], // Would come from equipment slice
+        equipment: state.equipment,
         selectedMissionType: missionType,
       };
 
-      // Removed local generateId - now using centralized utility from gameHelpers
       const result = executeMissionLogic(context, generateId);
 
-      set(() => ({
+      // Update both planets and daemons
+      set(state => ({
+        ...state,
         planets: result.updatedPlanets,
         activeMission: result.missionInstance,
         lastMissionResult: result.result,
+        daemons: result.updatedDaemons,
       }));
     } catch (error) {
       logger.error(
@@ -94,6 +97,11 @@ export const createMissionSlice: StateCreator<
       currentPlanet: planetId,
       selectedMissionType: missionType,
     });
+  },
+
+  setCurrentPlanet: (planetId: string) => {
+    // Alias for backward compatibility with tests
+    set({ currentPlanet: planetId });
   },
 
   completeMission: (mission: Mission, result: MissionResult) => {

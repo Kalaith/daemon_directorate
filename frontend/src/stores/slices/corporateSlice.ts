@@ -14,6 +14,7 @@ export interface CorporateActions {
   meetsRequirements: (requirements: CorporateTier['requirements']) => boolean;
   incrementDay: () => void;
   promoteToNextTier: () => boolean;
+  checkPromotion: () => void;
   addCorporateRival: (rival: CorporateRival) => void;
   engageRival: (rivalId: string) => void;
   calculateRivalSuccessChance: (rivalId: string) => number;
@@ -78,6 +79,11 @@ export const createCorporateSlice: StateCreator<
 
     set({ corporateTier: nextTier });
     return true;
+  },
+
+  checkPromotion: () => {
+    // Check if promotion is possible and apply it
+    get().promoteToNextTier();
   },
 
   addCorporateRival: (rival: CorporateRival) => {

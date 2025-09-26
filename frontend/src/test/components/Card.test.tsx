@@ -44,7 +44,7 @@ describe('Card Component', () => {
     const cardElement = cardContent.parentElement;
 
     expect(cardElement?.className).toContain('custom-class');
-    expect(cardElement?.className).toContain('bg-surface'); // Default class still present
+    expect(cardElement?.className).toContain('bg-daemon-panel'); // Default class still present
   });
 
   it('passes through additional props', () => {
