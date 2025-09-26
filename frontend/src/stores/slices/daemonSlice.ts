@@ -7,7 +7,7 @@ import {
   DAEMON_QUIRKS,
   RECRUITMENT_BLOODLINES,
 } from '../../constants/gameData';
-import { DAEMON_BALANCE } from '../../constants/gameBalance';
+import { DAEMON_BALANCE, CORPORATE_BALANCE } from '../../constants/gameBalance';
 import {
   calculateSuccessorStats,
   shouldCreateSuccessor,
@@ -248,21 +248,21 @@ export const createDaemonSlice: StateCreator<
     let moraleChange = 0;
     let lifespanChange = 0;
 
-    if (reviewOutcome < DAEMON_BALANCE.HR_REVIEW.POSITIVE_CHANCE) {
+    if (reviewOutcome < CORPORATE_BALANCE.HR_REVIEW.POSITIVE_CHANCE) {
       // Positive review
-      healthChange = DAEMON_BALANCE.HR_REVIEW.POSITIVE_HEALTH;
-      moraleChange = DAEMON_BALANCE.HR_REVIEW.POSITIVE_MORALE;
+      healthChange = CORPORATE_BALANCE.HR_REVIEW.POSITIVE_HEALTH;
+      moraleChange = CORPORATE_BALANCE.HR_REVIEW.POSITIVE_MORALE;
     } else if (
       reviewOutcome <
-      DAEMON_BALANCE.HR_REVIEW.POSITIVE_CHANCE +
-        DAEMON_BALANCE.HR_REVIEW.NEUTRAL_CHANCE
+      CORPORATE_BALANCE.HR_REVIEW.POSITIVE_CHANCE +
+        CORPORATE_BALANCE.HR_REVIEW.NEUTRAL_CHANCE
     ) {
       // Neutral review - no changes
     } else {
       // Negative review
-      healthChange = DAEMON_BALANCE.HR_REVIEW.NEGATIVE_HEALTH;
-      moraleChange = DAEMON_BALANCE.HR_REVIEW.NEGATIVE_MORALE;
-      lifespanChange = DAEMON_BALANCE.HR_REVIEW.NEGATIVE_LIFESPAN;
+      healthChange = CORPORATE_BALANCE.HR_REVIEW.NEGATIVE_HEALTH;
+      moraleChange = CORPORATE_BALANCE.HR_REVIEW.NEGATIVE_MORALE;
+      lifespanChange = CORPORATE_BALANCE.HR_REVIEW.NEGATIVE_LIFESPAN;
     }
 
     get().updateDaemonStats(daemonId, {
@@ -277,7 +277,7 @@ export const createDaemonSlice: StateCreator<
   isHRReviewAvailable: () => {
     const daysSinceLastReview =
       (Date.now() - get().lastHRReview) / (1000 * 60 * 60 * 24);
-    return daysSinceLastReview >= DAEMON_BALANCE.HR_REVIEW.COOLDOWN_DAYS;
+    return daysSinceLastReview >= CORPORATE_BALANCE.HR_REVIEW.COOLDOWN_DAYS;
   },
 
   addLegacyStory: (
