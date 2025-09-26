@@ -6,7 +6,7 @@ import type {
   Mission,
   MissionResult,
 } from '../types/game';
-import type { GameStore, ZustandGameStore } from '../types/storeInterfaces';
+import type { ZustandGameStore } from '../types/storeInterfaces';
 import {
   withErrorHandling,
   ErrorCategory,
@@ -121,11 +121,11 @@ class GameService implements GameServiceInterface {
       }
 
       // Set selected team and planet
-      await this.store.getState().setSelectedDaemons(new Set(teamIds));
-      await this.store.getState().selectPlanetForMission(planetId);
+      this.store.getState().setSelectedDaemons(new Set(teamIds));
+      this.store.getState().selectPlanetForMission(planetId);
 
       // Execute mission
-      const result = await this.store.getState().executeMission();
+      const result = this.store.getState().executeMission();
 
       return result;
     },
@@ -168,7 +168,7 @@ class GameService implements GameServiceInterface {
         return false;
       }
 
-      await state.spendResourceBatch(costs, 'Service layer operation');
+      state.spendResourceBatch(costs, 'Service layer operation');
       return true;
     },
     'GameService.spendResources',
@@ -178,7 +178,7 @@ class GameService implements GameServiceInterface {
   addResources = withErrorHandling(
     async (gains: Partial<GameResources>): Promise<void> => {
       const state = this.store.getState();
-      await state.addResources(gains, 'Service layer operation');
+      state.addResourceBatch(gains, 'Service layer operation');
     },
     'GameService.addResources',
     ErrorCategory.SYSTEM
@@ -220,7 +220,7 @@ class GameService implements GameServiceInterface {
 
 // Factory function to create service instance
 export const createGameService = (
-  storeInstance: unknown
+  storeInstance: ZustandGameStore
 ): GameServiceInterface => {
   return new GameService(storeInstance);
 };

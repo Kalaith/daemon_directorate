@@ -144,6 +144,12 @@ export interface MissionConsequence {
     futureOpportunities?: string[];
     corporateEvents?: string[];
     rivalActions?: string[];
+    // Resource effects
+    credits?: number;
+    soulEssence?: number;
+    bureaucraticLeverage?: number;
+    rawMaterials?: number;
+    stability?: number;
   };
   description: string;
 }

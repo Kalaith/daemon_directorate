@@ -11,7 +11,7 @@ import { PERFORMANCE_THRESHOLDS } from '../constants/performance';
 // Performance metrics interface
 interface PerformanceMetric {
   id: string;
-  phase: 'mount' | 'update';
+  phase: 'mount' | 'update' | 'nested-update';
   actualDuration: number;
   baseDuration: number;
   startTime: number;
@@ -127,7 +127,7 @@ export const PerformanceProfiler: React.FC<PerformanceProfilerProps> = ({
   const onRenderCallback = useCallback(
     (
       profileId: string,
-      phase: 'mount' | 'update',
+      phase: 'mount' | 'update' | 'nested-update',
       actualDuration: number,
       baseDuration: number,
       startTime: number,
