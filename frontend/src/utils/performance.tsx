@@ -17,7 +17,7 @@ interface PerformanceMetric {
 // Performance data store
 class PerformanceMonitor {
   private metrics: Map<string, PerformanceMetric[]> = new Map();
-  private isEnabled: boolean = process.env.NODE_ENV === 'development';
+  private isEnabled: boolean = import.meta.env.MODE === 'development';
 
   enable() {
     this.isEnabled = true;
@@ -255,7 +255,7 @@ export const PerformanceDashboard: React.FC = () => {
     return () => clearInterval(interval);
   }, []);
 
-  if (process.env.NODE_ENV !== 'development') {
+  if (import.meta.env.MODE !== 'development') {
     return null;
   }
 
@@ -359,7 +359,7 @@ export const PerformanceDashboard: React.FC = () => {
 // Bundle size analyzer utility
 // eslint-disable-next-line react-refresh/only-export-components
 export const analyzeBundleSize = () => {
-  if (process.env.NODE_ENV !== 'development') {
+  if (import.meta.env.MODE !== 'development') {
     console.warn('Bundle size analysis only available in development mode');
     return;
   }
@@ -386,7 +386,7 @@ export const analyzeBundleSize = () => {
 };
 
 // Global performance tracking setup
-if (process.env.NODE_ENV === 'development') {
+if (import.meta.env.MODE === 'development') {
   // Add performance monitoring to window for debugging
   (
     window as typeof window & {

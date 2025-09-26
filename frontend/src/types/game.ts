@@ -196,7 +196,11 @@ export type EventEffectType =
   | 'equipment_discount'
   | 'productivity_bonus'
   | 'passive_income'
-  | 'daemon_retirement';
+  | 'daemon_retirement'
+  | 'corruption_risk'
+  | 'audit_risk'
+  | 'efficiency'
+  | 'stability';
 
 export interface EventEffect {
   type: EventEffectType;

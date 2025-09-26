@@ -1,6 +1,10 @@
 // stores/slices/corporateSlice.ts - Corporate progression system
 import type { StateCreator } from 'zustand';
-import type { CorporateTier, CorporateRival } from '../../types/game';
+import type {
+  CorporateTier,
+  CorporateRival,
+  CorporateEvent,
+} from '../../types/game';
 import { CORPORATE_TIERS, CORPORATE_EVENTS } from '../../constants/gameData';
 
 export interface CorporateState {
@@ -119,8 +123,12 @@ export const createCorporateSlice: StateCreator<
   },
 
   triggerRandomEvent: () => {
-    const randomEvent =
+    const randomEventTemplate =
       CORPORATE_EVENTS[Math.floor(Math.random() * CORPORATE_EVENTS.length)];
+    const randomEvent: CorporateEvent = {
+      ...randomEventTemplate,
+      timestamp: Date.now(),
+    } as CorporateEvent;
     const composedState = get();
     if ('setShowEventModal' in composedState) {
       composedState.setShowEventModal(true, randomEvent);

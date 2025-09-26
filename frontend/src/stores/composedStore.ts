@@ -111,7 +111,7 @@ export const useGameStore = create<ComposedGameStore>()(
         // Handle migrations from older versions
         if (version < 2) {
           return {
-            ...persistedState,
+            ...(persistedState as object),
             // Add new fields, rename old ones, etc.
             resourceHistory: [],
             lastHRReview: 0,

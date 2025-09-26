@@ -24,7 +24,7 @@ export const performanceMonitor = {
 };
 
 export const analyzeBundleSize = async () => {
-  if (process.env.NODE_ENV !== 'development') return {};
+  if (import.meta.env.MODE !== 'development') return {};
 
   // Simple bundle analysis - in real app would use webpack-bundle-analyzer
   const scripts = Array.from(document.querySelectorAll('script[src]'));
@@ -41,7 +41,7 @@ export const analyzeBundleSize = async () => {
 };
 
 export const initializePerformanceMonitoring = () => {
-  if (process.env.NODE_ENV !== 'development') return;
+  if (import.meta.env.MODE !== 'development') return;
 
   // Add performance monitoring to window for debugging
   (

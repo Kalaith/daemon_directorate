@@ -71,7 +71,7 @@ export const handleGameError = (
 };
 
 // Async error wrapper for better error handling in async operations
-export const withErrorHandling = <T extends (...args: any[]) => any>(
+export const withErrorHandling = <T extends (...args: unknown[]) => unknown>(
   fn: T,
   addNotification: (message: string, type?: NotificationType) => void,
   context?: string

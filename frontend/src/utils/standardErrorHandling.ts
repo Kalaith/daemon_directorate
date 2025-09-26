@@ -18,7 +18,7 @@ export const ErrorCategory = {
 export type ErrorCategory = (typeof ErrorCategory)[keyof typeof ErrorCategory];
 
 // Standardized error handler wrapper
-export const withErrorHandling = <T extends (...args: any[]) => any>(
+export const withErrorHandling = <T extends (...args: unknown[]) => unknown>(
   fn: T,
   context: string,
   category: ErrorCategory = ErrorCategory.SYSTEM
@@ -102,7 +102,7 @@ const logError = (
     stack: error.stack,
   };
 
-  if (process.env.NODE_ENV === 'development') {
+  if (import.meta.env.MODE === 'development') {
     console.group(`🚨 ${category.toUpperCase()} Error in ${context}`);
     console.error('Error:', error.message);
     console.error('User Message:', error.userMessage);
@@ -128,7 +128,7 @@ const reportError = (
   void context;
   void category;
 
-  if (process.env.NODE_ENV === 'production') {
+  if (import.meta.env.PROD) {
     // In production, would send to error tracking service
     // Sentry.captureException(error, {
     //   tags: { context, category },
@@ -180,7 +180,7 @@ const getNotificationType = (category: ErrorCategory): string => {
 
 // Store action wrapper for consistent error handling
 export const withGameActionErrorHandling = <
-  T extends (...args: any[]) => any,
+  T extends (...args: unknown[]) => unknown,
 >(
   action: T,
   actionName: string
@@ -193,7 +193,7 @@ export const withGameActionErrorHandling = <
 };
 
 // Validation wrapper
-export const withValidation = <T extends (...args: any[]) => any>(
+export const withValidation = <T extends (...args: unknown[]) => unknown>(
   fn: T,
   validationName: string
 ): T => {
@@ -206,7 +206,7 @@ export const withValidation = <T extends (...args: any[]) => any>(
 
 // Network operation wrapper
 export const withNetworkErrorHandling = <
-  T extends (...args: any[]) => any,
+  T extends (...args: unknown[]) => unknown,
 >(
   fn: T,
   operationName: string
@@ -220,7 +220,7 @@ export const withNetworkErrorHandling = <
 
 // Component error handler
 export const withComponentErrorHandling = <
-  T extends (...args: any[]) => any,
+  T extends (...args: unknown[]) => unknown,
 >(
   fn: T,
   componentName: string
@@ -233,7 +233,7 @@ export const withComponentErrorHandling = <
 };
 
 // Retry wrapper with exponential backoff
-export const withRetry = <T extends (...args: any[]) => any>(
+export const withRetry = <T extends (...args: unknown[]) => unknown>(
   fn: T,
   maxRetries: number = 3,
   baseDelay: number = 1000,

@@ -92,6 +92,7 @@ export const DAEMON_BALANCE = {
       ID_MIN: 1000,
       ID_RANGE: 9000, // 1000-9999
     },
+    BASE_COST: 50,
   },
 
   // Legacy system requirements
@@ -139,9 +140,6 @@ export const CORPORATE_BALANCE = {
     NEGATIVE_HEALTH: -5,
     NEGATIVE_LIFESPAN: -2,
   },
-
-  // Recruitment costs
-  RECRUITMENT_COST: 50,
 
   // Event frequencies
   EVENT_CHANCES: {

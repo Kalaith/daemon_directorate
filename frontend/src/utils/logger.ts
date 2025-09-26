@@ -49,7 +49,7 @@ interface LoggerConfig {
 class StructuredLogger {
   private config: LoggerConfig;
   private buffer: LogEntry[] = [];
-  private flushTimer?: NodeJS.Timeout;
+  private flushTimer?: number;
 
   constructor(config: LoggerConfig) {
     this.config = config;

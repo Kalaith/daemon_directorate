@@ -68,7 +68,15 @@ export const createDaemonSlice: StateCreator<
   DaemonSlice
 > = (set, get) => ({
   // Initial state
-  daemons: STARTER_DATA.starter_daemons,
+  daemons: STARTER_DATA.starter_daemons.map(
+    (daemon): Daemon => ({
+      ...daemon,
+      id: `daemon-${Math.random().toString(36).substr(2, 9)}`,
+      assignments: [],
+      equipment: null,
+      isActive: true,
+    })
+  ),
   recruitmentPool: [],
   selectedDaemons: new Set(),
   legacyBook: {},
@@ -118,12 +126,7 @@ export const createDaemonSlice: StateCreator<
 
   generateRecruitmentPool: () => {
     // Using centralized generateId from gameHelpers
-    const specializations = [
-      'Infiltration',
-      'Combat',
-      'Sabotage',
-      'Diplomacy',
-    ] as const;
+    const specializations = ['Infiltration', 'Combat', 'Sabotage'] as const;
 
     const pool: Daemon[] = Array.from({ length: 3 }, () => {
       const specialization =
@@ -154,7 +157,7 @@ export const createDaemonSlice: StateCreator<
         isActive: false,
         generation: 1,
         bloodline,
-        mentor: null,
+        mentor: undefined,
         inheritedTraits: [],
         legacy: {
           successfulMissions: 0,
@@ -162,7 +165,7 @@ export const createDaemonSlice: StateCreator<
           equipmentCreated: 0,
           yearsServed: 0,
         },
-        cost: DAEMON_BALANCE.RECRUITMENT_COST,
+        cost: DAEMON_BALANCE.RECRUITMENT.BASE_COST,
       };
     });
 
@@ -219,7 +222,7 @@ export const createDaemonSlice: StateCreator<
         daemons: [...state.daemons.filter(d => d.id !== daemon.id), successor],
         legacyBook: {
           ...state.legacyBook,
-          [daemon.bloodline]: legacy,
+          [daemon.bloodline || 'Unknown']: legacy,
         },
       }));
 
@@ -308,15 +311,12 @@ export const createDaemonSlice: StateCreator<
 
   createNewLegacy: (daemon: Daemon): DaemonLegacy => {
     return {
-      bloodline: daemon.bloodline,
-      founderName: daemon.name,
+      daemonId: daemon.id,
+      bloodline: daemon.bloodline || 'Unknown',
       generation: daemon.generation,
-      totalSuccessfulMissions: daemon.legacy.successfulMissions,
-      totalPlanetsConquered: daemon.legacy.planetsConquered,
-      totalEquipmentCreated: daemon.legacy.equipmentCreated,
-      totalYearsServed: daemon.legacy.yearsServed,
-      specialAchievements: [],
-      dominantTrait: daemon.quirks[0]?.name || 'Unknown',
+      stories: [],
+      legends: [],
+      achievements: [],
     };
   },
 

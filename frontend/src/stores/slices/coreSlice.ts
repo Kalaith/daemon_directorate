@@ -37,8 +37,12 @@ export const createCoreSlice: StateCreator<
         equipment: STARTER_DATA.starter_equipment.map(equipment => ({
           ...equipment,
           id: generateId(),
+          assignedTo: null,
         })),
-        rooms: STARTER_DATA.apartment_rooms,
+        rooms: STARTER_DATA.apartment_rooms.map(room => ({
+          ...room,
+          id: generateId(),
+        })),
         gameStarted: false, // Not fully started until player action
         daysPassed: 0,
       }));
@@ -61,9 +65,19 @@ export const createCoreSlice: StateCreator<
       equipment: STARTER_DATA.starter_equipment.map(equipment => ({
         ...equipment,
         id: generateId(),
+        assignedTo: null,
       })),
-      rooms: STARTER_DATA.apartment_rooms,
-      planets: STARTER_DATA.planets || [],
+      rooms: STARTER_DATA.apartment_rooms.map(room => ({
+        ...room,
+        id: generateId(),
+      })),
+      planets:
+        STARTER_DATA.planets.map(planet => ({
+          ...planet,
+          id: generateId(),
+          conquered: false,
+          lastMission: null,
+        })) || [],
       gameStarted: true,
       daysPassed: 0,
     }));

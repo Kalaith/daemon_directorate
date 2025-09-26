@@ -65,7 +65,7 @@ class GameService implements GameServiceInterface {
     },
     'GameService.recruitDaemon',
     ErrorCategory.BUSINESS_RULE
-  );
+  ) as (daemonId: string) => Promise<Daemon>;
 
   dismissDaemon = withErrorHandling(
     async (daemonId: string): Promise<boolean> => {
@@ -87,7 +87,7 @@ class GameService implements GameServiceInterface {
     },
     'GameService.dismissDaemon',
     ErrorCategory.BUSINESS_RULE
-  );
+  ) as (daemonId: string) => Promise<boolean>;
 
   getDaemonStats = withErrorHandling(
     async (daemonId: string): Promise<Daemon | null> => {
@@ -182,7 +182,7 @@ class GameService implements GameServiceInterface {
     },
     'GameService.addResources',
     ErrorCategory.SYSTEM
-  );
+  ) as (gains: Partial<GameResources>) => Promise<void>;
 
   saveGameState = withErrorHandling(
     async (): Promise<boolean> => {

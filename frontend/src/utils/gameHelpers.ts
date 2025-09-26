@@ -129,13 +129,14 @@ export const calculateMissionRewards = (
   difficulty: DifficultyLevel,
   success: boolean
 ): Record<string, number> => {
-  const baseRewards = { ...MISSION_BALANCE.BASE_REWARDS[difficulty] };
+  const baseRewards: Record<string, number> = {
+    ...MISSION_BALANCE.BASE_REWARDS[difficulty],
+  };
 
   if (!success) {
     Object.keys(baseRewards).forEach(key => {
-      const typedKey = key as keyof typeof baseRewards;
-      baseRewards[typedKey] = Math.floor(
-        baseRewards[typedKey] * MISSION_BALANCE.MULTIPLIERS.FAILURE_REWARD_RATIO
+      baseRewards[key] = Math.floor(
+        baseRewards[key] * MISSION_BALANCE.MULTIPLIERS.FAILURE_REWARD_RATIO
       );
     });
   }
@@ -283,9 +284,8 @@ export const validateAmount = (amount: number, min = 0): void => {
 /**
  * Performance Helper Functions
  */
-export const memoize = <T extends (...args: any[]) => any>(
-  fn: T
-): T => {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const memoize = <T extends (...args: any[]) => any>(fn: T): T => {
   const cache = new Map();
 
   return ((...args: Parameters<T>) => {
