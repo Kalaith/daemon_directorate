@@ -18,7 +18,7 @@ export const ErrorCategory = {
 export type ErrorCategory = (typeof ErrorCategory)[keyof typeof ErrorCategory];
 
 // Standardized error handler wrapper
-export const withErrorHandling = <T extends (...args: unknown[]) => unknown>(
+export const withErrorHandling = <T extends (...args: any[]) => any>(
   fn: T,
   context: string,
   category: ErrorCategory = ErrorCategory.SYSTEM
@@ -180,7 +180,7 @@ const getNotificationType = (category: ErrorCategory): string => {
 
 // Store action wrapper for consistent error handling
 export const withGameActionErrorHandling = <
-  T extends (...args: unknown[]) => unknown,
+  T extends (...args: any[]) => any,
 >(
   action: T,
   actionName: string
@@ -193,7 +193,7 @@ export const withGameActionErrorHandling = <
 };
 
 // Validation wrapper
-export const withValidation = <T extends (...args: unknown[]) => unknown>(
+export const withValidation = <T extends (...args: any[]) => any>(
   fn: T,
   validationName: string
 ): T => {
@@ -206,7 +206,7 @@ export const withValidation = <T extends (...args: unknown[]) => unknown>(
 
 // Network operation wrapper
 export const withNetworkErrorHandling = <
-  T extends (...args: unknown[]) => unknown,
+  T extends (...args: any[]) => any,
 >(
   fn: T,
   operationName: string
@@ -220,7 +220,7 @@ export const withNetworkErrorHandling = <
 
 // Component error handler
 export const withComponentErrorHandling = <
-  T extends (...args: unknown[]) => unknown,
+  T extends (...args: any[]) => any,
 >(
   fn: T,
   componentName: string
@@ -233,7 +233,7 @@ export const withComponentErrorHandling = <
 };
 
 // Retry wrapper with exponential backoff
-export const withRetry = <T extends (...args: unknown[]) => unknown>(
+export const withRetry = <T extends (...args: any[]) => any>(
   fn: T,
   maxRetries: number = 3,
   baseDelay: number = 1000,
