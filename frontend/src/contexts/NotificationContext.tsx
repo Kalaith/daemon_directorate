@@ -1,5 +1,6 @@
 // contexts/NotificationContext.tsx - Proper notification system using React Context
 import React, { createContext, useContext, useState, useCallback, useEffect, ReactNode } from 'react';
+import { generateId } from '../utils/gameHelpers';
 
 export interface Notification {
   id: string;
@@ -22,6 +23,7 @@ interface NotificationContextType {
 
 const NotificationContext = createContext<NotificationContextType | undefined>(undefined);
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const useNotifications = () => {
   const context = useContext(NotificationContext);
   if (!context) {
@@ -125,7 +127,7 @@ export const NotificationProvider: React.FC<{ children: ReactNode }> = ({ childr
   const [notifications, setNotifications] = useState<Notification[]>([]);
 
   const addNotification = useCallback((notification: Omit<Notification, 'id'>) => {
-    const id = `notification-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+    const id = generateId(); // Using centralized ID generation
     const newNotification: Notification = {
       ...notification,
       id,
@@ -188,6 +190,7 @@ export const NotificationProvider: React.FC<{ children: ReactNode }> = ({ childr
 };
 
 // Convenience hook for common notification patterns
+// eslint-disable-next-line react-refresh/only-export-components
 export const useNotificationHelpers = () => {
   const { addNotification } = useNotifications();
 

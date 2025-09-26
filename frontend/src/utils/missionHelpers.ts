@@ -16,6 +16,7 @@ import {
   calculateMissionSuccessChance,
   calculateMissionRewards,
   calculateMissionDamage,
+  getDifficultyMultiplier,
   shouldCreateSuccessor,
   calculateSuccessorStats,
 } from './gameHelpers';
@@ -134,7 +135,7 @@ export const executeMissionLogic = (
   };
 
   // Update daemons with mission effects
-  const updatedDaemons = updateDaemonsAfterMission(daemons, selectedTeam, success, planet, generateId);
+  const updatedDaemons = updateDaemonsAfterMission(daemons, selectedTeam, success, planet);
 
   // Update planet state
   const updatedPlanets = updatePlanetAfterMission(planets, planet, selectedMissionType, success, missionInstance.id);
@@ -181,8 +182,8 @@ export const updateDaemonsAfterMission = (
       return daemon;
     }
 
-    // Calculate damage
-    const damage = calculateMissionDamage(daemon);
+    // Calculate damage based on daemon stats and planet difficulty
+    const damage = calculateMissionDamage(daemon, getDifficultyMultiplier(planet.difficulty));
 
     // Update legacy statistics
     const updatedLegacy = { ...daemon.legacy };

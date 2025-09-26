@@ -71,6 +71,29 @@ export const DAEMON_BALANCE = {
     MAX_LIFESPAN_LOSS: 3,
   },
 
+  // Daemon recruitment/generation ranges
+  RECRUITMENT: {
+    HEALTH: {
+      MIN: 70,
+      MAX: 100,
+      RANGE: 30, // 70-100
+    },
+    MORALE: {
+      MIN: 60,
+      MAX: 100,
+      RANGE: 40, // 60-100
+    },
+    LIFESPAN: {
+      MIN: 35,
+      MAX: 60,
+      RANGE: 25, // 35-60
+    },
+    NAMING: {
+      ID_MIN: 1000,
+      ID_RANGE: 9000, // 1000-9999
+    },
+  },
+
   // Legacy system requirements
   LEGACY_REQUIREMENTS: {
     MIN_SUCCESSFUL_MISSIONS: 3,

@@ -3,6 +3,22 @@ import type { Daemon, Planet, DifficultyLevel } from '../types/game';
 import { DAEMON_BALANCE, MISSION_BALANCE, UI_CONSTANTS } from '../constants/gameBalance';
 
 /**
+ * Core Utility Functions
+ */
+export const generateId = (): string => {
+  return Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+};
+
+export const getDifficultyMultiplier = (difficulty: "Easy" | "Medium" | "Hard"): number => {
+  switch (difficulty) {
+    case "Easy": return 0.7;
+    case "Medium": return 1.0;
+    case "Hard": return 1.5;
+    default: return 1.0;
+  }
+};
+
+/**
  * UI Helper Functions
  */
 export const getLifespanColor = (days: number): string => {
@@ -109,24 +125,53 @@ export const generateRandomDamage = (min: number, max: number): number => {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 };
 
-export const calculateMissionDamage = (): {
+export const calculateMissionDamage = (daemon: Daemon, missionDifficulty: number = 1): {
   healthLoss: number;
   moraleLoss: number;
   lifespanLoss: number;
 } => {
+  // Base damage calculation
+  let healthLoss = generateRandomDamage(
+    DAEMON_BALANCE.MISSION_DAMAGE.MIN_HEALTH_LOSS,
+    DAEMON_BALANCE.MISSION_DAMAGE.MAX_HEALTH_LOSS
+  );
+  let moraleLoss = generateRandomDamage(
+    DAEMON_BALANCE.MISSION_DAMAGE.MIN_MORALE_LOSS,
+    DAEMON_BALANCE.MISSION_DAMAGE.MAX_MORALE_LOSS
+  );
+  let lifespanLoss = generateRandomDamage(
+    DAEMON_BALANCE.MISSION_DAMAGE.MIN_LIFESPAN_LOSS,
+    DAEMON_BALANCE.MISSION_DAMAGE.MAX_LIFESPAN_LOSS
+  );
+
+  // Apply daemon-specific modifiers
+  const difficultyMultiplier = Math.max(0.5, Math.min(2.0, missionDifficulty));
+
+  // Specialization affects damage resistance
+  const specializationResistance = 0.9; // 10% damage reduction for now
+
+  // Current health affects vulnerability (wounded daemons take more damage)
+  const healthMultiplier = daemon.health < 30 ? 1.2 : 1.0;
+
+  // Apply quirks that affect damage resistance
+  let quirkMultiplier = 1.0;
+  daemon.quirks.forEach(quirk => {
+    if (quirk.name.toLowerCase().includes('resilient') || quirk.name.toLowerCase().includes('tough')) {
+      quirkMultiplier *= 0.8; // 20% damage reduction
+    } else if (quirk.name.toLowerCase().includes('fragile') || quirk.name.toLowerCase().includes('vulnerable')) {
+      quirkMultiplier *= 1.3; // 30% more damage
+    }
+  });
+
+  // Apply all modifiers
+  healthLoss = Math.round(healthLoss * difficultyMultiplier * specializationResistance * healthMultiplier * quirkMultiplier);
+  moraleLoss = Math.round(moraleLoss * difficultyMultiplier * healthMultiplier * quirkMultiplier);
+  lifespanLoss = Math.round(lifespanLoss * difficultyMultiplier * quirkMultiplier);
+
   return {
-    healthLoss: generateRandomDamage(
-      DAEMON_BALANCE.MISSION_DAMAGE.MIN_HEALTH_LOSS,
-      DAEMON_BALANCE.MISSION_DAMAGE.MAX_HEALTH_LOSS
-    ),
-    moraleLoss: generateRandomDamage(
-      DAEMON_BALANCE.MISSION_DAMAGE.MIN_MORALE_LOSS,
-      DAEMON_BALANCE.MISSION_DAMAGE.MAX_MORALE_LOSS
-    ),
-    lifespanLoss: generateRandomDamage(
-      DAEMON_BALANCE.MISSION_DAMAGE.MIN_LIFESPAN_LOSS,
-      DAEMON_BALANCE.MISSION_DAMAGE.MAX_LIFESPAN_LOSS
-    ),
+    healthLoss: Math.max(0, healthLoss),
+    moraleLoss: Math.max(0, moraleLoss),
+    lifespanLoss: Math.max(0, lifespanLoss),
   };
 };
 

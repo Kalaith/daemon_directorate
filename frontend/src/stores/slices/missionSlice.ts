@@ -3,6 +3,7 @@ import type { StateCreator } from 'zustand';
 import type { Planet, Mission, MissionResult } from '../../types/game';
 import { STARTER_DATA } from '../../constants/gameData';
 import { executeMissionLogic } from '../../utils/missionHelpers';
+import { generateId } from '../../utils/gameHelpers';
 import { logger } from '../../utils/logger';
 
 export interface MissionState {
@@ -66,7 +67,7 @@ export const createMissionSlice: StateCreator<
         selectedMissionType: missionType,
       };
 
-      const generateId = () => `mission_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+      // Removed local generateId - now using centralized utility from gameHelpers
       const result = executeMissionLogic(context, generateId);
 
       set(() => ({

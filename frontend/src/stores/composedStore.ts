@@ -11,9 +11,10 @@ import { createComplianceSlice, type ComplianceSlice } from './slices/compliance
 import { createEndgameSlice, type EndgameSlice } from './slices/endgameSlice';
 import { createApartmentSlice, type ApartmentSlice } from './slices/apartmentSlice';
 import { createEquipmentSlice, type EquipmentSlice } from './slices/equipmentSlice';
+import { createCoreSlice, type CoreSlice } from './slices/coreSlice';
 
 // Combined store type
-export type ComposedGameStore = DaemonSlice & ResourceSlice & MissionSlice & UISlice & CorporateSlice & ComplianceSlice & EndgameSlice & ApartmentSlice & EquipmentSlice;
+export type ComposedGameStore = DaemonSlice & ResourceSlice & MissionSlice & UISlice & CorporateSlice & ComplianceSlice & EndgameSlice & ApartmentSlice & EquipmentSlice & CoreSlice;
 
 // Create the composed store
 export const useGameStore = create<ComposedGameStore>()(
@@ -28,6 +29,7 @@ export const useGameStore = create<ComposedGameStore>()(
       ...createEndgameSlice(...a),
       ...createApartmentSlice(...a),
       ...createEquipmentSlice(...a),
+      ...createCoreSlice(...a),
     })),
     {
       name: 'daemon-directorate-v2',

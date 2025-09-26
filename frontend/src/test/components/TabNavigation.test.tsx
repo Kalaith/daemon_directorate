@@ -43,7 +43,7 @@ describe('TabNavigation Component', () => {
     render(<TabNavigation />);
     
     const activeTab = screen.getByText('Team Management');
-    expect(activeTab.className).toContain('bg-cream-50');
+    expect(activeTab.className).toContain('bg-daemon-surface');
   });
 
   it('shows correct button states for inactive tabs', () => {

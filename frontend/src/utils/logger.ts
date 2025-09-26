@@ -1,5 +1,6 @@
 // utils/logger.ts - Structured logging system
 import { gameConfig } from '../config/gameConfig';
+import { generateId } from './gameHelpers';
 
 // Log levels
 export enum LogLevel {
@@ -198,7 +199,7 @@ class StructuredLogger {
     // Simple session ID - in real app would be more sophisticated
     let sessionId = sessionStorage.getItem('gameSessionId');
     if (!sessionId) {
-      sessionId = `session_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+      sessionId = generateId(); // Using centralized ID generation
       sessionStorage.setItem('gameSessionId', sessionId);
     }
     return sessionId;

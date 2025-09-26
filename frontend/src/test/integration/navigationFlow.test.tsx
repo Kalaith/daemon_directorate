@@ -1,6 +1,6 @@
 // test/integration/navigationFlow.test.tsx - Test navigation and basic component rendering
 import { describe, it, expect } from 'vitest';
-import { render, screen } from '@testing-library/react';
+import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { renderWithProviders } from '../utils/testHelpers';
 import App from '../../App';
@@ -47,7 +47,7 @@ describe('Navigation Flow Tests', () => {
       await user.click(tabButton);
 
       // Tab should become active (have specific styling)
-      expect(tabButton).toHaveClass('bg-cream-50');
+      expect(tabButton).toHaveClass('bg-daemon-surface');
 
       // Should not crash or throw console errors
       expect(document.body).toBeDefined();
@@ -87,7 +87,7 @@ describe('Navigation Flow Tests', () => {
       await user.click(tabButton);
 
       // Should render without throwing errors
-      expect(tabButton).toHaveClass('bg-cream-50');
+      expect(tabButton).toHaveClass('bg-daemon-surface');
 
       // Check for expected content (if components render properly)
       // Note: This is a basic smoke test - components should at least render

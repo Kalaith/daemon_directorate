@@ -3,7 +3,7 @@ import type { StateCreator } from 'zustand';
 import type { Daemon, DaemonLegacy, LegacyStory } from '../../types/game';
 import { STARTER_DATA, DAEMON_NAMES, DAEMON_QUIRKS } from '../../constants/gameData';
 import { DAEMON_BALANCE } from '../../constants/gameBalance';
-import { calculateSuccessorStats, shouldCreateSuccessor } from '../../utils/gameHelpers';
+import { calculateSuccessorStats, shouldCreateSuccessor, generateId } from '../../utils/gameHelpers';
 
 export interface DaemonState {
   // State
@@ -92,21 +92,21 @@ export const createDaemonSlice: StateCreator<
   },
 
   generateRecruitmentPool: () => {
-    const generateId = () => `daemon_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+    // Using centralized generateId from gameHelpers
     const specializations = ['Infiltration', 'Combat', 'Sabotage', 'Diplomacy'] as const;
 
     const pool: Daemon[] = Array.from({ length: 3 }, () => {
       const specialization = specializations[Math.floor(Math.random() * specializations.length)];
-      const name = `${DAEMON_NAMES[Math.floor(Math.random() * DAEMON_NAMES.length)]}-${Math.floor(Math.random() * 9999) + 1000}`;
+      const name = `${DAEMON_NAMES[Math.floor(Math.random() * DAEMON_NAMES.length)]}-${Math.floor(Math.random() * DAEMON_BALANCE.RECRUITMENT.NAMING.ID_RANGE) + DAEMON_BALANCE.RECRUITMENT.NAMING.ID_MIN}`;
       const bloodline = `House of ${['Burning Spreadsheets', 'Eternal Audits', 'Divine Bureaucracy', 'Sacred Forms'][Math.floor(Math.random() * 4)]}`;
 
       return {
         id: generateId(),
         name,
         specialization,
-        health: Math.floor(Math.random() * 30) + 70, // 70-100
-        morale: Math.floor(Math.random() * 40) + 60, // 60-100
-        lifespanDays: Math.floor(Math.random() * 25) + 35, // 35-60
+        health: Math.floor(Math.random() * DAEMON_BALANCE.RECRUITMENT.HEALTH.RANGE) + DAEMON_BALANCE.RECRUITMENT.HEALTH.MIN,
+        morale: Math.floor(Math.random() * DAEMON_BALANCE.RECRUITMENT.MORALE.RANGE) + DAEMON_BALANCE.RECRUITMENT.MORALE.MIN,
+        lifespanDays: Math.floor(Math.random() * DAEMON_BALANCE.RECRUITMENT.LIFESPAN.RANGE) + DAEMON_BALANCE.RECRUITMENT.LIFESPAN.MIN,
         quirks: DAEMON_QUIRKS.sort(() => 0.5 - Math.random()).slice(0, 2),
         assignments: [],
         equipment: null,
@@ -142,8 +142,8 @@ export const createDaemonSlice: StateCreator<
 
     // Create successor if qualified
     if (shouldCreateSuccessor(daemon)) {
-      const generateId = () => `daemon_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-      const successorName = `${DAEMON_NAMES[Math.floor(Math.random() * DAEMON_NAMES.length)]}-${Math.floor(Math.random() * 9999) + 1000}`;
+      // Using centralized generateId from gameHelpers
+      const successorName = `${DAEMON_NAMES[Math.floor(Math.random() * DAEMON_NAMES.length)]}-${Math.floor(Math.random() * DAEMON_BALANCE.RECRUITMENT.NAMING.ID_RANGE) + DAEMON_BALANCE.RECRUITMENT.NAMING.ID_MIN}`;
       const stats = calculateSuccessorStats(daemon);
 
       const successor: Daemon = {
@@ -238,7 +238,7 @@ export const createDaemonSlice: StateCreator<
 
     const legacyStory: LegacyStory = {
       ...story,
-      id: `story_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+      id: generateId(), // Using centralized ID generation
       timestamp: Date.now(),
     };
 

@@ -1,6 +1,7 @@
 // stores/slices/uiSlice.ts - UI state management slice
 import type { StateCreator } from 'zustand';
 import type { TabType, NotificationType, MissionResult, CorporateEvent } from '../../types/game';
+import { generateId } from '../../utils/gameHelpers';
 
 export interface UIState {
   // Tab navigation
@@ -142,7 +143,7 @@ export const createUISlice: StateCreator<UISlice, [], [], UISlice> = (set, get) 
 
   addNotification: (message: string, type: NotificationType = 'info') => {
     const notification = {
-      id: `notification_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+      id: generateId(), // Using centralized ID generation
       type,
       message,
       timestamp: Date.now(),

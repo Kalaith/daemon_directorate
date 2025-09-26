@@ -94,6 +94,7 @@ class PerformanceMonitor {
 }
 
 // Global performance monitor instance
+// eslint-disable-next-line react-refresh/only-export-components
 export const performanceMonitor = new PerformanceMonitor();
 
 // Performance Profiler component
@@ -156,6 +157,7 @@ export const PerformanceProfiler: React.FC<PerformanceProfilerProps> = ({
 };
 
 // Hook for monitoring component performance
+// eslint-disable-next-line react-refresh/only-export-components
 export const usePerformanceMetrics = (componentId: string) => {
   const [metrics, setMetrics] = useState<PerformanceMetric[]>([]);
 
@@ -182,6 +184,7 @@ export const usePerformanceMetrics = (componentId: string) => {
 };
 
 // Hook for memory usage monitoring
+// eslint-disable-next-line react-refresh/only-export-components
 export const useMemoryMonitor = () => {
   const [memoryInfo, setMemoryInfo] = useState<{
     usedJSHeapSize: number;
@@ -319,6 +322,7 @@ export const PerformanceDashboard: React.FC = () => {
 };
 
 // Bundle size analyzer utility
+// eslint-disable-next-line react-refresh/only-export-components
 export const analyzeBundleSize = () => {
   if (process.env.NODE_ENV !== 'development') {
     console.warn('Bundle size analysis only available in development mode');

@@ -26,11 +26,11 @@ describe('Card Component', () => {
     const cardContent = screen.getByTestId('card-content');
     const cardElement = cardContent.parentElement;
     
-    expect(cardElement?.className).toContain('bg-surface');
-    expect(cardElement?.className).toContain('border-card-border');
+    expect(cardElement?.className).toContain('bg-daemon-panel');
+    expect(cardElement?.className).toContain('border-daemon-secondary');
     expect(cardElement?.className).toContain('rounded-lg');
     expect(cardElement?.className).toContain('p-6');
-    expect(cardElement?.className).toContain('shadow-sm');
+    expect(cardElement?.className).toContain('shadow-lg');
   });
 
   it('merges custom className with default classes', () => {
