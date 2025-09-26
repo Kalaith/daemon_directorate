@@ -1,5 +1,11 @@
 // services/DashboardService.ts - Dashboard business logic
-import type { Daemon, CorporateEvent, ComplianceTask, Story, LegacyBook } from '../types/game';
+import type {
+  Daemon,
+  CorporateEvent,
+  ComplianceTask,
+  Story,
+  LegacyBook,
+} from '../types/game';
 import { DAEMON_BALANCE } from '../constants/gameBalance';
 
 export interface DashboardStats {

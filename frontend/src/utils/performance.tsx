@@ -1,10 +1,5 @@
 // utils/performance.tsx - Performance monitoring and profiling utilities
-import React, {
-  Profiler,
-  useCallback,
-  useEffect,
-  useState,
-} from 'react';
+import React, { Profiler, useCallback, useEffect, useState } from 'react';
 import type { ReactNode } from 'react';
 import { PERFORMANCE_THRESHOLDS } from '../constants/performance';
 

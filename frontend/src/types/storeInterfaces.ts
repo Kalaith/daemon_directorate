@@ -46,7 +46,10 @@ export interface UIStateActions {
 export interface ResourceActions {
   canAfford: (cost: number | Partial<GameResources>) => boolean;
   spendCredits: (amount: number) => boolean;
-  spendResourceBatch: (costs: Partial<GameResources>, reason?: string) => boolean;
+  spendResourceBatch: (
+    costs: Partial<GameResources>,
+    reason?: string
+  ) => boolean;
   addResources: (
     credits?: number,
     soulEssence?: number,

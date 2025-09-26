@@ -72,7 +72,8 @@ export const createMissionInstance = (
       })),
     ],
     consequences: missionTemplate.failureConsequences.map(consId => {
-      const consequence = MISSION_CONSEQUENCES[consId as keyof typeof MISSION_CONSEQUENCES];
+      const consequence =
+        MISSION_CONSEQUENCES[consId as keyof typeof MISSION_CONSEQUENCES];
       return {
         id: generateId(),
         triggerCondition: 'failure' as const,
