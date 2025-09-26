@@ -3,6 +3,15 @@ import type { StateCreator } from 'zustand';
 import type { CoreGameActions } from '../../types/storeInterfaces';
 import type { ComposedGameStore } from '../composedStore';
 import { generateId } from '../../utils/gameHelpers';
+import { STARTER_DATA } from '../../constants/gameData';
+
+// Using the same initial resources as resourceSlice
+const INITIAL_RESOURCES = {
+  credits: 500,
+  soulEssence: 0,
+  bureaucraticLeverage: 0,
+  rawMaterials: 0,
+};
 
 export type CoreSlice = CoreGameActions;
 
@@ -14,22 +23,27 @@ export const createCoreSlice: StateCreator<
 > = (set, get) => ({
   initializeGame: () => {
     // Initialize game when store is first created
-    set((state) => ({
+    set(state => ({
       ...state,
     }));
   },
 
   startNewGame: () => {
-    // Start a fresh game - just reset basic state for now
+    // Start a fresh game with starter data
     set(() => ({
-      resources: {
-        credits: 1000,
-        soulEssence: 0,
-        bureaucraticLeverage: 0,
-        rawMaterials: 0,
-      },
-      daemons: [],
-      equipment: [],
+      resources: INITIAL_RESOURCES,
+      daemons: STARTER_DATA.starter_daemons.map(daemon => ({
+        ...daemon,
+        id: generateId(),
+        isActive: true,
+        assignments: [],
+        equipment: null,
+      })),
+      equipment: STARTER_DATA.starter_equipment.map(equipment => ({
+        ...equipment,
+        id: generateId(),
+      })),
+      rooms: STARTER_DATA.apartment_rooms,
       gameStarted: true,
       daysPassed: 0,
     }));
@@ -38,12 +52,7 @@ export const createCoreSlice: StateCreator<
   resetToInitialState: () => {
     // Reset to clean initial state for testing - simplified
     set(() => ({
-      resources: {
-        credits: 1000,
-        soulEssence: 0,
-        bureaucraticLeverage: 0,
-        rawMaterials: 0,
-      },
+      resources: INITIAL_RESOURCES,
       daemons: [],
       equipment: [],
       gameStarted: false,

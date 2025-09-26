@@ -22,7 +22,7 @@ export const useGameConfig = (): GameConfig => {
   const [config, setConfig] = useState<GameConfig>(() => gameConfig.getAll());
 
   useEffect(() => {
-    const unsubscribe = gameConfig.subscribe((newConfig) => {
+    const unsubscribe = gameConfig.subscribe(newConfig => {
       setConfig(newConfig);
     });
 

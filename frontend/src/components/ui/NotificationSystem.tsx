@@ -91,7 +91,9 @@ const NotificationSystem: React.FC = () => {
                 {getIconForType(notification.type)}
               </span>
               <div className="flex-1">
-                <h4 className="font-semibold text-sm text-daemon-text-bright uppercase tracking-wide">{notification.title}</h4>
+                <h4 className="font-semibold text-sm text-daemon-text-bright uppercase tracking-wide">
+                  {notification.title}
+                </h4>
                 <p className="text-xs mt-1 text-daemon-text">
                   {notification.message}
                 </p>

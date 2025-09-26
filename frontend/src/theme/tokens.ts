@@ -99,12 +99,12 @@ export const DESIGN_TOKENS = {
       mono: ['JetBrains Mono', 'Monaco', 'monospace'],
     },
     fontSize: {
-      xs: '0.75rem',     // 12px
-      sm: '0.875rem',    // 14px
-      base: '1rem',      // 16px
-      lg: '1.125rem',    // 18px
-      xl: '1.25rem',     // 20px
-      '2xl': '1.5rem',   // 24px
+      xs: '0.75rem', // 12px
+      sm: '0.875rem', // 14px
+      base: '1rem', // 16px
+      lg: '1.125rem', // 18px
+      xl: '1.25rem', // 20px
+      '2xl': '1.5rem', // 24px
       '3xl': '1.875rem', // 30px
     },
     fontWeight: {
@@ -118,26 +118,26 @@ export const DESIGN_TOKENS = {
   // Spacing scale
   spacing: {
     0: '0',
-    1: '0.25rem',  // 4px
-    2: '0.5rem',   // 8px
-    3: '0.75rem',  // 12px
-    4: '1rem',     // 16px
-    5: '1.25rem',  // 20px
-    6: '1.5rem',   // 24px
-    8: '2rem',     // 32px
-    10: '2.5rem',  // 40px
-    12: '3rem',    // 48px
-    16: '4rem',    // 64px
+    1: '0.25rem', // 4px
+    2: '0.5rem', // 8px
+    3: '0.75rem', // 12px
+    4: '1rem', // 16px
+    5: '1.25rem', // 20px
+    6: '1.5rem', // 24px
+    8: '2rem', // 32px
+    10: '2.5rem', // 40px
+    12: '3rem', // 48px
+    16: '4rem', // 64px
   },
 
   // Border radius
   borderRadius: {
     none: '0',
-    sm: '0.125rem',   // 2px
-    base: '0.25rem',  // 4px
-    md: '0.375rem',   // 6px
-    lg: '0.5rem',     // 8px
-    xl: '0.75rem',    // 12px
+    sm: '0.125rem', // 2px
+    base: '0.25rem', // 4px
+    md: '0.375rem', // 6px
+    lg: '0.5rem', // 8px
+    xl: '0.75rem', // 12px
     full: '9999px',
   },
 
@@ -163,10 +163,14 @@ export const DESIGN_TOKENS = {
 export const COMPONENT_VARIANTS = {
   // Button variants
   button: {
-    primary: 'bg-primary-600 text-white hover:bg-primary-700 focus:ring-primary-500',
-    secondary: 'bg-neutral-200 text-neutral-900 hover:bg-neutral-300 focus:ring-neutral-500',
-    success: 'bg-success-600 text-white hover:bg-success-700 focus:ring-success-500',
-    warning: 'bg-warning-600 text-white hover:bg-warning-700 focus:ring-warning-500',
+    primary:
+      'bg-primary-600 text-white hover:bg-primary-700 focus:ring-primary-500',
+    secondary:
+      'bg-neutral-200 text-neutral-900 hover:bg-neutral-300 focus:ring-neutral-500',
+    success:
+      'bg-success-600 text-white hover:bg-success-700 focus:ring-success-500',
+    warning:
+      'bg-warning-600 text-white hover:bg-warning-700 focus:ring-warning-500',
     error: 'bg-error-600 text-white hover:bg-error-700 focus:ring-error-500',
     ghost: 'bg-transparent hover:bg-neutral-100 focus:ring-neutral-500',
   },
@@ -184,7 +188,8 @@ export const COMPONENT_VARIANTS = {
   card: {
     default: 'bg-white border border-neutral-200 rounded-lg shadow-sm',
     elevated: 'bg-white border border-neutral-200 rounded-lg shadow-md',
-    interactive: 'bg-white border border-neutral-200 rounded-lg shadow-sm hover:shadow-md transition-shadow cursor-pointer',
+    interactive:
+      'bg-white border border-neutral-200 rounded-lg shadow-sm hover:shadow-md transition-shadow cursor-pointer',
     game: 'bg-corporate-cream border border-corporate-brown/12 rounded-lg shadow-sm hover:shadow-md transition-shadow',
   },
 

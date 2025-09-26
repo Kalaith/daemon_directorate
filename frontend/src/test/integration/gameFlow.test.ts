@@ -13,7 +13,7 @@ describe('Game Flow Integration', () => {
 
   it('completes a full game initialization flow', () => {
     const { result } = renderHook(() => useGameStore());
-    
+
     act(() => {
       result.current.startNewGame();
     });
@@ -29,7 +29,7 @@ describe('Game Flow Integration', () => {
 
   it('handles daemon recruitment workflow', () => {
     const { result } = renderHook(() => useGameStore());
-    
+
     act(() => {
       result.current.startNewGame();
     });
@@ -45,18 +45,24 @@ describe('Game Flow Integration', () => {
 
       // Should have one more daemon
       expect(result.current.daemons.length).toBe(initialDaemonCount + 1);
-      
+
       // Should have spent credits
-      expect(result.current.resources.credits).toBe(initialCredits - recruitmentCandidate.cost);
-      
+      expect(result.current.resources.credits).toBe(
+        initialCredits - recruitmentCandidate.cost
+      );
+
       // Recruitment pool should be smaller
-      expect(result.current.recruitmentPool.find(d => d.id === recruitmentCandidate.id)).toBeUndefined();
+      expect(
+        result.current.recruitmentPool.find(
+          d => d.id === recruitmentCandidate.id
+        )
+      ).toBeUndefined();
     }
   });
 
   it('handles mission selection and execution', () => {
     const { result } = renderHook(() => useGameStore());
-    
+
     act(() => {
       result.current.startNewGame();
     });
@@ -87,7 +93,7 @@ describe('Game Flow Integration', () => {
 
   it('handles resource management correctly', () => {
     const { result } = renderHook(() => useGameStore());
-    
+
     act(() => {
       result.current.startNewGame();
     });
@@ -115,7 +121,7 @@ describe('Game Flow Integration', () => {
 
   it('handles room upgrades', () => {
     const { result } = renderHook(() => useGameStore());
-    
+
     act(() => {
       result.current.startNewGame();
     });
@@ -140,7 +146,7 @@ describe('Game Flow Integration', () => {
 
   it('generates unique recruitment pools', () => {
     const { result } = renderHook(() => useGameStore());
-    
+
     act(() => {
       result.current.startNewGame();
     });

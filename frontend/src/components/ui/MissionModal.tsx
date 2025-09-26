@@ -30,26 +30,41 @@ const MissionModal: React.FC = () => {
 
         <div className="mb-8">
           <h3 className="font-header font-semibold text-daemon-text-bright mb-4 text-lg">
-            Operation: <span className="text-daemon-primary font-mono">{planet.name}</span>
+            Operation:{' '}
+            <span className="text-daemon-primary font-mono">{planet.name}</span>
           </h3>
           <div className="grid grid-cols-2 gap-4 text-sm text-daemon-text bg-daemon-surface p-4 rounded-lg border border-daemon-secondary">
             <div>
-              <span className="text-daemon-text-muted font-mono uppercase tracking-wide">Target:</span>{' '}
-              <span className="text-daemon-text-bright font-mono font-semibold">{planet.type}</span>
+              <span className="text-daemon-text-muted font-mono uppercase tracking-wide">
+                Target:
+              </span>{' '}
+              <span className="text-daemon-text-bright font-mono font-semibold">
+                {planet.type}
+              </span>
             </div>
             <div>
-              <span className="text-daemon-text-muted font-mono uppercase tracking-wide">Opposition:</span>{' '}
-              <span className="text-daemon-text-bright font-mono font-semibold">{planet.resistance}</span>
+              <span className="text-daemon-text-muted font-mono uppercase tracking-wide">
+                Opposition:
+              </span>{' '}
+              <span className="text-daemon-text-bright font-mono font-semibold">
+                {planet.resistance}
+              </span>
             </div>
             <div>
-              <span className="text-daemon-text-muted font-mono uppercase tracking-wide">Difficulty:</span>{' '}
-              <span className="text-daemon-text-bright font-mono font-semibold">{planet.difficulty}</span>
+              <span className="text-daemon-text-muted font-mono uppercase tracking-wide">
+                Difficulty:
+              </span>{' '}
+              <span className="text-daemon-text-bright font-mono font-semibold">
+                {planet.difficulty}
+              </span>
             </div>
             <div>
               <span className="text-daemon-text-muted font-mono uppercase tracking-wide">
                 Expected Rewards:
               </span>{' '}
-              <span className="text-daemon-text-bright font-mono font-semibold">{planet.reward}</span>
+              <span className="text-daemon-text-bright font-mono font-semibold">
+                {planet.reward}
+              </span>
             </div>
           </div>
           <p className="mt-4 text-daemon-text bg-daemon-surface p-4 rounded-lg border border-daemon-secondary">
@@ -97,7 +112,10 @@ const MissionModal: React.FC = () => {
                               : 'text-daemon-danger'
                         }
                       >
-                        <span className="text-daemon-text-muted uppercase tracking-wide">Health:</span> {daemon.health}%
+                        <span className="text-daemon-text-muted uppercase tracking-wide">
+                          Health:
+                        </span>{' '}
+                        {daemon.health}%
                       </span>
                       <span
                         className={
@@ -108,10 +126,16 @@ const MissionModal: React.FC = () => {
                               : 'text-daemon-danger'
                         }
                       >
-                        <span className="text-daemon-text-muted uppercase tracking-wide">Morale:</span> {daemon.morale}%
+                        <span className="text-daemon-text-muted uppercase tracking-wide">
+                          Morale:
+                        </span>{' '}
+                        {daemon.morale}%
                       </span>
                       <span className="text-daemon-text">
-                        <span className="text-daemon-text-muted uppercase tracking-wide">Lifespan:</span> {daemon.lifespanDays} days
+                        <span className="text-daemon-text-muted uppercase tracking-wide">
+                          Lifespan:
+                        </span>{' '}
+                        {daemon.lifespanDays} days
                       </span>
                     </div>
                   </div>

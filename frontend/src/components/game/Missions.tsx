@@ -39,19 +39,35 @@ const Missions: React.FC = () => {
               <h3 className="font-header font-bold text-xl text-daemon-text-bright">
                 {planet.name}
               </h3>
-              <Badge variant={getDifficultyVariant(planet.difficulty) as 'easy' | 'medium' | 'hard' | 'neutral'}>
+              <Badge
+                variant={
+                  getDifficultyVariant(planet.difficulty) as
+                    | 'easy'
+                    | 'medium'
+                    | 'hard'
+                    | 'neutral'
+                }
+              >
                 {planet.difficulty}
               </Badge>
             </div>
 
             <div className="space-y-4 mb-6">
               <div className="flex justify-between">
-                <span className="text-daemon-text-muted font-mono uppercase tracking-wide">Type:</span>
-                <span className="text-daemon-text-bright font-mono font-semibold">{planet.type}</span>
+                <span className="text-daemon-text-muted font-mono uppercase tracking-wide">
+                  Type:
+                </span>
+                <span className="text-daemon-text-bright font-mono font-semibold">
+                  {planet.type}
+                </span>
               </div>
               <div className="flex justify-between">
-                <span className="text-daemon-text-muted font-mono uppercase tracking-wide">Resistance:</span>
-                <span className="text-daemon-text-bright font-mono font-semibold">{planet.resistance}</span>
+                <span className="text-daemon-text-muted font-mono uppercase tracking-wide">
+                  Resistance:
+                </span>
+                <span className="text-daemon-text-bright font-mono font-semibold">
+                  {planet.resistance}
+                </span>
               </div>
               {planet.conquered && (
                 <div className="flex justify-center">

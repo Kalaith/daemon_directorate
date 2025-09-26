@@ -19,7 +19,7 @@ vi.mock('../stores/useGameStore', () => ({
     missionResults: null,
     currentEvent: null,
     notifications: [],
-    
+
     // Game State - properties used by Dashboard
     activeMission: null,
     daemons: [],
@@ -29,13 +29,18 @@ vi.mock('../stores/useGameStore', () => ({
       name: 'Associate',
       level: 1,
       requirements: {},
-      unlocks: { resources: [], mechanics: [], apartmentRooms: [], eventTypes: [] }
+      unlocks: {
+        resources: [],
+        mechanics: [],
+        apartmentRooms: [],
+        eventTypes: [],
+      },
     },
     complianceTasks: [],
     daysPassed: 0,
     legacyBook: {},
     hallOfInfamy: [],
-    
+
     // Game State - other required properties
     resources: {
       credits: 500,
@@ -74,7 +79,7 @@ vi.mock('../stores/useGameStore', () => ({
       eventTypes: [],
     },
     corporateRivals: [],
-    
+
     // Actions
     initializeGame: vi.fn(),
     triggerRandomEvent: vi.fn(),

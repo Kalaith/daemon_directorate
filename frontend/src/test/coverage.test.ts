@@ -18,7 +18,7 @@ describe('Test Coverage Examples', () => {
     const throwError = () => {
       throw new Error('Test error');
     };
-    
+
     expect(throwError).toThrow('Test error');
   });
 
@@ -27,12 +27,12 @@ describe('Test Coverage Examples', () => {
       id: 1,
       name: 'John',
       email: 'john@example.com',
-      tags: ['admin', 'user']
+      tags: ['admin', 'user'],
     };
 
     expect(user).toMatchObject({
       name: 'John',
-      email: expect.stringContaining('@')
+      email: expect.stringContaining('@'),
     });
 
     expect(user.tags).toContain('admin');

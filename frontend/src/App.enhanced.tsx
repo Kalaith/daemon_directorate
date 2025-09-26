@@ -2,15 +2,22 @@
 import React, { useEffect, Suspense } from 'react';
 import { useGameStore } from './stores/composedStore';
 import { NotificationProvider } from './contexts/NotificationContext';
-import { AppErrorBoundary, FeatureErrorBoundary } from './components/ui/ErrorBoundary';
+import {
+  AppErrorBoundary,
+  FeatureErrorBoundary,
+} from './components/ui/ErrorBoundary';
 import { PerformanceProfiler, PerformanceDashboard } from './utils/performance';
 import { Container } from './components/ui/DesignSystem';
 
 // Lazy load components for better performance
 const Header = React.lazy(() => import('./components/layout/Header'));
-const TabNavigation = React.lazy(() => import('./components/layout/TabNavigation'));
+const TabNavigation = React.lazy(
+  () => import('./components/layout/TabNavigation')
+);
 const Dashboard = React.lazy(() => import('./components/game/Dashboard'));
-const TeamManagement = React.lazy(() => import('./components/game/TeamManagement'));
+const TeamManagement = React.lazy(
+  () => import('./components/game/TeamManagement')
+);
 const Missions = React.lazy(() => import('./components/game/Missions'));
 const Apartment = React.lazy(() => import('./components/game/Apartment'));
 const Equipment = React.lazy(() => import('./components/game/Equipment'));
@@ -18,12 +25,24 @@ const GameControls = React.lazy(() => import('./components/ui/GameControls'));
 const Tutorial = React.lazy(() => import('./components/ui/Tutorial'));
 const MemorialModal = React.lazy(() => import('./components/ui/MemorialModal'));
 const MissionModal = React.lazy(() => import('./components/ui/MissionModal'));
-const MissionResults = React.lazy(() => import('./components/ui/MissionResults'));
-const CorporateEventModal = React.lazy(() => import('./components/ui/CorporateEventModal').then(m => ({ default: m.CorporateEventModal })));
-const EndgameModal = React.lazy(() => import('./components/ui/EndgameModal').then(m => ({ default: m.EndgameModal })));
+const MissionResults = React.lazy(
+  () => import('./components/ui/MissionResults')
+);
+const CorporateEventModal = React.lazy(() =>
+  import('./components/ui/CorporateEventModal').then(m => ({
+    default: m.CorporateEventModal,
+  }))
+);
+const EndgameModal = React.lazy(() =>
+  import('./components/ui/EndgameModal').then(m => ({
+    default: m.EndgameModal,
+  }))
+);
 
 // Loading component
-const LoadingSpinner: React.FC<{ message?: string }> = ({ message = 'Loading...' }) => (
+const LoadingSpinner: React.FC<{ message?: string }> = ({
+  message = 'Loading...',
+}) => (
   <div className="flex items-center justify-center p-8">
     <div className="flex items-center gap-3">
       <div className="animate-spin rounded-full h-6 w-6 border-2 border-primary-600 border-t-transparent" />
@@ -54,7 +73,9 @@ const AppContent: React.FC = () => {
         return (
           <FeatureErrorBoundary feature="Dashboard">
             <PerformanceProfiler id="Dashboard">
-              <Suspense fallback={<LoadingSpinner message="Loading dashboard..." />}>
+              <Suspense
+                fallback={<LoadingSpinner message="Loading dashboard..." />}
+              >
                 <Dashboard />
               </Suspense>
             </PerformanceProfiler>
@@ -64,7 +85,11 @@ const AppContent: React.FC = () => {
         return (
           <FeatureErrorBoundary feature="Team Management">
             <PerformanceProfiler id="TeamManagement">
-              <Suspense fallback={<LoadingSpinner message="Loading team management..." />}>
+              <Suspense
+                fallback={
+                  <LoadingSpinner message="Loading team management..." />
+                }
+              >
                 <TeamManagement />
               </Suspense>
             </PerformanceProfiler>
@@ -74,7 +99,9 @@ const AppContent: React.FC = () => {
         return (
           <FeatureErrorBoundary feature="Missions">
             <PerformanceProfiler id="Missions">
-              <Suspense fallback={<LoadingSpinner message="Loading missions..." />}>
+              <Suspense
+                fallback={<LoadingSpinner message="Loading missions..." />}
+              >
                 <Missions />
               </Suspense>
             </PerformanceProfiler>
@@ -84,7 +111,9 @@ const AppContent: React.FC = () => {
         return (
           <FeatureErrorBoundary feature="Apartment">
             <PerformanceProfiler id="Apartment">
-              <Suspense fallback={<LoadingSpinner message="Loading apartment..." />}>
+              <Suspense
+                fallback={<LoadingSpinner message="Loading apartment..." />}
+              >
                 <Apartment />
               </Suspense>
             </PerformanceProfiler>
@@ -94,7 +123,9 @@ const AppContent: React.FC = () => {
         return (
           <FeatureErrorBoundary feature="Equipment">
             <PerformanceProfiler id="Equipment">
-              <Suspense fallback={<LoadingSpinner message="Loading equipment..." />}>
+              <Suspense
+                fallback={<LoadingSpinner message="Loading equipment..." />}
+              >
                 <Equipment />
               </Suspense>
             </PerformanceProfiler>
@@ -104,7 +135,9 @@ const AppContent: React.FC = () => {
         return (
           <FeatureErrorBoundary feature="Dashboard">
             <PerformanceProfiler id="Dashboard">
-              <Suspense fallback={<LoadingSpinner message="Loading dashboard..." />}>
+              <Suspense
+                fallback={<LoadingSpinner message="Loading dashboard..." />}
+              >
                 <Dashboard />
               </Suspense>
             </PerformanceProfiler>
@@ -117,14 +150,22 @@ const AppContent: React.FC = () => {
     <div className="min-h-screen bg-neutral-50 text-neutral-900">
       {/* Header */}
       <FeatureErrorBoundary feature="Header">
-        <Suspense fallback={<div className="h-16 bg-white border-b border-neutral-200" />}>
+        <Suspense
+          fallback={
+            <div className="h-16 bg-white border-b border-neutral-200" />
+          }
+        >
           <Header />
         </Suspense>
       </FeatureErrorBoundary>
 
       {/* Navigation */}
       <FeatureErrorBoundary feature="Navigation">
-        <Suspense fallback={<div className="h-12 bg-neutral-100 border-b border-neutral-200" />}>
+        <Suspense
+          fallback={
+            <div className="h-12 bg-neutral-100 border-b border-neutral-200" />
+          }
+        >
           <TabNavigation />
         </Suspense>
       </FeatureErrorBoundary>
@@ -204,7 +245,10 @@ const EnhancedApp: React.FC = () => {
   return (
     <AppErrorBoundary>
       <NotificationProvider>
-        <PerformanceProfiler id="App" enableLogging={process.env.NODE_ENV === 'development'}>
+        <PerformanceProfiler
+          id="App"
+          enableLogging={process.env.NODE_ENV === 'development'}
+        >
           <AppContent />
         </PerformanceProfiler>
       </NotificationProvider>

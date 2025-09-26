@@ -38,21 +38,27 @@ export const useInterval = (callback: () => void, delay: number | null) => {
 export const useTimers = () => {
   const timersRef = useRef<Set<NodeJS.Timeout>>(new Set());
 
-  const addTimeout = useCallback((callback: () => void, delay: number): NodeJS.Timeout => {
-    const timeoutId = setTimeout(() => {
-      callback();
-      timersRef.current.delete(timeoutId);
-    }, delay);
+  const addTimeout = useCallback(
+    (callback: () => void, delay: number): NodeJS.Timeout => {
+      const timeoutId = setTimeout(() => {
+        callback();
+        timersRef.current.delete(timeoutId);
+      }, delay);
 
-    timersRef.current.add(timeoutId);
-    return timeoutId;
-  }, []);
+      timersRef.current.add(timeoutId);
+      return timeoutId;
+    },
+    []
+  );
 
-  const addInterval = useCallback((callback: () => void, delay: number): NodeJS.Timeout => {
-    const intervalId = setInterval(callback, delay);
-    timersRef.current.add(intervalId);
-    return intervalId;
-  }, []);
+  const addInterval = useCallback(
+    (callback: () => void, delay: number): NodeJS.Timeout => {
+      const intervalId = setInterval(callback, delay);
+      timersRef.current.add(intervalId);
+      return intervalId;
+    },
+    []
+  );
 
   const clearTimer = useCallback((timerId: NodeJS.Timeout) => {
     clearTimeout(timerId);
@@ -182,13 +188,16 @@ export const useWebSocket = (url: string | null) => {
     }
   }, []);
 
-  const send = useCallback((data: string | ArrayBufferLike | Blob | ArrayBufferView) => {
-    if (socketRef.current?.readyState === WebSocket.OPEN) {
-      socketRef.current.send(data);
-      return true;
-    }
-    return false;
-  }, []);
+  const send = useCallback(
+    (data: string | ArrayBufferLike | Blob | ArrayBufferView) => {
+      if (socketRef.current?.readyState === WebSocket.OPEN) {
+        socketRef.current.send(data);
+        return true;
+      }
+      return false;
+    },
+    []
+  );
 
   useEffect(() => {
     if (url) {
@@ -217,14 +226,17 @@ export const useIntersectionObserver = (
   const observerRef = useRef<IntersectionObserver | null>(null);
   const elementsRef = useRef<Set<Element>>(new Set());
 
-  const observe = useCallback((element: Element) => {
-    if (!observerRef.current) {
-      observerRef.current = new IntersectionObserver(callback, options);
-    }
+  const observe = useCallback(
+    (element: Element) => {
+      if (!observerRef.current) {
+        observerRef.current = new IntersectionObserver(callback, options);
+      }
 
-    observerRef.current.observe(element);
-    elementsRef.current.add(element);
-  }, [callback, options]);
+      observerRef.current.observe(element);
+      elementsRef.current.add(element);
+    },
+    [callback, options]
+  );
 
   const unobserve = useCallback((element: Element) => {
     if (observerRef.current) {
@@ -275,26 +287,31 @@ export const useResizeObserver = (
 // Hook for managing DOM cleanup
 export const useDOMCleanup = () => {
   const elementsRef = useRef<Set<Element>>(new Set());
-  const listenersRef = useRef<Map<Element, Map<string, EventListenerOrEventListenerObject>>>(new Map());
+  const listenersRef = useRef<
+    Map<Element, Map<string, EventListenerOrEventListenerObject>>
+  >(new Map());
 
   const registerElement = useCallback((element: Element) => {
     elementsRef.current.add(element);
   }, []);
 
-  const addListener = useCallback((
-    element: Element,
-    event: string,
-    listener: EventListenerOrEventListenerObject,
-    options?: AddEventListenerOptions
-  ) => {
-    element.addEventListener(event, listener, options);
+  const addListener = useCallback(
+    (
+      element: Element,
+      event: string,
+      listener: EventListenerOrEventListenerObject,
+      options?: AddEventListenerOptions
+    ) => {
+      element.addEventListener(event, listener, options);
 
-    if (!listenersRef.current.has(element)) {
-      listenersRef.current.set(element, new Map());
-    }
+      if (!listenersRef.current.has(element)) {
+        listenersRef.current.set(element, new Map());
+      }
 
-    listenersRef.current.get(element)?.set(event, listener);
-  }, []);
+      listenersRef.current.get(element)?.set(event, listener);
+    },
+    []
+  );
 
   const removeListener = useCallback((element: Element, event: string) => {
     const elementListeners = listenersRef.current.get(element);

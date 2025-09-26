@@ -104,7 +104,12 @@ export interface Mission {
   teamIds: string[];
   startTime: number;
   duration: number;
-  type?: 'conquest' | 'sabotage' | 'diplomacy' | 'reconnaissance' | 'extraction';
+  type?:
+    | 'conquest'
+    | 'sabotage'
+    | 'diplomacy'
+    | 'reconnaissance'
+    | 'extraction';
   objectives?: MissionObjective[];
   consequences?: MissionConsequence[];
   procedural?: boolean; // Generated based on conquered territories
@@ -430,7 +435,12 @@ export interface RivalPersonality {
 }
 
 export interface RivalStrategy {
-  type: 'aggressive_expansion' | 'economic_dominance' | 'shadow_operations' | 'diplomatic_manipulation' | 'defensive_consolidation';
+  type:
+    | 'aggressive_expansion'
+    | 'economic_dominance'
+    | 'shadow_operations'
+    | 'diplomatic_manipulation'
+    | 'defensive_consolidation';
   priority: number; // 1-10, how committed they are to this strategy
   duration: number; // Days remaining on this strategy
   targetPlanets?: string[];
@@ -439,7 +449,13 @@ export interface RivalStrategy {
 
 export interface RivalOperation {
   id: string;
-  type: 'espionage' | 'sabotage' | 'planet_attack' | 'trade_manipulation' | 'alliance_formation' | 'counter_intelligence';
+  type:
+    | 'espionage'
+    | 'sabotage'
+    | 'planet_attack'
+    | 'trade_manipulation'
+    | 'alliance_formation'
+    | 'counter_intelligence';
   targetId: string; // Planet ID or 'player' for operations against the player
   duration: number; // Days to complete
   successChance: number;

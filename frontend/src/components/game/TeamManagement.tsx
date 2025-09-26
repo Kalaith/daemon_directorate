@@ -34,7 +34,9 @@ const TeamManagement: React.FC = () => {
               className="bg-daemon-panel border-daemon-secondary hover:border-daemon-primary hover:shadow-infernal transition-all duration-200"
             >
               <div className="flex justify-between items-start mb-4">
-                <h4 className="font-header font-semibold text-daemon-text-bright text-lg">{daemon.name}</h4>
+                <h4 className="font-header font-semibold text-daemon-text-bright text-lg">
+                  {daemon.name}
+                </h4>
                 <span className="text-sm text-daemon-text-bright bg-daemon-secondary px-3 py-1 rounded-lg font-mono uppercase tracking-wide">
                   {daemon.specialization}
                 </span>
@@ -43,7 +45,9 @@ const TeamManagement: React.FC = () => {
               <div className="space-y-4 mb-6">
                 <div>
                   <div className="flex justify-between text-sm mb-2">
-                    <span className="text-daemon-text-muted uppercase tracking-wide font-mono">Health</span>
+                    <span className="text-daemon-text-muted uppercase tracking-wide font-mono">
+                      Health
+                    </span>
                     <span className="font-mono font-semibold text-daemon-text-bright">
                       {daemon.health}%
                     </span>
@@ -58,7 +62,9 @@ const TeamManagement: React.FC = () => {
 
                 <div>
                   <div className="flex justify-between text-sm mb-2">
-                    <span className="text-daemon-text-muted uppercase tracking-wide font-mono">Morale</span>
+                    <span className="text-daemon-text-muted uppercase tracking-wide font-mono">
+                      Morale
+                    </span>
                     <span className="font-mono font-semibold text-daemon-text-bright">
                       {daemon.morale}%
                     </span>
@@ -72,7 +78,9 @@ const TeamManagement: React.FC = () => {
                 </div>
 
                 <div className="text-sm">
-                  <span className="text-daemon-text-muted uppercase tracking-wide font-mono mr-2">Lifespan:</span>
+                  <span className="text-daemon-text-muted uppercase tracking-wide font-mono mr-2">
+                    Lifespan:
+                  </span>
                   <span
                     className={`font-mono font-semibold ${getLifespanColor(daemon.lifespanDays)}`}
                   >
@@ -94,7 +102,8 @@ const TeamManagement: React.FC = () => {
               </div>
 
               <div className="flex gap-3">
-                {corporateTier.level >= CORPORATE_BALANCE.HR_REVIEW.MIN_TIER && (
+                {corporateTier.level >=
+                  CORPORATE_BALANCE.HR_REVIEW.MIN_TIER && (
                   <button
                     onClick={() => conductHRReview(daemon.id)}
                     disabled={!isHRReviewAvailable()}
@@ -103,7 +112,11 @@ const TeamManagement: React.FC = () => {
                         ? 'bg-daemon-warning border-daemon-warning hover:bg-daemon-warning/80 hover:shadow-gold'
                         : 'bg-daemon-surface border-daemon-text-dim text-daemon-text-dim cursor-not-allowed'
                     }`}
-                    title={isHRReviewAvailable() ? 'Conduct Performance Review' : `HR Reviews available every ${CORPORATE_BALANCE.HR_REVIEW.COOLDOWN_DAYS} days`}
+                    title={
+                      isHRReviewAvailable()
+                        ? 'Conduct Performance Review'
+                        : `HR Reviews available every ${CORPORATE_BALANCE.HR_REVIEW.COOLDOWN_DAYS} days`
+                    }
                   >
                     📊 Review
                   </button>
@@ -133,7 +146,9 @@ const TeamManagement: React.FC = () => {
               className="bg-daemon-panel border-daemon-secondary hover:border-daemon-primary hover:shadow-infernal transition-all duration-200"
             >
               <div className="flex justify-between items-start mb-4">
-                <h4 className="font-header font-semibold text-daemon-text-bright text-lg">{daemon.name}</h4>
+                <h4 className="font-header font-semibold text-daemon-text-bright text-lg">
+                  {daemon.name}
+                </h4>
                 <span className="text-sm text-daemon-text-bright bg-daemon-secondary px-3 py-1 rounded-lg font-mono uppercase tracking-wide">
                   {daemon.specialization}
                 </span>
@@ -142,7 +157,9 @@ const TeamManagement: React.FC = () => {
               <div className="space-y-4 mb-6">
                 <div>
                   <div className="flex justify-between text-sm mb-2">
-                    <span className="text-daemon-text-muted uppercase tracking-wide font-mono">Health</span>
+                    <span className="text-daemon-text-muted uppercase tracking-wide font-mono">
+                      Health
+                    </span>
                     <span className="font-mono font-semibold text-daemon-text-bright">
                       {daemon.health}%
                     </span>
@@ -157,7 +174,9 @@ const TeamManagement: React.FC = () => {
 
                 <div>
                   <div className="flex justify-between text-sm mb-2">
-                    <span className="text-daemon-text-muted uppercase tracking-wide font-mono">Morale</span>
+                    <span className="text-daemon-text-muted uppercase tracking-wide font-mono">
+                      Morale
+                    </span>
                     <span className="font-mono font-semibold text-daemon-text-bright">
                       {daemon.morale}%
                     </span>
@@ -171,7 +190,9 @@ const TeamManagement: React.FC = () => {
                 </div>
 
                 <div className="text-sm">
-                  <span className="text-daemon-text-muted uppercase tracking-wide font-mono mr-2">Lifespan:</span>
+                  <span className="text-daemon-text-muted uppercase tracking-wide font-mono mr-2">
+                    Lifespan:
+                  </span>
                   <span className="font-mono font-semibold text-daemon-text-bright">
                     {daemon.lifespanDays} days
                   </span>

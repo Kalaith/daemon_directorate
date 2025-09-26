@@ -32,7 +32,7 @@ export const CorporateEventModal: React.FC = () => {
         default:
           logger.warn('Unknown cost type in affordability check', undefined, {
             component: 'CorporateEventModal',
-            metadata: { costType: cost.type }
+            metadata: { costType: cost.type },
           });
           return false; // Fail safe
       }
@@ -99,7 +99,9 @@ export const CorporateEventModal: React.FC = () => {
 
   if (!meetsRequirements()) {
     return (
-      <div className={`${UI_CONSTANTS.CLASSES.MODAL_OVERLAY} z-${UI_CONSTANTS.Z_INDEX.MODAL}`}>
+      <div
+        className={`${UI_CONSTANTS.CLASSES.MODAL_OVERLAY} z-${UI_CONSTANTS.Z_INDEX.MODAL}`}
+      >
         <Card className="max-w-md mx-4 p-6">
           <h2 className="text-xl font-bold text-red-400 mb-4">Access Denied</h2>
           <p className="text-gray-300 mb-4">{currentEvent.description}</p>
@@ -118,7 +120,9 @@ export const CorporateEventModal: React.FC = () => {
   }
 
   return (
-    <div className={`${UI_CONSTANTS.CLASSES.MODAL_OVERLAY} z-${UI_CONSTANTS.Z_INDEX.MODAL}`}>
+    <div
+      className={`${UI_CONSTANTS.CLASSES.MODAL_OVERLAY} z-${UI_CONSTANTS.Z_INDEX.MODAL}`}
+    >
       <Card className="max-w-2xl mx-4 p-6">
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-xl font-bold text-orange-400">

@@ -3,18 +3,42 @@ import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import { subscribeWithSelector } from 'zustand/middleware';
 import { createDaemonSlice, type DaemonSlice } from './slices/daemonSlice';
-import { createResourceSlice, type ResourceSlice } from './slices/resourceSlice';
+import {
+  createResourceSlice,
+  type ResourceSlice,
+} from './slices/resourceSlice';
 import { createMissionSlice, type MissionSlice } from './slices/missionSlice';
 import { createUISlice, type UISlice } from './slices/uiSlice';
-import { createCorporateSlice, type CorporateSlice } from './slices/corporateSlice';
-import { createComplianceSlice, type ComplianceSlice } from './slices/complianceSlice';
+import {
+  createCorporateSlice,
+  type CorporateSlice,
+} from './slices/corporateSlice';
+import {
+  createComplianceSlice,
+  type ComplianceSlice,
+} from './slices/complianceSlice';
 import { createEndgameSlice, type EndgameSlice } from './slices/endgameSlice';
-import { createApartmentSlice, type ApartmentSlice } from './slices/apartmentSlice';
-import { createEquipmentSlice, type EquipmentSlice } from './slices/equipmentSlice';
+import {
+  createApartmentSlice,
+  type ApartmentSlice,
+} from './slices/apartmentSlice';
+import {
+  createEquipmentSlice,
+  type EquipmentSlice,
+} from './slices/equipmentSlice';
 import { createCoreSlice, type CoreSlice } from './slices/coreSlice';
 
 // Combined store type
-export type ComposedGameStore = DaemonSlice & ResourceSlice & MissionSlice & UISlice & CorporateSlice & ComplianceSlice & EndgameSlice & ApartmentSlice & EquipmentSlice & CoreSlice;
+export type ComposedGameStore = DaemonSlice &
+  ResourceSlice &
+  MissionSlice &
+  UISlice &
+  CorporateSlice &
+  ComplianceSlice &
+  EndgameSlice &
+  ApartmentSlice &
+  EquipmentSlice &
+  CoreSlice;
 
 // Create the composed store
 export const useGameStore = create<ComposedGameStore>()(
@@ -34,7 +58,7 @@ export const useGameStore = create<ComposedGameStore>()(
     {
       name: 'daemon-directorate-v2',
       version: 2,
-      partialize: (state) => ({
+      partialize: state => ({
         // Resource slice
         resources: state.resources,
         resourceHistory: state.resourceHistory,
@@ -100,41 +124,45 @@ export const useGameStore = create<ComposedGameStore>()(
 );
 
 // Selector hooks for better performance
-export const useDaemons = () => useGameStore((state) => ({
-  daemons: state.daemons,
-  selectedDaemons: state.selectedDaemons,
-  recruitmentPool: state.recruitmentPool,
-  toggleDaemonSelection: state.toggleDaemonSelection,
-  clearDaemonSelection: state.clearDaemonSelection,
-  recruitDaemon: state.recruitDaemon,
-  getActiveDaemons: state.getActiveDaemons,
-}));
+export const useDaemons = () =>
+  useGameStore(state => ({
+    daemons: state.daemons,
+    selectedDaemons: state.selectedDaemons,
+    recruitmentPool: state.recruitmentPool,
+    toggleDaemonSelection: state.toggleDaemonSelection,
+    clearDaemonSelection: state.clearDaemonSelection,
+    recruitDaemon: state.recruitDaemon,
+    getActiveDaemons: state.getActiveDaemons,
+  }));
 
-export const useResources = () => useGameStore((state) => ({
-  resources: state.resources,
-  canAfford: state.canAfford,
-  spendCredits: state.spendCredits,
-  addResources: state.addResources,
-  resourceHistory: state.resourceHistory,
-}));
+export const useResources = () =>
+  useGameStore(state => ({
+    resources: state.resources,
+    canAfford: state.canAfford,
+    spendCredits: state.spendCredits,
+    addResources: state.addResources,
+    resourceHistory: state.resourceHistory,
+  }));
 
-export const useMissions = () => useGameStore((state) => ({
-  planets: state.planets,
-  activeMission: state.activeMission,
-  completedMissions: state.completedMissions,
-  executeMission: state.executeMission,
-  selectPlanetForMission: state.selectPlanetForMission,
-}));
+export const useMissions = () =>
+  useGameStore(state => ({
+    planets: state.planets,
+    activeMission: state.activeMission,
+    completedMissions: state.completedMissions,
+    executeMission: state.executeMission,
+    selectPlanetForMission: state.selectPlanetForMission,
+  }));
 
-export const useUI = () => useGameStore((state) => ({
-  currentTab: state.currentTab,
-  showTutorial: state.showTutorial,
-  showMissionModal: state.showMissionModal,
-  showMissionResults: state.showMissionResults,
-  setCurrentTab: state.setCurrentTab,
-  setShowTutorial: state.setShowTutorial,
-  addNotification: state.addNotification,
-}));
+export const useUI = () =>
+  useGameStore(state => ({
+    currentTab: state.currentTab,
+    showTutorial: state.showTutorial,
+    showMissionModal: state.showMissionModal,
+    showMissionResults: state.showMissionResults,
+    setCurrentTab: state.setCurrentTab,
+    setShowTutorial: state.setShowTutorial,
+    addNotification: state.addNotification,
+  }));
 
 // Store actions for external use
 export const gameActions = {

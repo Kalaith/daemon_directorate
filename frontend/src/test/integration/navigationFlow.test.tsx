@@ -21,7 +21,7 @@ describe('Navigation Flow Tests', () => {
       'Team Management',
       'Planetary Operations',
       'Apartment HQ',
-      'Equipment Depot'
+      'Equipment Depot',
     ];
 
     expectedTabs.forEach(tabLabel => {
@@ -39,7 +39,7 @@ describe('Navigation Flow Tests', () => {
       'Planetary Operations',
       'Apartment HQ',
       'Equipment Depot',
-      'Corporate Dashboard' // Go back to start
+      'Corporate Dashboard', // Go back to start
     ];
 
     for (const tabName of tabs) {
@@ -62,24 +62,24 @@ describe('Navigation Flow Tests', () => {
     const tabTests = [
       {
         name: 'Corporate Dashboard',
-        shouldContain: ['Corporate Ladder', 'Compliance Center']
+        shouldContain: ['Corporate Ladder', 'Compliance Center'],
       },
       {
         name: 'Team Management',
-        shouldContain: ['Team Management']
+        shouldContain: ['Team Management'],
       },
       {
         name: 'Planetary Operations',
-        shouldContain: ['Planetary Operations']
+        shouldContain: ['Planetary Operations'],
       },
       {
         name: 'Apartment HQ',
-        shouldContain: ['Apartment HQ']
+        shouldContain: ['Apartment HQ'],
       },
       {
         name: 'Equipment Depot',
-        shouldContain: ['Equipment']
-      }
+        shouldContain: ['Equipment'],
+      },
     ];
 
     for (const test of tabTests) {
@@ -111,7 +111,11 @@ describe('Navigation Flow Tests', () => {
     renderWithProviders(<App />);
 
     // Navigate through tabs and verify state doesn't break
-    const tabs = ['Team Management', 'Planetary Operations', 'Corporate Dashboard'];
+    const tabs = [
+      'Team Management',
+      'Planetary Operations',
+      'Corporate Dashboard',
+    ];
 
     for (const tabName of tabs) {
       const tabButton = screen.getByText(tabName);

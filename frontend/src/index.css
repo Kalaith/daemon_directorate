@@ -5,30 +5,30 @@
   /* Daemon Directorate Color System - Dark Theme Always */
 
   /* Core Brand Colors */
-  --daemon-dark: #0a0a0a;        /* Primary background - near-black abyss */
-  --daemon-panel: #141414;       /* UI panels and cards - dark charcoal */
-  --daemon-surface: #1a1a1a;     /* Interactive surfaces - slightly lighter */
+  --daemon-dark: #0a0a0a; /* Primary background - near-black abyss */
+  --daemon-panel: #141414; /* UI panels and cards - dark charcoal */
+  --daemon-surface: #1a1a1a; /* Interactive surfaces - slightly lighter */
 
-  --daemon-primary: #b11226;     /* Infernal red - primary actions */
+  --daemon-primary: #b11226; /* Infernal red - primary actions */
   --daemon-primary-hover: #e01b2f; /* Brighter red for hover states */
-  --daemon-secondary: #660000;   /* Dark blood red - borders and accents */
-  --daemon-danger: #cc3333;      /* Error states and warnings */
+  --daemon-secondary: #660000; /* Dark blood red - borders and accents */
+  --daemon-danger: #cc3333; /* Error states and warnings */
 
   /* Hierarchy Colors */
-  --daemon-gold: #d4af37;        /* Executive tier - use sparingly */
-  --daemon-silver: #c0c0c0;      /* Management tier */
-  --daemon-bronze: #cd7f32;      /* Supervisor tier */
+  --daemon-gold: #d4af37; /* Executive tier - use sparingly */
+  --daemon-silver: #c0c0c0; /* Management tier */
+  --daemon-bronze: #cd7f32; /* Supervisor tier */
 
   /* Text Colors */
-  --daemon-text: #cccccc;        /* Standard readable text */
+  --daemon-text: #cccccc; /* Standard readable text */
   --daemon-text-bright: #f5f5f5; /* Headers and emphasis */
-  --daemon-text-muted: #999999;  /* Secondary information */
-  --daemon-text-dim: #666666;    /* Disabled or placeholder text */
+  --daemon-text-muted: #999999; /* Secondary information */
+  --daemon-text-dim: #666666; /* Disabled or placeholder text */
 
   /* Status Colors */
-  --daemon-success: #2d5a2d;     /* Success states - dark green */
-  --daemon-warning: #8b6914;     /* Warning states - dark amber */
-  --daemon-info: #1e3a5f;        /* Information - dark blue */
+  --daemon-success: #2d5a2d; /* Success states - dark green */
+  --daemon-warning: #8b6914; /* Warning states - dark amber */
+  --daemon-info: #1e3a5f; /* Information - dark blue */
 
   /* RGB versions for opacity control */
   --daemon-primary-rgb: 177, 18, 38;
@@ -172,7 +172,7 @@
 @layer base {
   html {
     font-size: 14px;
-    font-family: "Inter", "system-ui", "sans-serif";
+    font-family: 'Inter', 'system-ui', 'sans-serif';
     line-height: 1.5;
     color: var(--daemon-text);
     background-color: var(--daemon-dark);
@@ -183,7 +183,7 @@
   body {
     background: var(--daemon-dark);
     color: var(--daemon-text);
-    font-family: "Inter", "system-ui", "sans-serif";
+    font-family: 'Inter', 'system-ui', 'sans-serif';
     margin: 0;
     padding: 0;
     min-height: 100vh;
@@ -213,7 +213,7 @@
     line-height: 1.2;
     color: var(--daemon-text-bright);
     letter-spacing: -0.01em;
-    font-family: "Cinzel Decorative", "serif";
+    font-family: 'Cinzel Decorative', 'serif';
   }
 
   h1 {
@@ -252,7 +252,7 @@
 
   code,
   pre {
-    font-family: "JetBrains Mono", "Consolas", "monospace";
+    font-family: 'JetBrains Mono', 'Consolas', 'monospace';
     background-color: var(--daemon-surface);
     border-radius: 6px;
     font-size: 13px;

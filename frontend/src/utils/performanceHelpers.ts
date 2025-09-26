@@ -28,7 +28,9 @@ export const analyzeBundleSize = async () => {
 
   // Simple bundle analysis - in real app would use webpack-bundle-analyzer
   const scripts = Array.from(document.querySelectorAll('script[src]'));
-  const styles = Array.from(document.querySelectorAll('link[rel="stylesheet"]'));
+  const styles = Array.from(
+    document.querySelectorAll('link[rel="stylesheet"]')
+  );
 
   return {
     scripts: scripts.length,
@@ -42,8 +44,20 @@ export const initializePerformanceMonitoring = () => {
   if (process.env.NODE_ENV !== 'development') return;
 
   // Add performance monitoring to window for debugging
-  (window as typeof window & { performanceMonitor?: typeof performanceMonitor; analyzeBundleSize?: typeof analyzeBundleSize }).performanceMonitor = performanceMonitor;
-  (window as typeof window & { performanceMonitor?: typeof performanceMonitor; analyzeBundleSize?: typeof analyzeBundleSize }).analyzeBundleSize = analyzeBundleSize;
+  (
+    window as typeof window & {
+      performanceMonitor?: typeof performanceMonitor;
+      analyzeBundleSize?: typeof analyzeBundleSize;
+    }
+  ).performanceMonitor = performanceMonitor;
+  (
+    window as typeof window & {
+      performanceMonitor?: typeof performanceMonitor;
+      analyzeBundleSize?: typeof analyzeBundleSize;
+    }
+  ).analyzeBundleSize = analyzeBundleSize;
 
-  console.log('🚀 Performance monitoring enabled. Use window.performanceMonitor for debugging.');
+  console.log(
+    '🚀 Performance monitoring enabled. Use window.performanceMonitor for debugging.'
+  );
 };

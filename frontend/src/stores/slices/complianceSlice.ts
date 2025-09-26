@@ -72,23 +72,27 @@ export const createComplianceSlice: StateCreator<
 
   getOverdueTasks: (currentDay: number) => {
     const { complianceTasks } = get();
-    return complianceTasks.filter(task =>
-      !task.completed && currentDay >= task.deadline
+    return complianceTasks.filter(
+      task => !task.completed && currentDay >= task.deadline
     );
   },
 
   getUpcomingTasks: (currentDay: number) => {
     const { complianceTasks } = get();
-    return complianceTasks.filter(task =>
-      !task.completed && currentDay < task.deadline
+    return complianceTasks.filter(
+      task => !task.completed && currentDay < task.deadline
     );
   },
 
   getComplianceScore: () => {
     const { complianceTasks } = get();
     const totalTasks = complianceTasks.length;
-    const completedTasks = complianceTasks.filter(task => task.completed).length;
+    const completedTasks = complianceTasks.filter(
+      task => task.completed
+    ).length;
 
-    return totalTasks > 0 ? Math.round((completedTasks / totalTasks) * 100) : 100;
+    return totalTasks > 0
+      ? Math.round((completedTasks / totalTasks) * 100)
+      : 100;
   },
 });

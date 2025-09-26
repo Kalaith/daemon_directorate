@@ -4,13 +4,13 @@ import Card from '../ui/Card';
 import type { ComplianceTask } from '../../types/game';
 
 export const ComplianceCenter: React.FC = () => {
-  const { 
-    complianceTasks, 
-    daysPassed, 
-    completeComplianceTask, 
+  const {
+    complianceTasks,
+    daysPassed,
+    completeComplianceTask,
     spendCredits,
     resources,
-    daemons
+    daemons,
   } = useGameStore();
 
   const activeTasks = complianceTasks.filter(task => !task.completed);
@@ -22,7 +22,7 @@ export const ComplianceCenter: React.FC = () => {
       performance_review: '📊',
       budget_cut: '💰',
       mandatory_training: '🎓',
-      audit: '🔍'
+      audit: '🔍',
     };
     return icons[type as keyof typeof icons] || '📋';
   };
@@ -38,10 +38,18 @@ export const ComplianceCenter: React.FC = () => {
     if (task.requirements.resourceCost) {
       const cost = task.requirements.resourceCost;
       if (cost.credits && resources.credits < cost.credits) return false;
-      if (cost.bureaucraticLeverage && resources.bureaucraticLeverage < cost.bureaucraticLeverage) return false;
-      if (cost.rawMaterials && resources.rawMaterials < cost.rawMaterials) return false;
+      if (
+        cost.bureaucraticLeverage &&
+        resources.bureaucraticLeverage < cost.bureaucraticLeverage
+      )
+        return false;
+      if (cost.rawMaterials && resources.rawMaterials < cost.rawMaterials)
+        return false;
     }
-    if (task.requirements.daemonsRequired && daemons.filter(d => d.isActive).length < task.requirements.daemonsRequired) {
+    if (
+      task.requirements.daemonsRequired &&
+      daemons.filter(d => d.isActive).length < task.requirements.daemonsRequired
+    ) {
       return false;
     }
     return true;
@@ -63,12 +71,16 @@ export const ComplianceCenter: React.FC = () => {
 
   return (
     <Card className="bg-gradient-to-br from-red-900 to-pink-900">
-      <h2 className="text-xl font-bold text-white mb-4">📋 Compliance Center</h2>
-      
+      <h2 className="text-xl font-bold text-white mb-4">
+        📋 Compliance Center
+      </h2>
+
       {activeTasks.length === 0 ? (
         <div className="text-center py-8">
           <div className="text-6xl mb-4">✅</div>
-          <h3 className="text-lg font-semibold text-green-300">All Caught Up!</h3>
+          <h3 className="text-lg font-semibold text-green-300">
+            All Caught Up!
+          </h3>
           <p className="text-gray-300">No compliance tasks pending</p>
         </div>
       ) : (
@@ -76,16 +88,27 @@ export const ComplianceCenter: React.FC = () => {
           {/* Overdue Tasks */}
           {overdueTasks.length > 0 && (
             <div>
-              <h3 className="text-lg font-semibold text-red-300 mb-3">🚨 OVERDUE TASKS</h3>
+              <h3 className="text-lg font-semibold text-red-300 mb-3">
+                🚨 OVERDUE TASKS
+              </h3>
               <div className="space-y-3">
                 {overdueTasks.map(task => (
-                  <div key={task.id} className={`p-4 rounded-lg border-2 ${getTaskColor(task)}`}>
+                  <div
+                    key={task.id}
+                    className={`p-4 rounded-lg border-2 ${getTaskColor(task)}`}
+                  >
                     <div className="flex items-start justify-between">
                       <div className="flex items-start space-x-3">
-                        <span className="text-2xl">{getTaskIcon(task.type)}</span>
+                        <span className="text-2xl">
+                          {getTaskIcon(task.type)}
+                        </span>
                         <div>
-                          <h4 className="font-semibold text-red-300">{task.title}</h4>
-                          <p className="text-sm text-gray-300 mb-2">{task.description}</p>
+                          <h4 className="font-semibold text-red-300">
+                            {task.title}
+                          </h4>
+                          <p className="text-sm text-gray-300 mb-2">
+                            {task.description}
+                          </p>
                           <div className="text-xs text-red-400">
                             OVERDUE by {daysPassed - task.deadline} days
                           </div>
@@ -96,15 +119,24 @@ export const ComplianceCenter: React.FC = () => {
                     {/* Requirements */}
                     {task.requirements && (
                       <div className="mt-3 p-2 bg-gray-800 rounded">
-                        <p className="text-xs font-medium text-gray-400 mb-1">Requirements:</p>
+                        <p className="text-xs font-medium text-gray-400 mb-1">
+                          Requirements:
+                        </p>
                         {task.requirements.daemonsRequired && (
-                          <p className="text-xs text-gray-300">• {task.requirements.daemonsRequired} daemons required</p>
+                          <p className="text-xs text-gray-300">
+                            • {task.requirements.daemonsRequired} daemons
+                            required
+                          </p>
                         )}
                         {task.requirements.resourceCost && (
                           <div className="text-xs text-gray-300">
-                            {Object.entries(task.requirements.resourceCost).map(([resource, cost]) => (
-                              <p key={resource}>• {cost} {resource}</p>
-                            ))}
+                            {Object.entries(task.requirements.resourceCost).map(
+                              ([resource, cost]) => (
+                                <p key={resource}>
+                                  • {cost} {resource}
+                                </p>
+                              )
+                            )}
                           </div>
                         )}
                       </div>
@@ -112,19 +144,29 @@ export const ComplianceCenter: React.FC = () => {
 
                     {/* Penalties */}
                     <div className="mt-3 p-2 bg-red-900/30 rounded">
-                      <p className="text-xs font-medium text-red-400 mb-1">Penalties Applied:</p>
+                      <p className="text-xs font-medium text-red-400 mb-1">
+                        Penalties Applied:
+                      </p>
                       {task.penalties.moraleLoss && (
-                        <p className="text-xs text-red-300">• -{task.penalties.moraleLoss} morale to all daemons</p>
+                        <p className="text-xs text-red-300">
+                          • -{task.penalties.moraleLoss} morale to all daemons
+                        </p>
                       )}
                       {task.penalties.resourceFines && (
                         <div className="text-xs text-red-300">
-                          {Object.entries(task.penalties.resourceFines).map(([resource, fine]) => (
-                            <p key={resource}>• -{fine} {resource} fine</p>
-                          ))}
+                          {Object.entries(task.penalties.resourceFines).map(
+                            ([resource, fine]) => (
+                              <p key={resource}>
+                                • -{fine} {resource} fine
+                              </p>
+                            )
+                          )}
                         </div>
                       )}
                       {task.penalties.daemonReassignment && (
-                        <p className="text-xs text-red-300">• One daemon reassigned to another department</p>
+                        <p className="text-xs text-red-300">
+                          • One daemon reassigned to another department
+                        </p>
                       )}
                     </div>
                   </div>
@@ -136,26 +178,39 @@ export const ComplianceCenter: React.FC = () => {
           {/* Upcoming Tasks */}
           {upcomingTasks.length > 0 && (
             <div>
-              <h3 className="text-lg font-semibold text-yellow-300 mb-3">⏰ PENDING TASKS</h3>
+              <h3 className="text-lg font-semibold text-yellow-300 mb-3">
+                ⏰ PENDING TASKS
+              </h3>
               <div className="space-y-3">
                 {upcomingTasks.map(task => {
                   const daysRemaining = task.deadline - daysPassed;
                   const canComplete = canCompleteTask(task);
-                  
+
                   return (
-                    <div key={task.id} className={`p-4 rounded-lg border-2 ${getTaskColor(task)}`}>
+                    <div
+                      key={task.id}
+                      className={`p-4 rounded-lg border-2 ${getTaskColor(task)}`}
+                    >
                       <div className="flex items-start justify-between">
                         <div className="flex items-start space-x-3">
-                          <span className="text-2xl">{getTaskIcon(task.type)}</span>
+                          <span className="text-2xl">
+                            {getTaskIcon(task.type)}
+                          </span>
                           <div>
-                            <h4 className="font-semibold text-white">{task.title}</h4>
-                            <p className="text-sm text-gray-300 mb-2">{task.description}</p>
-                            <div className={`text-xs ${daysRemaining <= 2 ? 'text-yellow-400' : 'text-blue-400'}`}>
+                            <h4 className="font-semibold text-white">
+                              {task.title}
+                            </h4>
+                            <p className="text-sm text-gray-300 mb-2">
+                              {task.description}
+                            </p>
+                            <div
+                              className={`text-xs ${daysRemaining <= 2 ? 'text-yellow-400' : 'text-blue-400'}`}
+                            >
                               Due in {daysRemaining} days
                             </div>
                           </div>
                         </div>
-                        
+
                         {canComplete && (
                           <button
                             onClick={() => handleCompleteTask(task.id)}
@@ -169,20 +224,38 @@ export const ComplianceCenter: React.FC = () => {
                       {/* Requirements */}
                       {task.requirements && (
                         <div className="mt-3 p-2 bg-gray-800 rounded">
-                          <p className="text-xs font-medium text-gray-400 mb-1">Requirements:</p>
+                          <p className="text-xs font-medium text-gray-400 mb-1">
+                            Requirements:
+                          </p>
                           {task.requirements.daemonsRequired && (
-                            <p className={`text-xs ${daemons.filter(d => d.isActive).length >= task.requirements.daemonsRequired ? 'text-green-300' : 'text-red-300'}`}>
-                              • {task.requirements.daemonsRequired} daemons required ({daemons.filter(d => d.isActive).length} available)
+                            <p
+                              className={`text-xs ${daemons.filter(d => d.isActive).length >= task.requirements.daemonsRequired ? 'text-green-300' : 'text-red-300'}`}
+                            >
+                              • {task.requirements.daemonsRequired} daemons
+                              required ({daemons.filter(d => d.isActive).length}{' '}
+                              available)
                             </p>
                           )}
                           {task.requirements.resourceCost && (
                             <div className="text-xs">
-                              {Object.entries(task.requirements.resourceCost).map(([resource, cost]) => {
-                                const resourceKey = resource as keyof typeof resources;
-                                const hasEnough = resources[resourceKey] >= (cost as number);
+                              {Object.entries(
+                                task.requirements.resourceCost
+                              ).map(([resource, cost]) => {
+                                const resourceKey =
+                                  resource as keyof typeof resources;
+                                const hasEnough =
+                                  resources[resourceKey] >= (cost as number);
                                 return (
-                                  <p key={resource} className={hasEnough ? 'text-green-300' : 'text-red-300'}>
-                                    • {cost} {resource} ({resources[resourceKey]} available)
+                                  <p
+                                    key={resource}
+                                    className={
+                                      hasEnough
+                                        ? 'text-green-300'
+                                        : 'text-red-300'
+                                    }
+                                  >
+                                    • {cost} {resource} (
+                                    {resources[resourceKey]} available)
                                   </p>
                                 );
                               })}
@@ -194,7 +267,9 @@ export const ComplianceCenter: React.FC = () => {
                       {/* Show completion button status */}
                       {!canComplete && (
                         <div className="mt-3 p-2 bg-red-900/30 rounded">
-                          <p className="text-xs text-red-400">Cannot complete: Insufficient resources or daemons</p>
+                          <p className="text-xs text-red-400">
+                            Cannot complete: Insufficient resources or daemons
+                          </p>
                         </div>
                       )}
                     </div>
@@ -211,15 +286,21 @@ export const ComplianceCenter: React.FC = () => {
         <h4 className="font-semibold text-gray-300 mb-2">Compliance Summary</h4>
         <div className="grid grid-cols-3 gap-4 text-center">
           <div>
-            <div className="text-lg font-bold text-blue-300">{upcomingTasks.length}</div>
+            <div className="text-lg font-bold text-blue-300">
+              {upcomingTasks.length}
+            </div>
             <div className="text-xs text-gray-400">Pending</div>
           </div>
           <div>
-            <div className="text-lg font-bold text-red-300">{overdueTasks.length}</div>
+            <div className="text-lg font-bold text-red-300">
+              {overdueTasks.length}
+            </div>
             <div className="text-xs text-gray-400">Overdue</div>
           </div>
           <div>
-            <div className="text-lg font-bold text-green-300">{complianceTasks.filter(t => t.completed).length}</div>
+            <div className="text-lg font-bold text-green-300">
+              {complianceTasks.filter(t => t.completed).length}
+            </div>
             <div className="text-xs text-gray-400">Completed</div>
           </div>
         </div>

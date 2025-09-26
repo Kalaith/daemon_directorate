@@ -75,13 +75,16 @@ export const createMissionSlice: StateCreator<
         activeMission: result.missionInstance,
         lastMissionResult: result.result,
       }));
-
     } catch (error) {
-      logger.error('Mission execution failed', error instanceof Error ? error : undefined, {
-        component: 'MissionSlice',
-        action: 'executeMission',
-        metadata: { currentPlanet, missionType }
-      });
+      logger.error(
+        'Mission execution failed',
+        error instanceof Error ? error : undefined,
+        {
+          component: 'MissionSlice',
+          action: 'executeMission',
+          metadata: { currentPlanet, missionType },
+        }
+      );
       // Error would be handled by error boundary
     }
   },
@@ -122,6 +125,8 @@ export const createMissionSlice: StateCreator<
   },
 
   getCompletedMissionsForPlanet: (planetId: string) => {
-    return get().completedMissions.filter(mission => mission.planetId === planetId);
+    return get().completedMissions.filter(
+      mission => mission.planetId === planetId
+    );
   },
 });

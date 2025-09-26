@@ -71,7 +71,10 @@ export interface MissionActions {
   executeMission: (missionType?: string) => void;
   generateProceduralMissions: () => void;
   processMissionConsequences: (consequences: MissionConsequence[]) => void;
-  evaluateMissionObjectives: (mission: Mission, result: MissionResult) => MissionResult;
+  evaluateMissionObjectives: (
+    mission: Mission,
+    result: MissionResult
+  ) => MissionResult;
 }
 
 // Room and apartment management actions
@@ -114,7 +117,10 @@ export interface ComplianceActions {
 
 // Legacy system actions
 export interface LegacyActions {
-  addLegacyStory: (daemonId: string, story: Omit<LegacyStory, 'id' | 'timestamp'>) => void;
+  addLegacyStory: (
+    daemonId: string,
+    story: Omit<LegacyStory, 'id' | 'timestamp'>
+  ) => void;
   generateLegacyLegend: (bloodline: string) => void;
   createNewLegacy: (daemon: Daemon) => DaemonLegacy;
 }
@@ -122,7 +128,10 @@ export interface LegacyActions {
 // Surreal events actions
 export interface SurrealEventActions {
   triggerSurrealEvent: () => void;
-  showEventWithEscalatedAbsurdity: (event: SurrealEvent, tierLevel: number) => void;
+  showEventWithEscalatedAbsurdity: (
+    event: SurrealEvent,
+    tierLevel: number
+  ) => void;
 }
 
 // Endgame system actions
@@ -145,22 +154,22 @@ export interface RivalActions {
 }
 
 // Combined GameStore interface - now much more manageable
-export interface GameStore extends
-  GameState,
-  CoreGameActions,
-  UIStateActions,
-  ResourceActions,
-  DaemonActions,
-  MissionActions,
-  RoomActions,
-  EquipmentActions,
-  EventActions,
-  ProgressionActions,
-  ComplianceActions,
-  LegacyActions,
-  SurrealEventActions,
-  EndgameActions,
-  RivalActions {}
+export interface GameStore
+  extends GameState,
+    CoreGameActions,
+    UIStateActions,
+    ResourceActions,
+    DaemonActions,
+    MissionActions,
+    RoomActions,
+    EquipmentActions,
+    EventActions,
+    ProgressionActions,
+    ComplianceActions,
+    LegacyActions,
+    SurrealEventActions,
+    EndgameActions,
+    RivalActions {}
 
 // Type guards for better type safety
 export const isValidDaemonId = (id: unknown): id is string => {

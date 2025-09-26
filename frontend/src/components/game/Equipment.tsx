@@ -20,17 +20,26 @@ const Equipment: React.FC = () => {
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
         {equipment.map(item => (
-          <Card key={item.id} className="bg-daemon-panel border-daemon-secondary hover:border-daemon-primary hover:shadow-infernal transition-all duration-200">
+          <Card
+            key={item.id}
+            className="bg-daemon-panel border-daemon-secondary hover:border-daemon-primary hover:shadow-infernal transition-all duration-200"
+          >
             <div className="flex justify-between items-start mb-4">
-              <h4 className="font-header font-semibold text-daemon-text-bright text-lg">{item.name}</h4>
+              <h4 className="font-header font-semibold text-daemon-text-bright text-lg">
+                {item.name}
+              </h4>
               <span className="text-xs px-3 py-2 bg-daemon-surface border border-daemon-secondary text-daemon-text font-mono uppercase tracking-wide rounded-lg">
                 {item.type}
               </span>
             </div>
 
             <div className="mb-4 text-daemon-text">
-              <span className="text-daemon-text-muted font-mono uppercase tracking-wide mr-2">Ability:</span>
-              <span className="text-daemon-text-bright font-mono font-semibold">{item.ability}</span>
+              <span className="text-daemon-text-muted font-mono uppercase tracking-wide mr-2">
+                Ability:
+              </span>
+              <span className="text-daemon-text-bright font-mono font-semibold">
+                {item.ability}
+              </span>
             </div>
 
             <div className="mb-6">
@@ -71,8 +80,12 @@ const Equipment: React.FC = () => {
 
             {item.assignedTo && (
               <div className="mt-3 text-sm">
-                <span className="text-daemon-text-muted font-mono uppercase tracking-wide mr-2">Assigned to:</span>
-                <span className="text-daemon-text-bright font-mono font-semibold">{item.assignedTo}</span>
+                <span className="text-daemon-text-muted font-mono uppercase tracking-wide mr-2">
+                  Assigned to:
+                </span>
+                <span className="text-daemon-text-bright font-mono font-semibold">
+                  {item.assignedTo}
+                </span>
               </div>
             )}
           </Card>
@@ -80,7 +93,9 @@ const Equipment: React.FC = () => {
       </div>
 
       <div className="bg-daemon-panel border border-daemon-secondary rounded-lg p-8">
-        <h3 className="text-xl font-header font-semibold text-daemon-text-bright mb-6 uppercase tracking-wide">Item Forge</h3>
+        <h3 className="text-xl font-header font-semibold text-daemon-text-bright mb-6 uppercase tracking-wide">
+          Item Forge
+        </h3>
         <p className="text-daemon-text mb-6">
           Craft new equipment using planetary resources:
         </p>
@@ -123,7 +138,9 @@ const Equipment: React.FC = () => {
             disabled={!canAfford(125)}
             className="p-6 bg-daemon-surface border border-daemon-secondary rounded-lg hover:bg-daemon-panel hover:border-daemon-primary hover:shadow-infernal disabled:bg-daemon-dark disabled:border-daemon-text-dim disabled:cursor-not-allowed text-left transition-all duration-200"
           >
-            <div className="font-header font-semibold text-daemon-text-bright text-lg mb-2">Cursed Calculator</div>
+            <div className="font-header font-semibold text-daemon-text-bright text-lg mb-2">
+              Cursed Calculator
+            </div>
             <div className="text-sm text-daemon-text mb-3">
               Sabotage - Data Corruption (+20 sabotage)
             </div>

@@ -22,12 +22,7 @@ export class GameError extends Error {
 
 export class ValidationError extends GameError {
   constructor(message: string, field?: string, value?: unknown) {
-    super(
-      message,
-      'validation',
-      `Invalid input: ${message}`,
-      { field, value }
-    );
+    super(message, 'validation', `Invalid input: ${message}`, { field, value });
     this.name = 'ValidationError';
   }
 }
@@ -61,20 +56,17 @@ export const handleGameError = (
 
   if (error instanceof GameError) {
     const notificationType: NotificationType =
-      error.type === 'validation' ? 'warning' :
-      error.type === 'business' ? 'info' : 'error';
+      error.type === 'validation'
+        ? 'warning'
+        : error.type === 'business'
+          ? 'info'
+          : 'error';
 
     addNotification(error.userMessage, notificationType);
   } else if (error instanceof Error) {
-    addNotification(
-      'An unexpected error occurred. Please try again.',
-      'error'
-    );
+    addNotification('An unexpected error occurred. Please try again.', 'error');
   } else {
-    addNotification(
-      'Something went wrong. Please refresh the page.',
-      'error'
-    );
+    addNotification('Something went wrong. Please refresh the page.', 'error');
   }
 };
 
@@ -111,11 +103,19 @@ export const validateRequired = (value: unknown, fieldName: string): void => {
   }
 };
 
-export const validateString = (value: unknown, fieldName: string, minLength = 0): string => {
+export const validateString = (
+  value: unknown,
+  fieldName: string,
+  minLength = 0
+): string => {
   validateRequired(value, fieldName);
 
   if (typeof value !== 'string') {
-    throw new ValidationError(`${fieldName} must be a string`, fieldName, value);
+    throw new ValidationError(
+      `${fieldName} must be a string`,
+      fieldName,
+      value
+    );
   }
 
   if (value.length < minLength) {
@@ -138,7 +138,11 @@ export const validateNumber = (
   validateRequired(value, fieldName);
 
   if (typeof value !== 'number' || !isFinite(value)) {
-    throw new ValidationError(`${fieldName} must be a valid number`, fieldName, value);
+    throw new ValidationError(
+      `${fieldName} must be a valid number`,
+      fieldName,
+      value
+    );
   }
 
   if (min !== undefined && value < min) {
@@ -160,11 +164,17 @@ export const validateNumber = (
   return value;
 };
 
-export const validatePositiveNumber = (value: unknown, fieldName: string): number => {
+export const validatePositiveNumber = (
+  value: unknown,
+  fieldName: string
+): number => {
   return validateNumber(value, fieldName, 0);
 };
 
-export const validatePercentage = (value: unknown, fieldName: string): number => {
+export const validatePercentage = (
+  value: unknown,
+  fieldName: string
+): number => {
   return validateNumber(value, fieldName, 0, 100);
 };
 
@@ -175,7 +185,11 @@ export const validateArrayNotEmpty = <T>(
   validateRequired(value, fieldName);
 
   if (!Array.isArray(value)) {
-    throw new ValidationError(`${fieldName} must be an array`, fieldName, value);
+    throw new ValidationError(
+      `${fieldName} must be an array`,
+      fieldName,
+      value
+    );
   }
 
   if (value.length === 0) {

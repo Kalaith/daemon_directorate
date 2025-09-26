@@ -18,7 +18,9 @@ const MemorialModal: React.FC = () => {
   return (
     <div className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 p-4">
       <div className="bg-daemon-panel border border-daemon-danger rounded-lg p-8 max-w-md w-full mx-4 shadow-lg shadow-daemon-danger/20">
-        <h2 className="text-xl font-header font-bold text-daemon-text-bright mb-6 uppercase tracking-wide text-center">In Memoriam</h2>
+        <h2 className="text-xl font-header font-bold text-daemon-text-bright mb-6 uppercase tracking-wide text-center">
+          In Memoriam
+        </h2>
         <div className="mb-8">
           <div className="text-xl font-header font-bold text-daemon-text-bright mb-4 text-center">
             {memorialDaemon.name}

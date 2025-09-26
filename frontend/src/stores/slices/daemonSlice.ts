@@ -1,9 +1,18 @@
 // stores/slices/daemonSlice.ts - Daemon management slice
 import type { StateCreator } from 'zustand';
 import type { Daemon, DaemonLegacy, LegacyStory } from '../../types/game';
-import { STARTER_DATA, DAEMON_NAMES, DAEMON_QUIRKS } from '../../constants/gameData';
+import {
+  STARTER_DATA,
+  DAEMON_NAMES,
+  DAEMON_QUIRKS,
+  RECRUITMENT_BLOODLINES,
+} from '../../constants/gameData';
 import { DAEMON_BALANCE } from '../../constants/gameBalance';
-import { calculateSuccessorStats, shouldCreateSuccessor, generateId } from '../../utils/gameHelpers';
+import {
+  calculateSuccessorStats,
+  shouldCreateSuccessor,
+  generateId,
+} from '../../utils/gameHelpers';
 
 export interface DaemonState {
   // State
@@ -29,7 +38,10 @@ export interface DaemonActions {
   isHRReviewAvailable: () => boolean;
 
   // Legacy system
-  addLegacyStory: (daemonId: string, story: Omit<LegacyStory, 'id' | 'timestamp'>) => void;
+  addLegacyStory: (
+    daemonId: string,
+    story: Omit<LegacyStory, 'id' | 'timestamp'>
+  ) => void;
   generateLegacyLegend: (bloodline: string) => void;
   createNewLegacy: (daemon: Daemon) => DaemonLegacy;
 
@@ -41,7 +53,10 @@ export interface DaemonActions {
   getDaemonById: (id: string) => Daemon | undefined;
   getActiveDaemons: () => Daemon[];
   getDaemonsBySpecialization: (specialization: string) => Daemon[];
-  updateDaemonStats: (daemonId: string, updates: Partial<Pick<Daemon, 'health' | 'morale' | 'lifespanDays'>>) => void;
+  updateDaemonStats: (
+    daemonId: string,
+    updates: Partial<Pick<Daemon, 'health' | 'morale' | 'lifespanDays'>>
+  ) => void;
 }
 
 export type DaemonSlice = DaemonState & DaemonActions;
@@ -93,20 +108,36 @@ export const createDaemonSlice: StateCreator<
 
   generateRecruitmentPool: () => {
     // Using centralized generateId from gameHelpers
-    const specializations = ['Infiltration', 'Combat', 'Sabotage', 'Diplomacy'] as const;
+    const specializations = [
+      'Infiltration',
+      'Combat',
+      'Sabotage',
+      'Diplomacy',
+    ] as const;
 
     const pool: Daemon[] = Array.from({ length: 3 }, () => {
-      const specialization = specializations[Math.floor(Math.random() * specializations.length)];
+      const specialization =
+        specializations[Math.floor(Math.random() * specializations.length)];
       const name = `${DAEMON_NAMES[Math.floor(Math.random() * DAEMON_NAMES.length)]}-${Math.floor(Math.random() * DAEMON_BALANCE.RECRUITMENT.NAMING.ID_RANGE) + DAEMON_BALANCE.RECRUITMENT.NAMING.ID_MIN}`;
-      const bloodline = `House of ${['Burning Spreadsheets', 'Eternal Audits', 'Divine Bureaucracy', 'Sacred Forms'][Math.floor(Math.random() * 4)]}`;
+      const bloodline =
+        RECRUITMENT_BLOODLINES[
+          Math.floor(Math.random() * RECRUITMENT_BLOODLINES.length)
+        ];
 
       return {
         id: generateId(),
         name,
         specialization,
-        health: Math.floor(Math.random() * DAEMON_BALANCE.RECRUITMENT.HEALTH.RANGE) + DAEMON_BALANCE.RECRUITMENT.HEALTH.MIN,
-        morale: Math.floor(Math.random() * DAEMON_BALANCE.RECRUITMENT.MORALE.RANGE) + DAEMON_BALANCE.RECRUITMENT.MORALE.MIN,
-        lifespanDays: Math.floor(Math.random() * DAEMON_BALANCE.RECRUITMENT.LIFESPAN.RANGE) + DAEMON_BALANCE.RECRUITMENT.LIFESPAN.MIN,
+        health:
+          Math.floor(Math.random() * DAEMON_BALANCE.RECRUITMENT.HEALTH.RANGE) +
+          DAEMON_BALANCE.RECRUITMENT.HEALTH.MIN,
+        morale:
+          Math.floor(Math.random() * DAEMON_BALANCE.RECRUITMENT.MORALE.RANGE) +
+          DAEMON_BALANCE.RECRUITMENT.MORALE.MIN,
+        lifespanDays:
+          Math.floor(
+            Math.random() * DAEMON_BALANCE.RECRUITMENT.LIFESPAN.RANGE
+          ) + DAEMON_BALANCE.RECRUITMENT.LIFESPAN.MIN,
         quirks: DAEMON_QUIRKS.sort(() => 0.5 - Math.random()).slice(0, 2),
         assignments: [],
         equipment: null,
@@ -134,7 +165,11 @@ export const createDaemonSlice: StateCreator<
     addLegacyStory(daemon.id, {
       title: `${daemon.name}'s Final Form Submission`,
       description: `${daemon.name} completed their corporate lifecycle after ${daemon.legacy.successfulMissions} successful missions and ${daemon.legacy.planetsConquered} planetary conquests.`,
-      category: daemon.legacy.successfulMissions >= DAEMON_BALANCE.LEGACY_REQUIREMENTS.VETERAN_STATUS_MISSIONS ? 'legendary' : 'tragic',
+      category:
+        daemon.legacy.successfulMissions >=
+        DAEMON_BALANCE.LEGACY_REQUIREMENTS.VETERAN_STATUS_MISSIONS
+          ? 'legendary'
+          : 'tragic',
     });
 
     // Create legacy entry
@@ -170,10 +205,7 @@ export const createDaemonSlice: StateCreator<
       };
 
       set(state => ({
-        daemons: [
-          ...state.daemons.filter(d => d.id !== daemon.id),
-          successor,
-        ],
+        daemons: [...state.daemons.filter(d => d.id !== daemon.id), successor],
         legacyBook: {
           ...state.legacyBook,
           [daemon.bloodline]: legacy,
@@ -209,7 +241,11 @@ export const createDaemonSlice: StateCreator<
       // Positive review
       healthChange = DAEMON_BALANCE.HR_REVIEW.POSITIVE_HEALTH;
       moraleChange = DAEMON_BALANCE.HR_REVIEW.POSITIVE_MORALE;
-    } else if (reviewOutcome < DAEMON_BALANCE.HR_REVIEW.POSITIVE_CHANCE + DAEMON_BALANCE.HR_REVIEW.NEUTRAL_CHANCE) {
+    } else if (
+      reviewOutcome <
+      DAEMON_BALANCE.HR_REVIEW.POSITIVE_CHANCE +
+        DAEMON_BALANCE.HR_REVIEW.NEUTRAL_CHANCE
+    ) {
       // Neutral review - no changes
     } else {
       // Negative review
@@ -228,11 +264,15 @@ export const createDaemonSlice: StateCreator<
   },
 
   isHRReviewAvailable: () => {
-    const daysSinceLastReview = (Date.now() - get().lastHRReview) / (1000 * 60 * 60 * 24);
+    const daysSinceLastReview =
+      (Date.now() - get().lastHRReview) / (1000 * 60 * 60 * 24);
     return daysSinceLastReview >= DAEMON_BALANCE.HR_REVIEW.COOLDOWN_DAYS;
   },
 
-  addLegacyStory: (daemonId: string, story: Omit<LegacyStory, 'id' | 'timestamp'>) => {
+  addLegacyStory: (
+    daemonId: string,
+    story: Omit<LegacyStory, 'id' | 'timestamp'>
+  ) => {
     const daemon = get().getDaemonById(daemonId);
     if (!daemon) return;
 
@@ -273,7 +313,13 @@ export const createDaemonSlice: StateCreator<
     set(state => ({
       daemons: state.daemons.map(daemon =>
         daemon.id === daemonId
-          ? { ...daemon, assignments: [...daemon.assignments.filter(a => a !== roomId), roomId] }
+          ? {
+              ...daemon,
+              assignments: [
+                ...daemon.assignments.filter(a => a !== roomId),
+                roomId,
+              ],
+            }
           : daemon
       ),
     }));
@@ -283,7 +329,10 @@ export const createDaemonSlice: StateCreator<
     set(state => ({
       daemons: state.daemons.map(daemon =>
         daemon.id === daemonId
-          ? { ...daemon, assignments: daemon.assignments.filter(a => a !== roomId) }
+          ? {
+              ...daemon,
+              assignments: daemon.assignments.filter(a => a !== roomId),
+            }
           : daemon
       ),
     }));
@@ -298,15 +347,18 @@ export const createDaemonSlice: StateCreator<
   },
 
   getDaemonsBySpecialization: (specialization: string) => {
-    return get().daemons.filter(daemon => daemon.specialization === specialization);
+    return get().daemons.filter(
+      daemon => daemon.specialization === specialization
+    );
   },
 
-  updateDaemonStats: (daemonId: string, updates: Partial<Pick<Daemon, 'health' | 'morale' | 'lifespanDays'>>) => {
+  updateDaemonStats: (
+    daemonId: string,
+    updates: Partial<Pick<Daemon, 'health' | 'morale' | 'lifespanDays'>>
+  ) => {
     set(state => ({
       daemons: state.daemons.map(daemon =>
-        daemon.id === daemonId
-          ? { ...daemon, ...updates }
-          : daemon
+        daemon.id === daemonId ? { ...daemon, ...updates } : daemon
       ),
     }));
   },

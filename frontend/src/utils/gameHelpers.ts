@@ -1,20 +1,33 @@
 // Game utility functions - extracted business logic for reusability
 import type { Daemon, Planet, DifficultyLevel } from '../types/game';
-import { DAEMON_BALANCE, MISSION_BALANCE, UI_CONSTANTS } from '../constants/gameBalance';
+import {
+  DAEMON_BALANCE,
+  MISSION_BALANCE,
+  UI_CONSTANTS,
+} from '../constants/gameBalance';
 
 /**
  * Core Utility Functions
  */
 export const generateId = (): string => {
-  return Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+  return (
+    Math.random().toString(36).substring(2, 15) +
+    Math.random().toString(36).substring(2, 15)
+  );
 };
 
-export const getDifficultyMultiplier = (difficulty: "Easy" | "Medium" | "Hard"): number => {
+export const getDifficultyMultiplier = (
+  difficulty: 'Easy' | 'Medium' | 'Hard'
+): number => {
   switch (difficulty) {
-    case "Easy": return 0.7;
-    case "Medium": return 1.0;
-    case "Hard": return 1.5;
-    default: return 1.0;
+    case 'Easy':
+      return 0.7;
+    case 'Medium':
+      return 1.0;
+    case 'Hard':
+      return 1.5;
+    default:
+      return 1.0;
   }
 };
 
@@ -22,12 +35,17 @@ export const getDifficultyMultiplier = (difficulty: "Easy" | "Medium" | "Hard"):
  * UI Helper Functions
  */
 export const getLifespanColor = (days: number): string => {
-  if (days <= DAEMON_BALANCE.THRESHOLDS.CRITICAL_LIFESPAN) return UI_CONSTANTS.COLORS.LIFESPAN.CRITICAL;
-  if (days <= DAEMON_BALANCE.THRESHOLDS.WARNING_LIFESPAN) return UI_CONSTANTS.COLORS.LIFESPAN.WARNING;
+  if (days <= DAEMON_BALANCE.THRESHOLDS.CRITICAL_LIFESPAN)
+    return UI_CONSTANTS.COLORS.LIFESPAN.CRITICAL;
+  if (days <= DAEMON_BALANCE.THRESHOLDS.WARNING_LIFESPAN)
+    return UI_CONSTANTS.COLORS.LIFESPAN.WARNING;
   return UI_CONSTANTS.COLORS.LIFESPAN.GOOD;
 };
 
-export const getProgressBarColor = (value: number, type: 'health' | 'morale'): string => {
+export const getProgressBarColor = (
+  value: number,
+  type: 'health' | 'morale'
+): string => {
   const colors = UI_CONSTANTS.COLORS[type === 'health' ? 'HEALTH' : 'MORALE'];
   if (value >= DAEMON_BALANCE.THRESHOLDS.GOOD_HEALTH) return colors.GOOD;
   if (value >= DAEMON_BALANCE.THRESHOLDS.LOW_HEALTH) return colors.WARNING;
@@ -69,14 +87,21 @@ export const calculateTeamStatsBonus = (team: Daemon[]): number => {
   const avgHealth = team.reduce((sum, d) => sum + d.health, 0) / team.length;
   const avgMorale = team.reduce((sum, d) => sum + d.morale, 0) / team.length;
 
-  const healthBonus = (avgHealth - MISSION_BALANCE.SUCCESS_BOUNDS.BASE) * MISSION_BALANCE.MULTIPLIERS.HEALTH_IMPACT;
-  const moraleBonus = (avgMorale - MISSION_BALANCE.SUCCESS_BOUNDS.BASE) * MISSION_BALANCE.MULTIPLIERS.MORALE_IMPACT;
+  const healthBonus =
+    (avgHealth - MISSION_BALANCE.SUCCESS_BOUNDS.BASE) *
+    MISSION_BALANCE.MULTIPLIERS.HEALTH_IMPACT;
+  const moraleBonus =
+    (avgMorale - MISSION_BALANCE.SUCCESS_BOUNDS.BASE) *
+    MISSION_BALANCE.MULTIPLIERS.MORALE_IMPACT;
 
   return healthBonus + moraleBonus;
 };
 
 export const calculateEquipmentBonus = (team: Daemon[]): number => {
-  return team.filter(daemon => daemon.equipment).length * MISSION_BALANCE.BONUSES.EQUIPMENT_BONUS;
+  return (
+    team.filter(daemon => daemon.equipment).length *
+    MISSION_BALANCE.BONUSES.EQUIPMENT_BONUS
+  );
 };
 
 export const calculateMissionSuccessChance = (
@@ -125,7 +150,10 @@ export const generateRandomDamage = (min: number, max: number): number => {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 };
 
-export const calculateMissionDamage = (daemon: Daemon, missionDifficulty: number = 1): {
+export const calculateMissionDamage = (
+  daemon: Daemon,
+  missionDifficulty: number = 1
+): {
   healthLoss: number;
   moraleLoss: number;
   lifespanLoss: number;
@@ -156,17 +184,33 @@ export const calculateMissionDamage = (daemon: Daemon, missionDifficulty: number
   // Apply quirks that affect damage resistance
   let quirkMultiplier = 1.0;
   daemon.quirks.forEach(quirk => {
-    if (quirk.name.toLowerCase().includes('resilient') || quirk.name.toLowerCase().includes('tough')) {
+    if (
+      quirk.name.toLowerCase().includes('resilient') ||
+      quirk.name.toLowerCase().includes('tough')
+    ) {
       quirkMultiplier *= 0.8; // 20% damage reduction
-    } else if (quirk.name.toLowerCase().includes('fragile') || quirk.name.toLowerCase().includes('vulnerable')) {
+    } else if (
+      quirk.name.toLowerCase().includes('fragile') ||
+      quirk.name.toLowerCase().includes('vulnerable')
+    ) {
       quirkMultiplier *= 1.3; // 30% more damage
     }
   });
 
   // Apply all modifiers
-  healthLoss = Math.round(healthLoss * difficultyMultiplier * specializationResistance * healthMultiplier * quirkMultiplier);
-  moraleLoss = Math.round(moraleLoss * difficultyMultiplier * healthMultiplier * quirkMultiplier);
-  lifespanLoss = Math.round(lifespanLoss * difficultyMultiplier * quirkMultiplier);
+  healthLoss = Math.round(
+    healthLoss *
+      difficultyMultiplier *
+      specializationResistance *
+      healthMultiplier *
+      quirkMultiplier
+  );
+  moraleLoss = Math.round(
+    moraleLoss * difficultyMultiplier * healthMultiplier * quirkMultiplier
+  );
+  lifespanLoss = Math.round(
+    lifespanLoss * difficultyMultiplier * quirkMultiplier
+  );
 
   return {
     healthLoss: Math.max(0, healthLoss),
@@ -177,21 +221,41 @@ export const calculateMissionDamage = (daemon: Daemon, missionDifficulty: number
 
 export const shouldCreateSuccessor = (daemon: Daemon): boolean => {
   return (
-    daemon.legacy.successfulMissions >= DAEMON_BALANCE.LEGACY_REQUIREMENTS.MIN_SUCCESSFUL_MISSIONS ||
-    daemon.legacy.planetsConquered >= DAEMON_BALANCE.LEGACY_REQUIREMENTS.MIN_PLANETS_CONQUERED ||
-    daemon.generation >= DAEMON_BALANCE.LEGACY_REQUIREMENTS.MIN_GENERATION_FOR_SUCCESSION
+    daemon.legacy.successfulMissions >=
+      DAEMON_BALANCE.LEGACY_REQUIREMENTS.MIN_SUCCESSFUL_MISSIONS ||
+    daemon.legacy.planetsConquered >=
+      DAEMON_BALANCE.LEGACY_REQUIREMENTS.MIN_PLANETS_CONQUERED ||
+    daemon.generation >=
+      DAEMON_BALANCE.LEGACY_REQUIREMENTS.MIN_GENERATION_FOR_SUCCESSION
   );
 };
 
-export const calculateSuccessorStats = (originalDaemon: Daemon): {
+export const calculateSuccessorStats = (
+  originalDaemon: Daemon
+): {
   health: number;
   morale: number;
   lifespanDays: number;
 } => {
   return {
-    health: Math.min(100, 80 + originalDaemon.generation * DAEMON_BALANCE.INHERITANCE.SUCCESSOR_HEALTH_BONUS),
-    morale: Math.min(100, 70 + originalDaemon.generation * DAEMON_BALANCE.INHERITANCE.SUCCESSOR_MORALE_BONUS),
-    lifespanDays: Math.min(80, 40 + originalDaemon.generation * DAEMON_BALANCE.INHERITANCE.SUCCESSOR_LIFESPAN_BONUS),
+    health: Math.min(
+      100,
+      80 +
+        originalDaemon.generation *
+          DAEMON_BALANCE.INHERITANCE.SUCCESSOR_HEALTH_BONUS
+    ),
+    morale: Math.min(
+      100,
+      70 +
+        originalDaemon.generation *
+          DAEMON_BALANCE.INHERITANCE.SUCCESSOR_MORALE_BONUS
+    ),
+    lifespanDays: Math.min(
+      80,
+      40 +
+        originalDaemon.generation *
+          DAEMON_BALANCE.INHERITANCE.SUCCESSOR_LIFESPAN_BONUS
+    ),
   };
 };
 
@@ -219,7 +283,9 @@ export const validateAmount = (amount: number, min = 0): void => {
 /**
  * Performance Helper Functions
  */
-export const memoize = <T extends (...args: unknown[]) => unknown>(fn: T): T => {
+export const memoize = <T extends (...args: unknown[]) => unknown>(
+  fn: T
+): T => {
   const cache = new Map();
 
   return ((...args: Parameters<T>) => {
@@ -235,5 +301,9 @@ export const memoize = <T extends (...args: unknown[]) => unknown>(fn: T): T => 
 };
 
 // Memoized versions of expensive calculations
-export const memoizedCalculateMissionSuccessChance = memoize(calculateMissionSuccessChance);
-export const memoizedCalculateTeamCompositionBonus = memoize(calculateTeamCompositionBonus);
+export const memoizedCalculateMissionSuccessChance = memoize(
+  calculateMissionSuccessChance
+);
+export const memoizedCalculateTeamCompositionBonus = memoize(
+  calculateTeamCompositionBonus
+);

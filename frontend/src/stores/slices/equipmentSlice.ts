@@ -175,9 +175,10 @@ export const createEquipmentSlice: StateCreator<
           return {
             ...item,
             durability: newDurability,
-            history: newDurability <= 0
-              ? [...item.history, 'Equipment destroyed from wear']
-              : [...item.history, `Durability reduced by ${amount}%`],
+            history:
+              newDurability <= 0
+                ? [...item.history, 'Equipment destroyed from wear']
+                : [...item.history, `Durability reduced by ${amount}%`],
           };
         }
         return item;

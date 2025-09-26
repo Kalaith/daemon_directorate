@@ -37,7 +37,10 @@ const Tutorial: React.FC = () => {
           <p>
             Success is measured not by infinite growth, but by creating
             memorable daemon dynasties before inevitable{' '}
-            <span className="text-daemon-danger font-semibold">corporate restructuring</span>.
+            <span className="text-daemon-danger font-semibold">
+              corporate restructuring
+            </span>
+            .
           </p>
         </div>
         <button

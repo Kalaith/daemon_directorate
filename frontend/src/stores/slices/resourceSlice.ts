@@ -24,16 +24,26 @@ export interface ResourceActions {
 
   // Bulk operations
   addResourceBatch: (resources: Partial<GameResources>, reason: string) => void;
-  spendResourceBatch: (resources: Partial<GameResources>, reason: string) => boolean;
+  spendResourceBatch: (
+    resources: Partial<GameResources>,
+    reason: string
+  ) => boolean;
 
   // Resource tracking
-  getResourceHistory: (resourceType?: keyof GameResources) => typeof ResourceState.prototype.resourceHistory;
+  getResourceHistory: (
+    resourceType?: keyof GameResources
+  ) => typeof ResourceState.prototype.resourceHistory;
   getTotalResourcesEarned: (resourceType: keyof GameResources) => number;
-  getResourceChangeInPeriod: (resourceType: keyof GameResources, hours: number) => number;
+  getResourceChangeInPeriod: (
+    resourceType: keyof GameResources,
+    hours: number
+  ) => number;
 
   // Resource validation
   validateResourceTransaction: (resources: Partial<GameResources>) => boolean;
-  getResourceDeficit: (required: Partial<GameResources>) => Partial<GameResources>;
+  getResourceDeficit: (
+    required: Partial<GameResources>
+  ) => Partial<GameResources>;
 
   // Resource utilities
   getResourceValue: (resourceType: keyof GameResources) => number;
@@ -95,14 +105,18 @@ export const createResourceSlice: StateCreator<
     const changes: Partial<GameResources> = {};
     if (credits !== 0) changes.credits = credits;
     if (soulEssence !== 0) changes.soulEssence = soulEssence;
-    if (bureaucraticLeverage !== 0) changes.bureaucraticLeverage = bureaucraticLeverage;
+    if (bureaucraticLeverage !== 0)
+      changes.bureaucraticLeverage = bureaucraticLeverage;
     if (rawMaterials !== 0) changes.rawMaterials = rawMaterials;
 
     set(state => ({
       resources: {
         credits: Math.max(0, state.resources.credits + credits),
         soulEssence: Math.max(0, state.resources.soulEssence + soulEssence),
-        bureaucraticLeverage: Math.max(0, state.resources.bureaucraticLeverage + bureaucraticLeverage),
+        bureaucraticLeverage: Math.max(
+          0,
+          state.resources.bureaucraticLeverage + bureaucraticLeverage
+        ),
         rawMaterials: Math.max(0, state.resources.rawMaterials + rawMaterials),
       },
       resourceHistory: [
@@ -116,14 +130,20 @@ export const createResourceSlice: StateCreator<
     }));
   },
 
-  addResourceBatch: (resourceChanges: Partial<GameResources>, reason: string) => {
+  addResourceBatch: (
+    resourceChanges: Partial<GameResources>,
+    reason: string
+  ) => {
     set(state => {
       const newResources = { ...state.resources };
 
       Object.entries(resourceChanges).forEach(([key, value]) => {
         const resourceKey = key as keyof GameResources;
         if (typeof value === 'number') {
-          newResources[resourceKey] = Math.max(0, newResources[resourceKey] + value);
+          newResources[resourceKey] = Math.max(
+            0,
+            newResources[resourceKey] + value
+          );
         }
       });
 
@@ -141,7 +161,10 @@ export const createResourceSlice: StateCreator<
     });
   },
 
-  spendResourceBatch: (resourceCosts: Partial<GameResources>, reason: string) => {
+  spendResourceBatch: (
+    resourceCosts: Partial<GameResources>,
+    reason: string
+  ) => {
     const { validateResourceTransaction } = get();
 
     // Check if we have enough resources
@@ -163,7 +186,10 @@ export const createResourceSlice: StateCreator<
       Object.entries(resourceCosts).forEach(([key, cost]) => {
         const resourceKey = key as keyof GameResources;
         if (typeof cost === 'number') {
-          newResources[resourceKey] = Math.max(0, newResources[resourceKey] - cost);
+          newResources[resourceKey] = Math.max(
+            0,
+            newResources[resourceKey] - cost
+          );
         }
       });
 
@@ -204,9 +230,12 @@ export const createResourceSlice: StateCreator<
     }, 0);
   },
 
-  getResourceChangeInPeriod: (resourceType: keyof GameResources, hours: number) => {
+  getResourceChangeInPeriod: (
+    resourceType: keyof GameResources,
+    hours: number
+  ) => {
     const { resourceHistory } = get();
-    const cutoffTime = Date.now() - (hours * 60 * 60 * 1000);
+    const cutoffTime = Date.now() - hours * 60 * 60 * 1000;
 
     return resourceHistory
       .filter(entry => entry.timestamp >= cutoffTime)

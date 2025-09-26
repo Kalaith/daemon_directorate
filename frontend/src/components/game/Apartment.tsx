@@ -23,7 +23,9 @@ const Apartment: React.FC = () => {
             className="bg-daemon-panel border-daemon-secondary hover:border-daemon-primary hover:shadow-infernal transition-all duration-200"
           >
             <div className="flex justify-between items-start mb-6">
-              <h3 className="font-header font-bold text-xl text-daemon-text-bright">{room.name}</h3>
+              <h3 className="font-header font-bold text-xl text-daemon-text-bright">
+                {room.name}
+              </h3>
               <span className="px-4 py-2 bg-daemon-secondary border border-daemon-secondary text-daemon-text-bright text-sm rounded-lg font-mono font-semibold uppercase tracking-wide">
                 Level {room.level}
               </span>
@@ -33,7 +35,9 @@ const Apartment: React.FC = () => {
               <div className="text-sm text-daemon-text-muted font-mono uppercase tracking-wide mb-2">
                 Current Bonus:
               </div>
-              <div className="text-daemon-text-bright font-mono font-semibold">{room.bonus}</div>
+              <div className="text-daemon-text-bright font-mono font-semibold">
+                {room.bonus}
+              </div>
             </div>
 
             <button

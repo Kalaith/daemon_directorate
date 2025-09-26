@@ -16,19 +16,29 @@ const TailwindConversionExample: React.FC = () => {
             Specialization
           </span>
         </div>
-        
+
         {/* Progress bars example */}
         <div className="grid grid-cols-2 gap-2 mb-3">
           <div className="flex flex-col gap-1">
-            <span className="text-xs text-text-secondary font-medium">Health</span>
+            <span className="text-xs text-text-secondary font-medium">
+              Health
+            </span>
             <div className="progress-bar">
-              <div className="progress-fill health" style={{ width: '75%' }}></div>
+              <div
+                className="progress-fill health"
+                style={{ width: '75%' }}
+              ></div>
             </div>
           </div>
           <div className="flex flex-col gap-1">
-            <span className="text-xs text-text-secondary font-medium">Morale</span>
+            <span className="text-xs text-text-secondary font-medium">
+              Morale
+            </span>
             <div className="progress-bar">
-              <div className="progress-fill morale" style={{ width: '60%' }}></div>
+              <div
+                className="progress-fill morale"
+                style={{ width: '60%' }}
+              ></div>
             </div>
           </div>
         </div>
@@ -70,7 +80,7 @@ const TailwindConversionExample: React.FC = () => {
       {/* Grid examples - using Tailwind grid utilities */}
       <div className="space-y-4">
         <h3 className="text-lg font-semibold">Grid Layouts (Tailwind)</h3>
-        
+
         {/* Instead of .daemon-grid */}
         <div className="grid grid-cols-[repeat(auto-fill,minmax(280px,1fr))] gap-4 mb-6">
           <div className="bg-bg-1 p-4 rounded-base">Daemon Card 1</div>
@@ -93,7 +103,7 @@ const TailwindConversionExample: React.FC = () => {
           <button className="inline-flex items-center justify-center px-4 py-2 rounded-base text-base font-medium leading-normal cursor-pointer transition-all duration-normal border-none bg-primary text-primary-hover hover:bg-primary-hover active:bg-primary-active focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40">
             Primary Button
           </button>
-          
+
           {/* Secondary button */}
           <button className="inline-flex items-center justify-center px-4 py-2 rounded-base text-base font-medium leading-normal cursor-pointer transition-all duration-normal border-none bg-secondary text-text hover:bg-secondary-hover active:bg-secondary-active">
             Secondary Button
@@ -110,9 +120,13 @@ const TailwindConversionExample: React.FC = () => {
       <div className="bg-bg-7 p-4 rounded-base border border-border">
         <h4 className="font-semibold mb-2">Conversion Strategy:</h4>
         <ul className="text-sm text-text-secondary space-y-1 list-disc list-inside">
-          <li>Replace layout utilities (flex, grid, spacing) with Tailwind classes</li>
+          <li>
+            Replace layout utilities (flex, grid, spacing) with Tailwind classes
+          </li>
           <li>Convert simple component styles to Tailwind utilities</li>
-          <li>Keep complex components (.progress-bar, .status-dot) as custom CSS</li>
+          <li>
+            Keep complex components (.progress-bar, .status-dot) as custom CSS
+          </li>
           <li>Use CSS custom properties with Tailwind's color system</li>
           <li>Maintain game-specific styling in custom CSS where needed</li>
         </ul>

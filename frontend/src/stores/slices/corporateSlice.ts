@@ -63,7 +63,9 @@ export const createCorporateSlice: StateCreator<
 
   promoteToNextTier: () => {
     const { corporateTier, meetsRequirements } = get();
-    const currentIndex = CORPORATE_TIERS.findIndex(tier => tier.id === corporateTier.id);
+    const currentIndex = CORPORATE_TIERS.findIndex(
+      tier => tier.id === corporateTier.id
+    );
     const nextTier = CORPORATE_TIERS[currentIndex + 1];
 
     if (!nextTier || !meetsRequirements(nextTier.requirements)) {

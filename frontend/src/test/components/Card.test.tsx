@@ -11,7 +11,7 @@ describe('Card Component', () => {
         <p>This is test content</p>
       </Card>
     );
-    
+
     expect(screen.getByText('Test Card')).toBeDefined();
     expect(screen.getByText('This is test content')).toBeDefined();
   });
@@ -22,10 +22,10 @@ describe('Card Component', () => {
         <div data-testid="card-content">Content</div>
       </Card>
     );
-    
+
     const cardContent = screen.getByTestId('card-content');
     const cardElement = cardContent.parentElement;
-    
+
     expect(cardElement?.className).toContain('bg-daemon-panel');
     expect(cardElement?.className).toContain('border-daemon-secondary');
     expect(cardElement?.className).toContain('rounded-lg');
@@ -39,10 +39,10 @@ describe('Card Component', () => {
         <div data-testid="card-content">Content</div>
       </Card>
     );
-    
+
     const cardContent = screen.getByTestId('card-content');
     const cardElement = cardContent.parentElement;
-    
+
     expect(cardElement?.className).toContain('custom-class');
     expect(cardElement?.className).toContain('bg-surface'); // Default class still present
   });
@@ -53,7 +53,7 @@ describe('Card Component', () => {
         <div>Content</div>
       </Card>
     );
-    
+
     const cardElement = screen.getByTestId('test-card');
     expect(cardElement).toBeDefined();
     expect(cardElement.getAttribute('aria-label')).toBe('Test card');
@@ -65,7 +65,7 @@ describe('Card Component', () => {
         <div>Content</div>
       </Card>
     );
-    
+
     const cardElement = screen.getByTestId('test-card');
     expect(cardElement.tagName.toLowerCase()).toBe('div');
   });

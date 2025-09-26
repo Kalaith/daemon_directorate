@@ -1,5 +1,11 @@
 // utils/performance.tsx - Performance monitoring and profiling utilities
-import React, { Profiler, ReactNode, useCallback, useEffect, useState } from 'react';
+import React, {
+  Profiler,
+  ReactNode,
+  useCallback,
+  useEffect,
+  useState,
+} from 'react';
 import { PERFORMANCE_THRESHOLDS } from '../constants/performance';
 
 // Performance metrics interface
@@ -52,11 +58,16 @@ class PerformanceMonitor {
     const componentMetrics = this.metrics.get(componentId) || [];
     if (componentMetrics.length === 0) return 0;
 
-    const totalTime = componentMetrics.reduce((sum, metric) => sum + metric.actualDuration, 0);
+    const totalTime = componentMetrics.reduce(
+      (sum, metric) => sum + metric.actualDuration,
+      0
+    );
     return totalTime / componentMetrics.length;
   }
 
-  getSlowComponents(threshold: number = 16): Array<{ id: string; averageTime: number }> {
+  getSlowComponents(
+    threshold: number = 16
+  ): Array<{ id: string; averageTime: number }> {
     const slowComponents: Array<{ id: string; averageTime: number }> = [];
 
     for (const [id] of this.metrics) {
@@ -83,7 +94,9 @@ class PerformanceMonitor {
       },
     };
 
-    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+    const blob = new Blob([JSON.stringify(data, null, 2)], {
+      type: 'application/json',
+    });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
@@ -140,7 +153,9 @@ export const PerformanceProfiler: React.FC<PerformanceProfilerProps> = ({
         console.log(`Base Duration: ${baseDuration.toFixed(2)}ms`);
 
         if (actualDuration > warningThreshold) {
-          console.warn(`🐌 Slow render detected! (${actualDuration.toFixed(2)}ms > ${warningThreshold}ms)`);
+          console.warn(
+            `🐌 Slow render detected! (${actualDuration.toFixed(2)}ms > ${warningThreshold}ms)`
+          );
         }
 
         console.groupEnd();
@@ -199,7 +214,15 @@ export const useMemoryMonitor = () => {
     }
 
     const updateMemoryInfo = () => {
-      const memory = (performance as typeof performance & { memory?: { usedJSHeapSize: number; totalJSHeapSize: number; jsHeapSizeLimit: number } }).memory;
+      const memory = (
+        performance as typeof performance & {
+          memory?: {
+            usedJSHeapSize: number;
+            totalJSHeapSize: number;
+            jsHeapSizeLimit: number;
+          };
+        }
+      ).memory;
       setMemoryInfo({
         usedJSHeapSize: memory.usedJSHeapSize,
         totalJSHeapSize: memory.totalJSHeapSize,
@@ -219,7 +242,9 @@ export const useMemoryMonitor = () => {
 // Performance monitoring dashboard component
 export const PerformanceDashboard: React.FC = () => {
   const [isVisible, setIsVisible] = useState(false);
-  const [slowComponents, setSlowComponents] = useState<Array<{ id: string; averageTime: number }>>([]);
+  const [slowComponents, setSlowComponents] = useState<
+    Array<{ id: string; averageTime: number }>
+  >([]);
   const memoryInfo = useMemoryMonitor();
 
   useEffect(() => {
@@ -266,14 +291,23 @@ export const PerformanceDashboard: React.FC = () => {
             <div className="mb-4">
               <h4 className="font-semibold mb-2">Memory Usage</h4>
               <div className="text-sm space-y-1">
-                <div>Used: {(memoryInfo.usedJSHeapSize / 1024 / 1024).toFixed(1)} MB</div>
-                <div>Total: {(memoryInfo.totalJSHeapSize / 1024 / 1024).toFixed(1)} MB</div>
-                <div>Limit: {(memoryInfo.jsHeapSizeLimit / 1024 / 1024).toFixed(1)} MB</div>
+                <div>
+                  Used: {(memoryInfo.usedJSHeapSize / 1024 / 1024).toFixed(1)}{' '}
+                  MB
+                </div>
+                <div>
+                  Total: {(memoryInfo.totalJSHeapSize / 1024 / 1024).toFixed(1)}{' '}
+                  MB
+                </div>
+                <div>
+                  Limit: {(memoryInfo.jsHeapSizeLimit / 1024 / 1024).toFixed(1)}{' '}
+                  MB
+                </div>
                 <div className="w-full bg-gray-200 rounded-full h-2">
                   <div
                     className="bg-blue-600 h-2 rounded-full transition-all"
                     style={{
-                      width: `${(memoryInfo.usedJSHeapSize / memoryInfo.jsHeapSizeLimit) * 100}%`
+                      width: `${(memoryInfo.usedJSHeapSize / memoryInfo.jsHeapSizeLimit) * 100}%`,
                     }}
                   />
                 </div>
@@ -285,13 +319,17 @@ export const PerformanceDashboard: React.FC = () => {
           <div className="mb-4">
             <h4 className="font-semibold mb-2">Slow Components (&gt;16ms)</h4>
             {slowComponents.length === 0 ? (
-              <p className="text-sm text-gray-500">No slow components detected</p>
+              <p className="text-sm text-gray-500">
+                No slow components detected
+              </p>
             ) : (
               <div className="space-y-1 max-h-32 overflow-y-auto">
                 {slowComponents.map(({ id, averageTime }) => (
                   <div key={id} className="text-sm flex justify-between">
                     <span className="truncate">{id}</span>
-                    <span className={`font-mono ${averageTime > 32 ? 'text-red-600' : 'text-orange-600'}`}>
+                    <span
+                      className={`font-mono ${averageTime > 32 ? 'text-red-600' : 'text-orange-600'}`}
+                    >
                       {averageTime.toFixed(1)}ms
                     </span>
                   </div>
@@ -353,8 +391,20 @@ export const analyzeBundleSize = () => {
 // Global performance tracking setup
 if (process.env.NODE_ENV === 'development') {
   // Add performance monitoring to window for debugging
-  (window as typeof window & { performanceMonitor?: typeof performanceMonitor; analyzeBundleSize?: typeof analyzeBundleSize }).performanceMonitor = performanceMonitor;
-  (window as typeof window & { performanceMonitor?: typeof performanceMonitor; analyzeBundleSize?: typeof analyzeBundleSize }).analyzeBundleSize = analyzeBundleSize;
+  (
+    window as typeof window & {
+      performanceMonitor?: typeof performanceMonitor;
+      analyzeBundleSize?: typeof analyzeBundleSize;
+    }
+  ).performanceMonitor = performanceMonitor;
+  (
+    window as typeof window & {
+      performanceMonitor?: typeof performanceMonitor;
+      analyzeBundleSize?: typeof analyzeBundleSize;
+    }
+  ).analyzeBundleSize = analyzeBundleSize;
 
-  console.log('🚀 Performance monitoring enabled. Use window.performanceMonitor for debugging.');
+  console.log(
+    '🚀 Performance monitoring enabled. Use window.performanceMonitor for debugging.'
+  );
 }

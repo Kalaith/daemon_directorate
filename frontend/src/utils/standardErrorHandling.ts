@@ -1,5 +1,10 @@
 // utils/standardErrorHandling.ts - Standardized error handling across all layers
-import { GameError, ValidationError, BusinessRuleError, SystemError } from './errorHandling';
+import {
+  GameError,
+  ValidationError,
+  BusinessRuleError,
+  SystemError,
+} from './errorHandling';
 
 // Error categories for consistent handling
 export enum ErrorCategory {
@@ -163,11 +168,17 @@ const getNotificationType = (category: ErrorCategory): string => {
 };
 
 // Store action wrapper for consistent error handling
-export const withGameActionErrorHandling = <T extends (...args: unknown[]) => unknown>(
+export const withGameActionErrorHandling = <
+  T extends (...args: unknown[]) => unknown,
+>(
   action: T,
   actionName: string
 ): T => {
-  return withErrorHandling(action, `Game Action: ${actionName}`, ErrorCategory.BUSINESS_RULE);
+  return withErrorHandling(
+    action,
+    `Game Action: ${actionName}`,
+    ErrorCategory.BUSINESS_RULE
+  );
 };
 
 // Validation wrapper
@@ -175,23 +186,39 @@ export const withValidation = <T extends (...args: unknown[]) => unknown>(
   fn: T,
   validationName: string
 ): T => {
-  return withErrorHandling(fn, `Validation: ${validationName}`, ErrorCategory.VALIDATION);
+  return withErrorHandling(
+    fn,
+    `Validation: ${validationName}`,
+    ErrorCategory.VALIDATION
+  );
 };
 
 // Network operation wrapper
-export const withNetworkErrorHandling = <T extends (...args: unknown[]) => unknown>(
+export const withNetworkErrorHandling = <
+  T extends (...args: unknown[]) => unknown,
+>(
   fn: T,
   operationName: string
 ): T => {
-  return withErrorHandling(fn, `Network: ${operationName}`, ErrorCategory.NETWORK);
+  return withErrorHandling(
+    fn,
+    `Network: ${operationName}`,
+    ErrorCategory.NETWORK
+  );
 };
 
 // Component error handler
-export const withComponentErrorHandling = <T extends (...args: unknown[]) => unknown>(
+export const withComponentErrorHandling = <
+  T extends (...args: unknown[]) => unknown,
+>(
   fn: T,
   componentName: string
 ): T => {
-  return withErrorHandling(fn, `Component: ${componentName}`, ErrorCategory.SYSTEM);
+  return withErrorHandling(
+    fn,
+    `Component: ${componentName}`,
+    ErrorCategory.SYSTEM
+  );
 };
 
 // Retry wrapper with exponential backoff
@@ -215,13 +242,19 @@ export const withRetry = <T extends (...args: unknown[]) => unknown>(
         }
 
         const delay = baseDelay * Math.pow(2, attempt - 1);
-        console.warn(`${context} failed (attempt ${attempt}/${maxRetries}), retrying in ${delay}ms...`);
+        console.warn(
+          `${context} failed (attempt ${attempt}/${maxRetries}), retrying in ${delay}ms...`
+        );
 
         await new Promise(resolve => setTimeout(resolve, delay));
       }
     }
 
-    handleError(lastError, `${context} (after ${maxRetries} attempts)`, ErrorCategory.SYSTEM);
+    handleError(
+      lastError,
+      `${context} (after ${maxRetries} attempts)`,
+      ErrorCategory.SYSTEM
+    );
     throw lastError;
   }) as T;
 };

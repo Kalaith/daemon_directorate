@@ -8,10 +8,7 @@ import { DashboardService } from '../services/DashboardService';
 export const useActiveDaemons = () => {
   const daemons = useGameStore(state => state.daemons);
 
-  return useMemo(() =>
-    daemons.filter(d => d.isActive),
-    [daemons]
-  );
+  return useMemo(() => daemons.filter(d => d.isActive), [daemons]);
 };
 
 export const useDaemonStats = () => {
@@ -33,9 +30,9 @@ export const useDaemonStats = () => {
       activeDaemons,
       [], // corporateEvents not needed for this calculation
       [], // complianceTasks not needed
-      0,  // daysPassed not needed
+      0, // daysPassed not needed
       {}, // legacyBook not needed
-      []  // hallOfInfamy not needed
+      [] // hallOfInfamy not needed
     );
 
     const lowHealthCount = activeDaemons.filter(
@@ -60,14 +57,22 @@ export const useComplianceStatus = () => {
   const daysPassed = useGameStore(state => state.daysPassed);
 
   return useMemo(() => {
-    const activeComplianceTasks = complianceTasks.filter(task => !task.completed);
-    const overdueComplianceTasks = activeComplianceTasks.filter(task => daysPassed >= task.deadline);
+    const activeComplianceTasks = complianceTasks.filter(
+      task => !task.completed
+    );
+    const overdueComplianceTasks = activeComplianceTasks.filter(
+      task => daysPassed >= task.deadline
+    );
 
     return {
       active: activeComplianceTasks.length,
       overdue: overdueComplianceTasks.length,
-      status: overdueComplianceTasks.length > 0 ? 'critical' :
-              activeComplianceTasks.length > 0 ? 'warning' : 'good',
+      status:
+        overdueComplianceTasks.length > 0
+          ? 'critical'
+          : activeComplianceTasks.length > 0
+            ? 'warning'
+            : 'good',
     };
   }, [complianceTasks, daysPassed]);
 };
@@ -92,14 +97,18 @@ export const useResourcesStatus = () => {
   const resources = useGameStore(state => state.resources);
 
   return useMemo(() => {
-    const isResourceLow = (amount: number, threshold: number) => amount < threshold;
+    const isResourceLow = (amount: number, threshold: number) =>
+      amount < threshold;
 
     return {
       resources,
       warnings: {
         lowCredits: isResourceLow(resources.credits, 100),
         lowSoulEssence: isResourceLow(resources.soulEssence, 5),
-        lowBureaucraticLeverage: isResourceLow(resources.bureaucraticLeverage, 3),
+        lowBureaucraticLeverage: isResourceLow(
+          resources.bureaucraticLeverage,
+          3
+        ),
         lowRawMaterials: isResourceLow(resources.rawMaterials, 2),
       },
     };
@@ -110,12 +119,14 @@ export const useResourcesStatus = () => {
 export const useMissionReadyDaemons = () => {
   const activeDaemons = useActiveDaemons();
 
-  return useMemo(() =>
-    activeDaemons.filter(daemon =>
-      daemon.health > DAEMON_BALANCE.THRESHOLDS.LOW_HEALTH &&
-      daemon.morale > DAEMON_BALANCE.THRESHOLDS.LOW_MORALE &&
-      daemon.lifespanDays > DAEMON_BALANCE.THRESHOLDS.CRITICAL_LIFESPAN
-    ),
+  return useMemo(
+    () =>
+      activeDaemons.filter(
+        daemon =>
+          daemon.health > DAEMON_BALANCE.THRESHOLDS.LOW_HEALTH &&
+          daemon.morale > DAEMON_BALANCE.THRESHOLDS.LOW_MORALE &&
+          daemon.lifespanDays > DAEMON_BALANCE.THRESHOLDS.CRITICAL_LIFESPAN
+      ),
     [activeDaemons]
   );
 };
@@ -124,12 +135,14 @@ export const useMissionReadyDaemons = () => {
 export const useDaemonsNeedingAttention = () => {
   const activeDaemons = useActiveDaemons();
 
-  return useMemo(() =>
-    activeDaemons.filter(daemon =>
-      daemon.health < DAEMON_BALANCE.THRESHOLDS.LOW_HEALTH ||
-      daemon.morale < DAEMON_BALANCE.THRESHOLDS.LOW_MORALE ||
-      daemon.lifespanDays <= DAEMON_BALANCE.THRESHOLDS.WARNING_LIFESPAN
-    ),
+  return useMemo(
+    () =>
+      activeDaemons.filter(
+        daemon =>
+          daemon.health < DAEMON_BALANCE.THRESHOLDS.LOW_HEALTH ||
+          daemon.morale < DAEMON_BALANCE.THRESHOLDS.LOW_MORALE ||
+          daemon.lifespanDays <= DAEMON_BALANCE.THRESHOLDS.WARNING_LIFESPAN
+      ),
     [activeDaemons]
   );
 };

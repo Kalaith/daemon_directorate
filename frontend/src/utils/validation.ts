@@ -31,7 +31,11 @@ interface ValidationContext {
 // Core validator class
 class Validator {
   // Validate value against schema
-  validate<T = unknown>(value: unknown, schema: Schema, context: ValidationContext = { path: 'root' }): ValidationResult<T> {
+  validate<T = unknown>(
+    value: unknown,
+    schema: Schema,
+    context: ValidationContext = { path: 'root' }
+  ): ValidationResult<T> {
     const errors: string[] = [];
 
     // Check required
@@ -62,29 +66,45 @@ class Validator {
     }
 
     // Length validation for strings and arrays
-    if ((schema.type === 'string' || schema.type === 'array') && (typeof value === 'string' || Array.isArray(value))) {
+    if (
+      (schema.type === 'string' || schema.type === 'array') &&
+      (typeof value === 'string' || Array.isArray(value))
+    ) {
       if (schema.min !== undefined && value.length < schema.min) {
-        errors.push(`${context.path} must have at least ${schema.min} ${schema.type === 'string' ? 'characters' : 'items'}`);
+        errors.push(
+          `${context.path} must have at least ${schema.min} ${schema.type === 'string' ? 'characters' : 'items'}`
+        );
       }
       if (schema.max !== undefined && value.length > schema.max) {
-        errors.push(`${context.path} must have at most ${schema.max} ${schema.type === 'string' ? 'characters' : 'items'}`);
+        errors.push(
+          `${context.path} must have at most ${schema.max} ${schema.type === 'string' ? 'characters' : 'items'}`
+        );
       }
     }
 
     // Pattern validation for strings
-    if (schema.type === 'string' && typeof value === 'string' && schema.pattern) {
+    if (
+      schema.type === 'string' &&
+      typeof value === 'string' &&
+      schema.pattern
+    ) {
       if (!schema.pattern.test(value)) {
         errors.push(schema.message || `${context.path} format is invalid`);
       }
     }
 
     // Object property validation
-    if (schema.type === 'object' && typeof value === 'object' && value !== null && schema.properties) {
+    if (
+      schema.type === 'object' &&
+      typeof value === 'object' &&
+      value !== null &&
+      schema.properties
+    ) {
       const obj = value as Record<string, unknown>;
       for (const [key, propSchema] of Object.entries(schema.properties)) {
         const propResult = this.validate(obj[key], propSchema, {
           path: `${context.path}.${key}`,
-          parent: value
+          parent: value,
         });
         errors.push(...propResult.errors);
       }
@@ -95,7 +115,7 @@ class Validator {
       value.forEach((item, index) => {
         const itemResult = this.validate(item, schema.items!, {
           path: `${context.path}[${index}]`,
-          parent: value
+          parent: value,
         });
         errors.push(...itemResult.errors);
       });
@@ -113,7 +133,11 @@ class Validator {
     };
   }
 
-  private validateType(value: unknown, schema: Schema, context: ValidationContext): string | null {
+  private validateType(
+    value: unknown,
+    schema: Schema,
+    context: ValidationContext
+  ): string | null {
     const actualType = Array.isArray(value) ? 'array' : typeof value;
 
     if (actualType !== schema.type) {
@@ -168,7 +192,7 @@ export const GameSchemas = {
         required: true,
         min: 1,
         max: gameConfig.get('balance.maxDaemonsActive'),
-        items: { type: 'string' as const, min: 1 }
+        items: { type: 'string' as const, min: 1 },
       },
       type: { type: 'string' as const, required: true },
     },
@@ -196,7 +220,8 @@ export const GameSchemas = {
       min: 1,
       max: 30,
       pattern: /^[a-zA-Z0-9\s\-_']+$/,
-      message: 'Daemon name can only contain letters, numbers, spaces, hyphens, underscores, and apostrophes',
+      message:
+        'Daemon name can only contain letters, numbers, spaces, hyphens, underscores, and apostrophes',
     },
 
     planetName: {
@@ -205,7 +230,8 @@ export const GameSchemas = {
       min: 1,
       max: 50,
       pattern: /^[a-zA-Z0-9\s\-_']+$/,
-      message: 'Planet name can only contain letters, numbers, spaces, hyphens, underscores, and apostrophes',
+      message:
+        'Planet name can only contain letters, numbers, spaces, hyphens, underscores, and apostrophes',
     },
 
     resourceAmount: {
@@ -213,7 +239,8 @@ export const GameSchemas = {
       required: true,
       min: 0,
       max: 999999999,
-      validator: (value: unknown) => typeof value === 'number' && Number.isInteger(value),
+      validator: (value: unknown) =>
+        typeof value === 'number' && Number.isInteger(value),
       message: 'Resource amount must be a positive integer',
     },
 
@@ -222,14 +249,18 @@ export const GameSchemas = {
       required: true,
       min: 1,
       max: gameConfig.get('balance.maxDaemonsActive'),
-      validator: (value: unknown) => typeof value === 'number' && Number.isInteger(value),
+      validator: (value: unknown) =>
+        typeof value === 'number' && Number.isInteger(value),
       message: `Team size must be between 1 and ${gameConfig.get('balance.maxDaemonsActive')} daemons`,
     },
   },
 };
 
 // Validation utility functions
-export const validateInput = <T = unknown>(value: unknown, schema: Schema): T => {
+export const validateInput = <T = unknown>(
+  value: unknown,
+  schema: Schema
+): T => {
   const result = validator.validate<T>(value, schema);
 
   if (!result.isValid) {
@@ -239,28 +270,43 @@ export const validateInput = <T = unknown>(value: unknown, schema: Schema): T =>
   return result.data!;
 };
 
-export const validateInputSafe = <T = unknown>(value: unknown, schema: Schema): ValidationResult<T> => {
+export const validateInputSafe = <T = unknown>(
+  value: unknown,
+  schema: Schema
+): ValidationResult<T> => {
   return validator.validate<T>(value, schema);
 };
 
 // Game-specific validation functions
 export const GameValidators = {
-  validateDaemon: (daemon: unknown) => validateInput(daemon, GameSchemas.daemon),
-  validateResources: (resources: unknown) => validateInput(resources, GameSchemas.resources),
-  validateMission: (mission: unknown) => validateInput(mission, GameSchemas.mission),
-  validatePlanet: (planet: unknown) => validateInput(planet, GameSchemas.planet),
+  validateDaemon: (daemon: unknown) =>
+    validateInput(daemon, GameSchemas.daemon),
+  validateResources: (resources: unknown) =>
+    validateInput(resources, GameSchemas.resources),
+  validateMission: (mission: unknown) =>
+    validateInput(mission, GameSchemas.mission),
+  validatePlanet: (planet: unknown) =>
+    validateInput(planet, GameSchemas.planet),
 
   // Safe versions that return validation results
-  validateDaemonSafe: (daemon: unknown) => validateInputSafe(daemon, GameSchemas.daemon),
-  validateResourcesSafe: (resources: unknown) => validateInputSafe(resources, GameSchemas.resources),
-  validateMissionSafe: (mission: unknown) => validateInputSafe(mission, GameSchemas.mission),
-  validatePlanetSafe: (planet: unknown) => validateInputSafe(planet, GameSchemas.planet),
+  validateDaemonSafe: (daemon: unknown) =>
+    validateInputSafe(daemon, GameSchemas.daemon),
+  validateResourcesSafe: (resources: unknown) =>
+    validateInputSafe(resources, GameSchemas.resources),
+  validateMissionSafe: (mission: unknown) =>
+    validateInputSafe(mission, GameSchemas.mission),
+  validatePlanetSafe: (planet: unknown) =>
+    validateInputSafe(planet, GameSchemas.planet),
 
   // User input validators
-  validateDaemonName: (name: unknown) => validateInput(name, GameSchemas.userInput.daemonName),
-  validatePlanetName: (name: unknown) => validateInput(name, GameSchemas.userInput.planetName),
-  validateResourceAmount: (amount: unknown) => validateInput(amount, GameSchemas.userInput.resourceAmount),
-  validateTeamSize: (size: unknown) => validateInput(size, GameSchemas.userInput.teamSize),
+  validateDaemonName: (name: unknown) =>
+    validateInput(name, GameSchemas.userInput.daemonName),
+  validatePlanetName: (name: unknown) =>
+    validateInput(name, GameSchemas.userInput.planetName),
+  validateResourceAmount: (amount: unknown) =>
+    validateInput(amount, GameSchemas.userInput.resourceAmount),
+  validateTeamSize: (size: unknown) =>
+    validateInput(size, GameSchemas.userInput.teamSize),
 };
 
 // React hook for validation

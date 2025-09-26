@@ -178,10 +178,13 @@ export const UI_CONSTANTS = {
 
   // Tailwind class constants
   CLASSES: {
-    MODAL_OVERLAY: 'fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center',
-    MODAL_CONTAINER: 'bg-gray-900 border rounded-lg p-6 max-w-md w-full mx-4 shadow-2xl',
+    MODAL_OVERLAY:
+      'fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center',
+    MODAL_CONTAINER:
+      'bg-gray-900 border rounded-lg p-6 max-w-md w-full mx-4 shadow-2xl',
     BUTTON_PRIMARY: 'px-4 py-2 rounded transition-colors font-semibold',
-    BUTTON_SECONDARY: 'px-4 py-2 bg-gray-700 text-white rounded hover:bg-gray-600 text-sm border border-gray-600 transition-colors',
+    BUTTON_SECONDARY:
+      'px-4 py-2 bg-gray-700 text-white rounded hover:bg-gray-600 text-sm border border-gray-600 transition-colors',
   },
 
   COLORS: {

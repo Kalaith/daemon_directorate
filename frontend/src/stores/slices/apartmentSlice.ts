@@ -116,7 +116,10 @@ export const createApartmentSlice: StateCreator<
   assignDaemonToRoom: (daemonId: string, roomId: string) => {
     set(state => ({
       rooms: state.rooms.map(room => {
-        if (room.id === roomId && room.assignedDaemons.length < room.maxAssignments) {
+        if (
+          room.id === roomId &&
+          room.assignedDaemons.length < room.maxAssignments
+        ) {
           return {
             ...room,
             assignedDaemons: [...room.assignedDaemons, daemonId],

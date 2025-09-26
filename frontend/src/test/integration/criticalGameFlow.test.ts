@@ -62,7 +62,9 @@ describe('Critical Game Flow Integration Tests', () => {
         });
 
         expect(result.current.daemons.length).toBe(initialDaemonCount + 1);
-        expect(result.current.recruitmentPool).not.toContain(recruitmentCandidate);
+        expect(result.current.recruitmentPool).not.toContain(
+          recruitmentCandidate
+        );
         expect(result.current.resources.credits).toBeLessThan(500);
       }
     });
@@ -141,7 +143,9 @@ describe('Critical Game Flow Integration Tests', () => {
       expect(finalCredits).not.toBe(initialCredits);
 
       // Daemon should have taken some damage
-      const updatedDaemon = result.current.daemons.find(d => d.id === daemon.id);
+      const updatedDaemon = result.current.daemons.find(
+        d => d.id === daemon.id
+      );
       expect(updatedDaemon).toBeDefined();
       expect(updatedDaemon!.health).toBeLessThanOrEqual(daemon.health);
     });
@@ -209,7 +213,9 @@ describe('Critical Game Flow Integration Tests', () => {
           expect(success).toBe(true);
         });
 
-        expect(result.current.resources.credits).toBe(initialCredits - spendAmount);
+        expect(result.current.resources.credits).toBe(
+          initialCredits - spendAmount
+        );
       }
     });
 
@@ -251,9 +257,13 @@ describe('Critical Game Flow Integration Tests', () => {
           result.current.upgradeRoom(room.id);
         });
 
-        const updatedRoom = result.current.rooms.find(r => r.id === 'living_quarters');
+        const updatedRoom = result.current.rooms.find(
+          r => r.id === 'living_quarters'
+        );
         expect(updatedRoom!.level).toBe(initialLevel + 1);
-        expect(result.current.resources.credits).toBe(initialCredits - room.upgrade_cost);
+        expect(result.current.resources.credits).toBe(
+          initialCredits - room.upgrade_cost
+        );
       }
     });
 
@@ -271,7 +281,9 @@ describe('Critical Game Flow Integration Tests', () => {
         result.current.assignDaemonToRoom(daemon.id, room.id);
       });
 
-      const updatedDaemon = result.current.daemons.find(d => d.id === daemon.id);
+      const updatedDaemon = result.current.daemons.find(
+        d => d.id === daemon.id
+      );
       expect(updatedDaemon!.assignments).toContain(room.id);
     });
   });
@@ -356,7 +368,9 @@ describe('Critical Game Flow Integration Tests', () => {
 
       // State should remain unchanged
       expect(result.current.daemons.length).toBe(initialState.daemons.length);
-      expect(result.current.resources.credits).toBe(initialState.resources.credits);
+      expect(result.current.resources.credits).toBe(
+        initialState.resources.credits
+      );
     });
 
     it('should handle invalid room operations gracefully', () => {
