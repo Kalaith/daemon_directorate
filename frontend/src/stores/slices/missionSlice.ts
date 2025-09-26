@@ -40,7 +40,7 @@ export const createMissionSlice: StateCreator<
   MissionSlice
 > = (set, get) => ({
   // Initial state
-  planets: STARTER_DATA.starter_planets || [],
+  planets: STARTER_DATA.planets || [],
   activeMission: null,
   completedMissions: [],
   currentPlanet: null,

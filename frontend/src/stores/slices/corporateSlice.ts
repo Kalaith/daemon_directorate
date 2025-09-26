@@ -1,6 +1,6 @@
 // stores/slices/corporateSlice.ts - Corporate progression system
 import type { StateCreator } from 'zustand';
-import type { CorporateTier, CorporateRival, CorporateEvent } from '../../types/game';
+import type { CorporateTier, CorporateRival } from '../../types/game';
 import { CORPORATE_TIERS, CORPORATE_EVENTS } from '../../constants/gameData';
 
 export interface CorporateState {
@@ -117,6 +117,10 @@ export const createCorporateSlice: StateCreator<
   },
 
   resolveEvent: (eventId: string, choiceIndex?: number) => {
+    // Suppress unused parameter warnings - these will be used when event effects are implemented
+    void eventId;
+    void choiceIndex;
+    
     const composedState = get();
     if ('setShowEventModal' in composedState) {
       composedState.setShowEventModal(false);
