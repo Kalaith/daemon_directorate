@@ -7,11 +7,13 @@ import {
 } from '../services/GameService';
 
 export const useGameService = (): GameServiceInterface => {
-  const store = useGameStore;
-
+  // Create a wrapper that matches the expected ZustandGameStore interface
   const gameService = useMemo(() => {
-    return createGameService(store);
-  }, [store]);
+    const storeWrapper = {
+      getState: () => useGameStore.getState(),
+    };
+    return createGameService(storeWrapper as any);
+  }, []);
 
   return gameService;
 };

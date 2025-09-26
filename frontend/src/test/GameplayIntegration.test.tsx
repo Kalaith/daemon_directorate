@@ -25,15 +25,15 @@ const mockGameStore = {
     assignments: [],
     equipment: null,
   })),
-  recruitmentPool: [],
+  recruitmentPool: [] as any[],
   selectedDaemons: new Set<string>(),
 
   // UI state
-  activeTab: 'dashboard' as const,
+  currentTab: 'dashboard' as 'dashboard' | 'team' | 'missions' | 'apartment' | 'equipment',
   showMissionResults: false,
   showEventModal: false,
-  currentEvent: null,
-  missionResult: null,
+  currentEvent: null as any,
+  missionResult: null as any,
   notifications: [],
 
   // Corporate progression
@@ -56,7 +56,7 @@ const mockGameStore = {
     conquered: false,
     lastMission: null,
   })),
-  selectedPlanet: null,
+  selectedPlanet: null as any,
   availableProceduralMissions: [],
 
   // Equipment and rooms
@@ -74,7 +74,7 @@ const mockGameStore = {
   // Actions
   startNewGame: vi.fn(),
   initializeGame: vi.fn(),
-  setActiveTab: vi.fn(),
+  setCurrentTab: vi.fn(),
   recruitDaemon: vi.fn(),
   refreshRecruitmentPool: vi.fn(),
   selectPlanetForMission: vi.fn(),
@@ -82,7 +82,7 @@ const mockGameStore = {
   executeMission: vi.fn(),
   conductHRReview: vi.fn(),
   upgradeRoom: vi.fn(),
-  canAfford: vi.fn(() => true),
+  canAfford: vi.fn((_cost?: number) => true),
   isHRReviewAvailable: vi.fn(() => true),
   setShowMissionResults: vi.fn(),
   setShowEventModal: vi.fn(),
@@ -99,7 +99,7 @@ describe('Daemon Directorate - Corporate Satire Gameplay', () => {
     vi.clearAllMocks();
     // Reset mock store state
     mockGameStore.gameStarted = false;
-    mockGameStore.activeTab = 'dashboard';
+    mockGameStore.currentTab = 'dashboard';
     mockGameStore.daysPassed = 0;
   });
 
@@ -138,7 +138,7 @@ describe('Daemon Directorate - Corporate Satire Gameplay', () => {
 
   describe('Team Management - Corporate Assets', () => {
     beforeEach(() => {
-      mockGameStore.activeTab = 'team';
+      mockGameStore.currentTab = 'team';
       mockGameStore.gameStarted = true;
     });
 
@@ -162,7 +162,7 @@ describe('Daemon Directorate - Corporate Satire Gameplay', () => {
     });
 
     it('should handle talent acquisition (recruitment)', async () => {
-      mockGameStore.recruitmentPool = [
+      (mockGameStore as any).recruitmentPool = [
         {
           ...STARTER_DATA.starter_daemons[0],
           id: 'recruit-1',
@@ -190,7 +190,7 @@ describe('Daemon Directorate - Corporate Satire Gameplay', () => {
     });
 
     it('should conduct performance reviews for corporate assets', async () => {
-      mockGameStore.corporateTier.level = 2; // Manager tier required
+      (mockGameStore as any).corporateTier.level = 2; // Manager tier required
 
       render(<App />);
 
@@ -204,7 +204,7 @@ describe('Daemon Directorate - Corporate Satire Gameplay', () => {
 
   describe('Corporate Housing Division (Apartment)', () => {
     beforeEach(() => {
-      mockGameStore.activeTab = 'apartment';
+      mockGameStore.currentTab = 'apartment';
       mockGameStore.gameStarted = true;
     });
 
@@ -233,7 +233,7 @@ describe('Daemon Directorate - Corporate Satire Gameplay', () => {
 
   describe('Mission System - Corporate Operations', () => {
     beforeEach(() => {
-      mockGameStore.activeTab = 'missions';
+      mockGameStore.currentTab = 'missions';
       mockGameStore.gameStarted = true;
       mockGameStore.selectedDaemons = new Set(['test-Belphegor-7734']);
     });
@@ -248,7 +248,7 @@ describe('Daemon Directorate - Corporate Satire Gameplay', () => {
     });
 
     it('should execute corporate conquest missions', async () => {
-      mockGameStore.selectedPlanet = mockGameStore.planets[0];
+      (mockGameStore as any).selectedPlanet = mockGameStore.planets[0];
 
       render(<App />);
 
@@ -261,7 +261,7 @@ describe('Daemon Directorate - Corporate Satire Gameplay', () => {
 
     it('should display performance evaluation results', () => {
       mockGameStore.showMissionResults = true;
-      mockGameStore.missionResult = {
+      (mockGameStore as any).missionResult = {
         success: true,
         narrative:
           'Quarterly objectives met through strategic synergy optimization.',
@@ -285,7 +285,7 @@ describe('Daemon Directorate - Corporate Satire Gameplay', () => {
   describe('Corporate Events - Bureaucratic Scenarios', () => {
     it('should display enhanced corporate event modal', () => {
       mockGameStore.showEventModal = true;
-      mockGameStore.currentEvent = {
+      (mockGameStore as any).currentEvent = {
         id: 'performance_review',
         title: 'Quarterly Soul Performance Evaluation',
         description:
@@ -325,7 +325,7 @@ describe('Daemon Directorate - Corporate Satire Gameplay', () => {
 
     it('should handle corporate event choices with proper consequences', async () => {
       mockGameStore.showEventModal = true;
-      mockGameStore.currentEvent = {
+      (mockGameStore as any).currentEvent = {
         id: 'test_event',
         title: 'Test Corporate Event',
         description: 'Test event description',
@@ -360,10 +360,10 @@ describe('Daemon Directorate - Corporate Satire Gameplay', () => {
     });
 
     it('should unlock HR reviews at Manager tier', () => {
-      mockGameStore.corporateTier.level = 2;
+      (mockGameStore as any).corporateTier.level = 2;
 
       render(<App />);
-      mockGameStore.activeTab = 'team';
+      mockGameStore.currentTab = 'team';
 
       expect(mockGameStore.corporateTier.level).toBeGreaterThanOrEqual(
         CORPORATE_BALANCE.HR_REVIEW.MIN_TIER
@@ -414,14 +414,14 @@ describe('Daemon Directorate - Corporate Satire Gameplay', () => {
       render(<App />);
 
       // Navigate between tabs
-      mockGameStore.setActiveTab('team');
-      expect(mockGameStore.setActiveTab).toHaveBeenCalledWith('team');
+      mockGameStore.setCurrentTab('team');
+      expect(mockGameStore.setCurrentTab).toHaveBeenCalledWith('team');
 
-      mockGameStore.setActiveTab('missions');
-      expect(mockGameStore.setActiveTab).toHaveBeenCalledWith('missions');
+      mockGameStore.setCurrentTab('missions');
+      expect(mockGameStore.setCurrentTab).toHaveBeenCalledWith('missions');
 
-      mockGameStore.setActiveTab('apartment');
-      expect(mockGameStore.setActiveTab).toHaveBeenCalledWith('apartment');
+      mockGameStore.setCurrentTab('apartment');
+      expect(mockGameStore.setCurrentTab).toHaveBeenCalledWith('apartment');
     });
 
     it('should handle game initialization sequence', () => {
@@ -454,7 +454,7 @@ describe('Daemon Directorate - Corporate Satire Gameplay', () => {
     ];
 
     it('should use consistent corporate terminology throughout the interface', () => {
-      mockGameStore.activeTab = 'team';
+      mockGameStore.currentTab = 'team';
       render(<App />);
 
       // Verify corporate terminology is present in the DOM
@@ -468,7 +468,7 @@ describe('Daemon Directorate - Corporate Satire Gameplay', () => {
     });
 
     it('should maintain dark humor and satire in descriptions', () => {
-      mockGameStore.activeTab = 'apartment';
+      mockGameStore.currentTab = 'apartment';
       render(<App />);
 
       const bodyText = document.body.textContent || '';

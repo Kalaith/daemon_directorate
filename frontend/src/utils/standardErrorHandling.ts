@@ -18,7 +18,7 @@ export const ErrorCategory = {
 export type ErrorCategory = (typeof ErrorCategory)[keyof typeof ErrorCategory];
 
 // Standardized error handler wrapper
-export const withErrorHandling = <T extends (...args: unknown[]) => unknown>(
+export const withErrorHandling = <T extends (...args: any[]) => any>(
   fn: T,
   context: string,
   category: ErrorCategory = ErrorCategory.SYSTEM

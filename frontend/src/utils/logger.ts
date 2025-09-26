@@ -251,7 +251,7 @@ class StructuredLogger {
       if (this.buffer.length > 0) {
         this.flush();
       }
-    }, this.config.flushInterval);
+    }, this.config.flushInterval) as unknown as number;
   }
 
   private flush(): void {
