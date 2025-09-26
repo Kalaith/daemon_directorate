@@ -52,7 +52,7 @@ describe('TabNavigation Component', () => {
 
     const inactiveTab = screen.getByText('Team Management');
     expect(inactiveTab.className).toContain('border-transparent');
-    expect(inactiveTab.className).toContain('hover:bg-cream-50/50');
+    expect(inactiveTab.className).toContain('hover:bg-daemon-surface');
   });
 
   it('has correct navigation structure', () => {

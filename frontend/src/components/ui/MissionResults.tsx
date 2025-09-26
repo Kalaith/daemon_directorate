@@ -73,8 +73,8 @@ const MissionResults: React.FC = () => {
                 {missionResult.rewards.bureaucraticLeverage &&
                   missionResult.rewards.bureaucraticLeverage > 0 && (
                     <div className="text-yellow-400">
-                      +{missionResult.rewards.bureaucraticLeverage}{' '}
-                      Bureaucratic Leverage
+                      +{missionResult.rewards.bureaucraticLeverage} Bureaucratic
+                      Leverage
                     </div>
                   )}
                 {missionResult.rewards.rawMaterials &&

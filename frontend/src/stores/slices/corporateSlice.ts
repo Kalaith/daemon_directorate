@@ -104,18 +104,23 @@ export const createCorporateSlice: StateCreator<
     const { corporateRivals } = get();
     const rival = corporateRivals.find(r => r.id === rivalId);
     if (!rival) return 0;
-    
+
     // Simple calculation based on threat level
     switch (rival.threat) {
-      case 'low': return 80;
-      case 'medium': return 60;
-      case 'high': return 40;
-      default: return 50;
+      case 'low':
+        return 80;
+      case 'medium':
+        return 60;
+      case 'high':
+        return 40;
+      default:
+        return 50;
     }
   },
 
   triggerRandomEvent: () => {
-    const randomEvent = CORPORATE_EVENTS[Math.floor(Math.random() * CORPORATE_EVENTS.length)];
+    const randomEvent =
+      CORPORATE_EVENTS[Math.floor(Math.random() * CORPORATE_EVENTS.length)];
     const composedState = get();
     if ('setShowEventModal' in composedState) {
       composedState.setShowEventModal(true, randomEvent);
@@ -126,7 +131,7 @@ export const createCorporateSlice: StateCreator<
     // Suppress unused parameter warnings - these will be used when event effects are implemented
     void eventId;
     void choiceIndex;
-    
+
     const composedState = get();
     if ('setShowEventModal' in composedState) {
       composedState.setShowEventModal(false);

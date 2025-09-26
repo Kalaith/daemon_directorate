@@ -11,7 +11,7 @@ export const LogLevel = {
   FATAL: 4,
 } as const;
 
-export type LogLevel = typeof LogLevel[keyof typeof LogLevel];
+export type LogLevel = (typeof LogLevel)[keyof typeof LogLevel];
 
 // Log context interface
 interface LogContext {

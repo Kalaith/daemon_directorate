@@ -48,7 +48,7 @@ export const createCoreSlice: StateCreator<
   startNewGame: () => {
     // Start a fresh game with starter data
     const composedState = get();
-    
+
     set(() => ({
       resources: INITIAL_RESOURCES,
       daemons: STARTER_DATA.starter_daemons.map(daemon => ({
@@ -67,7 +67,7 @@ export const createCoreSlice: StateCreator<
       gameStarted: true,
       daysPassed: 0,
     }));
-    
+
     // Initialize recruitment pool
     if ('generateRecruitmentPool' in composedState) {
       composedState.generateRecruitmentPool();
