@@ -5,8 +5,8 @@ import React, {
   useState,
   useCallback,
   useEffect,
-  ReactNode,
 } from 'react';
+import type { ReactNode } from 'react';
 import { generateId } from '../utils/gameHelpers';
 
 export interface Notification {

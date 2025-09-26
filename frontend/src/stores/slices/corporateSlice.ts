@@ -1,7 +1,7 @@
 // stores/slices/corporateSlice.ts - Corporate progression system
 import type { StateCreator } from 'zustand';
-import type { CorporateTier, CorporateRival } from '../../types/game';
-import { CORPORATE_TIERS } from '../../constants/gameData';
+import type { CorporateTier, CorporateRival, CorporateEvent } from '../../types/game';
+import { CORPORATE_TIERS, CORPORATE_EVENTS } from '../../constants/gameData';
 
 export interface CorporateState {
   corporateTier: CorporateTier;
@@ -15,12 +15,16 @@ export interface CorporateActions {
   incrementDay: () => void;
   promoteToNextTier: () => boolean;
   addCorporateRival: (rival: CorporateRival) => void;
+  engageRival: (rivalId: string) => void;
+  calculateRivalSuccessChance: (rivalId: string) => number;
+  triggerRandomEvent: () => void;
+  resolveEvent: (eventId: string, choiceIndex?: number) => void;
 }
 
 export type CorporateSlice = CorporateState & CorporateActions;
 
 export const createCorporateSlice: StateCreator<
-  CorporateSlice,
+  import('../composedStore').ComposedGameStore,
   [],
   [],
   CorporateSlice
@@ -80,5 +84,43 @@ export const createCorporateSlice: StateCreator<
     set(state => ({
       corporateRivals: [...state.corporateRivals, rival],
     }));
+  },
+
+  engageRival: (rivalId: string) => {
+    set(state => ({
+      corporateRivals: state.corporateRivals.map(rival =>
+        rival.id === rivalId ? { ...rival, defeated: true } : rival
+      ),
+    }));
+  },
+
+  calculateRivalSuccessChance: (rivalId: string) => {
+    const { corporateRivals } = get();
+    const rival = corporateRivals.find(r => r.id === rivalId);
+    if (!rival) return 0;
+    
+    // Simple calculation based on threat level
+    switch (rival.threat) {
+      case 'low': return 80;
+      case 'medium': return 60;
+      case 'high': return 40;
+      default: return 50;
+    }
+  },
+
+  triggerRandomEvent: () => {
+    const randomEvent = CORPORATE_EVENTS[Math.floor(Math.random() * CORPORATE_EVENTS.length)];
+    const composedState = get();
+    if ('setShowEventModal' in composedState) {
+      composedState.setShowEventModal(true, randomEvent);
+    }
+  },
+
+  resolveEvent: (eventId: string, choiceIndex?: number) => {
+    const composedState = get();
+    if ('setShowEventModal' in composedState) {
+      composedState.setShowEventModal(false);
+    }
+    // TODO: Apply event effects based on choice
   },
 });

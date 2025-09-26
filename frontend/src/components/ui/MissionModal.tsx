@@ -147,7 +147,7 @@ const MissionModal: React.FC = () => {
 
         <div className="flex gap-4">
           <button
-            onClick={executeMission}
+            onClick={() => executeMission()}
             disabled={selectedDaemons.size === 0}
             className="flex-1 px-6 py-4 bg-daemon-primary border border-daemon-primary text-daemon-text-bright font-mono rounded-lg uppercase tracking-wide hover:bg-daemon-primaryHover hover:shadow-infernal disabled:bg-daemon-surface disabled:border-daemon-text-dim disabled:text-daemon-text-dim disabled:cursor-not-allowed transition-all duration-200 font-semibold"
           >

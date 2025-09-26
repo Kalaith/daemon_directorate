@@ -3,7 +3,7 @@ import { useEffect, useRef, useCallback } from 'react';
 
 // Hook for cleaning up timeouts and intervals
 export const useTimeout = (callback: () => void, delay: number | null) => {
-  const savedCallback = useRef<() => void>();
+  const savedCallback = useRef<() => void>(() => {});
 
   useEffect(() => {
     savedCallback.current = callback;
@@ -19,7 +19,7 @@ export const useTimeout = (callback: () => void, delay: number | null) => {
 };
 
 export const useInterval = (callback: () => void, delay: number | null) => {
-  const savedCallback = useRef<() => void>();
+  const savedCallback = useRef<() => void>(() => {});
 
   useEffect(() => {
     savedCallback.current = callback;
@@ -95,7 +95,7 @@ export const useEventListener = <T extends keyof WindowEventMap>(
   target: EventTarget | null = window,
   options?: AddEventListenerOptions
 ) => {
-  const savedHandler = useRef<(event: WindowEventMap[T]) => void>();
+  const savedHandler = useRef<(event: WindowEventMap[T]) => void>(() => {});
 
   useEffect(() => {
     savedHandler.current = handler;
