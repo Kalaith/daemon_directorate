@@ -9,11 +9,10 @@ const Apartment: React.FC = () => {
   return (
     <div>
       <h2 className="text-2xl font-header font-bold mb-6 text-daemon-text-bright uppercase tracking-wide">
-        Apartment HQ Management
+Corporate Housing Division
       </h2>
       <p className="text-daemon-text mb-8 bg-daemon-surface p-6 rounded-lg border border-daemon-secondary">
-        Your assigned living quarters double as operational headquarters. Room
-        improvements enhance daemon performance and morale.
+Welcome to your soul-crushing cubicle — now with 15% more despair absorption. Your assigned pit doubles as your office. Upgrades may slightly raise morale, or at least keep the screams from echoing quite so much.
       </p>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -33,7 +32,7 @@ const Apartment: React.FC = () => {
 
             <div className="mb-6 p-4 bg-daemon-surface rounded-lg border border-daemon-secondary">
               <div className="text-sm text-daemon-text-muted font-mono uppercase tracking-wide mb-2">
-                Current Bonus:
+                Productivity Enhancement:
               </div>
               <div className="text-daemon-text-bright font-mono font-semibold">
                 {room.bonus}
@@ -45,7 +44,7 @@ const Apartment: React.FC = () => {
               disabled={!canAfford(room.upgrade_cost)}
               className="w-full px-4 py-3 bg-daemon-primary border border-daemon-primary text-daemon-text-bright font-mono rounded-lg uppercase tracking-wide hover:bg-daemon-primaryHover hover:shadow-infernal disabled:bg-daemon-surface disabled:border-daemon-text-dim disabled:text-daemon-text-dim disabled:cursor-not-allowed transition-all duration-200 font-semibold"
             >
-              Upgrade ({room.upgrade_cost} Credits)
+              Submit Budget Request ({room.upgrade_cost} Credits)
             </button>
           </Card>
         ))}

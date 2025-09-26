@@ -11,7 +11,7 @@ const MissionResults: React.FC = () => {
   return (
     <div className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 p-4">
       <div className="bg-gray-900 border border-teal-500 rounded-lg p-6 max-w-md w-full mx-4 shadow-2xl">
-        <h2 className="text-xl font-bold text-teal-300 mb-4">Mission Report</h2>
+        <h2 className="text-xl font-bold text-teal-300 mb-4">Performance Evaluation Report</h2>
 
         <div
           className={`p-4 rounded mb-4 border ${
@@ -25,7 +25,7 @@ const MissionResults: React.FC = () => {
               missionResult.success ? 'text-teal-400' : 'text-red-400'
             }`}
           >
-            {missionResult.success ? 'MISSION SUCCESSFUL' : 'MISSION FAILED'}
+            {missionResult.success ? 'QUARTERLY OBJECTIVES MET' : 'PERFORMANCE TARGETS MISSED'}
           </div>
         </div>
 
@@ -35,12 +35,12 @@ const MissionResults: React.FC = () => {
           <div className="space-y-2 text-sm text-gray-300">
             <div>
               <span className="text-teal-400 font-medium">
-                Success Probability:
+                KPI Achievement Odds:
               </span>{' '}
               {missionResult.successChance}%
             </div>
             <div>
-              <span className="text-teal-400 font-medium">Casualties:</span>{' '}
+              <span className="text-teal-400 font-medium">Personnel Attrition:</span>{' '}
               <span
                 className={
                   missionResult.casualties.filter(c => !c.survived).length > 0
@@ -49,13 +49,13 @@ const MissionResults: React.FC = () => {
                 }
               >
                 {missionResult.casualties.filter(c => !c.survived).length}/
-                {missionResult.casualties.length} operatives
+                {missionResult.casualties.length} corporate assets
               </span>
             </div>
 
             <div className="mt-3">
               <span className="text-teal-400 font-medium">
-                Resource Acquisition:
+                Quarterly Revenue Stream:
               </span>
               <div className="ml-4 space-y-1 mt-2">
                 {missionResult.rewards.credits &&
@@ -88,7 +88,7 @@ const MissionResults: React.FC = () => {
                   !missionResult.rewards.bureaucraticLeverage &&
                   !missionResult.rewards.rawMaterials && (
                     <div className="text-gray-400 italic">
-                      No resources acquired
+                      Revenue targets not met - performance review pending
                     </div>
                   )}
               </div>
@@ -100,7 +100,7 @@ const MissionResults: React.FC = () => {
           onClick={() => setShowMissionResults(false)}
           className="w-full px-4 py-2 bg-teal-600 text-white rounded hover:bg-teal-700 border border-teal-500 transition-colors font-semibold"
         >
-          Acknowledge Report
+          File in Permanent Record
         </button>
       </div>
     </div>

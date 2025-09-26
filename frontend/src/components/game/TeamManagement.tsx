@@ -3,7 +3,7 @@ import React from 'react';
 import { useGameStore } from '../../stores/composedStore';
 import Card from '../ui/Card';
 import { getLifespanColor, getProgressBarColor } from '../../utils/gameHelpers';
-import { CORPORATE_BALANCE } from '../../constants/gameBalance';
+import { CORPORATE_BALANCE, DAEMON_BALANCE } from '../../constants/gameBalance';
 
 const TeamManagement: React.FC = () => {
   const {
@@ -25,7 +25,7 @@ const TeamManagement: React.FC = () => {
     <div className="space-y-8">
       <div>
         <h2 className="text-2xl font-header font-bold mb-6 text-daemon-text-bright uppercase tracking-wide">
-          Active Daemon Operatives
+          Active Corporate Assets
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {activeDaemons.map(daemon => (
@@ -46,7 +46,7 @@ const TeamManagement: React.FC = () => {
                 <div>
                   <div className="flex justify-between text-sm mb-2">
                     <span className="text-daemon-text-muted uppercase tracking-wide font-mono">
-                      Health
+                      Corporeal Integrity
                     </span>
                     <span className="font-mono font-semibold text-daemon-text-bright">
                       {daemon.health}%
@@ -63,7 +63,7 @@ const TeamManagement: React.FC = () => {
                 <div>
                   <div className="flex justify-between text-sm mb-2">
                     <span className="text-daemon-text-muted uppercase tracking-wide font-mono">
-                      Morale
+                      Workplace Satisfaction
                     </span>
                     <span className="font-mono font-semibold text-daemon-text-bright">
                       {daemon.morale}%
@@ -79,12 +79,12 @@ const TeamManagement: React.FC = () => {
 
                 <div className="text-sm">
                   <span className="text-daemon-text-muted uppercase tracking-wide font-mono mr-2">
-                    Lifespan:
+                    Contract Duration:
                   </span>
                   <span
                     className={`font-mono font-semibold ${getLifespanColor(daemon.lifespanDays)}`}
                   >
-                    {daemon.lifespanDays} days
+                    {daemon.lifespanDays} days remaining
                   </span>
                 </div>
               </div>
@@ -114,15 +114,15 @@ const TeamManagement: React.FC = () => {
                     }`}
                     title={
                       isHRReviewAvailable()
-                        ? 'Conduct Performance Review'
-                        : `HR Reviews available every ${CORPORATE_BALANCE.HR_REVIEW.COOLDOWN_DAYS} days`
+                        ? 'Conduct Quarterly Performance Review'
+                        : `Performance evaluations available every ${CORPORATE_BALANCE.HR_REVIEW.COOLDOWN_DAYS} days per corporate policy`
                     }
                   >
-                    📊 Review
+                    📊 Performance Review
                   </button>
                 )}
                 <button className="flex-1 px-4 py-3 bg-daemon-surface border border-daemon-secondary text-daemon-text-bright font-mono text-sm rounded-lg uppercase tracking-wide hover:bg-daemon-primary hover:border-daemon-primary hover:shadow-infernal transition-all duration-200">
-                  Equipment
+                  Corporate Assets
                 </button>
               </div>
             </Card>
@@ -132,11 +132,10 @@ const TeamManagement: React.FC = () => {
 
       <div>
         <h3 className="text-xl font-header font-semibold mb-6 text-daemon-text-bright uppercase tracking-wide">
-          Recruitment Department
+          Talent Acquisition Pipeline
         </h3>
         <p className="text-daemon-text mb-8 bg-daemon-surface p-6 rounded-lg border border-daemon-secondary">
-          HR has identified suitable candidates for daemon operative positions.
-          Background checks and soul assessments completed.
+          Human Resources has completed background checks, psychological evaluations, and mandatory soul quality assessments. All candidates demonstrate adequate suffering tolerance metrics and have executed the standard eternal employment agreement with non-disclosure clauses.
         </p>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
@@ -158,7 +157,7 @@ const TeamManagement: React.FC = () => {
                 <div>
                   <div className="flex justify-between text-sm mb-2">
                     <span className="text-daemon-text-muted uppercase tracking-wide font-mono">
-                      Health
+                      Corporeal Integrity
                     </span>
                     <span className="font-mono font-semibold text-daemon-text-bright">
                       {daemon.health}%
@@ -175,7 +174,7 @@ const TeamManagement: React.FC = () => {
                 <div>
                   <div className="flex justify-between text-sm mb-2">
                     <span className="text-daemon-text-muted uppercase tracking-wide font-mono">
-                      Morale
+                      Workplace Satisfaction
                     </span>
                     <span className="font-mono font-semibold text-daemon-text-bright">
                       {daemon.morale}%
@@ -191,10 +190,10 @@ const TeamManagement: React.FC = () => {
 
                 <div className="text-sm">
                   <span className="text-daemon-text-muted uppercase tracking-wide font-mono mr-2">
-                    Lifespan:
+                    Contract Duration:
                   </span>
                   <span className="font-mono font-semibold text-daemon-text-bright">
-                    {daemon.lifespanDays} days
+                    {daemon.lifespanDays} days remaining
                   </span>
                 </div>
               </div>
@@ -216,7 +215,7 @@ const TeamManagement: React.FC = () => {
                 disabled={!canAfford(daemon.cost || 0)}
                 className="w-full px-4 py-3 bg-daemon-primary text-daemon-text-bright font-mono rounded-lg hover:bg-daemon-primaryHover hover:shadow-infernal disabled:bg-daemon-surface disabled:text-daemon-text-dim disabled:cursor-not-allowed transition-all duration-200 uppercase tracking-wide border border-daemon-primary disabled:border-daemon-secondary"
               >
-                Hire ({daemon.cost} Credits)
+                Process Employment Contract ({daemon.cost} Credits)
               </button>
             </Card>
           ))}
@@ -224,10 +223,10 @@ const TeamManagement: React.FC = () => {
 
         <button
           onClick={refreshRecruitmentPool}
-          disabled={!canAfford(CORPORATE_BALANCE.RECRUITMENT_COST)}
+          disabled={!canAfford(DAEMON_BALANCE.RECRUITMENT.BASE_COST)}
           className="px-8 py-4 bg-daemon-secondary text-daemon-text-bright font-mono rounded-lg hover:bg-daemon-primary hover:shadow-infernal disabled:bg-daemon-surface disabled:text-daemon-text-dim disabled:cursor-not-allowed transition-all duration-200 uppercase tracking-wide font-semibold border border-daemon-secondary hover:border-daemon-primary disabled:border-daemon-text-dim"
         >
-          Request New Candidates ({CORPORATE_BALANCE.RECRUITMENT_COST} Credits)
+          Expand Candidate Search ({DAEMON_BALANCE.RECRUITMENT.BASE_COST} Credits)
         </button>
       </div>
     </div>
