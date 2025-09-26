@@ -106,7 +106,7 @@ export const createUISlice: StateCreator<UISlice, [], [], UISlice> = (
   },
 
   setShowMemorial: (show: boolean, daemon?: Daemon) => {
-    set({ 
+    set({
       showMemorial: show,
       memorialDaemon: daemon || null,
     });

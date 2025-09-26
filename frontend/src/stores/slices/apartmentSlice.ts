@@ -80,7 +80,7 @@ const INITIAL_ROOMS: Room[] = [
 ];
 
 export const createApartmentSlice: StateCreator<
-  ApartmentSlice,
+  import('../composedStore').ComposedGameStore,
   [],
   [],
   ApartmentSlice
@@ -114,20 +114,34 @@ export const createApartmentSlice: StateCreator<
   },
 
   assignDaemonToRoom: (daemonId: string, roomId: string) => {
-    set(state => ({
-      rooms: state.rooms.map(room => {
-        if (
-          room.id === roomId &&
-          room.assignedDaemons.length < room.maxAssignments
-        ) {
-          return {
-            ...room,
-            assignedDaemons: [...room.assignedDaemons, daemonId],
-          };
-        }
-        return room;
-      }),
-    }));
+    set(state => {
+      const room = state.rooms.find(r => r.id === roomId);
+      if (!room || room.assignedDaemons.length >= room.maxAssignments) {
+        return state;
+      }
+
+      return {
+        ...state,
+        rooms: state.rooms.map(room => {
+          if (room.id === roomId) {
+            return {
+              ...room,
+              assignedDaemons: [...room.assignedDaemons, daemonId],
+            };
+          }
+          return room;
+        }),
+        daemons: state.daemons.map(daemon => {
+          if (daemon.id === daemonId) {
+            return {
+              ...daemon,
+              assignments: [...daemon.assignments, roomId],
+            };
+          }
+          return daemon;
+        }),
+      };
+    });
   },
 
   unassignDaemonFromRoom: (daemonId: string, roomId: string) => {

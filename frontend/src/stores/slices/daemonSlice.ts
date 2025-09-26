@@ -62,7 +62,7 @@ export interface DaemonActions {
 export type DaemonSlice = DaemonState & DaemonActions;
 
 export const createDaemonSlice: StateCreator<
-  DaemonSlice,
+  import('../composedStore').ComposedGameStore,
   [],
   [],
   DaemonSlice
@@ -93,13 +93,23 @@ export const createDaemonSlice: StateCreator<
   },
 
   recruitDaemon: (daemonId: string) => {
-    const candidate = get().recruitmentPool.find(d => d.id === daemonId);
+    const state = get();
+    const candidate = state.recruitmentPool.find(d => d.id === daemonId);
     if (!candidate) return;
 
-    set(state => ({
-      daemons: [...state.daemons, { ...candidate, isActive: true }],
-      recruitmentPool: state.recruitmentPool.filter(d => d.id !== daemonId),
-    }));
+    // Get recruitment cost (default to 50 if not specified)
+    const cost = candidate.cost || 50;
+
+    // Check if we can afford it and spend credits
+    if (state.canAfford(cost)) {
+      const success = state.spendCredits(cost);
+      if (success) {
+        set(state => ({
+          daemons: [...state.daemons, { ...candidate, isActive: true }],
+          recruitmentPool: state.recruitmentPool.filter(d => d.id !== daemonId),
+        }));
+      }
+    }
   },
 
   refreshRecruitmentPool: () => {
@@ -152,6 +162,7 @@ export const createDaemonSlice: StateCreator<
           equipmentCreated: 0,
           yearsServed: 0,
         },
+        cost: DAEMON_BALANCE.RECRUITMENT_COST,
       };
     });
 

@@ -10,7 +10,7 @@ const mockStore = {
   resetGame: vi.fn(),
 };
 
-vi.mock('../../stores/useGameStore', () => ({
+vi.mock('../../stores/composedStore', () => ({
   useGameStore: () => mockStore,
 }));
 
