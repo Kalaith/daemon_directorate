@@ -283,7 +283,7 @@ export const validateAmount = (amount: number, min = 0): void => {
 /**
  * Performance Helper Functions
  */
-export const memoize = <T extends (...args: unknown[]) => unknown>(
+export const memoize = <T extends (...args: any[]) => any>(
   fn: T
 ): T => {
   const cache = new Map();
