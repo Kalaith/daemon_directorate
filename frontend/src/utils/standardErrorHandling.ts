@@ -7,13 +7,15 @@ import {
 } from './errorHandling';
 
 // Error categories for consistent handling
-export enum ErrorCategory {
-  VALIDATION = 'validation',
-  BUSINESS_RULE = 'business_rule',
-  SYSTEM = 'system',
-  NETWORK = 'network',
-  PERMISSION = 'permission',
-}
+export const ErrorCategory = {
+  VALIDATION: 'validation',
+  BUSINESS_RULE: 'business_rule',
+  SYSTEM: 'system',
+  NETWORK: 'network',
+  PERMISSION: 'permission',
+} as const;
+
+export type ErrorCategory = typeof ErrorCategory[keyof typeof ErrorCategory];
 
 // Standardized error handler wrapper
 export const withErrorHandling = <T extends (...args: unknown[]) => unknown>(
@@ -116,7 +118,12 @@ const logError = (
 };
 
 // Error reporting (would integrate with services like Sentry)
-const reportError = (): void => {
+const reportError = (error: GameError, context: string, category: ErrorCategory): void => {
+  // Suppress unused parameter warnings - these will be used when error reporting is implemented  
+  void error;
+  void context;
+  void category;
+  
   if (process.env.NODE_ENV === 'production') {
     // In production, would send to error tracking service
     // Sentry.captureException(error, {
@@ -233,7 +240,7 @@ export const withRetry = <T extends (...args: unknown[]) => unknown>(
 
     for (let attempt = 1; attempt <= maxRetries; attempt++) {
       try {
-        return await fn(...args);
+        return (await fn(...args)) as Awaited<ReturnType<T>>;
       } catch (error) {
         lastError = error;
 

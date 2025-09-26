@@ -3,13 +3,15 @@ import { gameConfig } from '../config/gameConfig';
 import { generateId } from './gameHelpers';
 
 // Log levels
-export enum LogLevel {
-  DEBUG = 0,
-  INFO = 1,
-  WARN = 2,
-  ERROR = 3,
-  FATAL = 4,
-}
+export const LogLevel = {
+  DEBUG: 0,
+  INFO: 1,
+  WARN: 2,
+  ERROR: 3,
+  FATAL: 4,
+} as const;
+
+export type LogLevel = typeof LogLevel[keyof typeof LogLevel];
 
 // Log context interface
 interface LogContext {

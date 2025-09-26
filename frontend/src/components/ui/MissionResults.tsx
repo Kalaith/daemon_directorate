@@ -3,10 +3,10 @@ import React from 'react';
 import { useGameStore } from '../../stores/composedStore';
 
 const MissionResults: React.FC = () => {
-  const { showMissionResults, missionResults, setShowMissionResults } =
+  const { showMissionResults, missionResult, setShowMissionResults } =
     useGameStore();
 
-  if (!showMissionResults || !missionResults) return null;
+  if (!showMissionResults || !missionResult) return null;
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 p-4">
@@ -15,41 +15,41 @@ const MissionResults: React.FC = () => {
 
         <div
           className={`p-4 rounded mb-4 border ${
-            missionResults.success
+            missionResult.success
               ? 'bg-teal-900/30 border-teal-500'
               : 'bg-red-900/30 border-red-500'
           }`}
         >
           <div
             className={`font-bold text-lg ${
-              missionResults.success ? 'text-teal-400' : 'text-red-400'
+              missionResult.success ? 'text-teal-400' : 'text-red-400'
             }`}
           >
-            {missionResults.success ? 'MISSION SUCCESSFUL' : 'MISSION FAILED'}
+            {missionResult.success ? 'MISSION SUCCESSFUL' : 'MISSION FAILED'}
           </div>
         </div>
 
         <div className="mb-4">
-          <p className="mb-3 text-gray-300">{missionResults.narrative}</p>
+          <p className="mb-3 text-gray-300">{missionResult.narrative}</p>
 
           <div className="space-y-2 text-sm text-gray-300">
             <div>
               <span className="text-teal-400 font-medium">
                 Success Probability:
               </span>{' '}
-              {missionResults.successChance}%
+              {missionResult.successChance}%
             </div>
             <div>
               <span className="text-teal-400 font-medium">Casualties:</span>{' '}
               <span
                 className={
-                  missionResults.casualties.filter(c => !c.survived).length > 0
+                  missionResult.casualties.filter(c => !c.survived).length > 0
                     ? 'text-red-400'
                     : 'text-teal-400'
                 }
               >
-                {missionResults.casualties.filter(c => !c.survived).length}/
-                {missionResults.casualties.length} operatives
+                {missionResult.casualties.filter(c => !c.survived).length}/
+                {missionResult.casualties.length} operatives
               </span>
             </div>
 
@@ -58,35 +58,35 @@ const MissionResults: React.FC = () => {
                 Resource Acquisition:
               </span>
               <div className="ml-4 space-y-1 mt-2">
-                {missionResults.rewards.credits &&
-                  missionResults.rewards.credits > 0 && (
+                {missionResult.rewards.credits &&
+                  missionResult.rewards.credits > 0 && (
                     <div className="text-green-400">
-                      +{missionResults.rewards.credits} Credits
+                      +{missionResult.rewards.credits} Credits
                     </div>
                   )}
-                {missionResults.rewards.soulEssence &&
-                  missionResults.rewards.soulEssence > 0 && (
+                {missionResult.rewards.soulEssence &&
+                  missionResult.rewards.soulEssence > 0 && (
                     <div className="text-purple-400">
-                      +{missionResults.rewards.soulEssence} Soul Essence
+                      +{missionResult.rewards.soulEssence} Soul Essence
                     </div>
                   )}
-                {missionResults.rewards.bureaucraticLeverage &&
-                  missionResults.rewards.bureaucraticLeverage > 0 && (
+                {missionResult.rewards.bureaucraticLeverage &&
+                  missionResult.rewards.bureaucraticLeverage > 0 && (
                     <div className="text-yellow-400">
-                      +{missionResults.rewards.bureaucraticLeverage}{' '}
+                      +{missionResult.rewards.bureaucraticLeverage}{' '}
                       Bureaucratic Leverage
                     </div>
                   )}
-                {missionResults.rewards.rawMaterials &&
-                  missionResults.rewards.rawMaterials > 0 && (
+                {missionResult.rewards.rawMaterials &&
+                  missionResult.rewards.rawMaterials > 0 && (
                     <div className="text-orange-400">
-                      +{missionResults.rewards.rawMaterials} Raw Materials
+                      +{missionResult.rewards.rawMaterials} Raw Materials
                     </div>
                   )}
-                {!missionResults.rewards.credits &&
-                  !missionResults.rewards.soulEssence &&
-                  !missionResults.rewards.bureaucraticLeverage &&
-                  !missionResults.rewards.rawMaterials && (
+                {!missionResult.rewards.credits &&
+                  !missionResult.rewards.soulEssence &&
+                  !missionResult.rewards.bureaucraticLeverage &&
+                  !missionResult.rewards.rawMaterials && (
                     <div className="text-gray-400 italic">
                       No resources acquired
                     </div>

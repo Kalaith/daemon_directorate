@@ -1,5 +1,6 @@
 // components/ui/ErrorBoundary.tsx - Hierarchical error boundaries for better error handling
-import React, { Component, ErrorInfo, ReactNode } from 'react';
+import React, { Component } from 'react';
+import type { ErrorInfo, ReactNode } from 'react';
 import { logger } from '../../utils/logger';
 
 interface ErrorBoundaryProps {

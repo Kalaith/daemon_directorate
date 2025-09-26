@@ -5,6 +5,7 @@ import type {
   NotificationType,
   MissionResult,
   CorporateEvent,
+  Daemon,
 } from '../../types/game';
 import { generateId } from '../../utils/gameHelpers';
 
@@ -27,6 +28,7 @@ export interface UIState {
   // Mission results
   missionResult: MissionResult | null;
   currentEvent: CorporateEvent | null;
+  memorialDaemon: Daemon | null;
 
   // Loading states
   loadingStates: Record<string, boolean>;
@@ -46,7 +48,7 @@ export interface UIActions {
 
   // Modal management
   setShowTutorial: (show: boolean) => void;
-  setShowMemorial: (show: boolean) => void;
+  setShowMemorial: (show: boolean, daemon?: Daemon) => void;
   setShowMissionModal: (show: boolean) => void;
   setShowMissionResults: (show: boolean, result?: MissionResult) => void;
   setShowEventModal: (show: boolean, event?: CorporateEvent) => void;
@@ -90,6 +92,7 @@ export const createUISlice: StateCreator<UISlice, [], [], UISlice> = (
   daysPassed: 0,
   missionResult: null,
   currentEvent: null,
+  memorialDaemon: null,
   loadingStates: {},
   notifications: [],
 
@@ -102,8 +105,11 @@ export const createUISlice: StateCreator<UISlice, [], [], UISlice> = (
     set({ showTutorial: show });
   },
 
-  setShowMemorial: (show: boolean) => {
-    set({ showMemorial: show });
+  setShowMemorial: (show: boolean, daemon?: Daemon) => {
+    set({ 
+      showMemorial: show,
+      memorialDaemon: daemon || null,
+    });
   },
 
   setShowMissionModal: (show: boolean) => {
@@ -195,6 +201,7 @@ export const createUISlice: StateCreator<UISlice, [], [], UISlice> = (
       showEventModal: false,
       missionResult: null,
       currentEvent: null,
+      memorialDaemon: null,
       notifications: [],
       loadingStates: {},
     });

@@ -191,7 +191,7 @@ export const GameSchemas = {
         type: 'array' as const,
         required: true,
         min: 1,
-        max: gameConfig.get('balance.maxDaemonsActive'),
+        max: gameConfig.get('balance.maxDaemonsActive') as number,
         items: { type: 'string' as const, min: 1 },
       },
       type: { type: 'string' as const, required: true },
@@ -248,7 +248,7 @@ export const GameSchemas = {
       type: 'number' as const,
       required: true,
       min: 1,
-      max: gameConfig.get('balance.maxDaemonsActive'),
+      max: gameConfig.get('balance.maxDaemonsActive') as number,
       validator: (value: unknown) =>
         typeof value === 'number' && Number.isInteger(value),
       message: `Team size must be between 1 and ${gameConfig.get('balance.maxDaemonsActive')} daemons`,

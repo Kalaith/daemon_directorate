@@ -30,7 +30,7 @@ export const CorporateEventModal: React.FC = () => {
         case 'rawMaterials':
           return resources.rawMaterials >= Math.abs(cost.value);
         default:
-          logger.warn('Unknown cost type in affordability check', undefined, {
+          logger.warn('Unknown cost type in affordability check', {
             component: 'CorporateEventModal',
             metadata: { costType: cost.type },
           });

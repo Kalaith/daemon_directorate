@@ -22,14 +22,33 @@ export const createCoreSlice: StateCreator<
   CoreSlice
 > = (set, get) => ({
   initializeGame: () => {
-    // Initialize game when store is first created
-    set(state => ({
-      ...state,
-    }));
+    // Initialize game with starter data (called on first load)
+    const state = get();
+    if (state.daemons.length === 0 && !state.gameStarted) {
+      set(() => ({
+        resources: INITIAL_RESOURCES,
+        daemons: STARTER_DATA.starter_daemons.map(daemon => ({
+          ...daemon,
+          id: generateId(),
+          isActive: true,
+          assignments: [],
+          equipment: null,
+        })),
+        equipment: STARTER_DATA.starter_equipment.map(equipment => ({
+          ...equipment,
+          id: generateId(),
+        })),
+        rooms: STARTER_DATA.apartment_rooms,
+        gameStarted: false, // Not fully started until player action
+        daysPassed: 0,
+      }));
+    }
   },
 
   startNewGame: () => {
     // Start a fresh game with starter data
+    const composedState = get();
+    
     set(() => ({
       resources: INITIAL_RESOURCES,
       daemons: STARTER_DATA.starter_daemons.map(daemon => ({
@@ -44,9 +63,15 @@ export const createCoreSlice: StateCreator<
         id: generateId(),
       })),
       rooms: STARTER_DATA.apartment_rooms,
+      planets: STARTER_DATA.planets || [],
       gameStarted: true,
       daysPassed: 0,
     }));
+    
+    // Initialize recruitment pool
+    if ('generateRecruitmentPool' in composedState) {
+      composedState.generateRecruitmentPool();
+    }
   },
 
   resetToInitialState: () => {

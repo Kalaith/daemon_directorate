@@ -223,6 +223,9 @@ export const useMemoryMonitor = () => {
           };
         }
       ).memory;
+      
+      if (!memory) return;
+      
       setMemoryInfo({
         usedJSHeapSize: memory.usedJSHeapSize,
         totalJSHeapSize: memory.totalJSHeapSize,
