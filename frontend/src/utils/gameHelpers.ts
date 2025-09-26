@@ -134,7 +134,7 @@ export const calculateMissionRewards = (
   if (!success) {
     Object.keys(baseRewards).forEach(key => {
       const typedKey = key as keyof typeof baseRewards;
-      (baseRewards as any)[typedKey] = Math.floor(
+      baseRewards[typedKey] = Math.floor(
         baseRewards[typedKey] * MISSION_BALANCE.MULTIPLIERS.FAILURE_REWARD_RATIO
       );
     });
@@ -302,8 +302,8 @@ export const memoize = <T extends (...args: unknown[]) => unknown>(
 
 // Memoized versions of expensive calculations
 export const memoizedCalculateMissionSuccessChance = memoize(
-  calculateMissionSuccessChance as any
+  calculateMissionSuccessChance
 );
 export const memoizedCalculateTeamCompositionBonus = memoize(
-  calculateTeamCompositionBonus as any
+  calculateTeamCompositionBonus
 );
