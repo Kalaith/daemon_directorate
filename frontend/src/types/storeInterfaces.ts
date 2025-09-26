@@ -1,6 +1,7 @@
 // types/storeInterfaces.ts - Split interfaces for better maintainability
 import type {
   GameState,
+  GameResources,
   Daemon,
   MissionResult,
   CorporateEvent,
@@ -43,21 +44,25 @@ export interface UIStateActions {
 
 // Resource management actions
 export interface ResourceActions {
-  canAfford: (cost: number) => boolean;
+  canAfford: (cost: number | Partial<GameResources>) => boolean;
   spendCredits: (amount: number) => boolean;
+  spendResourceBatch: (costs: Partial<GameResources>, reason?: string) => boolean;
   addResources: (
     credits?: number,
     soulEssence?: number,
     bureaucraticLeverage?: number,
     rawMaterials?: number
   ) => void;
+  addResourceBatch: (gains: Partial<GameResources>, reason?: string) => void;
 }
 
 // Daemon management actions
 export interface DaemonActions {
   toggleDaemonSelection: (daemonId: string) => void;
   clearDaemonSelection: () => void;
+  setSelectedDaemons: (daemonIds: Set<string>) => void;
   recruitDaemon: (daemonId: string) => void;
+  dismissDaemon: (daemonId: string) => void;
   refreshRecruitmentPool: () => void;
   generateRecruitmentPool: () => void;
   processDaemonDeath: (daemon: Daemon) => void;
@@ -68,7 +73,7 @@ export interface DaemonActions {
 // Mission system actions
 export interface MissionActions {
   selectPlanetForMission: (planetId: string, missionType?: string) => void;
-  executeMission: (missionType?: string) => void;
+  executeMission: (missionType?: string) => MissionResult;
   generateProceduralMissions: () => void;
   processMissionConsequences: (consequences: MissionConsequence[]) => void;
   evaluateMissionObjectives: (
@@ -151,6 +156,11 @@ export interface RivalActions {
   updateRivalStrategy: (rivalId: string) => void;
   generateRivalOperation: (rivalId: string) => RivalOperation | null;
   checkTakeoverThreats: () => void;
+}
+
+// Zustand store interface
+export interface ZustandGameStore {
+  getState: () => GameStore;
 }
 
 // Combined GameStore interface - now much more manageable

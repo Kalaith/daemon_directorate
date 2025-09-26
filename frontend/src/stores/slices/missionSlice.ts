@@ -41,7 +41,12 @@ export const createMissionSlice: StateCreator<
   MissionSlice
 > = (set, get) => ({
   // Initial state
-  planets: STARTER_DATA.planets || [],
+  planets: STARTER_DATA.planets.map(p => ({ 
+    ...p, 
+    id: `planet-${Math.random().toString(36).substr(2, 9)}`, 
+    conquered: false, 
+    lastMission: null 
+  })) || [],
   activeMission: null,
   completedMissions: [],
   currentPlanet: null,

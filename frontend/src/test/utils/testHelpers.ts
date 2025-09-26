@@ -1,6 +1,7 @@
 // test/utils/testHelpers.ts - Simple testing utilities
-import { render, RenderOptions } from '@testing-library/react';
-import { ReactElement } from 'react';
+import { render } from '@testing-library/react';
+import type { RenderOptions } from '@testing-library/react';
+import type { ReactElement } from 'react';
 
 // Simple render function - just wrapping regular render for now
 export const renderWithProviders = (

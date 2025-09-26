@@ -128,6 +128,7 @@ export interface MissionObjective {
   rewards: Partial<GameResources> & {
     experience?: number;
     reputation?: number;
+    futureOpportunities?: string[];
   };
   completed?: boolean;
   failed?: boolean;
@@ -143,6 +144,12 @@ export interface MissionConsequence {
     futureOpportunities?: string[];
     corporateEvents?: string[];
     rivalActions?: string[];
+    // Resource effects
+    credits?: number;
+    soulEssence?: number;
+    bureaucraticLeverage?: number;
+    rawMaterials?: number;
+    stability?: number;
   };
   description: string;
 }
@@ -367,6 +374,14 @@ export interface LegacyLegend {
     applies_to: 'bloodline' | 'company' | 'global';
   }[];
 }
+
+// Legacy Book - mapping of bloodline names to legacy data
+export interface LegacyBook {
+  [bloodline: string]: DaemonLegacy;
+}
+
+// Type alias for backward compatibility
+export type Story = LegacyStory;
 
 // Endgame System
 export interface EndgameState {

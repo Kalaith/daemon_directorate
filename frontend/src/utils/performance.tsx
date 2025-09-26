@@ -1,17 +1,17 @@
 // utils/performance.tsx - Performance monitoring and profiling utilities
 import React, {
   Profiler,
-  ReactNode,
   useCallback,
   useEffect,
   useState,
 } from 'react';
+import type { ReactNode } from 'react';
 import { PERFORMANCE_THRESHOLDS } from '../constants/performance';
 
 // Performance metrics interface
 interface PerformanceMetric {
   id: string;
-  phase: 'mount' | 'update';
+  phase: 'mount' | 'update' | 'nested-update';
   actualDuration: number;
   baseDuration: number;
   startTime: number;
@@ -127,12 +127,11 @@ export const PerformanceProfiler: React.FC<PerformanceProfilerProps> = ({
   const onRenderCallback = useCallback(
     (
       profileId: string,
-      phase: 'mount' | 'update',
+      phase: 'mount' | 'update' | 'nested-update',
       actualDuration: number,
       baseDuration: number,
       startTime: number,
-      commitTime: number,
-      interactions: Set<string>
+      commitTime: number
     ) => {
       const metric: PerformanceMetric = {
         id: profileId,
@@ -141,7 +140,7 @@ export const PerformanceProfiler: React.FC<PerformanceProfilerProps> = ({
         baseDuration,
         startTime,
         commitTime,
-        interactions,
+        interactions: new Set<string>(), // Default empty set since it's not provided in React 19
       };
 
       performanceMonitor.recordMetric(metric);
