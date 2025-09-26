@@ -32,7 +32,7 @@ export interface ResourceActions {
   // Resource tracking
   getResourceHistory: (
     resourceType?: keyof GameResources
-  ) => typeof ResourceState.prototype.resourceHistory;
+  ) => ResourceState['resourceHistory'];
   getTotalResourcesEarned: (resourceType: keyof GameResources) => number;
   getResourceChangeInPeriod: (
     resourceType: keyof GameResources,

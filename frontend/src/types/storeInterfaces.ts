@@ -153,6 +153,11 @@ export interface RivalActions {
   checkTakeoverThreats: () => void;
 }
 
+// Zustand store interface
+export interface ZustandGameStore {
+  getState: () => GameStore;
+}
+
 // Combined GameStore interface - now much more manageable
 export interface GameStore
   extends GameState,

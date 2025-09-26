@@ -6,6 +6,7 @@ import type {
   Mission,
   MissionResult,
 } from '../types/game';
+import type { GameStore, ZustandGameStore } from '../types/storeInterfaces';
 import {
   withErrorHandling,
   ErrorCategory,
@@ -34,9 +35,9 @@ interface GameServiceInterface {
 }
 
 class GameService implements GameServiceInterface {
-  private store: unknown; // Store interface would be properly typed in real implementation
+  private store: ZustandGameStore;
 
-  constructor(storeInstance: unknown) {
+  constructor(storeInstance: ZustandGameStore) {
     this.store = storeInstance;
   }
 
@@ -53,12 +54,12 @@ class GameService implements GameServiceInterface {
         );
       }
 
-      if (!state.canAfford(candidate.recruitmentCost)) {
+      if (!this.store.getState().canAfford(candidate.cost || 100)) {
         throw new Error('Insufficient resources to recruit daemon');
       }
 
       // Execute recruitment through store
-      await this.store.getState().recruitDaemon(daemonId);
+      this.store.getState().recruitDaemon(daemonId);
 
       return candidate;
     },
@@ -80,7 +81,7 @@ class GameService implements GameServiceInterface {
       }
 
       // Execute dismissal through store
-      await this.store.getState().dismissDaemon(daemonId);
+      this.store.getState().dismissDaemon(daemonId);
 
       return true;
     },

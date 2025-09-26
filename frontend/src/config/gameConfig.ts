@@ -110,7 +110,7 @@ class ConfigManager {
 
     for (const key of keys) {
       if (value && typeof value === 'object' && key in value) {
-        value = value[key];
+        value = (value as Record<string, unknown>)[key];
       } else {
         throw new Error(`Configuration path '${path}' not found`);
       }
@@ -128,7 +128,7 @@ class ConfigManager {
       throw new Error('Invalid configuration path');
     }
 
-    let target: Record<string, unknown> = this.config as Record<
+    let target: Record<string, unknown> = this.config as unknown as Record<
       string,
       unknown
     >;
