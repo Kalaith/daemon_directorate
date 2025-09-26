@@ -35,14 +35,19 @@ export const CorporateLadder: React.FC = () => {
   };
 
   return (
-    <Card className="bg-gradient-to-br from-purple-900 to-indigo-900">
-      <h2 className="text-xl font-bold text-white mb-4">Corporate Ladder</h2>
+    <Card className="bg-daemon-panel border-2 border-daemon-gold shadow-gold">
+      <div className="flex items-center mb-6">
+        <span className="text-daemon-gold text-sm font-semibold uppercase tracking-wider mr-2">
+          Executive
+        </span>
+        <h2 className="font-header text-xl font-bold text-daemon-text-bright uppercase tracking-wide">Corporate Ladder</h2>
+      </div>
       <div className="space-y-4">
         {/* Current Tier */}
-        <div className="text-center p-4 bg-gradient-to-r from-yellow-600 to-orange-600 rounded-lg">
-          <div className="text-3xl mb-2">{getTierIcon(corporateTier.level)}</div>
-          <h3 className="text-xl font-bold text-white">{corporateTier.name}</h3>
-          <p className="text-yellow-100 text-sm">Level {corporateTier.level}</p>
+        <div className="text-center p-6 bg-daemon-surface border-2 border-daemon-gold rounded-lg shadow-gold">
+          <div className="text-3xl mb-2 text-daemon-gold">{getTierIcon(corporateTier.level)}</div>
+          <h3 className="text-xl font-header font-bold text-daemon-text-bright">{corporateTier.name}</h3>
+          <p className="text-daemon-text-muted text-sm font-mono uppercase tracking-wide">Level {corporateTier.level}</p>
         </div>
 
         {/* Tier Progression */}
@@ -55,26 +60,28 @@ export const CorporateLadder: React.FC = () => {
             return (
               <div
                 key={tier.id}
-                className={`p-3 rounded-lg border-2 transition-all ${
+                className={`p-4 rounded-lg border-2 transition-all duration-200 ${
                   isCurrentTier
-                    ? 'border-yellow-500 bg-yellow-500/20'
+                    ? 'border-daemon-gold bg-daemon-gold/20 shadow-gold'
                     : isUnlocked
-                    ? 'border-green-500 bg-green-500/10'
-                    : 'border-gray-600 bg-gray-700/30'
+                    ? 'border-daemon-success bg-daemon-success/20'
+                    : 'border-daemon-secondary bg-daemon-surface'
                 }`}
               >
                 <div className="flex items-center justify-between">
                   <div className="flex items-center space-x-3">
                     <span className="text-2xl">{getTierIcon(tier.level)}</span>
                     <div>
-                      <h4 className={`font-semibold ${isCurrentTier ? 'text-yellow-300' : isUnlocked ? 'text-green-300' : 'text-gray-400'}`}>
+                      <h4 className={`font-header font-semibold ${
+                        isCurrentTier ? 'text-daemon-gold' : isUnlocked ? 'text-daemon-success' : 'text-daemon-text-muted'
+                      }`}>
                         {tier.name}
                       </h4>
-                      <p className="text-sm text-gray-400">Level {tier.level}</p>
+                      <p className="text-sm text-daemon-text-muted font-mono uppercase tracking-wide">Level {tier.level}</p>
                     </div>
                   </div>
-                  {isCurrentTier && <span className="px-2 py-1 bg-yellow-600 text-yellow-100 rounded text-xs">CURRENT</span>}
-                  {isUnlocked && !isCurrentTier && <span className="px-2 py-1 bg-green-600 text-green-100 rounded text-xs">UNLOCKED</span>}
+                  {isCurrentTier && <span className="px-3 py-1 bg-daemon-gold text-black font-mono font-semibold rounded uppercase tracking-wide text-xs">CURRENT</span>}
+                  {isUnlocked && !isCurrentTier && <span className="px-3 py-1 bg-daemon-success text-daemon-text-bright font-mono font-semibold rounded uppercase tracking-wide text-xs">UNLOCKED</span>}
                 </div>
 
                 {/* Show unlocks for current and next tier */}
@@ -82,20 +89,20 @@ export const CorporateLadder: React.FC = () => {
                   <div className="mt-3 space-y-2">
                     {tier.unlocks.mechanics && (
                       <div>
-                        <p className="text-sm font-medium text-blue-300">Mechanics:</p>
-                        <p className="text-xs text-gray-300">{tier.unlocks.mechanics.join(', ')}</p>
+                        <p className="text-sm font-medium text-daemon-info font-mono uppercase tracking-wide">Mechanics:</p>
+                        <p className="text-xs text-daemon-text font-mono">{tier.unlocks.mechanics.join(', ')}</p>
                       </div>
                     )}
                     {tier.unlocks.resources && (
                       <div>
-                        <p className="text-sm font-medium text-green-300">Resources:</p>
-                        <p className="text-xs text-gray-300">{tier.unlocks.resources.join(', ')}</p>
+                        <p className="text-sm font-medium text-daemon-success font-mono uppercase tracking-wide">Resources:</p>
+                        <p className="text-xs text-daemon-text font-mono">{tier.unlocks.resources.join(', ')}</p>
                       </div>
                     )}
                     {tier.unlocks.apartmentRooms && (
                       <div>
-                        <p className="text-sm font-medium text-purple-300">Rooms:</p>
-                        <p className="text-xs text-gray-300">{tier.unlocks.apartmentRooms.join(', ')}</p>
+                        <p className="text-sm font-medium text-daemon-silver font-mono uppercase tracking-wide">Rooms:</p>
+                        <p className="text-xs text-daemon-text font-mono">{tier.unlocks.apartmentRooms.join(', ')}</p>
                       </div>
                     )}
                   </div>
@@ -107,8 +114,8 @@ export const CorporateLadder: React.FC = () => {
 
         {/* Next Promotion Requirements */}
         {nextTier && (
-          <div className="mt-6 p-4 bg-gray-800 rounded-lg">
-            <h4 className="font-semibold text-orange-300 mb-3">
+          <div className="mt-6 p-6 bg-daemon-surface border border-daemon-secondary rounded-lg">
+            <h4 className="font-header font-semibold text-daemon-warning mb-4 uppercase tracking-wide">
               Promotion to {nextTier.name} Requirements:
             </h4>
             <div className="space-y-2">
@@ -116,9 +123,13 @@ export const CorporateLadder: React.FC = () => {
                 if (status.required === 0) return null;
                 
                 return (
-                  <div key={key} className={`flex justify-between items-center p-2 rounded ${status.met ? 'bg-green-600/20 text-green-300' : 'bg-red-600/20 text-red-300'}`}>
-                    <span className="text-sm capitalize">{CorporateProgressionService.formatRequirementKey(key)}:</span>
-                    <span className="text-sm font-mono">
+                  <div key={key} className={`flex justify-between items-center p-3 rounded-lg border ${
+                    status.met
+                      ? 'bg-daemon-success/20 border-daemon-success text-daemon-success'
+                      : 'bg-daemon-danger/20 border-daemon-danger text-daemon-danger'
+                  }`}>
+                    <span className="text-sm font-mono uppercase tracking-wide">{CorporateProgressionService.formatRequirementKey(key)}:</span>
+                    <span className="text-sm font-mono font-semibold">
                       {status.current} / {status.required}
                       {status.met ? ' ✓' : ' ✗'}
                     </span>
@@ -128,9 +139,9 @@ export const CorporateLadder: React.FC = () => {
             </div>
             
             {meetsRequirements(nextTier.requirements) && (
-              <div className="mt-4 p-3 bg-gradient-to-r from-green-600 to-blue-600 rounded-lg text-center">
-                <p className="text-white font-semibold">🎉 Ready for Promotion! 🎉</p>
-                <p className="text-green-100 text-sm">Requirements will be checked automatically</p>
+              <div className="mt-4 p-4 bg-daemon-success/20 border-2 border-daemon-success rounded-lg text-center shadow-gold">
+                <p className="text-daemon-text-bright font-header font-bold uppercase tracking-wide">🎉 Ready for Promotion! 🎉</p>
+                <p className="text-daemon-success text-sm font-mono mt-1">Requirements will be checked automatically</p>
               </div>
             )}
           </div>
@@ -138,9 +149,9 @@ export const CorporateLadder: React.FC = () => {
 
         {/* Max Level Reached */}
         {!nextTier && (
-          <div className="mt-6 p-4 bg-gradient-to-r from-purple-600 to-pink-600 rounded-lg text-center">
-            <h4 className="font-bold text-white text-lg">👑 Maximum Tier Achieved! 👑</h4>
-            <p className="text-purple-100 text-sm">You have reached the pinnacle of corporate power</p>
+          <div className="mt-6 p-6 bg-daemon-gold/20 border-2 border-daemon-gold rounded-lg text-center shadow-gold-lg">
+            <h4 className="font-header font-bold text-daemon-text-bright text-lg uppercase tracking-wide">👑 Maximum Tier Achieved! 👑</h4>
+            <p className="text-daemon-gold text-sm font-mono mt-2">You have reached the pinnacle of corporate power</p>
           </div>
         )}
       </div>

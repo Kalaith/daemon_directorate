@@ -1,6 +1,7 @@
 /** @type {import('tailwindcss').Config} */
 export default {
   content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
+  darkMode: "class",
   theme: {
     colors: {
       // Basic colors
@@ -10,10 +11,40 @@ export default {
       white: '#ffffff',
       black: '#000000',
 
-      // Tailwind default colors (keep some for compatibility)
+      // Daemon Directorate Color System
+      daemon: {
+        // Backgrounds
+        dark: "#0a0a0a",        // Primary background - near-black abyss
+        panel: "#141414",       // UI panels and cards - dark charcoal
+        surface: "#1a1a1a",     // Interactive surfaces - slightly lighter
+
+        // Brand Colors
+        primary: "#b11226",     // Infernal red - primary actions
+        primaryHover: "#e01b2f", // Brighter red for hover states
+        secondary: "#660000",   // Dark blood red - borders and accents
+        danger: "#cc3333",      // Error states and warnings
+
+        // Hierarchy Colors
+        gold: "#d4af37",        // Executive tier - use sparingly
+        silver: "#c0c0c0",      // Management tier
+        bronze: "#cd7f32",      // Supervisor tier
+
+        // Text Colors
+        text: {
+          DEFAULT: "#cccccc",   // Standard readable text
+          bright: "#f5f5f5",    // Headers and emphasis
+          muted: "#999999",     // Secondary information
+          dim: "#666666",       // Disabled or placeholder text
+        },
+
+        // Status Colors
+        success: "#2d5a2d",     // Success states - dark green
+        warning: "#8b6914",     // Warning states - dark amber
+        info: "#1e3a5f",        // Information - dark blue
+      },
+
+      // Fallback colors for compatibility (minimal set)
       gray: {
-        50: '#f9fafb',
-        100: '#f3f4f6',
         200: '#e5e7eb',
         300: '#d1d5db',
         400: '#9ca3af',
@@ -24,112 +55,73 @@ export default {
         900: '#111827',
       },
       red: {
-        400: '#f87171',
         500: '#ef4444',
         600: '#dc2626',
       },
       green: {
-        400: '#4ade80',
         500: '#22c55e',
         600: '#16a34a',
       },
-      blue: {
-        400: '#60a5fa',
-        500: '#3b82f6',
-        600: '#2563eb',
-      },
       yellow: {
-        400: '#facc15',
         500: '#eab308',
-        600: '#ca8a04',
-      },
-      purple: {
-        400: '#a78bfa',
-        500: '#8b5cf6',
-        600: '#7c3aed',
-      },
-      pink: {
-        400: '#f472b6',
-        500: '#ec4899',
-        600: '#db2777',
-      },
-      indigo: {
-        400: '#818cf8',
-        500: '#6366f1',
-        600: '#4f46e5',
-        900: '#312e81',
-      },
-      cyan: {
-        400: '#22d3ee',
-        500: '#06b6d4',
-        600: '#0891b2',
-      },
-      orange: {
-        400: '#fb923c',
-        500: '#f97316',
-        600: '#ea580c',
-      },
-      emerald: {
-        400: '#34d399',
-        500: '#10b981',
-        600: '#059669',
       },
 
-      // Custom game palette using CSS custom properties
-      cream: {
-        50: 'var(--color-cream-50)',
-        100: 'var(--color-cream-100)',
-      },
-      charcoal: {
-        700: 'var(--color-charcoal-700)',
-        800: 'var(--color-charcoal-800)',
-      },
-      slate: {
-        500: 'var(--color-slate-500)',
-        900: 'var(--color-slate-900)',
-      },
-      teal: {
-        300: 'var(--color-teal-300)',
-        400: 'var(--color-teal-400)',
-        500: 'var(--color-teal-500)',
-        600: 'var(--color-teal-600)',
-        700: 'var(--color-teal-700)',
-        800: 'var(--color-teal-800)',
-      },
-      brown: {
-        600: 'var(--color-brown-600)',
-      },
-      
-      // Semantic design system colors
-      primary: 'var(--color-primary)',
-      'primary-hover': 'var(--color-primary-hover)',
-      'primary-active': 'var(--color-primary-active)',
-      background: 'var(--color-background)',
-      surface: 'var(--color-surface)',
-      text: 'var(--color-text)',
-      'text-secondary': 'var(--color-text-secondary)',
-      border: 'var(--color-border)',
-      'card-border': 'var(--color-card-border)',
-      error: 'var(--color-error)',
-      success: 'var(--color-success)',
-      warning: 'var(--color-warning)',
-      info: 'var(--color-info)',
-      
-      // Contextual background utilities
-      'bg-1': 'var(--color-bg-1)',
-      'bg-2': 'var(--color-bg-2)',
-      'bg-3': 'var(--color-bg-3)',
-      'bg-4': 'var(--color-bg-4)',
-      'bg-5': 'var(--color-bg-5)',
-      'bg-6': 'var(--color-bg-6)',
-      'bg-7': 'var(--color-bg-7)',
-      'bg-8': 'var(--color-bg-8)',
+      // Legacy semantic colors - map to daemon colors
+      primary: "#b11226",
+      'primary-hover': "#e01b2f",
+      'primary-active': "#e01b2f",
+      background: "#0a0a0a",
+      surface: "#141414",
+      text: "#cccccc",
+      'text-secondary': "#999999",
+      border: "#660000",
+      'card-border': "#660000",
+      error: "#cc3333",
+      success: "#2d5a2d",
+      warning: "#8b6914",
+      info: "#1e3a5f",
     },
     extend: {
       fontFamily: {
-        base: 'var(--font-family-base)',
-        mono: 'var(--font-family-mono)',
+        sans: ["Inter", "system-ui", "sans-serif"],           // Primary UI text
+        header: ["Cinzel Decorative", "serif"],               // Corporate titles
+        mono: ["JetBrains Mono", "Consolas", "monospace"],    // Data displays
+        base: 'var(--font-family-base)', // Legacy support
       },
+      boxShadow: {
+        infernal: "0 0 10px rgba(177, 18, 38, 0.4)",
+        "infernal-lg": "0 0 20px rgba(177, 18, 38, 0.6)",
+        gold: "0 0 10px rgba(212, 175, 55, 0.4)",
+        "gold-lg": "0 0 20px rgba(212, 175, 55, 0.6)",
+        // Legacy support
+        xs: 'var(--shadow-xs)',
+        sm: 'var(--shadow-sm)',
+        md: 'var(--shadow-md)',
+        lg: 'var(--shadow-lg)',
+        'inset-sm': 'var(--shadow-inset-sm)',
+        focus: 'var(--focus-ring)',
+      },
+      keyframes: {
+        pulseInfernal: {
+          "0%, 100%": { boxShadow: "0 0 8px rgba(177, 18, 38, 0.4)" },
+          "50%": { boxShadow: "0 0 16px rgba(177, 18, 38, 0.8)" },
+        },
+        pulseGold: {
+          "0%, 100%": { boxShadow: "0 0 8px rgba(212, 175, 55, 0.4)" },
+          "50%": { boxShadow: "0 0 16px rgba(212, 175, 55, 0.8)" },
+        },
+        fadeInUp: {
+          "0%": { opacity: "0", transform: "translateY(10px)" },
+          "100%": { opacity: "1", transform: "translateY(0)" },
+        },
+      },
+      animation: {
+        pulseInfernal: "pulseInfernal 2s infinite",
+        pulseGold: "pulseGold 2s infinite",
+        fadeInUp: "fadeInUp 0.3s ease-out",
+        'pulse-game': 'pulse 0.3s ease-in-out', // Legacy support
+      },
+      // Legacy support
       fontSize: {
         xs: 'var(--font-size-xs)',
         sm: 'var(--font-size-sm)',
@@ -173,17 +165,6 @@ export default {
         md: 'var(--radius-md)',
         lg: 'var(--radius-lg)',
         full: 'var(--radius-full)',
-      },
-      boxShadow: {
-        xs: 'var(--shadow-xs)',
-        sm: 'var(--shadow-sm)',
-        md: 'var(--shadow-md)',
-        lg: 'var(--shadow-lg)',
-        'inset-sm': 'var(--shadow-inset-sm)',
-        focus: 'var(--focus-ring)',
-      },
-      animation: {
-        'pulse-game': 'pulse 0.3s ease-in-out',
       },
       transitionDuration: {
         fast: 'var(--duration-fast)',

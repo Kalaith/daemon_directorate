@@ -23,43 +23,43 @@ const MissionModal: React.FC = () => {
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 p-4">
-      <div className="bg-gray-900 border border-teal-500 rounded-lg p-6 max-w-2xl w-full mx-4 max-h-[80vh] overflow-y-auto shadow-2xl">
-        <h2 className="text-xl font-bold text-teal-300 mb-4">
+      <div className="bg-daemon-panel border border-daemon-primary rounded-lg p-8 max-w-2xl w-full mx-4 max-h-[80vh] overflow-y-auto shadow-infernal">
+        <h2 className="text-xl font-header font-bold text-daemon-text-bright mb-6 uppercase tracking-wide">
           Mission Assignment
         </h2>
 
-        <div className="mb-6">
-          <h3 className="font-semibold text-gray-200 mb-2">
-            Operation: <span className="text-teal-400">{planet.name}</span>
+        <div className="mb-8">
+          <h3 className="font-header font-semibold text-daemon-text-bright mb-4 text-lg">
+            Operation: <span className="text-daemon-primary font-mono">{planet.name}</span>
           </h3>
-          <div className="grid grid-cols-2 gap-4 text-sm text-gray-300">
+          <div className="grid grid-cols-2 gap-4 text-sm text-daemon-text bg-daemon-surface p-4 rounded-lg border border-daemon-secondary">
             <div>
-              <span className="text-teal-400 font-medium">Target:</span>{' '}
-              {planet.type}
+              <span className="text-daemon-text-muted font-mono uppercase tracking-wide">Target:</span>{' '}
+              <span className="text-daemon-text-bright font-mono font-semibold">{planet.type}</span>
             </div>
             <div>
-              <span className="text-teal-400 font-medium">Opposition:</span>{' '}
-              {planet.resistance}
+              <span className="text-daemon-text-muted font-mono uppercase tracking-wide">Opposition:</span>{' '}
+              <span className="text-daemon-text-bright font-mono font-semibold">{planet.resistance}</span>
             </div>
             <div>
-              <span className="text-teal-400 font-medium">Difficulty:</span>{' '}
-              {planet.difficulty}
+              <span className="text-daemon-text-muted font-mono uppercase tracking-wide">Difficulty:</span>{' '}
+              <span className="text-daemon-text-bright font-mono font-semibold">{planet.difficulty}</span>
             </div>
             <div>
-              <span className="text-teal-400 font-medium">
+              <span className="text-daemon-text-muted font-mono uppercase tracking-wide">
                 Expected Rewards:
               </span>{' '}
-              {planet.reward}
+              <span className="text-daemon-text-bright font-mono font-semibold">{planet.reward}</span>
             </div>
           </div>
-          <p className="mt-3 text-gray-400">
+          <p className="mt-4 text-daemon-text bg-daemon-surface p-4 rounded-lg border border-daemon-secondary">
             Select operatives for deployment. Mission success depends on team
             composition and equipment readiness.
           </p>
         </div>
 
-        <div className="mb-6">
-          <h4 className="font-semibold text-gray-200 mb-3">
+        <div className="mb-8">
+          <h4 className="font-header font-semibold text-daemon-text-bright mb-4 uppercase tracking-wide">
             Available Operatives:
           </h4>
           <div className="space-y-2 max-h-60 overflow-y-auto">
@@ -67,10 +67,10 @@ const MissionModal: React.FC = () => {
               <div
                 key={daemon.id}
                 onClick={() => toggleDaemonSelection(daemon.id)}
-                className={`p-3 border rounded cursor-pointer transition-all ${
+                className={`p-4 border rounded-lg cursor-pointer transition-all duration-200 ${
                   selectedDaemons.has(daemon.id)
-                    ? 'border-teal-500 bg-teal-900/30'
-                    : 'border-gray-700 hover:border-teal-600 bg-gray-800'
+                    ? 'border-daemon-primary bg-daemon-primary/20 shadow-infernal'
+                    : 'border-daemon-secondary hover:border-daemon-primary bg-daemon-surface'
                 }`}
               >
                 <div className="flex items-center">
@@ -78,42 +78,40 @@ const MissionModal: React.FC = () => {
                     type="checkbox"
                     checked={selectedDaemons.has(daemon.id)}
                     onChange={() => {}} // Handled by onClick
-                    className="mr-3 accent-teal-500"
+                    className="mr-4 accent-daemon-primary"
                   />
                   <div>
-                    <div className="text-teal-300 font-semibold">
+                    <div className="text-daemon-text-bright font-header font-semibold text-lg">
                       {daemon.name}{' '}
-                      <span className="text-gray-400 font-normal">
+                      <span className="text-daemon-text-muted font-mono font-normal uppercase tracking-wide">
                         ({daemon.specialization})
                       </span>
                     </div>
-                    <div className="text-sm text-gray-400 mt-1">
+                    <div className="text-sm font-mono mt-2 space-x-4">
                       <span
                         className={
                           daemon.health > 70
-                            ? 'text-teal-400'
+                            ? 'text-daemon-success'
                             : daemon.health > 40
-                              ? 'text-yellow-400'
-                              : 'text-red-400'
+                              ? 'text-daemon-warning'
+                              : 'text-daemon-danger'
                         }
                       >
-                        Health: {daemon.health}%
+                        <span className="text-daemon-text-muted uppercase tracking-wide">Health:</span> {daemon.health}%
                       </span>
-                      {' | '}
                       <span
                         className={
                           daemon.morale > 70
-                            ? 'text-teal-400'
+                            ? 'text-daemon-success'
                             : daemon.morale > 40
-                              ? 'text-yellow-400'
-                              : 'text-red-400'
+                              ? 'text-daemon-warning'
+                              : 'text-daemon-danger'
                         }
                       >
-                        Morale: {daemon.morale}%
+                        <span className="text-daemon-text-muted uppercase tracking-wide">Morale:</span> {daemon.morale}%
                       </span>
-                      {' | '}
-                      <span className="text-gray-400">
-                        Lifespan: {daemon.lifespanDays} days
+                      <span className="text-daemon-text">
+                        <span className="text-daemon-text-muted uppercase tracking-wide">Lifespan:</span> {daemon.lifespanDays} days
                       </span>
                     </div>
                   </div>
@@ -123,17 +121,17 @@ const MissionModal: React.FC = () => {
           </div>
         </div>
 
-        <div className="flex gap-3">
+        <div className="flex gap-4">
           <button
             onClick={executeMission}
             disabled={selectedDaemons.size === 0}
-            className="flex-1 px-4 py-2 bg-teal-600 text-white rounded hover:bg-teal-700 disabled:bg-gray-600 disabled:cursor-not-allowed border border-teal-500 transition-colors font-semibold"
+            className="flex-1 px-6 py-4 bg-daemon-primary border border-daemon-primary text-daemon-text-bright font-mono rounded-lg uppercase tracking-wide hover:bg-daemon-primaryHover hover:shadow-infernal disabled:bg-daemon-surface disabled:border-daemon-text-dim disabled:text-daemon-text-dim disabled:cursor-not-allowed transition-all duration-200 font-semibold"
           >
             Deploy Team
           </button>
           <button
             onClick={() => setShowMissionModal(false)}
-            className="px-4 py-2 bg-gray-700 text-white rounded hover:bg-gray-600 border border-gray-600 transition-colors"
+            className="px-6 py-4 bg-daemon-surface border border-daemon-secondary text-daemon-text-bright font-mono rounded-lg uppercase tracking-wide hover:bg-daemon-secondary hover:border-daemon-primary transition-all duration-200"
           >
             Cancel
           </button>

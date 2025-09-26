@@ -8,10 +8,10 @@ const Apartment: React.FC = () => {
 
   return (
     <div>
-      <h2 className="text-2xl font-bold mb-4 text-slate-900">
+      <h2 className="text-2xl font-header font-bold mb-6 text-daemon-text-bright uppercase tracking-wide">
         Apartment HQ Management
       </h2>
-      <p className="text-slate-600 mb-6 bg-cream-50 p-4 rounded border border-brown-600/10">
+      <p className="text-daemon-text mb-8 bg-daemon-surface p-6 rounded-lg border border-daemon-secondary">
         Your assigned living quarters double as operational headquarters. Room
         improvements enhance daemon performance and morale.
       </p>
@@ -20,26 +20,26 @@ const Apartment: React.FC = () => {
         {rooms.map(room => (
           <Card
             key={room.id}
-            className="bg-cream-100 border-brown-600/12 hover:shadow-lg transition-shadow"
+            className="bg-daemon-panel border-daemon-secondary hover:border-daemon-primary hover:shadow-infernal transition-all duration-200"
           >
-            <div className="flex justify-between items-start mb-4">
-              <h3 className="font-bold text-lg text-slate-900">{room.name}</h3>
-              <span className="px-3 py-1 bg-slate-600 text-cream-100 text-sm rounded-full font-semibold">
+            <div className="flex justify-between items-start mb-6">
+              <h3 className="font-header font-bold text-xl text-daemon-text-bright">{room.name}</h3>
+              <span className="px-4 py-2 bg-daemon-secondary border border-daemon-secondary text-daemon-text-bright text-sm rounded-lg font-mono font-semibold uppercase tracking-wide">
                 Level {room.level}
               </span>
             </div>
 
-            <div className="mb-4 p-4 bg-teal-50 rounded border border-teal-200">
-              <div className="text-sm text-teal-700 font-medium mb-1">
+            <div className="mb-6 p-4 bg-daemon-surface rounded-lg border border-daemon-secondary">
+              <div className="text-sm text-daemon-text-muted font-mono uppercase tracking-wide mb-2">
                 Current Bonus:
               </div>
-              <div className="text-teal-900 font-semibold">{room.bonus}</div>
+              <div className="text-daemon-text-bright font-mono font-semibold">{room.bonus}</div>
             </div>
 
             <button
               onClick={() => upgradeRoom(room.id)}
               disabled={!canAfford(room.upgrade_cost)}
-              className="w-full px-4 py-3 bg-teal-600 text-cream-100 rounded hover:bg-teal-700 disabled:bg-slate-400 disabled:cursor-not-allowed transition-colors font-semibold"
+              className="w-full px-4 py-3 bg-daemon-primary border border-daemon-primary text-daemon-text-bright font-mono rounded-lg uppercase tracking-wide hover:bg-daemon-primaryHover hover:shadow-infernal disabled:bg-daemon-surface disabled:border-daemon-text-dim disabled:text-daemon-text-dim disabled:cursor-not-allowed transition-all duration-200 font-semibold"
             >
               Upgrade ({room.upgrade_cost} Credits)
             </button>

@@ -17,33 +17,35 @@ const MemorialModal: React.FC = () => {
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 p-4">
-      <div className="bg-gray-900 border border-red-500 rounded-lg p-6 max-w-md w-full mx-4 shadow-2xl">
-        <h2 className="text-xl font-bold text-red-400 mb-4">In Memoriam</h2>
-        <div className="mb-6">
-          <div className="text-lg font-semibold text-teal-300 mb-2">
+      <div className="bg-daemon-panel border border-daemon-danger rounded-lg p-8 max-w-md w-full mx-4 shadow-lg shadow-daemon-danger/20">
+        <h2 className="text-xl font-header font-bold text-daemon-text-bright mb-6 uppercase tracking-wide text-center">In Memoriam</h2>
+        <div className="mb-8">
+          <div className="text-xl font-header font-bold text-daemon-text-bright mb-4 text-center">
             {memorialDaemon.name}
           </div>
-          <p className="italic text-gray-400 mb-4">
+          <p className="italic text-daemon-text-muted mb-6 text-center bg-daemon-surface p-4 rounded-lg border border-daemon-secondary">
             "A dedicated servant of the Corporate Hierarchy"
           </p>
 
           <div>
-            <h4 className="font-semibold text-gray-300 mb-2">
+            <h4 className="font-header font-semibold text-daemon-text-bright mb-4 uppercase tracking-wide">
               Service Record:
             </h4>
-            <div className="text-gray-400 space-y-1">
+            <div className="text-daemon-text space-y-2 font-mono">
               {achievements.map((achievement, index) => (
-                <div key={index}>• {achievement}</div>
+                <div key={index} className="flex items-start">
+                  <span className="text-daemon-primary mr-2">•</span>
+                  <span>{achievement}</span>
+                </div>
               ))}
             </div>
           </div>
 
-          <div className="mt-4 p-3 bg-gray-800 border border-gray-700 rounded">
-            <span className="text-teal-400 font-semibold">
+          <div className="mt-6 p-4 bg-daemon-surface border border-daemon-secondary rounded-lg">
+            <span className="text-daemon-text-bright font-header font-semibold uppercase tracking-wide">
               Corporate Legacy:
             </span>
-            <span className="text-gray-300">
-              {' '}
+            <span className="text-daemon-text font-mono ml-2">
               Their dedication to bureaucratic excellence will be remembered in
               the employee handbook.
             </span>
@@ -51,7 +53,7 @@ const MemorialModal: React.FC = () => {
         </div>
         <button
           onClick={() => setShowMemorial(false)}
-          className="w-full px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 border border-red-500 transition-colors font-semibold"
+          className="w-full px-6 py-4 bg-daemon-danger border border-daemon-danger text-daemon-text-bright font-mono rounded-lg uppercase tracking-wide hover:bg-daemon-danger/80 hover:shadow-lg transition-all duration-200 font-semibold"
         >
           Honor Their Service
         </button>

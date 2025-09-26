@@ -11,48 +11,63 @@ const Header: React.FC = () => {
   const bureaucraticLeverage = resources?.bureaucraticLeverage ?? 0;
   const rawMaterials = resources?.rawMaterials ?? 0;
 
+  // Format large numbers for display
+  const formatNumber = (num: number): string => {
+    if (num >= 1000000) return `${(num / 1000000).toFixed(1)}M`;
+    if (num >= 1000) return `${(num / 1000).toFixed(1)}K`;
+    return num.toString();
+  };
+
   return (
-    <header className="bg-slate-900 text-cream-100 py-6 border-b border-brown-600/20">
-      <div className="container mx-auto px-4">
-        <div className="flex justify-between items-center">
-          <div>
-            <h1 className="text-4xl font-bold text-cream-100 mb-1">
-              Daemon Directorate
-            </h1>
-            <div className="text-slate-500 text-sm font-medium">
-              Excellence Through Eternal Suffering™
+    <header className="bg-gradient-to-r from-black to-daemon-dark border-b-2 border-daemon-secondary">
+      <div className="container mx-auto px-4 py-4 flex justify-between items-center">
+        <div>
+          <h1 className="font-header text-2xl text-daemon-text-bright tracking-wide">
+            Daemon Directorate
+          </h1>
+          <div className="text-daemon-text-muted text-sm font-medium mt-1">
+            Excellence Through Eternal Suffering™
+          </div>
+        </div>
+
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          {/* Credits */}
+          <div className="bg-daemon-panel border border-daemon-secondary rounded-lg p-3 min-w-[100px]">
+            <div className="text-daemon-text-muted text-xs uppercase tracking-wide mb-1">
+              Credits
+            </div>
+            <div className="font-mono text-lg text-daemon-text-bright font-semibold">
+              {formatNumber(credits)}
             </div>
           </div>
-          <div className="flex gap-8 text-sm">
-            <div className="text-center">
-              <div className="font-semibold text-slate-300 mb-1">Credits</div>
-              <div className="text-amber-400 text-lg font-bold">
-                {credits}
-              </div>
+
+          {/* Soul Essence - Executive tier color */}
+          <div className="bg-daemon-panel border border-daemon-secondary rounded-lg p-3 min-w-[100px]">
+            <div className="text-daemon-text-muted text-xs uppercase tracking-wide mb-1">
+              Soul Essence
             </div>
-            <div className="text-center">
-              <div className="font-semibold text-slate-300 mb-1">
-                Soul Essence
-              </div>
-              <div className="text-purple-400 text-lg font-bold">
-                {soulEssence}
-              </div>
+            <div className="font-mono text-lg text-daemon-gold font-semibold">
+              {formatNumber(soulEssence)}
             </div>
-            <div className="text-center">
-              <div className="font-semibold text-slate-300 mb-1">
-                Bureaucratic Leverage
-              </div>
-              <div className="text-teal-400 text-lg font-bold">
-                {bureaucraticLeverage}
-              </div>
+          </div>
+
+          {/* Bureaucratic Leverage */}
+          <div className="bg-daemon-panel border border-daemon-secondary rounded-lg p-3 min-w-[120px]">
+            <div className="text-daemon-text-muted text-xs uppercase tracking-wide mb-1">
+              Leverage
             </div>
-            <div className="text-center">
-              <div className="font-semibold text-slate-300 mb-1">
-                Raw Materials
-              </div>
-              <div className="text-orange-400 text-lg font-bold">
-                {rawMaterials}
-              </div>
+            <div className="font-mono text-lg text-daemon-text-bright font-semibold">
+              {formatNumber(bureaucraticLeverage)}
+            </div>
+          </div>
+
+          {/* Raw Materials */}
+          <div className="bg-daemon-panel border border-daemon-secondary rounded-lg p-3 min-w-[100px]">
+            <div className="text-daemon-text-muted text-xs uppercase tracking-wide mb-1">
+              Materials
+            </div>
+            <div className="font-mono text-lg text-daemon-bronze font-semibold">
+              {formatNumber(rawMaterials)}
             </div>
           </div>
         </div>

@@ -50,7 +50,7 @@ const App: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-black text-gray-100">
+    <div className="min-h-screen bg-daemon-dark text-daemon-text font-sans">
       <Header />
       <TabNavigation />
       <main className="container mx-auto px-4 py-6">{renderCurrentTab()}</main>

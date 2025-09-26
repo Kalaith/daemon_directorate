@@ -21,10 +21,10 @@ const Missions: React.FC = () => {
 
   return (
     <div>
-      <h2 className="text-2xl font-bold mb-4 text-slate-900">
+      <h2 className="text-2xl font-header font-bold mb-6 text-daemon-text-bright uppercase tracking-wide">
         Planetary Conquest Operations
       </h2>
-      <p className="text-slate-600 mb-6 bg-cream-50 p-4 rounded border border-brown-600/10">
+      <p className="text-daemon-text mb-8 bg-daemon-surface p-6 rounded-lg border border-daemon-secondary">
         Select target planets for corporate expansion. Mission success depends
         on team composition and equipment readiness.
       </p>
@@ -33,10 +33,10 @@ const Missions: React.FC = () => {
         {planets.map(planet => (
           <Card
             key={planet.id}
-            className="bg-cream-100 border-brown-600/12 hover:shadow-lg transition-shadow"
+            className="bg-daemon-panel border-daemon-secondary hover:border-daemon-primary hover:shadow-infernal transition-all duration-200"
           >
-            <div className="flex justify-between items-start mb-4">
-              <h3 className="font-bold text-lg text-slate-900">
+            <div className="flex justify-between items-start mb-6">
+              <h3 className="font-header font-bold text-xl text-daemon-text-bright">
                 {planet.name}
               </h3>
               <Badge variant={getDifficultyVariant(planet.difficulty) as 'easy' | 'medium' | 'hard' | 'neutral'}>
@@ -44,39 +44,39 @@ const Missions: React.FC = () => {
               </Badge>
             </div>
 
-            <div className="space-y-3 mb-4">
+            <div className="space-y-4 mb-6">
               <div className="flex justify-between">
-                <span className="text-slate-600 font-medium">Type:</span>
-                <span className="text-slate-900">{planet.type}</span>
+                <span className="text-daemon-text-muted font-mono uppercase tracking-wide">Type:</span>
+                <span className="text-daemon-text-bright font-mono font-semibold">{planet.type}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-slate-600 font-medium">Resistance:</span>
-                <span className="text-slate-900">{planet.resistance}</span>
+                <span className="text-daemon-text-muted font-mono uppercase tracking-wide">Resistance:</span>
+                <span className="text-daemon-text-bright font-mono font-semibold">{planet.resistance}</span>
               </div>
               {planet.conquered && (
                 <div className="flex justify-center">
-                  <span className="px-3 py-1 bg-teal-100 text-teal-800 font-bold text-sm rounded-full border border-teal-200">
+                  <span className="px-4 py-2 bg-daemon-success border border-daemon-success/50 text-daemon-text-bright font-mono font-bold text-sm rounded-lg shadow-gold">
                     ✓ CONQUERED
                   </span>
                 </div>
               )}
             </div>
 
-            <div className="mb-4 p-3 bg-slate-50 rounded border border-slate-200">
-              <div className="text-sm text-slate-600 font-medium mb-1">
+            <div className="mb-6 p-4 bg-daemon-surface rounded-lg border border-daemon-secondary">
+              <div className="text-sm text-daemon-text-muted font-mono uppercase tracking-wide mb-2">
                 Expected Rewards:
               </div>
-              <div className="text-slate-900 font-semibold">
+              <div className="text-daemon-text-bright font-mono font-semibold">
                 {planet.reward}
               </div>
             </div>
 
             <button
               onClick={() => selectPlanetForMission(planet.id)}
-              className={`w-full px-4 py-3 rounded font-semibold transition-colors ${
+              className={`w-full px-4 py-3 rounded-lg font-mono font-semibold uppercase tracking-wide transition-all duration-200 border ${
                 planet.conquered
-                  ? 'bg-orange-600 hover:bg-orange-700 text-cream-100'
-                  : 'bg-teal-600 hover:bg-teal-700 text-cream-100'
+                  ? 'bg-daemon-warning border-daemon-warning text-daemon-text-bright hover:bg-daemon-warning/80 hover:shadow-gold'
+                  : 'bg-daemon-primary border-daemon-primary text-daemon-text-bright hover:bg-daemon-primaryHover hover:shadow-infernal'
               }`}
             >
               {planet.conquered ? 'Return Mission' : 'Deploy Team'}

@@ -15,22 +15,22 @@ const TabNavigation: React.FC = () => {
   ];
 
   return (
-    <nav className="bg-cream-100 border-b border-brown-600/20 shadow-sm">
+    <nav className="bg-daemon-panel border-b border-daemon-secondary shadow-lg">
       <div className="container mx-auto px-4">
         <div className="flex space-x-0">
           {tabs.map(tab => (
             <button
               key={tab.id}
               onClick={() => setCurrentTab(tab.id)}
-              className={`py-4 px-6 font-semibold text-sm transition-colors border-b-3 relative ${
+              className={`py-4 px-6 font-semibold text-sm uppercase tracking-wide transition-all duration-200 border-b-2 relative ${
                 currentTab === tab.id
-                  ? 'bg-cream-50 border-teal-500 text-slate-900 shadow-sm'
-                  : 'border-transparent text-slate-600 hover:text-slate-900 hover:bg-cream-50/50'
+                  ? 'bg-daemon-surface border-daemon-primary text-daemon-text-bright shadow-infernal'
+                  : 'border-transparent text-daemon-text hover:text-daemon-text-bright hover:bg-daemon-surface hover:border-daemon-secondary'
               }`}
             >
               {tab.label}
               {currentTab === tab.id && (
-                <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-teal-500"></div>
+                <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-daemon-primary shadow-infernal animate-pulseInfernal"></div>
               )}
             </button>
           ))}

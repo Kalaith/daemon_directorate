@@ -47,14 +47,14 @@ const NotificationSystem: React.FC = () => {
   const getNotificationStyles = (type: Notification['type']) => {
     switch (type) {
       case 'success':
-        return 'bg-teal-900/90 border-teal-500 text-teal-300';
+        return 'bg-daemon-panel/95 border-daemon-success text-daemon-success shadow-lg';
       case 'warning':
-        return 'bg-yellow-900/90 border-yellow-500 text-yellow-300';
+        return 'bg-daemon-panel/95 border-daemon-warning text-daemon-warning shadow-lg';
       case 'error':
-        return 'bg-red-900/90 border-red-500 text-red-300';
+        return 'bg-daemon-panel/95 border-daemon-danger text-daemon-danger shadow-lg';
       case 'info':
       default:
-        return 'bg-gray-800/90 border-gray-600 text-gray-300';
+        return 'bg-daemon-panel/95 border-daemon-info text-daemon-info shadow-lg';
     }
   };
 
@@ -80,8 +80,8 @@ const NotificationSystem: React.FC = () => {
         <div
           key={notification.id}
           className={`
-            p-4 rounded-lg border shadow-lg backdrop-blur-sm
-            animate-in slide-in-from-right duration-300
+            p-4 rounded-lg border-2 backdrop-blur-sm
+            animate-fadeInUp
             ${getNotificationStyles(notification.type)}
           `}
         >
@@ -91,15 +91,15 @@ const NotificationSystem: React.FC = () => {
                 {getIconForType(notification.type)}
               </span>
               <div className="flex-1">
-                <h4 className="font-semibold text-sm">{notification.title}</h4>
-                <p className="text-xs mt-1 opacity-90">
+                <h4 className="font-semibold text-sm text-daemon-text-bright uppercase tracking-wide">{notification.title}</h4>
+                <p className="text-xs mt-1 text-daemon-text">
                   {notification.message}
                 </p>
               </div>
             </div>
             <button
               onClick={() => removeNotification(notification.id)}
-              className="ml-2 text-current opacity-70 hover:opacity-100 transition-opacity"
+              className="ml-2 text-daemon-text hover:text-daemon-text-bright transition-colors font-bold text-lg"
             >
               ×
             </button>
