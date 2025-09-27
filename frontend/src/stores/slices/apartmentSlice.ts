@@ -1,6 +1,7 @@
 // stores/slices/apartmentSlice.ts - Apartment and room management
 import type { StateCreator } from 'zustand';
 import type { Room } from '../../types/game';
+import { ADVANCED_ROOMS } from '../../constants/gameData';
 
 export interface ApartmentState {
   rooms: Room[];
@@ -16,6 +17,16 @@ export interface ApartmentActions {
   getAvailableRooms: () => Room[];
   getRoomUpgradeCost: (roomId: string) => number;
   canUpgradeRoom: (roomId: string, credits: number) => boolean;
+  calculateRoomEfficiency: (room: Room) => number;
+  getRoomSynergies: () => any[];
+  unlockAdvancedRoom: (roomName: string) => boolean;
+  canUnlockAdvancedRoom: (roomName: string) => boolean;
+  processTraining: (daemonId: string, newSpecialization: any) => void;
+  processRecovery: (daemonId: string) => void;
+  processMissionPlanning: () => number;
+  processEquipmentInnovation: () => string | null;
+  getMemorialBonuses: () => any;
+  processAutomation: () => void;
 }
 
 export type ApartmentSlice = ApartmentState & ApartmentActions;
@@ -30,7 +41,7 @@ const INITIAL_ROOMS: Room[] = [
     upgrade_cost: 200,
     assignedDaemons: [],
     maxAssignments: 2,
-    roomType: 'recovery',
+    roomType: 'advanced',
     unlocked: true,
   },
   {
@@ -41,7 +52,7 @@ const INITIAL_ROOMS: Room[] = [
     upgrade_cost: 300,
     assignedDaemons: [],
     maxAssignments: 1,
-    roomType: 'command',
+    roomType: 'operations',
     unlocked: true,
   },
   {
@@ -52,7 +63,7 @@ const INITIAL_ROOMS: Room[] = [
     upgrade_cost: 400,
     assignedDaemons: [],
     maxAssignments: 3,
-    roomType: 'training',
+    roomType: 'advanced',
     unlocked: false,
   },
   {
@@ -74,9 +85,14 @@ const INITIAL_ROOMS: Room[] = [
     upgrade_cost: 600,
     assignedDaemons: [],
     maxAssignments: 1,
-    roomType: 'special',
+    roomType: 'advanced',
     unlocked: false,
   },
+  // Advanced rooms from configuration
+  ...ADVANCED_ROOMS.map(room => ({
+    id: room.name.toLowerCase().replace(/\s+/g, '_'),
+    ...room
+  }))
 ];
 
 export const createApartmentSlice: StateCreator<
@@ -174,5 +190,107 @@ export const createApartmentSlice: StateCreator<
   canUpgradeRoom: (roomId: string, credits: number) => {
     const room = get().getRoomById(roomId);
     return room ? credits >= room.upgrade_cost : false;
+  },
+
+  calculateRoomEfficiency: (room: Room) => {
+    const baseEfficiency = 50 + (room.level * 10);
+    const assignmentBonus = (room.assignedDaemons.length / room.maxAssignments) * 20;
+    return Math.min(100, baseEfficiency + assignmentBonus);
+  },
+
+  getRoomSynergies: () => {
+    const state = get();
+    const synergies: any[] = [];
+    
+    // Calculate room synergies based on available rooms and their levels
+    state.rooms.forEach(room => {
+      if ((room as any).synergyBonuses) {
+        (room as any).synergyBonuses.forEach((bonus: any) => {
+          if (bonus.requiredRooms.every((reqRoom: string) => 
+            state.rooms.some(r => r.name === reqRoom && r.level > 0)
+          )) {
+            synergies.push(bonus);
+          }
+        });
+      }
+    });
+    
+    return synergies;
+  },
+
+  unlockAdvancedRoom: (roomName: string) => {
+    const state = get();
+    const room = state.rooms.find(r => r.name === roomName);
+    if (!room || room.unlocked) return false;
+
+    // Basic implementation - would need access to corporate tier and resources
+    const canUnlock = true;
+    if (!canUnlock) return false;
+
+    set(state => ({
+      rooms: state.rooms.map(room => 
+        room.name === roomName ? { ...room, unlocked: true } : room
+      )
+    }));
+    return true;
+  },
+
+  canUnlockAdvancedRoom: (roomName: string) => {
+    const state = get();
+    const room = state.rooms.find(r => r.name === roomName);
+    if (!room || room.unlocked) return false;
+
+    // Basic implementation - would need access to corporate tier and resources
+    return true;
+  },
+
+  processTraining: (daemonId: string, newSpecialization: any) => {
+    // Implementation would update daemon specialization
+    console.log(`Training ${daemonId} to ${newSpecialization}`);
+  },
+
+  processRecovery: (daemonId: string) => {
+    // Implementation would heal daemon
+    console.log(`Recovering ${daemonId}`);
+  },
+
+  processMissionPlanning: () => {
+    const state = get();
+    const warRoom = state.rooms.find(r => r.name === 'War Room');
+    if (!warRoom || warRoom.assignedDaemons.length === 0) return 0;
+    
+    return 10 + (warRoom.level * 5) + (warRoom.assignedDaemons.length * 3);
+  },
+
+  processEquipmentInnovation: () => {
+    const state = get();
+    const rdLab = state.rooms.find(r => r.name === 'R&D Lab');
+    if (!rdLab || rdLab.assignedDaemons.length === 0) return null;
+    
+    const innovationChance = 0.1 + (rdLab.level * 0.05);
+    if (Math.random() < innovationChance) {
+      return 'prototype_equipment_' + Date.now();
+    }
+    return null;
+  },
+
+  getMemorialBonuses: () => {
+    const state = get();
+    const memorial = state.rooms.find(r => r.name === 'Memorial Chamber');
+    if (!memorial || memorial.level === 0) return {};
+    
+    return {
+      experience_bonus: memorial.level * 5,
+      morale_bonus: memorial.level * 2,
+      legacy_bonus: memorial.level * 3
+    };
+  },
+
+  processAutomation: () => {
+    const state = get();
+    const serverFarm = state.rooms.find(r => r.name === 'Server Farm');
+    if (!serverFarm || serverFarm.assignedDaemons.length === 0) return;
+    
+    console.log('Processing automation...');
   },
 });

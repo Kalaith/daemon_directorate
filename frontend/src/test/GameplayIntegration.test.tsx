@@ -98,6 +98,7 @@ const mockGameStore = {
   spendCredits: vi.fn(),
   engageRival: vi.fn(),
   calculateRivalSuccessChance: vi.fn(() => 75),
+  initializeRivals: vi.fn(),
 };
 
 // Mock the store hook

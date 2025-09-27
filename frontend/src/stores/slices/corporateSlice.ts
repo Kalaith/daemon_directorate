@@ -37,6 +37,14 @@ export interface CorporateActions {
   startEventChain: (chainId: string) => void;
   processEventChains: () => void;
   updateChainStorylineData: (chainId: string, data: Record<string, any>) => void;
+  
+  // Advanced Rival AI
+  processRivalActions: () => void;
+  executeRivalStrategy: (rivalId: string) => void;
+  rivalAttackPlayer: (rivalId: string) => void;
+  rivalEspionage: (rivalId: string) => void;
+  updateRivalStrategy: (rivalId: string) => void;
+  initializeRivals: () => void;
 }
 
 export type CorporateSlice = CorporateState & CorporateActions;
@@ -111,28 +119,200 @@ export const createCorporateSlice: StateCreator<
   },
 
   engageRival: (rivalId: string) => {
-    set(state => ({
-      corporateRivals: state.corporateRivals.map(rival =>
-        rival.id === rivalId ? { ...rival, defeated: true } : rival
+    const state = get();
+    const rival = state.corporateRivals.find(r => r.id === rivalId);
+    if (!rival) return;
+
+    const successChance = get().calculateRivalSuccessChance(rivalId);
+    const success = Math.random() < successChance;
+
+    if (success) {
+      // Defeat the rival
+      set(s => ({
+        corporateRivals: s.corporateRivals.map(r =>
+          r.id === rivalId ? { ...r, defeated: true } : r
+        ),
+      }));
+
+      // Grant rewards
+      const composedState = get();
+      if ('addResources' in composedState) {
+        composedState.addResources(
+          rival.strength * 10,
+          Math.floor(rival.strength / 10),
+          rival.strength / 2
+        );
+      }
+    } else {
+      // Rival counterattack
+      console.log(`Failed to defeat ${rival.name}. Rival grows stronger!`);
+      set(s => ({
+        corporateRivals: s.corporateRivals.map(r =>
+          r.id === rivalId 
+            ? { 
+                ...r, 
+                strength: Math.min(100, r.strength + 5),
+                relationshipWithPlayer: r.relationshipWithPlayer - 10
+              } 
+            : r
+        ),
+      }));
+    }
+  },
+
+  calculateRivalSuccessChance: (rivalId: string) => {
+    const state = get();
+    const rival = state.corporateRivals.find(r => r.id === rivalId);
+    if (!rival) return 0;
+
+    const tierBonus = state.corporateTier.level * 0.1;
+    const strengthPenalty = rival.strength * 0.01;
+    
+    return Math.max(0.1, Math.min(0.9, 0.5 + tierBonus - strengthPenalty));
+  },
+
+  // Advanced Rival AI Methods
+  processRivalActions: () => {
+    const state = get();
+    state.corporateRivals
+      .filter(r => !r.defeated && state.daysPassed > r.lastActionDay + 3)
+      .forEach(rival => {
+        get().executeRivalStrategy(rival.id);
+      });
+  },
+
+  executeRivalStrategy: (rivalId: string) => {
+    const state = get();
+    const rival = state.corporateRivals.find(r => r.id === rivalId);
+    if (!rival) return;
+
+    const composedState = get();
+    
+    switch (rival.currentStrategy.type) {
+      case 'aggressive_expansion':
+        // Try to claim territories/planets
+        if (rival.aiPersonality.aggression > 70) {
+          get().rivalAttackPlayer(rivalId);
+        }
+        break;
+      case 'economic_dominance':
+        // Manipulate markets
+        if ('addResources' in composedState) {
+          composedState.addResources(-50);
+          console.log(`${rival.name} manipulates markets, reducing your income!`);
+        }
+        break;
+      case 'shadow_operations':
+        // Espionage attempts
+        get().rivalEspionage(rivalId);
+        break;
+      case 'diplomatic_manipulation':
+        // Influence player decisions
+        if (rival.aiPersonality.cunning > 80) {
+          console.log(`${rival.name} attempts to influence your corporate decisions`);
+        }
+        break;
+    }
+
+    // Update last action day
+    set(s => ({
+      corporateRivals: s.corporateRivals.map(r =>
+        r.id === rivalId ? { ...r, lastActionDay: s.daysPassed } : r
       ),
     }));
   },
 
-  calculateRivalSuccessChance: (rivalId: string) => {
-    const { corporateRivals } = get();
-    const rival = corporateRivals.find(r => r.id === rivalId);
-    if (!rival) return 0;
+  rivalAttackPlayer: (rivalId: string) => {
+    const state = get();
+    const rival = state.corporateRivals.find(r => r.id === rivalId);
+    if (!rival) return;
 
-    // Simple calculation based on threat level
-    switch (rival.threat) {
-      case 'low':
-        return 80;
-      case 'medium':
-        return 60;
-      case 'high':
-        return 40;
-      default:
-        return 50;
+    const attackSuccess = Math.random() < (rival.strength / 150);
+    const composedState = get();
+    
+    if (attackSuccess && 'addResources' in composedState) {
+      composedState.addResources( 
+        -100 - rival.strength,
+        0,
+        -10
+      );
+      console.log(`${rival.name} launches successful hostile action against your operations!`);
+    }
+  },
+
+  rivalEspionage: (rivalId: string) => {
+    const state = get();
+    const rival = state.corporateRivals.find(r => r.id === rivalId);
+    if (!rival) return;
+
+    const espionageSuccess = Math.random() < (rival.aiPersonality.cunning / 100);
+    
+    if (espionageSuccess) {
+      // Spy on player operations
+      console.log(`${rival.name} successfully gathers intelligence on your operations`);
+      
+      set(s => ({
+        corporateRivals: s.corporateRivals.map(r =>
+          r.id === rivalId 
+            ? { 
+                ...r, 
+                resources: {
+                  ...r.resources,
+                  intelligence: Math.min(100, r.resources.intelligence + 10)
+                }
+              } 
+            : r
+        ),
+      }));
+    }
+  },
+
+  updateRivalStrategy: (rivalId: string) => {
+    const state = get();
+    const rival = state.corporateRivals.find(r => r.id === rivalId);
+    if (!rival) return;
+
+    // AI adapts strategy based on current situation
+    
+    let newStrategy = rival.currentStrategy.type;
+    
+    // Strategy selection based on personality and situation
+    if (rival.relationshipWithPlayer < -50 && rival.aiPersonality.aggression > 60) {
+      newStrategy = 'aggressive_expansion';
+    } else if (rival.resources.intelligence > 60 && rival.aiPersonality.cunning > 70) {
+      newStrategy = 'shadow_operations';
+    } else if (rival.aiPersonality.ambition > 80) {
+      newStrategy = 'economic_dominance';
+    }
+
+    if (newStrategy !== rival.currentStrategy.type) {
+      set(s => ({
+        corporateRivals: s.corporateRivals.map(r =>
+          r.id === rivalId 
+            ? { 
+                ...r,
+                currentStrategy: {
+                  type: newStrategy as any,
+                  priority: Math.floor(Math.random() * 5) + 5,
+                  duration: Math.floor(Math.random() * 20) + 10,
+                  targetPlayer: newStrategy === 'aggressive_expansion' || newStrategy === 'shadow_operations'
+                }
+              } 
+            : r
+        ),
+      }));
+    }
+  },
+
+  initializeRivals: () => {
+    const state = get();
+    if (state.corporateRivals.length === 0) {
+      // Import RIVAL_CORPORATIONS and add them
+      import('../../constants/gameData').then(({ RIVAL_CORPORATIONS }) => {
+        set(() => ({
+          corporateRivals: [...RIVAL_CORPORATIONS]
+        }));
+      });
     }
   },
 

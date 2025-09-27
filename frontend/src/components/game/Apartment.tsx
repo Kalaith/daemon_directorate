@@ -2,9 +2,13 @@
 import React from 'react';
 import { useGameStore } from '../../stores/composedStore';
 import Card from '../ui/Card';
+import AdvancedRooms from './AdvancedRooms';
 
 const Apartment: React.FC = () => {
   const { rooms, upgradeRoom, canAfford } = useGameStore();
+
+  // Filter basic rooms for the existing UI
+  const basicRooms = rooms.filter(room => room.roomType !== 'advanced');
 
   return (
     <div>
@@ -18,8 +22,8 @@ const Apartment: React.FC = () => {
         so much.
       </p>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {rooms.map(room => (
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+        {basicRooms.map(room => (
           <Card
             key={room.id}
             className="bg-daemon-panel border-daemon-secondary hover:border-daemon-primary hover:shadow-infernal transition-all duration-200"
@@ -43,7 +47,7 @@ const Apartment: React.FC = () => {
             </div>
 
             <button
-              onClick={() => upgradeRoom(room.id)}
+              onClick={() => upgradeRoom(room.id || room.name)}
               disabled={!canAfford(room.upgrade_cost)}
               className="w-full px-4 py-3 bg-daemon-primary border border-daemon-primary text-daemon-text-bright font-mono rounded-lg uppercase tracking-wide hover:bg-daemon-primaryHover hover:shadow-infernal disabled:bg-daemon-surface disabled:border-daemon-text-dim disabled:text-daemon-text-dim disabled:cursor-not-allowed transition-all duration-200 font-semibold"
             >
@@ -52,6 +56,9 @@ const Apartment: React.FC = () => {
           </Card>
         ))}
       </div>
+      
+      {/* Advanced Rooms Section */}
+      <AdvancedRooms />
     </div>
   );
 };

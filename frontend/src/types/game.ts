@@ -78,19 +78,35 @@ export interface EquipmentModifier {
 }
 
 export interface Room {
-  id: string;
+  id?: string;
   name: string;
   level: number;
+  maxLevel?: number;
+  efficiency?: number;
+  description?: string;
   bonus: string;
   upgrade_cost: number;
-
-  // Enhanced room system
-  assignedDaemons: string[]; // IDs of daemons assigned to this room
-  maxAssignments: number; // Maximum daemons that can be assigned
-  specialization?: SpecializationType; // Room specialization bonus
-  roomType: 'utility' | 'training' | 'recovery' | 'command' | 'special';
+  assignedDaemons: string[];
+  maxAssignments: number;
+  specialization?: SpecializationType;
+  roomType?: 'utility' | 'operations' | 'living' | 'advanced';
+  unlocked: boolean;
   synergyBonuses?: RoomSynergyBonus[];
-  unlocked: boolean; // Whether the room is available for use
+  
+  // Advanced Room Features
+  advancedFeatures?: {
+    skillDevelopment?: boolean; // Training Hall
+    healingBonus?: number; // Recovery Ward
+    missionPlanning?: boolean; // War Room
+    equipmentInnovation?: boolean; // R&D Lab
+    memorialBonus?: boolean; // Memorial Chamber
+    automation?: boolean; // Server Farm
+  };
+  specialRequirements?: {
+    requiredTier?: number;
+    requiredRooms?: string[];
+    requiredResources?: Partial<GameResources>;
+  };
 }
 
 export interface RoomSynergyBonus {

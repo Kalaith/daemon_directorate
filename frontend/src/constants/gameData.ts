@@ -4,6 +4,7 @@ import type {
   ComplianceTask,
   PrestigeBonus,
   CorporateRival,
+  Room,
 } from '../types/game';
 
 // Game configuration constants
@@ -370,7 +371,7 @@ export const STARTER_DATA: StarterData = {
       upgrade_cost: 300,
       assignedDaemons: [],
       maxAssignments: 3,
-      roomType: 'command',
+      roomType: 'operations',
       unlocked: true,
       synergyBonuses: [
         {
@@ -393,7 +394,7 @@ export const STARTER_DATA: StarterData = {
       assignedDaemons: [],
       maxAssignments: 4,
       specialization: 'Combat',
-      roomType: 'training',
+      roomType: 'operations',
       unlocked: true,
       synergyBonuses: [
         {
@@ -415,7 +416,7 @@ export const STARTER_DATA: StarterData = {
       upgrade_cost: 350,
       assignedDaemons: [],
       maxAssignments: 4,
-      roomType: 'recovery',
+      roomType: 'living',
       unlocked: true,
       synergyBonuses: [
         {
@@ -438,7 +439,7 @@ export const STARTER_DATA: StarterData = {
       assignedDaemons: [],
       maxAssignments: 3,
       specialization: 'Infiltration',
-      roomType: 'command',
+      roomType: 'operations',
       unlocked: false, // Unlocked at Manager tier
       synergyBonuses: [
         {
@@ -466,6 +467,120 @@ export const STARTER_DATA: StarterData = {
     },
   ],
 };
+
+// Advanced rooms (separate from starter data)
+export const ADVANCED_ROOMS: Omit<Room, 'id'>[] = [
+    {
+      name: 'Training Hall',
+      level: 0,
+      bonus: 'Skill Development & Specialization Changes',
+      upgrade_cost: 800,
+      assignedDaemons: [],
+      maxAssignments: 3,
+      roomType: 'advanced',
+      unlocked: false,
+      advancedFeatures: {
+        skillDevelopment: true,
+      },
+      specialRequirements: {
+        requiredTier: 2,
+        requiredRooms: ['Living Quarters'],
+        requiredResources: { bureaucraticLeverage: 3 },
+      },
+    },
+    {
+      name: 'Recovery Ward',
+      level: 0,
+      bonus: 'Faster healing and lifespan extension',
+      upgrade_cost: 1000,
+      assignedDaemons: [],
+      maxAssignments: 2,
+      roomType: 'advanced',
+      unlocked: false,
+      advancedFeatures: {
+        healingBonus: 25,
+      },
+      specialRequirements: {
+        requiredTier: 2,
+        requiredResources: { soulEssence: 2, credits: 500 },
+      },
+    },
+    {
+      name: 'War Room',
+      level: 0,
+      bonus: 'Mission planning bonuses and intelligence',
+      upgrade_cost: 1200,
+      assignedDaemons: [],
+      maxAssignments: 2,
+      specialization: 'Combat',
+      roomType: 'advanced',
+      unlocked: false,
+      advancedFeatures: {
+        missionPlanning: true,
+      },
+      specialRequirements: {
+        requiredTier: 3,
+        requiredRooms: ['Command Center'],
+        requiredResources: { bureaucraticLeverage: 5 },
+      },
+    },
+    {
+      name: 'R&D Lab',
+      level: 0,
+      bonus: 'Equipment innovation and prototyping',
+      upgrade_cost: 1500,
+      assignedDaemons: [],
+      maxAssignments: 2,
+      specialization: 'Sabotage',
+      roomType: 'advanced',
+      unlocked: false,
+      advancedFeatures: {
+        equipmentInnovation: true,
+      },
+      specialRequirements: {
+        requiredTier: 3,
+        requiredRooms: ['Item Forge'],
+        requiredResources: { rawMaterials: 5, soulEssence: 3 },
+      },
+    },
+    {
+      name: 'Memorial Chamber',
+      level: 0,
+      bonus: 'Bonuses from honored deceased daemons',
+      upgrade_cost: 2000,
+      assignedDaemons: [],
+      maxAssignments: 1,
+      roomType: 'advanced',
+      unlocked: false,
+      advancedFeatures: {
+        memorialBonus: true,
+      },
+      specialRequirements: {
+        requiredTier: 4,
+        requiredRooms: ['Living Quarters', 'Command Center'],
+        requiredResources: { soulEssence: 5 },
+      },
+    },
+    {
+      name: 'Server Farm',
+      level: 0,
+      bonus: 'Bureaucratic automation and digital warfare',
+      upgrade_cost: 2500,
+      assignedDaemons: [],
+      maxAssignments: 2,
+      specialization: 'Infiltration',
+      roomType: 'advanced',
+      unlocked: false,
+      advancedFeatures: {
+        automation: true,
+      },
+      specialRequirements: {
+        requiredTier: 4,
+        requiredRooms: ['Command Center', 'Item Forge'],
+        requiredResources: { bureaucraticLeverage: 8, rawMaterials: 4 },
+      },
+    },
+  ];
 
 // Daemon bloodlines for legacy system
 export const DAEMON_BLOODLINES = [

@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useGameStore } from '../../stores/composedStore';
 import Card from '../ui/Card';
+import type { CorporateRival } from '../../types/game';
 
 export const CorporateRivals: React.FC = () => {
   const {
@@ -8,9 +9,19 @@ export const CorporateRivals: React.FC = () => {
     corporateTier,
     engageRival,
     calculateRivalSuccessChance,
+    initializeRivals,
   } = useGameStore();
+  
+  const [selectedRival, setSelectedRival] = useState<string | null>(null);
 
-  const activerivals = (corporateRivals || []).filter(rival => !rival.defeated);
+  React.useEffect(() => {
+    // Initialize rivals if none exist
+    if (corporateRivals.length === 0) {
+      initializeRivals();
+    }
+  }, [corporateRivals.length, initializeRivals]);
+
+  const activeRivals = (corporateRivals || []).filter(rival => !rival.defeated);
   const defeatedRivals = (corporateRivals || []).filter(rival => rival.defeated);
 
   const getThreatColor = (threat: string) => {
@@ -31,7 +42,170 @@ export const CorporateRivals: React.FC = () => {
     return icons[threat as keyof typeof icons] || '⚪';
   };
 
+  const getStrategyIcon = (strategyType: string) => {
+    const icons: Record<string, string> = {
+      aggressive_expansion: '⚔️',
+      economic_dominance: '💰',
+      shadow_operations: '🕵️',
+      diplomatic_manipulation: '🤝',
+      defensive_consolidation: '🛡️',
+    };
+    return icons[strategyType] || '📋';
+  };
+
   const canEngageRivals = corporateTier.level >= 4; // VP tier and above
+
+  const RivalDetailModal = ({ rival }: { rival: CorporateRival }) => (
+    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+      <Card className="bg-gray-900 max-w-2xl w-full m-4 max-h-[80vh] overflow-y-auto">
+        <div className="flex justify-between items-start mb-4">
+          <h3 className="text-xl font-bold text-white">{rival.name}</h3>
+          <button
+            onClick={() => setSelectedRival(null)}
+            className="text-gray-400 hover:text-white text-2xl"
+          >
+            ×
+          </button>
+        </div>
+
+        <div className="space-y-4">
+          {/* AI Personality Analysis */}
+          <div className="bg-gray-800 p-4 rounded">
+            <h4 className="font-semibold text-blue-400 mb-3">AI Personality Profile</h4>
+            <div className="grid grid-cols-2 gap-3">
+              <div>
+                <div className="text-sm text-gray-400">Aggression</div>
+                <div className="w-full bg-gray-700 rounded h-2">
+                  <div 
+                    className="h-2 bg-red-500 rounded" 
+                    style={{ width: `${rival.aiPersonality.aggression}%` }}
+                  />
+                </div>
+                <div className="text-xs text-gray-400">{rival.aiPersonality.aggression}/100</div>
+              </div>
+              <div>
+                <div className="text-sm text-gray-400">Cunning</div>
+                <div className="w-full bg-gray-700 rounded h-2">
+                  <div 
+                    className="h-2 bg-purple-500 rounded" 
+                    style={{ width: `${rival.aiPersonality.cunning}%` }}
+                  />
+                </div>
+                <div className="text-xs text-gray-400">{rival.aiPersonality.cunning}/100</div>
+              </div>
+              <div>
+                <div className="text-sm text-gray-400">Ambition</div>
+                <div className="w-full bg-gray-700 rounded h-2">
+                  <div 
+                    className="h-2 bg-yellow-500 rounded" 
+                    style={{ width: `${rival.aiPersonality.ambition}%` }}
+                  />
+                </div>
+                <div className="text-xs text-gray-400">{rival.aiPersonality.ambition}/100</div>
+              </div>
+              <div>
+                <div className="text-sm text-gray-400">Adaptability</div>
+                <div className="w-full bg-gray-700 rounded h-2">
+                  <div 
+                    className="h-2 bg-green-500 rounded" 
+                    style={{ width: `${rival.aiPersonality.adaptability}%` }}
+                  />
+                </div>
+                <div className="text-xs text-gray-400">{rival.aiPersonality.adaptability}/100</div>
+              </div>
+            </div>
+          </div>
+
+          {/* Current Strategy */}
+          <div className="bg-gray-800 p-4 rounded">
+            <h4 className="font-semibold text-orange-400 mb-3">Current Strategy</h4>
+            <div className="flex items-center space-x-2 mb-2">
+              <span className="text-2xl">{getStrategyIcon(rival.currentStrategy.type)}</span>
+              <span className="text-white font-medium">
+                {rival.currentStrategy.type.replace('_', ' ').toUpperCase()}
+              </span>
+            </div>
+            <div className="text-sm text-gray-400 mb-2">
+              Priority: {rival.currentStrategy.priority}/10 | Duration: {rival.currentStrategy.duration} days
+            </div>
+            <div className="text-sm text-gray-300">
+              {rival.currentStrategy.targetPlayer && '🎯 Targeting player operations'}
+            </div>
+          </div>
+
+          {/* Resources & Assets */}
+          <div className="bg-gray-800 p-4 rounded">
+            <h4 className="font-semibold text-green-400 mb-3">Corporate Assets</h4>
+            <div className="grid grid-cols-3 gap-4 text-center">
+              <div>
+                <div className="text-lg font-bold text-green-400">${rival.resources.credits}</div>
+                <div className="text-xs text-gray-400">Credits</div>
+              </div>
+              <div>
+                <div className="text-lg font-bold text-blue-400">{rival.resources.influence}</div>
+                <div className="text-xs text-gray-400">Influence</div>
+              </div>
+              <div>
+                <div className="text-lg font-bold text-purple-400">{rival.resources.intelligence}</div>
+                <div className="text-xs text-gray-400">Intelligence</div>
+              </div>
+            </div>
+          </div>
+
+          {/* Active Operations */}
+          <div className="bg-gray-800 p-4 rounded">
+            <h4 className="font-semibold text-red-400 mb-3">Active Operations</h4>
+            {rival.activeOperations.length > 0 ? (
+              <div className="space-y-2">
+                {rival.activeOperations.map((op, index) => (
+                  <div key={index} className="bg-gray-700 p-2 rounded text-sm">
+                    <div className="flex justify-between items-start">
+                      <span className="text-white font-medium">{op.type.replace('_', ' ')}</span>
+                      <span className="text-gray-400">{op.duration}d</span>
+                    </div>
+                    <div className="text-gray-400 text-xs">Target: {op.targetId}</div>
+                    <div className="text-xs mt-1">
+                      Success Chance: <span className="text-yellow-400">{op.successChance}%</span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="text-gray-400 text-sm">No active operations</div>
+            )}
+          </div>
+
+          {/* Relationship Status */}
+          <div className="bg-gray-800 p-4 rounded">
+            <h4 className="font-semibold text-gray-300 mb-3">Relationship Status</h4>
+            <div className="flex items-center space-x-2">
+              <div className="flex-1 bg-gray-700 rounded h-3">
+                <div 
+                  className={`h-3 rounded transition-all duration-300 ${
+                    rival.relationshipWithPlayer > 0 
+                      ? 'bg-green-500' 
+                      : rival.relationshipWithPlayer < -25
+                      ? 'bg-red-500'
+                      : 'bg-yellow-500'
+                  }`}
+                  style={{ 
+                    width: `${Math.abs(rival.relationshipWithPlayer)}%`,
+                    marginLeft: rival.relationshipWithPlayer < 0 ? 'auto' : '0'
+                  }}
+                />
+              </div>
+              <span className={`text-sm font-medium ${
+                rival.relationshipWithPlayer > 0 ? 'text-green-400' : 
+                rival.relationshipWithPlayer < -25 ? 'text-red-400' : 'text-yellow-400'
+              }`}>
+                {rival.relationshipWithPlayer}/100
+              </span>
+            </div>
+          </div>
+        </div>
+      </Card>
+    </div>
+  );
 
   return (
     <Card className="bg-gradient-to-br from-orange-900 to-red-900">
@@ -53,13 +227,13 @@ export const CorporateRivals: React.FC = () => {
       ) : (
         <div className="space-y-6">
           {/* Active Rivals */}
-          {activerivals.length > 0 ? (
+          {activeRivals.length > 0 ? (
             <div>
               <h3 className="text-lg font-semibold text-red-300 mb-3">
                 🎯 Active Threats
               </h3>
               <div className="space-y-3">
-                {activerivals.map(rival => (
+                {activeRivals.map((rival: any) => (
                   <div
                     key={rival.id}
                     className="p-4 rounded-lg border-2 border-red-500 bg-red-500/10"
@@ -74,6 +248,15 @@ export const CorporateRivals: React.FC = () => {
                           <p className="text-sm text-gray-300 mb-2">
                             Specialty: {rival.specialty}
                           </p>
+                          
+                          {/* Enhanced Info */}
+                          <div className="flex items-center space-x-2 text-xs mb-2">
+                            <span className="text-gray-400">Strategy:</span>
+                            <span className="text-orange-300">
+                              {getStrategyIcon(rival.currentStrategy?.type)} {rival.currentStrategy?.type?.replace('_', ' ')}
+                            </span>
+                          </div>
+                          
                           <div className="flex items-center space-x-4 text-sm">
                             <div className="flex items-center space-x-1">
                               <span>Threat Level:</span>
@@ -88,11 +271,23 @@ export const CorporateRivals: React.FC = () => {
                                 {rival.strength}
                               </span>
                             </div>
+                            <div>
+                              <span className="text-gray-400">Relationship:</span>
+                              <span className={rival.relationshipWithPlayer > 0 ? 'text-green-400' : 'text-red-400'}>
+                                {rival.relationshipWithPlayer}
+                              </span>
+                            </div>
                           </div>
                         </div>
                       </div>
 
-                      <div className="text-right">
+                      <div className="text-right space-y-2">
+                        <button
+                          onClick={() => setSelectedRival(rival.id)}
+                          className="px-3 py-1 bg-blue-600 hover:bg-blue-500 text-white text-sm rounded transition-colors mr-2"
+                        >
+                          Analyze
+                        </button>
                         <button
                           onClick={() => engageRival(rival.id)}
                           className="px-3 py-1 bg-orange-600 hover:bg-orange-500 text-white text-sm rounded transition-colors"
@@ -108,41 +303,52 @@ export const CorporateRivals: React.FC = () => {
                       </div>
                     </div>
 
-                    {/* Threat Assessment */}
+                    {/* AI Status Display */}
                     <div className="mt-3 p-3 bg-gray-800 rounded">
-                      <h5 className="text-sm font-medium text-gray-300 mb-2">
-                        Threat Assessment:
-                      </h5>
-                      <div className="w-full bg-gray-700 rounded-full h-2">
-                        <div
-                          className={`h-2 rounded-full ${
-                            rival.threat === 'high'
-                              ? 'bg-red-500'
-                              : rival.threat === 'medium'
-                                ? 'bg-yellow-500'
-                                : 'bg-green-500'
-                          }`}
-                          style={{ width: `${(rival.strength / 100) * 100}%` }}
-                        />
-                      </div>
-                      <div className="flex justify-between text-xs text-gray-400 mt-1">
-                        <span>Corporate Influence</span>
-                        <span>{rival.strength}/100</span>
+                      <div className="grid grid-cols-4 gap-2 text-xs">
+                        <div>
+                          <span className="text-red-400">Aggr:</span> {rival.aiPersonality?.aggression || 50}
+                        </div>
+                        <div>
+                          <span className="text-purple-400">Cun:</span> {rival.aiPersonality?.cunning || 50}
+                        </div>
+                        <div>
+                          <span className="text-yellow-400">Amb:</span> {rival.aiPersonality?.ambition || 50}
+                        </div>
+                        <div>
+                          <span className="text-green-400">Adp:</span> {rival.aiPersonality?.adaptability || 50}
+                        </div>
                       </div>
                     </div>
 
-                    {/* Rivalry Effects */}
+                    {/* Active Operations Preview */}
+                    {rival.activeOperations?.length > 0 && (
+                      <div className="mt-3 p-3 bg-red-900/30 rounded">
+                        <h5 className="text-sm font-medium text-red-300 mb-2">
+                          🚨 Active Operations: {rival.activeOperations.length}
+                        </h5>
+                        <div className="text-xs text-gray-300">
+                          {rival.activeOperations.slice(0, 2).map((op: any, index: number) => (
+                            <div key={index}>• {op.type.replace('_', ' ')} (Target: {op.targetId})</div>
+                          ))}
+                          {rival.activeOperations.length > 2 && (
+                            <div className="text-gray-400">... and {rival.activeOperations.length - 2} more</div>
+                          )}
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Market Pressure Effects */}
                     <div className="mt-3 p-3 bg-red-900/30 rounded">
                       <h5 className="text-sm font-medium text-red-300 mb-2">
                         Market Pressure Effects:
                       </h5>
                       <ul className="text-xs text-gray-300 space-y-1">
                         <li>
-                          • -5% mission success rate due to corporate
-                          interference
+                          • -{rival.strength / 20}% mission success rate due to corporate interference
                         </li>
                         <li>
-                          • +10% equipment costs due to supply chain disruption
+                          • +{rival.strength / 10}% equipment costs due to supply chain disruption
                         </li>
                         <li>• Periodic hostile takeover attempts</li>
                       </ul>
@@ -170,7 +376,7 @@ export const CorporateRivals: React.FC = () => {
                 🏆 Conquered Corporations
               </h3>
               <div className="space-y-2">
-                {defeatedRivals.map(rival => (
+                {defeatedRivals.map((rival: any) => (
                   <div
                     key={rival.id}
                     className="p-3 rounded-lg border border-green-500 bg-green-500/10"
@@ -199,22 +405,6 @@ export const CorporateRivals: React.FC = () => {
             </div>
           )}
 
-          {/* Corporate Warfare Tips */}
-          <div className="mt-6 p-4 bg-gray-800 rounded-lg">
-            <h4 className="font-semibold text-orange-300 mb-2">
-              📋 Corporate Warfare Guide
-            </h4>
-            <ul className="text-sm text-gray-300 space-y-1">
-              <li>
-                • Rival corporations apply market pressure effects to your
-                operations
-              </li>
-              <li>• Higher tier unlocks direct engagement options</li>
-              <li>• Defeating rivals grants corporate acquisition bonuses</li>
-              <li>• Some endgame paths require defeating multiple rivals</li>
-            </ul>
-          </div>
-
           {/* Statistics */}
           <div className="p-4 bg-gray-800 rounded-lg">
             <h4 className="font-semibold text-gray-300 mb-3">
@@ -223,7 +413,7 @@ export const CorporateRivals: React.FC = () => {
             <div className="grid grid-cols-3 gap-4 text-center">
               <div>
                 <div className="text-lg font-bold text-red-300">
-                  {activerivals.length}
+                  {activeRivals.length}
                 </div>
                 <div className="text-xs text-gray-400">Active Rivals</div>
               </div>
@@ -236,7 +426,7 @@ export const CorporateRivals: React.FC = () => {
               <div>
                 <div className="text-lg font-bold text-orange-300">
                   {Math.round(
-                    (defeatedRivals.length / corporateRivals.length) * 100
+                    (defeatedRivals.length / (corporateRivals.length || 1)) * 100
                   )}
                   %
                 </div>
@@ -244,8 +434,33 @@ export const CorporateRivals: React.FC = () => {
               </div>
             </div>
           </div>
+
+          {/* Corporate Warfare Tips */}
+          <div className="mt-6 p-4 bg-gray-800 rounded-lg">
+            <h4 className="font-semibold text-orange-300 mb-2">
+              📋 Corporate Warfare Guide
+            </h4>
+            <ul className="text-sm text-gray-300 space-y-1">
+              <li>
+                • Rival corporations have dynamic AI that adapts to your actions
+              </li>
+              <li>• Each rival has unique personality traits affecting their behavior</li>
+              <li>• Monitor their active operations to anticipate threats</li>
+              <li>• Building positive relationships can reduce hostile activities</li>
+              <li>• Defeating rivals grants significant corporate acquisition bonuses</li>
+            </ul>
+          </div>
         </div>
+      )}
+
+      {/* Rival Detail Modal */}
+      {selectedRival && (
+        <RivalDetailModal 
+          rival={corporateRivals.find(r => r.id === selectedRival)!} 
+        />
       )}
     </Card>
   );
 };
+
+export default CorporateRivals;
