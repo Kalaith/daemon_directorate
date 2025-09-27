@@ -107,26 +107,41 @@ export const createApartmentSlice: StateCreator<
   totalRoomUpgrades: 0,
 
   // Actions
-  upgradeRoom: (roomId: string) => {
-    set(state => {
-      const updatedRooms = state.rooms.map(room => {
-        if (room.id === roomId) {
-          const newLevel = room.level + 1;
-          return {
-            ...room,
-            level: newLevel,
-            unlocked: true,
-            upgrade_cost: Math.floor(room.upgrade_cost * 1.5), // Increase cost
-          };
-        }
-        return room;
-      });
+    upgradeRoom: (roomId: string) => {
+    const state = get();
+    const composedState = get();
+    const room = state.rooms.find(r => r.id === roomId || r.name === roomId);
+    
+    if (!room) {
+      console.warn('Room not found:', roomId);
+      return;
+    }
+    
+    const canAfford = 'canAfford' in composedState ? composedState.canAfford(room.upgrade_cost) : false;
+    if (!canAfford) {
+      console.warn('Cannot afford room upgrade:', room.upgrade_cost);
+      return;
+    }
+    
+    // Spend credits
+    if ('spendCredits' in composedState) {
+      const success = composedState.spendCredits(room.upgrade_cost);
+      if (!success) {
+        console.warn('Failed to spend credits for room upgrade');
+        return;
+      }
+    }
 
-      return {
-        rooms: updatedRooms,
-        totalRoomUpgrades: state.totalRoomUpgrades + 1,
-      };
-    });
+    set(state => ({
+      rooms: state.rooms.map(r => 
+        (r.id === roomId || r.name === roomId) 
+          ? { ...r, level: r.level + 1, upgrade_cost: Math.floor(r.upgrade_cost * 1.5) }
+          : r
+      ),
+      totalRoomUpgrades: state.totalRoomUpgrades + 1,
+    }));
+    
+    console.log('Room upgraded successfully:', roomId);
   },
 
   assignDaemonToRoom: (daemonId: string, roomId: string) => {

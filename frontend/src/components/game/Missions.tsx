@@ -1,23 +1,9 @@
 // components/game/Missions.tsx
 import React from 'react';
 import { useGameStore } from '../../stores/composedStore';
-import { Card, Badge } from '../ui/DesignSystem';
 
 const Missions: React.FC = () => {
   const { planets, selectPlanetForMission } = useGameStore();
-
-  const getDifficultyVariant = (difficulty: string) => {
-    switch (difficulty) {
-      case 'Easy':
-        return 'easy';
-      case 'Medium':
-        return 'medium';
-      case 'Hard':
-        return 'hard';
-      default:
-        return 'neutral';
-    }
-  };
 
   return (
     <div>
@@ -31,30 +17,30 @@ const Missions: React.FC = () => {
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {planets.map(planet => (
-          <Card
+          <div
             key={planet.id}
-            className="bg-daemon-panel border-daemon-secondary hover:border-daemon-primary hover:shadow-infernal transition-all duration-200"
+            className="bg-daemon-panel border border-daemon-secondary hover:border-daemon-primary hover:shadow-lg transition-all duration-200 rounded-lg p-6"
           >
             <div className="flex justify-between items-start mb-6">
               <h3 className="font-header font-bold text-xl text-daemon-text-bright">
                 {planet.name}
               </h3>
-              <Badge
-                variant={
-                  getDifficultyVariant(planet.difficulty) as
-                    | 'easy'
-                    | 'medium'
-                    | 'hard'
-                    | 'neutral'
-                }
+              <span
+                className={`px-3 py-1 rounded-lg text-xs font-mono font-bold uppercase tracking-wide ${
+                  planet.difficulty === 'Easy'
+                    ? 'bg-green-900/50 text-green-400 border border-green-500/30'
+                    : planet.difficulty === 'Medium'
+                    ? 'bg-yellow-900/50 text-yellow-400 border border-yellow-500/30'
+                    : 'bg-red-900/50 text-red-400 border border-red-500/30'
+                }`}
               >
                 {planet.difficulty}
-              </Badge>
+              </span>
             </div>
 
             <div className="space-y-4 mb-6">
               <div className="flex justify-between">
-                <span className="text-daemon-text-muted font-mono uppercase tracking-wide">
+                <span className="text-daemon-text-muted font-mono uppercase tracking-wide text-sm">
                   Type:
                 </span>
                 <span className="text-daemon-text-bright font-mono font-semibold">
@@ -62,7 +48,7 @@ const Missions: React.FC = () => {
                 </span>
               </div>
               <div className="flex justify-between">
-                <span className="text-daemon-text-muted font-mono uppercase tracking-wide">
+                <span className="text-daemon-text-muted font-mono uppercase tracking-wide text-sm">
                   Resistance:
                 </span>
                 <span className="text-daemon-text-bright font-mono font-semibold">
@@ -71,7 +57,7 @@ const Missions: React.FC = () => {
               </div>
               {planet.conquered && (
                 <div className="flex justify-center">
-                  <span className="px-4 py-2 bg-daemon-success border border-daemon-success/50 text-daemon-text-bright font-mono font-bold text-sm rounded-lg shadow-gold">
+                  <span className="px-4 py-2 bg-daemon-success/20 border border-daemon-success text-daemon-text-bright font-mono font-bold text-sm rounded-lg">
                     ✓ CONQUERED
                   </span>
                 </div>
@@ -91,13 +77,13 @@ const Missions: React.FC = () => {
               onClick={() => selectPlanetForMission(planet.id)}
               className={`w-full px-4 py-3 rounded-lg font-mono font-semibold uppercase tracking-wide transition-all duration-200 border ${
                 planet.conquered
-                  ? 'bg-daemon-warning border-daemon-warning text-daemon-text-bright hover:bg-daemon-warning/80 hover:shadow-gold'
-                  : 'bg-daemon-primary border-daemon-primary text-daemon-text-bright hover:bg-daemon-primaryHover hover:shadow-infernal'
+                  ? 'bg-daemon-warning/20 border-daemon-warning text-daemon-text-bright hover:bg-daemon-warning/30'
+                  : 'bg-daemon-primary border-daemon-primary text-daemon-text-bright hover:bg-daemon-primaryHover hover:shadow-lg'
               }`}
             >
               {planet.conquered ? 'Return Mission' : 'Deploy Team'}
             </button>
-          </Card>
+          </div>
         ))}
       </div>
     </div>

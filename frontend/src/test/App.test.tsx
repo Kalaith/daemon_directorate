@@ -4,7 +4,7 @@ import { render, screen } from '@testing-library/react';
 import App from '../App';
 
 // Mock the game store
-vi.mock('../stores/useGameStore', () => ({
+vi.mock('../stores/composedStore', () => ({
   useGameStore: () => ({
     // UI State
     currentTab: 'dashboard',
@@ -85,6 +85,25 @@ vi.mock('../stores/useGameStore', () => ({
     triggerRandomEvent: vi.fn(),
     meetsRequirements: vi.fn().mockReturnValue(false),
   }),
+  useCorporate: () => ({
+    corporateTier: {
+      id: 'associate',
+      name: 'Associate',
+      level: 1,
+      requirements: {},
+      unlocks: {
+        resources: [],
+        mechanics: [],
+        apartmentRooms: [],
+        eventTypes: [],
+      },
+    },
+    corporateRivals: [],
+    initializeRivals: vi.fn(),
+    engageRival: vi.fn(),
+    calculateRivalSuccessChance: vi.fn(),
+    processRivalActions: vi.fn(),
+  }),
 }));
 
 describe('App Component', () => {
@@ -118,6 +137,6 @@ describe('App Component', () => {
 
   it('renders game controls', () => {
     render(<App />);
-    expect(screen.getByText('Save Progress')).toBeDefined();
+    expect(screen.getByText('Reset Game')).toBeDefined();
   });
 });

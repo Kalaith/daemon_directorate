@@ -165,6 +165,17 @@ export const useUI = () =>
     addNotification: state.addNotification,
   }));
 
+export const useCorporate = () =>
+  useGameStore(state => ({
+    corporateTier: state.corporateTier,
+    promotionProgress: state.promotionProgress,
+    corporateRivals: state.corporateRivals,
+    initializeRivals: state.initializeRivals,
+    engageRival: state.engageRival,
+    calculateRivalSuccessChance: state.calculateRivalSuccessChance,
+    processRivalActions: state.processRivalActions,
+  }));
+
 // Store actions for external use
 export const gameActions = {
   initializeGame: () => useGameStore.getState().initializeGame(),

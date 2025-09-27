@@ -105,6 +105,12 @@ export const createMissionSlice: StateCreator<
       currentPlanet: planetId,
       selectedMissionType: missionType,
     });
+    
+    // Open the mission modal for team selection
+    const composedState = get();
+    if ('setShowMissionModal' in composedState) {
+      (composedState.setShowMissionModal as any)(true);
+    }
   },
 
   setCurrentPlanet: (planetId: string) => {

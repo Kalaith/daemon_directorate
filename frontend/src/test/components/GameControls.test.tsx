@@ -5,8 +5,6 @@ import GameControls from '../../components/ui/GameControls';
 
 // Mock the game store
 const mockStore = {
-  saveGame: vi.fn(),
-  loadGame: vi.fn(),
   resetGame: vi.fn(),
 };
 
@@ -14,43 +12,31 @@ vi.mock('../../stores/composedStore', () => ({
   useGameStore: () => mockStore,
 }));
 
+// Mock window.confirm
+Object.defineProperty(global, 'confirm', {
+  value: vi.fn(() => true),
+  writable: true
+});
+
 describe('GameControls Component', () => {
   beforeEach(() => {
     vi.clearAllMocks();
     // Reset window.confirm mock
-    vi.mocked(window.confirm).mockReturnValue(true);
+    (global.confirm as any).mockReturnValue(true);
   });
 
-  it('renders all control buttons', () => {
+  it('renders reset button only', () => {
     render(<GameControls />);
 
-    expect(screen.getByText('Save Progress')).toBeDefined();
-    expect(screen.getByText('Load Progress')).toBeDefined();
-    expect(screen.getByText('New Corporate Restructure')).toBeDefined();
-  });
-
-  it('calls saveGame when save button is clicked', () => {
-    render(<GameControls />);
-
-    const saveButton = screen.getByText('Save Progress');
-    fireEvent.click(saveButton);
-
-    expect(mockStore.saveGame).toHaveBeenCalledOnce();
-  });
-
-  it('calls loadGame when load button is clicked', () => {
-    render(<GameControls />);
-
-    const loadButton = screen.getByText('Load Progress');
-    fireEvent.click(loadButton);
-
-    expect(mockStore.loadGame).toHaveBeenCalledOnce();
+    expect(screen.getByText('Reset Game')).toBeDefined();
+    expect(screen.queryByText('Save Progress')).toBeNull();
+    expect(screen.queryByText('Load Progress')).toBeNull();
   });
 
   it('calls resetGame when reset button is clicked and confirmed', () => {
     render(<GameControls />);
 
-    const resetButton = screen.getByText('New Corporate Restructure');
+    const resetButton = screen.getByText('Reset Game');
     fireEvent.click(resetButton);
 
     expect(window.confirm).toHaveBeenCalledWith(
@@ -63,7 +49,7 @@ describe('GameControls Component', () => {
     vi.mocked(window.confirm).mockReturnValue(false);
     render(<GameControls />);
 
-    const resetButton = screen.getByText('New Corporate Restructure');
+    const resetButton = screen.getByText('Reset Game');
     fireEvent.click(resetButton);
 
     expect(window.confirm).toHaveBeenCalled();
@@ -73,9 +59,9 @@ describe('GameControls Component', () => {
   it('has correct styling classes', () => {
     render(<GameControls />);
 
-    const container = screen.getByText('Save Progress').parentElement;
-    expect(container?.className).toContain('fixed');
-    expect(container?.className).toContain('bottom-4');
-    expect(container?.className).toContain('right-4');
+    const resetButton = screen.getByText('Reset Game');
+    expect(resetButton.className).toContain('bg-daemon-danger');
+    expect(resetButton.className).toContain('text-daemon-text-bright');
+    expect(resetButton.className).toContain('font-mono');
   });
 });

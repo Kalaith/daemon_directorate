@@ -89,8 +89,10 @@ export const createDaemonSlice: StateCreator<
       const newSelection = new Set(state.selectedDaemons);
       if (newSelection.has(daemonId)) {
         newSelection.delete(daemonId);
+        console.log('Deselected daemon:', daemonId, 'Total selected:', newSelection.size);
       } else {
         newSelection.add(daemonId);
+        console.log('Selected daemon:', daemonId, 'Total selected:', newSelection.size);
       }
       return { selectedDaemons: newSelection };
     });

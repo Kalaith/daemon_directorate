@@ -312,6 +312,8 @@ export const createCorporateSlice: StateCreator<
         set(() => ({
           corporateRivals: [...RIVAL_CORPORATIONS]
         }));
+      }).catch(err => {
+        console.warn('Failed to initialize rivals:', err);
       });
     }
   },

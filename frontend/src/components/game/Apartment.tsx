@@ -10,6 +10,25 @@ const Apartment: React.FC = () => {
   // Filter basic rooms for the existing UI
   const basicRooms = rooms.filter(room => room.roomType !== 'advanced');
 
+  const handleRoomUpgrade = (room: any) => {
+    console.log('Attempting to upgrade room:', room.name, 'Cost:', room.upgrade_cost);
+    console.log('Can afford?', canAfford(room.upgrade_cost));
+    
+    if (!canAfford(room.upgrade_cost)) {
+      console.warn('Cannot afford room upgrade');
+      alert('Insufficient credits for this upgrade');
+      return;
+    }
+    
+    try {
+      upgradeRoom(room.id || room.name);
+      console.log('Room upgrade attempted');
+    } catch (error) {
+      console.error('Room upgrade failed:', error);
+      alert('Room upgrade failed: ' + error);
+    }
+  };
+
   return (
     <div>
       <h2 className="text-2xl font-header font-bold mb-6 text-daemon-text-bright uppercase tracking-wide">
@@ -47,7 +66,7 @@ const Apartment: React.FC = () => {
             </div>
 
             <button
-              onClick={() => upgradeRoom(room.id || room.name)}
+              onClick={() => handleRoomUpgrade(room)}
               disabled={!canAfford(room.upgrade_cost)}
               className="w-full px-4 py-3 bg-daemon-primary border border-daemon-primary text-daemon-text-bright font-mono rounded-lg uppercase tracking-wide hover:bg-daemon-primaryHover hover:shadow-infernal disabled:bg-daemon-surface disabled:border-daemon-text-dim disabled:text-daemon-text-dim disabled:cursor-not-allowed transition-all duration-200 font-semibold"
             >

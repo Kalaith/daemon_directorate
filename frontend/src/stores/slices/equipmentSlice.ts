@@ -1,6 +1,10 @@
-// stores/slices/equipmentSlice.ts - Equipment management and crafting
+// stores/slices/equipmentSlice.ts - Equipment management and crafting system
 import type { StateCreator } from 'zustand';
 import type { Equipment } from '../../types/game';
+import { STARTER_DATA } from '../../constants/gameData';
+
+// Helper function
+const generateId = () => Math.random().toString(36).substring(2, 15);
 
 export interface EquipmentState {
   equipment: Equipment[];
@@ -10,6 +14,7 @@ export interface EquipmentState {
 
 export interface EquipmentActions {
   repairEquipment: (equipmentId: string) => void;
+  craftEquipment: (equipmentId: string) => boolean;
   craftItem: (itemType: string) => void;
   assignEquipment: (equipmentId: string, daemonId: string) => void;
   unassignEquipment: (equipmentId: string) => void;
@@ -78,92 +83,59 @@ export const createEquipmentSlice: StateCreator<
     }));
   },
 
-  craftItem: (itemType: string) => {
-    const newEquipmentMap: Record<string, Omit<Equipment, 'id'>> = {
-      briefcase: {
-        name: 'Standard Issue Briefcase',
-        type: 'Infiltration',
-        durability: 100,
-        ability: 'Blend In (+15 stealth)',
-        assignedTo: null,
-        generation: 1,
-        legacyBonus: 0,
-        history: ['Crafted in Equipment Depot'],
-        rarity: 'Common',
-      },
-      tie: {
-        name: 'Corporate Tie of Binding',
-        type: 'Combat',
-        durability: 100,
-        ability: 'Intimidate (+10 combat)',
-        assignedTo: null,
-        generation: 1,
-        legacyBonus: 0,
-        history: ['Crafted in Equipment Depot'],
-        rarity: 'Common',
-      },
-      calculator: {
-        name: 'Cursed Calculator',
-        type: 'Sabotage',
-        durability: 100,
-        ability: 'Data Corruption (+20 sabotage)',
-        assignedTo: null,
-        generation: 1,
-        legacyBonus: 0,
-        history: ['Forged with raw materials'],
-        rarity: 'Cursed',
-      },
-      // Enhanced Equipment
-      executive_briefcase: {
-        name: 'Executive Briefcase',
-        type: 'Infiltration',
-        durability: 120,
-        ability: 'Corporate Authority (+20 infiltration)',
-        assignedTo: null,
-        generation: 1,
-        legacyBonus: 0,
-        history: ['Executive-grade equipment'],
-        rarity: 'Rare',
-        setName: 'Corporate Executive Suite',
-      },
-      power_tie: {
-        name: 'Power Tie',
-        type: 'Combat',
-        durability: 115,
-        ability: 'Executive Presence (+25 combat)',
-        assignedTo: null,
-        generation: 1,
-        legacyBonus: 0,
-        history: ['Power-infused corporate attire'],
-        rarity: 'Rare',
-        setName: 'Corporate Executive Suite',
-      },
-      golden_calculator: {
-        name: 'Golden Calculator',
-        type: 'Sabotage',
-        durability: 130,
-        ability: 'Financial Manipulation (+30 sabotage)',
-        assignedTo: null,
-        generation: 1,
-        legacyBonus: 0,
-        history: ['Legendary calculation device'],
-        rarity: 'Legendary',
-        setName: 'Corporate Executive Suite',
-      },
-    };
+  craftEquipment: (equipmentId: string) => {
+    const composedState = get();
+    
+    // Find equipment template
+    const template = STARTER_DATA.starter_equipment.find(eq => eq.name === equipmentId);
+    if (!template) {
+      console.warn('Equipment template not found:', equipmentId);
+      return false;
+    }
 
-    const template = newEquipmentMap[itemType];
-    if (!template) return;
+    const craftingCost = 50; // Default cost
+    const canAfford = 'canAfford' in composedState ? (composedState.canAfford as any)(craftingCost) : false;
+    
+    if (!canAfford) {
+      console.warn('Cannot afford crafting cost:', craftingCost);
+      return false;
+    }
+
+    // Actually spend the credits
+    if ('spendCredits' in composedState) {
+      const success = (composedState.spendCredits as any)(craftingCost);
+      if (!success) {
+        console.warn('Failed to spend credits for crafting');
+        return false;
+      }
+    }
 
     const newEquipment: Equipment = {
-      ...template,
-      id: `${itemType}_${Date.now()}`,
+      id: generateId(),
+      name: template.name,
+      type: template.type,
+      ability: template.ability,
+      assignedTo: null,
+      rarity: template.rarity || 'Common',
+      durability: template.durability || 100,
+      generation: 0,
+      legacyBonus: 0,
+      history: [],
+      setBonuses: template.setBonuses
     };
 
     set(state => ({
       equipment: [...state.equipment, newEquipment],
       totalEquipmentCrafted: state.totalEquipmentCrafted + 1,
     }));
+
+    console.log('Equipment crafted successfully:', equipmentId, 'Cost:', craftingCost);
+    return true;
+  },
+
+  craftItem: (itemType: string) => {
+    // Legacy function - delegate to craftEquipment
+    get().craftEquipment(itemType);
   },
 
   assignEquipment: (equipmentId: string, daemonId: string) => {

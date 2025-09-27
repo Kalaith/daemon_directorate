@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useGameStore } from '../../stores/composedStore';
+import { useCorporate } from '../../stores/composedStore';
 import Card from '../ui/Card';
 import type { CorporateRival } from '../../types/game';
 
@@ -10,16 +10,21 @@ export const CorporateRivals: React.FC = () => {
     engageRival,
     calculateRivalSuccessChance,
     initializeRivals,
-  } = useGameStore();
+  } = useCorporate();
   
   const [selectedRival, setSelectedRival] = useState<string | null>(null);
 
   React.useEffect(() => {
     // Initialize rivals if none exist
-    if (corporateRivals.length === 0) {
-      initializeRivals();
+    if (corporateRivals.length === 0 && initializeRivals) {
+      console.log('Initializing rivals...');
+      try {
+        initializeRivals();
+      } catch (error) {
+        console.warn('Failed to initialize rivals:', error);
+      }
     }
-  }, [corporateRivals.length, initializeRivals]);
+  }, [corporateRivals.length]); // Remove initializeRivals from deps to prevent infinite loop
 
   const activeRivals = (corporateRivals || []).filter(rival => !rival.defeated);
   const defeatedRivals = (corporateRivals || []).filter(rival => rival.defeated);
