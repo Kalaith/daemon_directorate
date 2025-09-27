@@ -52,6 +52,29 @@ export interface Equipment {
   generation: number; // How many times it's been inherited
   legacyBonus: number; // Accumulated bonus from inheritance
   history: string[]; // Notable achievements with this equipment
+
+  // Enhanced Equipment System
+  rarity: 'Common' | 'Uncommon' | 'Rare' | 'Legendary' | 'Cursed';
+  setName?: string; // For set bonuses
+  setBonuses?: EquipmentSetBonus[];
+  specialModifiers?: EquipmentModifier[];
+}
+
+export interface EquipmentSetBonus {
+  setName: string;
+  requiredPieces: number;
+  activeBonus: boolean;
+  effects: {
+    type: string;
+    value: number;
+    description: string;
+  }[];
+}
+
+export interface EquipmentModifier {
+  type: 'mission_speed' | 'durability_bonus' | 'experience_bonus' | 'resource_bonus';
+  value: number;
+  description: string;
 }
 
 export interface Room {
@@ -109,10 +132,29 @@ export interface Mission {
     | 'sabotage'
     | 'diplomacy'
     | 'reconnaissance'
-    | 'extraction';
+    | 'extraction'
+    | 'infiltration_specialist'
+    | 'combat_specialist'
+    | 'multi_phase'
+    | 'chain_mission';
   objectives?: MissionObjective[];
   consequences?: MissionConsequence[];
   procedural?: boolean; // Generated based on conquered territories
+  
+  // Enhanced Mission System
+  chainId?: string; // For linked mission sequences
+  prerequisiteMissions?: string[]; // Required completed missions
+  specializedRequirements?: {
+    daemonCount?: { min: number; max?: number };
+    requiredSpecializations?: SpecializationType[];
+    requiredEquipmentSets?: string[];
+    forbiddenSpecializations?: SpecializationType[];
+  };
+  branchingOutcomes?: {
+    successChainMissions?: string[];
+    failureChainMissions?: string[];
+    partialSuccessMissions?: string[];
+  };
 }
 
 export interface MissionObjective {
@@ -183,6 +225,17 @@ export interface CorporateEvent {
   requirements?: Partial<GameResources>;
   resolved?: boolean;
   chosenOption?: string;
+  
+  // Dynamic Event Chains
+  chainId?: string; // Links events in a storyline
+  chainPosition?: number; // Position in the chain (0 = start)
+  triggerDelay?: number; // Days to wait before triggering
+  followUpEvents?: {
+    eventId: string;
+    condition: 'success' | 'failure' | 'choice_0' | 'choice_1' | 'choice_2';
+    delay: number; // Days to wait
+  }[];
+  storylineData?: Record<string, any>; // Persistent data for the storyline
 }
 
 export type EventEffectType =

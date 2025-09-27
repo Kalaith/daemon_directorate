@@ -30,7 +30,7 @@ const INITIAL_ENDGAME_STATE: EndgameState = {
 };
 
 export const createEndgameSlice: StateCreator<
-  EndgameSlice,
+  import('../composedStore').ComposedGameStore,
   [],
   [],
   EndgameSlice

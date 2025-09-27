@@ -5,7 +5,7 @@ import { ENDING_SCENARIOS } from '../../constants/gameData';
 export const EndgameModal: React.FC = () => {
   const { endgameState, performCorporateRestructuring } = useGameStore();
 
-  if (!endgameState.endingAchieved) return null;
+  if (!endgameState?.endingAchieved) return null;
 
   const ending =
     ENDING_SCENARIOS[

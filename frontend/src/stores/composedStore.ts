@@ -78,6 +78,7 @@ export const useGameStore = create<ComposedGameStore>()(
         promotionProgress: state.promotionProgress,
         daysPassed: state.daysPassed,
         corporateRivals: state.corporateRivals,
+        activeEventChains: state.activeEventChains,
 
         // Compliance slice
         complianceTasks: state.complianceTasks,

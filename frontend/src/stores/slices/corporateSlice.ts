@@ -12,6 +12,16 @@ export interface CorporateState {
   promotionProgress: Record<string, number>;
   daysPassed: number;
   corporateRivals: CorporateRival[];
+  activeEventChains: Record<string, {
+    chainId: string;
+    currentPosition: number;
+    storylineData: Record<string, any>;
+    pendingEvents: {
+      eventId: string;
+      triggerDay: number;
+      condition?: string;
+    }[];
+  }>;
 }
 
 export interface CorporateActions {
@@ -24,6 +34,9 @@ export interface CorporateActions {
   calculateRivalSuccessChance: (rivalId: string) => number;
   triggerRandomEvent: () => void;
   resolveEvent: (eventId: string, choiceIndex?: number) => void;
+  startEventChain: (chainId: string) => void;
+  processEventChains: () => void;
+  updateChainStorylineData: (chainId: string, data: Record<string, any>) => void;
 }
 
 export type CorporateSlice = CorporateState & CorporateActions;
@@ -39,6 +52,7 @@ export const createCorporateSlice: StateCreator<
   promotionProgress: {},
   daysPassed: 0,
   corporateRivals: [],
+  activeEventChains: {},
 
   // Actions
   meetsRequirements: (requirements: CorporateTier['requirements']) => {
@@ -145,5 +159,66 @@ export const createCorporateSlice: StateCreator<
       composedState.setShowEventModal(false);
     }
     // TODO: Apply event effects based on choice
+  },
+
+  startEventChain: (chainId: string) => {
+    set(state => ({
+      activeEventChains: {
+        ...state.activeEventChains,
+        [chainId]: {
+          chainId,
+          currentPosition: 0,
+          storylineData: {},
+          pendingEvents: []
+        }
+      }
+    }));
+  },
+
+  processEventChains: () => {
+    const state = get();
+    Object.values(state.activeEventChains).forEach(chain => {
+      const pendingToday = chain.pendingEvents.filter(
+        pe => pe.triggerDay <= state.daysPassed
+      );
+      
+      pendingToday.forEach(event => {
+        // Trigger the event
+        const composedState = get();
+        if ('setShowEventModal' in composedState) {
+          // Find event template and create event instance
+          // This would need to be implemented with proper event loading
+          console.log(`Triggering chained event: ${event.eventId}`);
+        }
+      });
+
+      // Remove triggered events
+      set(s => ({
+        activeEventChains: {
+          ...s.activeEventChains,
+          [chain.chainId]: {
+            ...chain,
+            pendingEvents: chain.pendingEvents.filter(
+              pe => pe.triggerDay > s.daysPassed
+            )
+          }
+        }
+      }));
+    });
+  },
+
+  updateChainStorylineData: (chainId: string, data: Record<string, any>) => {
+    set(state => ({
+      activeEventChains: {
+        ...state.activeEventChains,
+        [chainId]: {
+          ...state.activeEventChains[chainId],
+          storylineData: {
+            ...state.activeEventChains[chainId]?.storylineData,
+            ...data
+          }
+        }
+      }
+    }));
   },
 });

@@ -59,6 +59,35 @@ const MissionResults: React.FC = () => {
               </span>
             </div>
 
+            {/* Enhanced Mission Results Display */}
+            <div className="mt-4 p-3 bg-gray-800 rounded-lg">
+              <div className="text-yellow-400 font-semibold mb-2 text-xs uppercase tracking-wide">
+                Equipment Analysis:
+              </div>
+              <div className="text-xs space-y-1">
+                <div className="text-gray-300">
+                  • Standard equipment effectiveness: Normal parameters
+                </div>
+                <div className="text-blue-300">
+                  • Set bonuses detected: Corporate synergy active
+                </div>
+                <div className="text-purple-300">
+                  • Legacy equipment bonuses: Generational enhancement applied
+                </div>
+              </div>
+            </div>
+
+            {/* Mission Complexity Indicator */}
+            <div className="mt-3 p-3 bg-gray-750 rounded-lg border-l-4 border-teal-500">
+              <div className="text-teal-400 font-semibold mb-1 text-xs uppercase tracking-wide">
+                Operational Complexity:
+              </div>
+              <div className="text-xs text-gray-300">
+                Multi-objective mission parameters successfully processed. 
+                Strategic outcomes may influence future operational opportunities.
+              </div>
+            </div>
+
             <div className="mt-3">
               <span className="text-teal-400 font-medium">
                 Quarterly Revenue Stream:

@@ -10,8 +10,8 @@ export const CorporateRivals: React.FC = () => {
     calculateRivalSuccessChance,
   } = useGameStore();
 
-  const activerivals = corporateRivals.filter(rival => !rival.defeated);
-  const defeatedRivals = corporateRivals.filter(rival => rival.defeated);
+  const activerivals = (corporateRivals || []).filter(rival => !rival.defeated);
+  const defeatedRivals = (corporateRivals || []).filter(rival => rival.defeated);
 
   const getThreatColor = (threat: string) => {
     const colors = {

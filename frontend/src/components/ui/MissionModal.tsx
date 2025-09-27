@@ -75,6 +75,37 @@ const MissionModal: React.FC = () => {
 
         <div className="mb-8">
           <h4 className="font-header font-semibold text-daemon-text-bright mb-4 uppercase tracking-wide">
+            Mission Type Selection:
+          </h4>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="p-4 bg-daemon-surface rounded-lg border border-daemon-secondary">
+              <h5 className="font-semibold text-daemon-text-bright mb-2">Corporate Conquest</h5>
+              <p className="text-sm text-daemon-text mb-2">Standard territorial acquisition operation</p>
+              <p className="text-xs text-daemon-text-muted">Requirements: 2+ operatives</p>
+            </div>
+            
+            <div className="p-4 bg-daemon-surface rounded-lg border border-daemon-secondary">
+              <h5 className="font-semibold text-daemon-text-bright mb-2">Deep Cover Operations</h5>
+              <p className="text-sm text-daemon-text mb-2">Long-term infiltration mission</p>
+              <p className="text-xs text-daemon-text-muted">Requirements: Infiltration + Sabotage specialists</p>
+            </div>
+            
+            <div className="p-4 bg-daemon-surface rounded-lg border border-daemon-secondary">
+              <h5 className="font-semibold text-daemon-text-bright mb-2">Tactical Assault</h5>
+              <p className="text-sm text-daemon-text mb-2">High-intensity combat operation</p>
+              <p className="text-xs text-daemon-text-muted">Requirements: 3+ Combat specialists only</p>
+            </div>
+            
+            <div className="p-4 bg-daemon-surface rounded-lg border border-daemon-secondary">
+              <h5 className="font-semibold text-daemon-text-bright mb-2">Multi-Phase Restructuring</h5>
+              <p className="text-sm text-daemon-text mb-2">Complex operation with multiple objectives</p>
+              <p className="text-xs text-daemon-text-muted">Requirements: All 3 specialization types, 4+ operatives</p>
+            </div>
+          </div>
+        </div>
+
+        <div className="mb-8">
+          <h4 className="font-header font-semibold text-daemon-text-bright mb-4 uppercase tracking-wide">
             Available Operatives:
           </h4>
           <div className="space-y-2 max-h-60 overflow-y-auto">

@@ -6,6 +6,7 @@ import { CorporateLadder } from './CorporateLadder';
 import { ComplianceCenter } from './ComplianceCenter';
 import { HallOfInfamy } from './HallOfInfamy';
 import { CorporateRivals } from './CorporateRivals';
+import EventChainTracker from './EventChainTracker';
 import { getTierIcon } from '../../utils/gameHelpers';
 import { DashboardService } from '../../services/DashboardService';
 
@@ -251,6 +252,9 @@ const Dashboard: React.FC = () => {
           </div>
         </Card>
       )}
+
+      {/* Active Event Chains */}
+      <EventChainTracker />
 
       {/* Corporate Progression Tabs */}
       <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">

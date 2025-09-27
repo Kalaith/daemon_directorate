@@ -8,8 +8,8 @@ export const HallOfInfamy: React.FC = () => {
     null
   );
 
-  const bloodlines = Object.keys(legacyBook);
-  const recentStories = hallOfInfamy.slice(-10).reverse(); // Last 10 stories, newest first
+  const bloodlines = Object.keys(legacyBook || {});
+  const recentStories = (hallOfInfamy || []).slice(-10).reverse(); // Last 10 stories, newest first
 
   const getCategoryIcon = (category: string) => {
     const icons = {
@@ -37,7 +37,7 @@ export const HallOfInfamy: React.FC = () => {
   };
 
   const getBloodlineStatus = (bloodline: string) => {
-    const legacy = legacyBook[bloodline];
+    const legacy = (legacyBook || {})[bloodline];
     const activeDaemons = daemons.filter(
       d => d.bloodline === bloodline && d.isActive
     );
@@ -73,7 +73,7 @@ export const HallOfInfamy: React.FC = () => {
             <div className="space-y-2">
               {bloodlines.map(bloodline => {
                 const status = getBloodlineStatus(bloodline);
-                const legacy = legacyBook[bloodline];
+                const legacy = (legacyBook || {})[bloodline];
 
                 return (
                   <div
@@ -288,13 +288,13 @@ export const HallOfInfamy: React.FC = () => {
           </div>
           <div>
             <div className="text-lg font-bold text-blue-300">
-              {hallOfInfamy.length}
+              {(hallOfInfamy || []).length}
             </div>
             <div className="text-xs text-gray-400">Total Stories</div>
           </div>
           <div>
             <div className="text-lg font-bold text-yellow-300">
-              {Object.values(legacyBook).reduce(
+              {Object.values(legacyBook || {}).reduce(
                 (sum, legacy) => sum + legacy.legends.length,
                 0
               )}
@@ -303,7 +303,7 @@ export const HallOfInfamy: React.FC = () => {
           </div>
           <div>
             <div className="text-lg font-bold text-green-300">
-              {Math.max(0, ...Object.values(legacyBook).map(l => l.generation))}
+              {Math.max(0, ...Object.values(legacyBook || {}).map(l => l.generation))}
             </div>
             <div className="text-xs text-gray-400">Max Generation</div>
           </div>

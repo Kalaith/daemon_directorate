@@ -34,14 +34,14 @@ export class CorporateProgressionService {
     corporateRivals: CorporateRival[],
     promotionProgress: Record<string, number>
   ): ProgressionRequirements {
-    const conqueredPlanets = planets.filter(p => p.conquered).length;
+    const conqueredPlanets = (planets || []).filter(p => p.conquered).length;
     const maxGeneration = Math.max(
       0,
-      ...Object.values(legacyBook).map(l => l.generation)
+      ...Object.values(legacyBook || {}).map(l => l.generation)
     );
-    const defeatedRivals = corporateRivals.filter(r => r.defeated).length;
-    const completedHRReviews = promotionProgress.hrReviews || 0;
-    const complianceAudits = promotionProgress.complianceAudits || 0;
+    const defeatedRivals = (corporateRivals || []).filter(r => r.defeated).length;
+    const completedHRReviews = (promotionProgress || {}).hrReviews || 0;
+    const complianceAudits = (promotionProgress || {}).complianceAudits || 0;
 
     return {
       planetsControlled: {

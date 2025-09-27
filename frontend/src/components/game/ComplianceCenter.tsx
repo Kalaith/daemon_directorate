@@ -13,7 +13,7 @@ export const ComplianceCenter: React.FC = () => {
     daemons,
   } = useGameStore();
 
-  const activeTasks = complianceTasks.filter(task => !task.completed);
+  const activeTasks = (complianceTasks || []).filter(task => !task.completed);
   const overdueTasks = activeTasks.filter(task => daysPassed >= task.deadline);
   const upcomingTasks = activeTasks.filter(task => daysPassed < task.deadline);
 

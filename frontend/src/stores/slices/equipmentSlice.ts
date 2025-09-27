@@ -17,6 +17,9 @@ export interface EquipmentActions {
   getUnassignedEquipment: () => Equipment[];
   degradeEquipment: (equipmentId: string, amount: number) => void;
   calculateRepairCost: (durability: number) => number;
+  calculateSetBonuses: (daemonId: string) => any[];
+  getEquipmentByRarity: (rarity: Equipment['rarity']) => Equipment[];
+  upgradeEquipmentRarity: (equipmentId: string) => void;
 }
 
 export type EquipmentSlice = EquipmentState & EquipmentActions;
@@ -33,6 +36,7 @@ const INITIAL_EQUIPMENT: Equipment[] = [
     generation: 1,
     legacyBonus: 0,
     history: [],
+    rarity: 'Common',
   },
   {
     id: 'starter_tie',
@@ -44,6 +48,7 @@ const INITIAL_EQUIPMENT: Equipment[] = [
     generation: 1,
     legacyBonus: 0,
     history: [],
+    rarity: 'Common',
   },
 ];
 
@@ -84,6 +89,7 @@ export const createEquipmentSlice: StateCreator<
         generation: 1,
         legacyBonus: 0,
         history: ['Crafted in Equipment Depot'],
+        rarity: 'Common',
       },
       tie: {
         name: 'Corporate Tie of Binding',
@@ -94,6 +100,7 @@ export const createEquipmentSlice: StateCreator<
         generation: 1,
         legacyBonus: 0,
         history: ['Crafted in Equipment Depot'],
+        rarity: 'Common',
       },
       calculator: {
         name: 'Cursed Calculator',
@@ -104,6 +111,44 @@ export const createEquipmentSlice: StateCreator<
         generation: 1,
         legacyBonus: 0,
         history: ['Forged with raw materials'],
+        rarity: 'Cursed',
+      },
+      // Enhanced Equipment
+      executive_briefcase: {
+        name: 'Executive Briefcase',
+        type: 'Infiltration',
+        durability: 120,
+        ability: 'Corporate Authority (+20 infiltration)',
+        assignedTo: null,
+        generation: 1,
+        legacyBonus: 0,
+        history: ['Executive-grade equipment'],
+        rarity: 'Rare',
+        setName: 'Corporate Executive Suite',
+      },
+      power_tie: {
+        name: 'Power Tie',
+        type: 'Combat',
+        durability: 115,
+        ability: 'Executive Presence (+25 combat)',
+        assignedTo: null,
+        generation: 1,
+        legacyBonus: 0,
+        history: ['Power-infused corporate attire'],
+        rarity: 'Rare',
+        setName: 'Corporate Executive Suite',
+      },
+      golden_calculator: {
+        name: 'Golden Calculator',
+        type: 'Sabotage',
+        durability: 130,
+        ability: 'Financial Manipulation (+30 sabotage)',
+        assignedTo: null,
+        generation: 1,
+        legacyBonus: 0,
+        history: ['Legendary calculation device'],
+        rarity: 'Legendary',
+        setName: 'Corporate Executive Suite',
       },
     };
 
@@ -188,5 +233,66 @@ export const createEquipmentSlice: StateCreator<
 
   calculateRepairCost: (durability: number) => {
     return Math.floor((100 - durability) * 2);
+  },
+
+  calculateSetBonuses: (daemonId: string) => {
+    const state = get();
+    const daemonEquipment = state.equipment.filter(eq => eq.assignedTo === daemonId);
+    const setBonuses: any[] = [];
+    
+    // Group equipment by set name
+    const setGroups = daemonEquipment.reduce((acc, item) => {
+      if (item.setName) {
+        if (!acc[item.setName]) acc[item.setName] = [];
+        acc[item.setName].push(item);
+      }
+      return acc;
+    }, {} as Record<string, Equipment[]>);
+
+    // Calculate bonuses for each set
+    Object.entries(setGroups).forEach(([setName, items]) => {
+      const setConfig = (window as any).EQUIPMENT_SETS?.[setName];
+      if (setConfig) {
+        setConfig.setBonuses.forEach((bonus: any) => {
+          if (items.length >= bonus.requiredPieces) {
+            setBonuses.push({
+              setName,
+              requiredPieces: bonus.requiredPieces,
+              activeBonus: true,
+              effects: bonus.effects
+            });
+          }
+        });
+      }
+    });
+
+    return setBonuses;
+  },
+
+  getEquipmentByRarity: (rarity: Equipment['rarity']) => {
+    return get().equipment.filter(item => item.rarity === rarity);
+  },
+
+  upgradeEquipmentRarity: (equipmentId: string) => {
+    set(state => ({
+      equipment: state.equipment.map(item => {
+        if (item.id === equipmentId) {
+          const rarityUpgrade = {
+            'Common': 'Uncommon',
+            'Uncommon': 'Rare', 
+            'Rare': 'Legendary',
+            'Legendary': 'Cursed',
+            'Cursed': 'Cursed'
+          } as const;
+          
+          return {
+            ...item,
+            rarity: rarityUpgrade[item.rarity] as Equipment['rarity'],
+            history: [...item.history, `Upgraded to ${rarityUpgrade[item.rarity]} quality`]
+          };
+        }
+        return item;
+      }),
+    }));
   },
 });

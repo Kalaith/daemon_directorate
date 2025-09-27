@@ -279,6 +279,7 @@ export const STARTER_DATA: StarterData = {
       generation: 0,
       legacyBonus: 0,
       history: ['Corporate standard issue'],
+      rarity: 'Common',
     },
     {
       name: 'Corporate Tie of Binding',
@@ -288,6 +289,7 @@ export const STARTER_DATA: StarterData = {
       generation: 0,
       legacyBonus: 0,
       history: ['Corporate standard issue'],
+      rarity: 'Common',
     },
     {
       name: 'Cursed Calculator',
@@ -297,6 +299,7 @@ export const STARTER_DATA: StarterData = {
       generation: 0,
       legacyBonus: 0,
       history: ['Corporate standard issue'],
+      rarity: 'Cursed',
     },
   ],
   planets: [
@@ -1269,6 +1272,7 @@ export const CRAFTING_RECIPES = [
     ability: 'Blend In (+10 stealth)',
     durability: 80,
     cost: { credits: 100, rawMaterials: 0 },
+    rarity: 'Common',
   },
   {
     id: 'tie',
@@ -1277,6 +1281,7 @@ export const CRAFTING_RECIPES = [
     ability: 'Intimidate (+8 combat)',
     durability: 75,
     cost: { credits: 75, rawMaterials: 0 },
+    rarity: 'Common',
   },
   {
     id: 'calculator',
@@ -1285,6 +1290,38 @@ export const CRAFTING_RECIPES = [
     ability: 'Data Processing (+12 sabotage)',
     durability: 90,
     cost: { credits: 125, rawMaterials: 1 },
+    rarity: 'Uncommon',
+  },
+  // Enhanced Equipment Recipes
+  {
+    id: 'executive_briefcase',
+    name: 'Executive Briefcase',
+    type: 'Infiltration',
+    ability: 'Corporate Authority (+20 infiltration)',
+    durability: 95,
+    cost: { credits: 300, rawMaterials: 2, bureaucraticLeverage: 1 },
+    rarity: 'Rare',
+    setName: 'Corporate Executive Suite',
+  },
+  {
+    id: 'power_tie',
+    name: 'Power Tie',
+    type: 'Combat',
+    ability: 'Executive Presence (+25 combat)',
+    durability: 90,
+    cost: { credits: 275, rawMaterials: 1, soulEssence: 1 },
+    rarity: 'Rare',
+    setName: 'Corporate Executive Suite',
+  },
+  {
+    id: 'golden_calculator',
+    name: 'Golden Calculator',
+    type: 'Sabotage',
+    ability: 'Financial Manipulation (+30 sabotage)',
+    durability: 100,
+    cost: { credits: 400, rawMaterials: 3, bureaucraticLeverage: 2 },
+    rarity: 'Legendary',
+    setName: 'Corporate Executive Suite',
   },
 ];
 
@@ -1781,6 +1818,67 @@ export const PRESTIGE_BONUSES: PrestigeBonus[] = [
   },
 ];
 
+// Enhanced Equipment System - Rarity Definitions
+export const EQUIPMENT_RARITY_MODIFIERS = {
+  Common: { durabilityBonus: 0, effectMultiplier: 1.0, legacyBonusRate: 1.0 },
+  Uncommon: { durabilityBonus: 10, effectMultiplier: 1.2, legacyBonusRate: 1.1 },
+  Rare: { durabilityBonus: 20, effectMultiplier: 1.5, legacyBonusRate: 1.2 },
+  Legendary: { durabilityBonus: 40, effectMultiplier: 2.0, legacyBonusRate: 1.5 },
+  Cursed: { durabilityBonus: -10, effectMultiplier: 2.5, legacyBonusRate: 2.0 },
+} as const;
+
+// Equipment Set Definitions
+export const EQUIPMENT_SETS = {
+  'Corporate Executive Suite': {
+    pieces: ['Executive Briefcase', 'Power Tie', 'Golden Calculator'],
+    setBonuses: [
+      {
+        requiredPieces: 2,
+        effects: [{ type: 'bureaucratic_leverage_bonus', value: 1, description: '+1 daily bureaucratic leverage' }]
+      },
+      {
+        requiredPieces: 3,
+        effects: [
+          { type: 'mission_success_bonus', value: 15, description: '+15% mission success rate' },
+          { type: 'resource_generation_bonus', value: 0.2, description: '+20% resource generation' }
+        ]
+      }
+    ]
+  },
+  'Infiltration Specialist Kit': {
+    pieces: ['Shadow Briefcase', 'Stealth Tie', 'Encrypted Calculator'],
+    setBonuses: [
+      {
+        requiredPieces: 2,
+        effects: [{ type: 'infiltration_bonus', value: 10, description: '+10 infiltration missions success rate' }]
+      },
+      {
+        requiredPieces: 3,
+        effects: [
+          { type: 'stealth_missions_unlock', value: 1, description: 'Unlocks advanced stealth missions' },
+          { type: 'equipment_durability_bonus', value: 20, description: '+20% equipment durability' }
+        ]
+      }
+    ]
+  },
+  'Combat Command Gear': {
+    pieces: ['Tactical Briefcase', 'Combat Tie', 'Battle Calculator'],
+    setBonuses: [
+      {
+        requiredPieces: 2,
+        effects: [{ type: 'combat_bonus', value: 15, description: '+15 combat mission effectiveness' }]
+      },
+      {
+        requiredPieces: 3,
+        effects: [
+          { type: 'team_damage_reduction', value: 25, description: '-25% team damage in missions' },
+          { type: 'aggressive_missions_unlock', value: 1, description: 'Unlocks high-risk/high-reward missions' }
+        ]
+      }
+    ]
+  }
+} as const;
+
 // Enhanced Mission System
 export const MISSION_TEMPLATES = {
   conquest: {
@@ -1914,6 +2012,252 @@ export const MISSION_TEMPLATES = {
       'asset_lost',
       'security_escalation',
       'extraction_blacklist',
+    ],
+  },
+  infiltration_specialist: {
+    id: 'infiltration_specialist',
+    name: 'Deep Cover Operations',
+    description: 'Long-term infiltration requiring specialized daemon combinations',
+    baseDuration: 120,
+    primaryObjective: {
+      type: 'primary' as const,
+      description: 'Establish long-term corporate presence',
+      requirements: { 
+        minTeamSize: 2, 
+        specialization: 'Infiltration' as const,
+        requiredSpecializations: ['Infiltration', 'Sabotage']
+      },
+      rewards: { credits: 300, bureaucraticLeverage: 4, soulEssence: 1 },
+    },
+    secondaryObjectives: [
+      {
+        type: 'secondary' as const,
+        description: 'Establish intelligence network',
+        requirements: { equipment: ['Infiltration Specialist Kit'] },
+        rewards: { futureOpportunities: ['advanced_intel_missions'] },
+      },
+      {
+        type: 'bonus' as const,
+        description: 'Recruit double agent',
+        requirements: { minTeamSize: 3 },
+        rewards: { newDaemonRecruitment: 1 },
+      },
+    ],
+    failureConsequences: ['blown_cover', 'diplomatic_incident'],
+  },
+  combat_specialist: {
+    id: 'combat_specialist',
+    name: 'Tactical Assault Operations',
+    description: 'High-intensity combat requiring specialized combat teams',
+    baseDuration: 90,
+    primaryObjective: {
+      type: 'primary' as const,
+      description: 'Neutralize heavily fortified position',
+      requirements: { 
+        minTeamSize: 3, 
+        specialization: 'Combat' as const,
+        forbiddenSpecializations: ['Infiltration']
+      },
+      rewards: { credits: 500, rawMaterials: 3 },
+    },
+    secondaryObjectives: [
+      {
+        type: 'secondary' as const,
+        description: 'Capture strategic assets',
+        requirements: { equipment: ['Combat Command Gear'] },
+        rewards: { equipment: 1, reputation: 20 },
+      },
+      {
+        type: 'bonus' as const,
+        description: 'Zero casualty operation',
+        requirements: { minTeamSize: 4 },
+        rewards: { morale: 15, bureaucraticLeverage: 2 },
+      },
+    ],
+    failureConsequences: ['heavy_casualties', 'equipment_loss', 'tactical_failure'],
+  },
+  multi_phase: {
+    id: 'multi_phase',
+    name: 'Multi-Phase Corporate Restructuring',
+    description: 'Complex operation requiring multiple specialized teams',
+    baseDuration: 180,
+    primaryObjective: {
+      type: 'primary' as const,
+      description: 'Complete all operational phases',
+      requirements: { 
+        minTeamSize: 4,
+        requiredSpecializations: ['Infiltration', 'Combat', 'Sabotage']
+      },
+      rewards: { credits: 800, bureaucraticLeverage: 6, soulEssence: 2, rawMaterials: 2 },
+    },
+    secondaryObjectives: [
+      {
+        type: 'secondary' as const,
+        description: 'Phase 1: Intelligence gathering',
+        requirements: { specialization: 'Infiltration' as const },
+        rewards: { futureOpportunities: ['phase_2_bonus'] },
+      },
+      {
+        type: 'secondary' as const,
+        description: 'Phase 2: Tactical operations',
+        requirements: { specialization: 'Combat' as const },
+        rewards: { futureOpportunities: ['phase_3_bonus'] },
+      },
+      {
+        type: 'secondary' as const,
+        description: 'Phase 3: Data manipulation',
+        requirements: { specialization: 'Sabotage' as const },
+        rewards: { futureOpportunities: ['complete_restructuring'] },
+      },
+    ],
+    failureConsequences: ['partial_completion', 'resource_waste', 'operational_exposure'],
+  },
+};
+
+// Dynamic Event Chains - Corporate Storytelling
+export const CORPORATE_EVENT_CHAINS = {
+  quarterly_review_cycle: {
+    chainId: 'quarterly_review_cycle',
+    events: [
+      {
+        id: 'pre_review_preparation',
+        title: 'Quarterly Review Preparation',
+        description: 'Corporate management announces upcoming quarterly performance assessments. Preparation activities are recommended to optimize evaluation outcomes.',
+        type: 'choice' as const,
+        chainPosition: 0,
+        triggerDelay: 0,
+        choices: [
+          {
+            label: 'Intensive Preparation Campaign',
+            description: 'Invest significant resources in preparation activities',
+            effects: [
+              { type: 'credits', value: -150, description: 'Preparation investment costs' },
+              { type: 'morale', value: -5, description: 'Increased workplace pressure' },
+              { type: 'review_preparation_bonus', value: 20, description: 'Enhanced review performance potential' },
+            ],
+          },
+          {
+            label: 'Standard Preparation Protocol',
+            description: 'Follow established preparation procedures',
+            effects: [
+              { type: 'credits', value: -75, description: 'Standard preparation costs' },
+              { type: 'review_preparation_bonus', value: 10, description: 'Adequate review preparation' },
+            ],
+          },
+          {
+            label: 'Minimal Preparation Strategy',
+            description: 'Focus resources on operational priorities',
+            effects: [
+              { type: 'credits', value: 25, description: 'Resource optimization savings' },
+              { type: 'review_preparation_penalty', value: -10, description: 'Reduced review performance potential' },
+            ],
+          },
+        ],
+        followUpEvents: [
+          { eventId: 'quarterly_review_results', condition: 'choice_0', delay: 7 },
+          { eventId: 'quarterly_review_results', condition: 'choice_1', delay: 7 },
+          { eventId: 'quarterly_review_results', condition: 'choice_2', delay: 7 },
+        ],
+      },
+      {
+        id: 'quarterly_review_results',
+        title: 'Quarterly Performance Assessment Results',
+        description: 'Corporate leadership has completed the quarterly performance evaluation. Results will impact operational parameters and advancement opportunities.',
+        type: 'automatic' as const,
+        chainPosition: 1,
+        effects: [
+          { type: 'bureaucratic_leverage', value: 3, description: 'Performance recognition bonus' },
+          { type: 'reputation', value: 15, description: 'Enhanced corporate standing' },
+        ],
+        followUpEvents: [
+          { eventId: 'post_review_opportunities', condition: 'success', delay: 3 },
+        ],
+      },
+      {
+        id: 'post_review_opportunities',
+        title: 'Post-Review Strategic Opportunities',
+        description: 'Strong quarterly performance has unlocked additional strategic initiatives and resource allocation opportunities.',
+        type: 'choice' as const,
+        chainPosition: 2,
+        choices: [
+          {
+            label: 'Expansion Initiative',
+            description: 'Leverage strong performance for territorial expansion',
+            effects: [
+              { type: 'new_planets_unlocked', value: 2, description: 'Additional expansion opportunities' },
+              { type: 'bureaucratic_leverage', value: -2, description: 'Political capital investment' },
+            ],
+          },
+          {
+            label: 'Resource Optimization',
+            description: 'Focus on improving operational efficiency',
+            effects: [
+              { type: 'passive_income_bonus', value: 25, description: 'Daily resource generation bonus' },
+              { type: 'efficiency_upgrade', value: 1, description: 'Permanent efficiency enhancement' },
+            ],
+          },
+        ],
+      },
+    ],
+  },
+  corporate_merger_storyline: {
+    chainId: 'corporate_merger_storyline',
+    events: [
+      {
+        id: 'merger_announcement',
+        title: 'Strategic Merger Announcement',
+        description: 'Executive leadership announces strategic merger negotiations with a major competitor. This consolidation will significantly impact operational structures.',
+        type: 'automatic' as const,
+        chainPosition: 0,
+        effects: [
+          { type: 'uncertainty_penalty', value: -5, description: 'Organizational uncertainty impact' },
+          { type: 'merger_preparation_time', value: 14, description: 'Preparation period activated' },
+        ],
+        followUpEvents: [
+          { eventId: 'merger_preparation_phase', condition: 'success', delay: 5 },
+        ],
+      },
+      {
+        id: 'merger_preparation_phase',
+        title: 'Merger Integration Preparation',
+        description: 'Due diligence processes and integration planning require significant departmental coordination and resource allocation.',
+        type: 'choice' as const,
+        chainPosition: 1,
+        choices: [
+          {
+            label: 'Aggressive Integration Strategy',
+            description: 'Lead integration efforts to secure advantageous position',
+            effects: [
+              { type: 'bureaucratic_leverage', value: -3, description: 'Political capital investment' },
+              { type: 'merger_leadership_position', value: 1, description: 'Enhanced post-merger authority' },
+            ],
+          },
+          {
+            label: 'Defensive Positioning',
+            description: 'Focus on protecting current operational integrity',
+            effects: [
+              { type: 'current_operations_protection', value: 1, description: 'Operational continuity assurance' },
+              { type: 'credits', value: 100, description: 'Cost-saving through defensive strategy' },
+            ],
+          },
+        ],
+        followUpEvents: [
+          { eventId: 'merger_completion', condition: 'choice_0', delay: 10 },
+          { eventId: 'merger_completion', condition: 'choice_1', delay: 10 },
+        ],
+      },
+      {
+        id: 'merger_completion',
+        title: 'Merger Integration Complete',
+        description: 'The strategic merger has been successfully completed. New operational parameters and enhanced capabilities are now available.',
+        type: 'automatic' as const,
+        chainPosition: 2,
+        effects: [
+          { type: 'corporate_tier_advancement', value: 1, description: 'Accelerated tier progression opportunity' },
+          { type: 'new_daemon_archetypes', value: 2, description: 'Access to specialized daemon types' },
+          { type: 'expanded_mission_types', value: 3, description: 'Advanced mission categories unlocked' },
+        ],
+      },
     ],
   },
 };
