@@ -1,16 +1,20 @@
 import React, { useState } from 'react';
-import { useCorporate } from '../../stores/composedStore';
+import { 
+  useCorporateRivals, 
+  useInitializeRivals, 
+  useEngageRival, 
+  useCalculateRivalSuccessChance,
+  useGameStore 
+} from '../../stores/composedStore';
 import Card from '../ui/Card';
 import type { CorporateRival } from '../../types/game';
 
 export const CorporateRivals: React.FC = () => {
-  const {
-    corporateRivals,
-    corporateTier,
-    engageRival,
-    calculateRivalSuccessChance,
-    initializeRivals,
-  } = useCorporate();
+  const corporateRivals = useCorporateRivals();
+  const initializeRivals = useInitializeRivals();
+  const engageRival = useEngageRival();
+  const calculateRivalSuccessChance = useCalculateRivalSuccessChance();
+  const corporateTier = useGameStore(state => state.corporateTier);
   
   const [selectedRival, setSelectedRival] = useState<string | null>(null);
 
