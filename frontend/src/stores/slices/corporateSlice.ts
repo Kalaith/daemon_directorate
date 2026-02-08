@@ -15,7 +15,7 @@ export interface CorporateState {
   activeEventChains: Record<string, {
     chainId: string;
     currentPosition: number;
-    storylineData: Record<string, any>;
+    storylineData: Record<string, unknown>;
     pendingEvents: {
       eventId: string;
       triggerDay: number;
@@ -36,7 +36,7 @@ export interface CorporateActions {
   resolveEvent: (eventId: string, choiceIndex?: number) => void;
   startEventChain: (chainId: string) => void;
   processEventChains: () => void;
-  updateChainStorylineData: (chainId: string, data: Record<string, any>) => void;
+  updateChainStorylineData: (chainId: string, data: Record<string, unknown>) => void;
   
   // Advanced Rival AI
   processRivalActions: () => void;
@@ -274,7 +274,8 @@ export const createCorporateSlice: StateCreator<
 
     // AI adapts strategy based on current situation
     
-    let newStrategy = rival.currentStrategy.type;
+    type RivalStrategyType = CorporateRival['currentStrategy']['type'];
+    let newStrategy: RivalStrategyType = rival.currentStrategy.type;
     
     // Strategy selection based on personality and situation
     if (rival.relationshipWithPlayer < -50 && rival.aiPersonality.aggression > 60) {
@@ -292,7 +293,7 @@ export const createCorporateSlice: StateCreator<
             ? { 
                 ...r,
                 currentStrategy: {
-                  type: newStrategy as any,
+                  type: newStrategy,
                   priority: Math.floor(Math.random() * 5) + 5,
                   duration: Math.floor(Math.random() * 20) + 10,
                   targetPlayer: newStrategy === 'aggressive_expansion' || newStrategy === 'shadow_operations'
@@ -389,7 +390,7 @@ export const createCorporateSlice: StateCreator<
     });
   },
 
-  updateChainStorylineData: (chainId: string, data: Record<string, any>) => {
+  updateChainStorylineData: (chainId: string, data: Record<string, unknown>) => {
     set(state => ({
       activeEventChains: {
         ...state.activeEventChains,

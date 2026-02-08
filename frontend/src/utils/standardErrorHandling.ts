@@ -18,25 +18,25 @@ export const ErrorCategory = {
 export type ErrorCategory = (typeof ErrorCategory)[keyof typeof ErrorCategory];
 
 // Standardized error handler wrapper
-export const withErrorHandling = <T extends (...args: any[]) => any>(
+export const withErrorHandling = <T extends (...args: unknown[]) => unknown>(
   fn: T,
   context: string,
   category: ErrorCategory = ErrorCategory.SYSTEM
 ): T => {
-  return ((...args: Parameters<T>) => {
+  return ((...args: Parameters<T>): ReturnType<T> => {
     try {
-      const result = fn(...args);
+      const result = fn(...args) as ReturnType<T>;
 
       // Handle async functions
       if (result instanceof Promise) {
-        return result.catch(error => {
+        return result.catch((error: unknown) => {
           handleError(error, context, category);
           throw error;
-        });
+        }) as ReturnType<T>;
       }
 
       return result;
-    } catch (error) {
+    } catch (error: unknown) {
       handleError(error, context, category);
       throw error;
     }

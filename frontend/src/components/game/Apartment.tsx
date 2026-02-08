@@ -3,6 +3,7 @@ import React from 'react';
 import { useGameStore } from '../../stores/composedStore';
 import Card from '../ui/Card';
 import AdvancedRooms from './AdvancedRooms';
+import type { Room } from '../../types/game';
 
 const Apartment: React.FC = () => {
   const { rooms, upgradeRoom, canAfford } = useGameStore();
@@ -10,7 +11,7 @@ const Apartment: React.FC = () => {
   // Filter basic rooms for the existing UI
   const basicRooms = rooms.filter(room => room.roomType !== 'advanced');
 
-  const handleRoomUpgrade = (room: any) => {
+  const handleRoomUpgrade = (room: Room) => {
     console.log('Attempting to upgrade room:', room.name, 'Cost:', room.upgrade_cost);
     console.log('Can afford?', canAfford(room.upgrade_cost));
     

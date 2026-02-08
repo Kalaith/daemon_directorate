@@ -470,10 +470,10 @@ export const processMultiObjectiveMission = (
 ): {
   updatedResult: MissionResult;
   chainMissions: string[];
-  storylineData: Record<string, any>;
+  storylineData: Record<string, unknown>;
 } => {
   const chainMissions: string[] = [];
-  const storylineData: Record<string, any> = {};
+  const storylineData: Record<string, unknown> = {};
   
   if (mission.branchingOutcomes) {
     if (result.success && mission.branchingOutcomes.successChainMissions) {

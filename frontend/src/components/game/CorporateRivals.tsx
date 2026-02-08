@@ -20,7 +20,7 @@ export const CorporateRivals: React.FC = () => {
 
   React.useEffect(() => {
     // Initialize rivals if none exist
-    if (corporateRivals.length === 0 && initializeRivals) {
+    if (corporateRivals.length === 0) {
       console.log('Initializing rivals...');
       try {
         initializeRivals();
@@ -28,7 +28,7 @@ export const CorporateRivals: React.FC = () => {
         console.warn('Failed to initialize rivals:', error);
       }
     }
-  }, [corporateRivals.length]); // Remove initializeRivals from deps to prevent infinite loop
+  }, [corporateRivals.length, initializeRivals]);
 
   const activeRivals = (corporateRivals || []).filter(rival => !rival.defeated);
   const defeatedRivals = (corporateRivals || []).filter(rival => rival.defeated);
@@ -242,7 +242,7 @@ export const CorporateRivals: React.FC = () => {
                 🎯 Active Threats
               </h3>
               <div className="space-y-3">
-                {activeRivals.map((rival: any) => (
+                {activeRivals.map(rival => (
                   <div
                     key={rival.id}
                     className="p-4 rounded-lg border-2 border-red-500 bg-red-500/10"
@@ -337,7 +337,7 @@ export const CorporateRivals: React.FC = () => {
                           🚨 Active Operations: {rival.activeOperations.length}
                         </h5>
                         <div className="text-xs text-gray-300">
-                          {rival.activeOperations.slice(0, 2).map((op: any, index: number) => (
+                          {rival.activeOperations.slice(0, 2).map((op, index: number) => (
                             <div key={index}>• {op.type.replace('_', ' ')} (Target: {op.targetId})</div>
                           ))}
                           {rival.activeOperations.length > 2 && (
@@ -385,7 +385,7 @@ export const CorporateRivals: React.FC = () => {
                 🏆 Conquered Corporations
               </h3>
               <div className="space-y-2">
-                {defeatedRivals.map((rival: any) => (
+                {defeatedRivals.map(rival => (
                   <div
                     key={rival.id}
                     className="p-3 rounded-lg border border-green-500 bg-green-500/10"

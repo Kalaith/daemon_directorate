@@ -1,7 +1,7 @@
 // stores/slices/equipmentSlice.ts - Equipment management and crafting system
 import type { StateCreator } from 'zustand';
-import type { Equipment } from '../../types/game';
-import { STARTER_DATA } from '../../constants/gameData';
+import type { Equipment, EquipmentSetBonus } from '../../types/game';
+import { STARTER_DATA, EQUIPMENT_SETS } from '../../constants/gameData';
 
 // Helper function
 const generateId = () => Math.random().toString(36).substring(2, 15);
@@ -22,7 +22,7 @@ export interface EquipmentActions {
   getUnassignedEquipment: () => Equipment[];
   degradeEquipment: (equipmentId: string, amount: number) => void;
   calculateRepairCost: (durability: number) => number;
-  calculateSetBonuses: (daemonId: string) => any[];
+  calculateSetBonuses: (daemonId: string) => EquipmentSetBonus[];
   getEquipmentByRarity: (rarity: Equipment['rarity']) => Equipment[];
   upgradeEquipmentRarity: (equipmentId: string) => void;
 }
@@ -58,7 +58,7 @@ const INITIAL_EQUIPMENT: Equipment[] = [
 ];
 
 export const createEquipmentSlice: StateCreator<
-  EquipmentSlice,
+  import('../composedStore').ComposedGameStore,
   [],
   [],
   EquipmentSlice
@@ -84,8 +84,6 @@ export const createEquipmentSlice: StateCreator<
   },
 
   craftEquipment: (equipmentId: string) => {
-    const composedState = get();
-    
     // Find equipment template
     const template = STARTER_DATA.starter_equipment.find(eq => eq.name === equipmentId);
     if (!template) {
@@ -94,7 +92,7 @@ export const createEquipmentSlice: StateCreator<
     }
 
     const craftingCost = 50; // Default cost
-    const canAfford = 'canAfford' in composedState ? (composedState.canAfford as any)(craftingCost) : false;
+    const canAfford = get().canAfford(craftingCost);
     
     if (!canAfford) {
       console.warn('Cannot afford crafting cost:', craftingCost);
@@ -102,12 +100,10 @@ export const createEquipmentSlice: StateCreator<
     }
 
     // Actually spend the credits
-    if ('spendCredits' in composedState) {
-      const success = (composedState.spendCredits as any)(craftingCost);
-      if (!success) {
-        console.warn('Failed to spend credits for crafting');
-        return false;
-      }
+    const success = get().spendCredits(craftingCost);
+    if (!success) {
+      console.warn('Failed to spend credits for crafting');
+      return false;
     }
 
     const newEquipment: Equipment = {
@@ -210,7 +206,7 @@ export const createEquipmentSlice: StateCreator<
   calculateSetBonuses: (daemonId: string) => {
     const state = get();
     const daemonEquipment = state.equipment.filter(eq => eq.assignedTo === daemonId);
-    const setBonuses: any[] = [];
+    const setBonuses: EquipmentSetBonus[] = [];
     
     // Group equipment by set name
     const setGroups = daemonEquipment.reduce((acc, item) => {
@@ -223,9 +219,10 @@ export const createEquipmentSlice: StateCreator<
 
     // Calculate bonuses for each set
     Object.entries(setGroups).forEach(([setName, items]) => {
-      const setConfig = (window as any).EQUIPMENT_SETS?.[setName];
+      if (!Object.prototype.hasOwnProperty.call(EQUIPMENT_SETS, setName)) return;
+      const setConfig = EQUIPMENT_SETS[setName as keyof typeof EQUIPMENT_SETS];
       if (setConfig) {
-        setConfig.setBonuses.forEach((bonus: any) => {
+        setConfig.setBonuses.forEach(bonus => {
           if (items.length >= bonus.requiredPieces) {
             setBonuses.push({
               setName,

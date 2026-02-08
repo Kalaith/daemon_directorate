@@ -4,6 +4,18 @@ import { render, screen, fireEvent } from '@testing-library/react';
 import App from '../App';
 import { DAEMON_BALANCE, CORPORATE_BALANCE } from '../constants/gameBalance';
 import { STARTER_DATA } from '../constants/gameData';
+import type {
+  CorporateEvent,
+  CorporateRival,
+  CorporateTier,
+  Daemon,
+  Equipment,
+  GameResources,
+  Mission,
+  MissionResult,
+  Planet,
+  Room,
+} from '../types/game';
 
 // Mock the game store for isolated testing
 const mockGameStore = {
@@ -15,7 +27,7 @@ const mockGameStore = {
     soulEssence: 0,
     bureaucraticLeverage: 0,
     rawMaterials: 0,
-  },
+  } satisfies GameResources,
 
   // Daemon management
   daemons: STARTER_DATA.starter_daemons.map(daemon => ({
@@ -24,16 +36,19 @@ const mockGameStore = {
     isActive: true,
     assignments: [],
     equipment: null,
-  })),
-  recruitmentPool: [] as any[],
+  })) as Daemon[],
+  recruitmentPool: [] as Daemon[],
   selectedDaemons: new Set<string>(),
 
   // UI state
   currentTab: 'dashboard' as 'dashboard' | 'team' | 'missions' | 'apartment' | 'equipment',
+  showTutorial: false,
+  showMemorial: false,
+  showMissionModal: false,
   showMissionResults: false,
   showEventModal: false,
-  currentEvent: null as any,
-  missionResult: null as any,
+  currentEvent: null as CorporateEvent | null,
+  missionResult: null as MissionResult | null,
   notifications: [],
 
   // Corporate progression
@@ -47,7 +62,7 @@ const mockGameStore = {
       apartmentRooms: ['living_quarters', 'command_center'],
       resources: ['credits'],
     },
-  },
+  } satisfies CorporateTier,
 
   // Planets and missions
   planets: STARTER_DATA.planets.map(planet => ({
@@ -55,26 +70,25 @@ const mockGameStore = {
     id: `test-${planet.name}`,
     conquered: false,
     lastMission: null,
-  })),
-  selectedPlanet: null as any,
-  availableProceduralMissions: [],
+  })) as Planet[],
+  selectedPlanet: null as Planet | null,
+  availableProceduralMissions: [] as Mission[],
 
   // Equipment and rooms
   equipment: STARTER_DATA.starter_equipment.map(eq => ({
     ...eq,
     id: `test-${eq.name}`,
     assignedTo: null,
-  })),
+  })) as Equipment[],
   rooms: STARTER_DATA.apartment_rooms.map(room => ({
     ...room,
     id: `test-${room.name}`,
-    assignedTo: null,
-  })),
+  })) as Room[],
 
   // Legacy and story tracking
   legacyBook: {},
   hallOfInfamy: [],
-  corporateRivals: [],
+  corporateRivals: [] as CorporateRival[],
 
   // Actions
   startNewGame: vi.fn(),
@@ -87,9 +101,12 @@ const mockGameStore = {
   executeMission: vi.fn(),
   conductHRReview: vi.fn(),
   upgradeRoom: vi.fn(),
-  canAfford: vi.fn((_cost?: number) => true),
+  canAfford: vi.fn(() => true),
   isHRReviewAvailable: vi.fn(() => true),
   setShowMissionResults: vi.fn(),
+  setShowTutorial: vi.fn(),
+  setShowMemorial: vi.fn(),
+  setShowMissionModal: vi.fn(),
   setShowEventModal: vi.fn(),
   resolveEvent: vi.fn(),
   meetsRequirements: vi.fn(() => true),
@@ -184,7 +201,7 @@ describe('Daemon Directorate - Corporate Satire Gameplay', () => {
     });
 
     it('should handle talent acquisition (recruitment)', async () => {
-      (mockGameStore as any).recruitmentPool = [
+      mockGameStore.recruitmentPool = [
         {
           ...STARTER_DATA.starter_daemons[0],
           id: 'recruit-1',
@@ -212,7 +229,7 @@ describe('Daemon Directorate - Corporate Satire Gameplay', () => {
     });
 
     it('should conduct performance reviews for corporate assets', async () => {
-      (mockGameStore as any).corporateTier.level = 2; // Manager tier required
+      mockGameStore.corporateTier.level = 2; // Manager tier required
 
       render(<App />);
 
@@ -270,7 +287,7 @@ describe('Daemon Directorate - Corporate Satire Gameplay', () => {
     });
 
     it('should execute corporate conquest missions', async () => {
-      (mockGameStore as any).selectedPlanet = mockGameStore.planets[0];
+      mockGameStore.selectedPlanet = mockGameStore.planets[0];
 
       render(<App />);
 
@@ -286,7 +303,7 @@ describe('Daemon Directorate - Corporate Satire Gameplay', () => {
 
     it('should display performance evaluation results', () => {
       mockGameStore.showMissionResults = true;
-      (mockGameStore as any).missionResult = {
+      mockGameStore.missionResult = {
         success: true,
         narrative:
           'Quarterly objectives met through strategic synergy optimization.',
@@ -310,7 +327,7 @@ describe('Daemon Directorate - Corporate Satire Gameplay', () => {
   describe('Corporate Events - Bureaucratic Scenarios', () => {
     it('should display enhanced corporate event modal', () => {
       mockGameStore.showEventModal = true;
-      (mockGameStore as any).currentEvent = {
+      mockGameStore.currentEvent = {
         id: 'performance_review',
         title: 'Quarterly Soul Performance Evaluation',
         description:
@@ -350,7 +367,7 @@ describe('Daemon Directorate - Corporate Satire Gameplay', () => {
 
     it('should handle corporate event choices with proper consequences', async () => {
       mockGameStore.showEventModal = true;
-      (mockGameStore as any).currentEvent = {
+      mockGameStore.currentEvent = {
         id: 'test_event',
         title: 'Test Corporate Event',
         description: 'Test event description',
@@ -385,7 +402,7 @@ describe('Daemon Directorate - Corporate Satire Gameplay', () => {
     });
 
     it('should unlock HR reviews at Manager tier', () => {
-      (mockGameStore as any).corporateTier.level = 2;
+      mockGameStore.corporateTier.level = 2;
 
       render(<App />);
       mockGameStore.currentTab = 'team';

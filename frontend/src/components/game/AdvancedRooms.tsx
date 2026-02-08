@@ -27,20 +27,23 @@ const AdvancedRooms: React.FC = () => {
           room.assignedDaemons.forEach(daemonId => processRecovery(daemonId));
         }
         break;
-      case 'War Room':
+      case 'War Room': {
         const bonus = processMissionPlanning();
         console.log(`Mission planning bonus: ${bonus}%`);
         break;
-      case 'R&D Lab':
+      }
+      case 'R&D Lab': {
         const innovation = processEquipmentInnovation();
         if (innovation) {
           console.log(`Prototype equipment created: ${innovation}`);
         }
         break;
-      case 'Memorial Chamber':
+      }
+      case 'Memorial Chamber': {
         const bonuses = getMemorialBonuses();
         console.log('Memorial bonuses:', bonuses);
         break;
+      }
       case 'Server Farm':
         processAutomation();
         break;

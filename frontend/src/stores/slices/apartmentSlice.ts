@@ -1,7 +1,13 @@
 // stores/slices/apartmentSlice.ts - Apartment and room management
 import type { StateCreator } from 'zustand';
-import type { Room } from '../../types/game';
+import type { Room, RoomSynergyBonus, SpecializationType } from '../../types/game';
 import { ADVANCED_ROOMS } from '../../constants/gameData';
+
+export interface MemorialBonuses {
+  experience_bonus: number;
+  morale_bonus: number;
+  legacy_bonus: number;
+}
 
 export interface ApartmentState {
   rooms: Room[];
@@ -18,14 +24,14 @@ export interface ApartmentActions {
   getRoomUpgradeCost: (roomId: string) => number;
   canUpgradeRoom: (roomId: string, credits: number) => boolean;
   calculateRoomEfficiency: (room: Room) => number;
-  getRoomSynergies: () => any[];
+  getRoomSynergies: () => RoomSynergyBonus[];
   unlockAdvancedRoom: (roomName: string) => boolean;
   canUnlockAdvancedRoom: (roomName: string) => boolean;
-  processTraining: (daemonId: string, newSpecialization: any) => void;
+  processTraining: (daemonId: string, newSpecialization: SpecializationType) => void;
   processRecovery: (daemonId: string) => void;
   processMissionPlanning: () => number;
   processEquipmentInnovation: () => string | null;
-  getMemorialBonuses: () => any;
+  getMemorialBonuses: () => Partial<MemorialBonuses>;
   processAutomation: () => void;
 }
 
@@ -215,19 +221,20 @@ export const createApartmentSlice: StateCreator<
 
   getRoomSynergies: () => {
     const state = get();
-    const synergies: any[] = [];
+    const synergies: RoomSynergyBonus[] = [];
     
     // Calculate room synergies based on available rooms and their levels
     state.rooms.forEach(room => {
-      if ((room as any).synergyBonuses) {
-        (room as any).synergyBonuses.forEach((bonus: any) => {
-          if (bonus.requiredRooms.every((reqRoom: string) => 
+      if (!room.synergyBonuses) return;
+      room.synergyBonuses.forEach(bonus => {
+        if (
+          bonus.requiredRooms.every(reqRoom =>
             state.rooms.some(r => r.name === reqRoom && r.level > 0)
-          )) {
-            synergies.push(bonus);
-          }
-        });
-      }
+          )
+        ) {
+          synergies.push(bonus);
+        }
+      });
     });
     
     return synergies;
@@ -259,7 +266,7 @@ export const createApartmentSlice: StateCreator<
     return true;
   },
 
-  processTraining: (daemonId: string, newSpecialization: any) => {
+  processTraining: (daemonId: string, newSpecialization: SpecializationType) => {
     // Implementation would update daemon specialization
     console.log(`Training ${daemonId} to ${newSpecialization}`);
   },

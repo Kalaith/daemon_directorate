@@ -5,14 +5,15 @@ import {
   createGameService,
   type GameServiceInterface,
 } from '../services/GameService';
+import type { ZustandGameStore } from '../types/storeInterfaces';
 
 export const useGameService = (): GameServiceInterface => {
   // Create a wrapper that matches the expected ZustandGameStore interface
   const gameService = useMemo(() => {
-    const storeWrapper = {
+    const storeWrapper: ZustandGameStore = {
       getState: () => useGameStore.getState(),
     };
-    return createGameService(storeWrapper as any);
+    return createGameService(storeWrapper);
   }, []);
 
   return gameService;

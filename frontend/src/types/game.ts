@@ -251,7 +251,7 @@ export interface CorporateEvent {
     condition: 'success' | 'failure' | 'choice_0' | 'choice_1' | 'choice_2';
     delay: number; // Days to wait
   }[];
-  storylineData?: Record<string, any>; // Persistent data for the storyline
+  storylineData?: Record<string, unknown>; // Persistent data for the storyline
 }
 
 export type EventEffectType =

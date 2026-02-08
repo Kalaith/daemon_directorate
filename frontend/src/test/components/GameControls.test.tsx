@@ -12,17 +12,16 @@ vi.mock('../../stores/composedStore', () => ({
   useGameStore: () => mockStore,
 }));
 
-// Mock window.confirm
-Object.defineProperty(global, 'confirm', {
-  value: vi.fn(() => true),
+const confirmMock = vi.fn(() => true);
+Object.defineProperty(window, 'confirm', {
+  value: confirmMock,
   writable: true
 });
 
 describe('GameControls Component', () => {
   beforeEach(() => {
     vi.clearAllMocks();
-    // Reset window.confirm mock
-    (global.confirm as any).mockReturnValue(true);
+    confirmMock.mockReturnValue(true);
   });
 
   it('renders reset button only', () => {
