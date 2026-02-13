@@ -179,10 +179,7 @@ const getNotificationType = (category: ErrorCategory): string => {
 };
 
 // Store action wrapper for consistent error handling
-export const withGameActionErrorHandling = <
-  Args extends unknown[],
-  Return,
->(
+export const withGameActionErrorHandling = <Args extends unknown[], Return>(
   action: (...args: Args) => Return,
   actionName: string
 ): ((...args: Args) => Return) => {
@@ -206,10 +203,7 @@ export const withValidation = <Args extends unknown[], Return>(
 };
 
 // Network operation wrapper
-export const withNetworkErrorHandling = <
-  Args extends unknown[],
-  Return,
->(
+export const withNetworkErrorHandling = <Args extends unknown[], Return>(
   fn: (...args: Args) => Return,
   operationName: string
 ): ((...args: Args) => Return) => {
@@ -221,10 +215,7 @@ export const withNetworkErrorHandling = <
 };
 
 // Component error handler
-export const withComponentErrorHandling = <
-  Args extends unknown[],
-  Return,
->(
+export const withComponentErrorHandling = <Args extends unknown[], Return>(
   fn: (...args: Args) => Return,
   componentName: string
 ): ((...args: Args) => Return) => {

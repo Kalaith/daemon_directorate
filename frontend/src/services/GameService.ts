@@ -1,4 +1,3 @@
-
 // services/GameService.ts - Service layer abstraction for game operations
 import type {
   Daemon,
@@ -229,4 +228,3 @@ export const createGameService = (
 // Export types
 export type { GameServiceInterface };
 export { GameService };
-

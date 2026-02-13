@@ -1,4 +1,3 @@
-
 // stores/slices/equipmentSlice.ts - Equipment management and crafting system
 import type { StateCreator } from 'zustand';
 import type { Equipment, EquipmentSetBonus } from '../../types/game';
