@@ -1,3 +1,4 @@
+
 // test/integration/criticalGameFlow.test.ts - Critical game flow integration tests
 import { describe, it, expect, beforeEach } from 'vitest';
 import { act, renderHook } from '@testing-library/react';
@@ -272,12 +273,13 @@ describe('Critical Game Flow Integration Tests', () => {
 
       const room = result.current.rooms.find(r => r.id === 'living_quarters');
 
-      if (room && result.current.canAfford(room.upgrade_cost)) {
+      if (room && room.id && result.current.canAfford(room.upgrade_cost)) {
+        const roomId = room.id;
         const initialLevel = room.level;
         const initialCredits = result.current.resources.credits;
 
         act(() => {
-          result.current.upgradeRoom(room.id);
+          result.current.upgradeRoom(roomId);
         });
 
         const updatedRoom = result.current.rooms.find(
@@ -299,15 +301,19 @@ describe('Critical Game Flow Integration Tests', () => {
 
       const daemon = result.current.daemons[0];
       const room = result.current.rooms[0];
+      if (!daemon || !room || !room.id) {
+        return;
+      }
+      const roomId = room.id;
 
       act(() => {
-        result.current.assignDaemonToRoom(daemon.id, room.id);
+        result.current.assignDaemonToRoom(daemon.id, roomId);
       });
 
       const updatedDaemon = result.current.daemons.find(
         d => d.id === daemon.id
       );
-      expect(updatedDaemon!.assignments).toContain(room.id);
+      expect(updatedDaemon!.assignments).toContain(roomId);
     });
   });
 

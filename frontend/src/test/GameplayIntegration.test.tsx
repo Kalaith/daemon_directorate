@@ -1,3 +1,4 @@
+
 // GameplayIntegration.test.tsx - Comprehensive game mechanics test
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
@@ -106,7 +107,7 @@ const mockGameStore = {
   executeMission: vi.fn(),
   conductHRReview: vi.fn(),
   upgradeRoom: vi.fn(),
-  canAfford: vi.fn(() => true),
+  canAfford: vi.fn((_cost: number) => true),
   isHRReviewAvailable: vi.fn(() => true),
   setShowMissionResults: vi.fn(),
   setShowTutorial: vi.fn(),
@@ -213,6 +214,9 @@ describe('Daemon Directorate - Corporate Satire Gameplay', () => {
           ...starterData.starter_daemons[0],
           id: 'recruit-1',
           cost: daemonBalance.RECRUITMENT.BASE_COST,
+          isActive: true,
+          assignments: [],
+          equipment: null,
         },
       ];
 
@@ -317,6 +321,7 @@ describe('Daemon Directorate - Corporate Satire Gameplay', () => {
         successChance: 75,
         casualties: [],
         rewards: { credits: 200, soulEssence: 1 },
+        equipmentDamage: [],
       };
 
       render(<App />);
@@ -340,6 +345,7 @@ describe('Daemon Directorate - Corporate Satire Gameplay', () => {
         description:
           'HR has mandated comprehensive performance reviews to assess productivity metrics and suffering quotas.',
         type: 'choice' as const,
+        timestamp: Date.now(),
         choices: [
           {
             label: 'Embrace the Bureaucratic Excellence',
@@ -379,6 +385,7 @@ describe('Daemon Directorate - Corporate Satire Gameplay', () => {
         title: 'Test Corporate Event',
         description: 'Test event description',
         type: 'choice' as const,
+        timestamp: Date.now(),
         choices: [
           {
             label: 'Test Choice',

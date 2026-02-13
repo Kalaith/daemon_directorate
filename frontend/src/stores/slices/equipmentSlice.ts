@@ -1,3 +1,4 @@
+
 // stores/slices/equipmentSlice.ts - Equipment management and crafting system
 import type { StateCreator } from 'zustand';
 import type { Equipment, EquipmentSetBonus } from '../../types/game';
@@ -240,7 +241,7 @@ export const createEquipmentSlice: StateCreator<
               setName,
               requiredPieces: bonus.requiredPieces,
               activeBonus: true,
-              effects: bonus.effects,
+              effects: bonus.effects.map(effect => ({ ...effect })),
             });
           }
         });

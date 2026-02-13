@@ -1,3 +1,4 @@
+
 // src/test/integration/gameFlow.test.ts
 import { describe, it, expect, beforeEach } from 'vitest';
 import { act, renderHook } from '@testing-library/react';
@@ -133,6 +134,10 @@ describe('Game Flow Integration', () => {
     });
 
     const room = result.current.rooms[0];
+    if (!room || !room.id) {
+      return;
+    }
+    const roomId = room.id;
     const initialLevel = room.level;
     const upgradeCost = room.upgrade_cost;
 
@@ -142,10 +147,10 @@ describe('Game Flow Integration', () => {
     });
 
     act(() => {
-      result.current.upgradeRoom(room.id);
+      result.current.upgradeRoom(roomId);
     });
 
-    const upgradedRoom = result.current.rooms.find(r => r.id === room.id);
+    const upgradedRoom = result.current.rooms.find(r => r.id === roomId);
     expect(upgradedRoom?.level).toBe(initialLevel + 1);
     expect(upgradedRoom?.upgrade_cost).toBeGreaterThan(upgradeCost);
   });

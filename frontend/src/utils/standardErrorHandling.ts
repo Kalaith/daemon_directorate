@@ -18,21 +18,21 @@ export const ErrorCategory = {
 export type ErrorCategory = (typeof ErrorCategory)[keyof typeof ErrorCategory];
 
 // Standardized error handler wrapper
-export const withErrorHandling = <T extends (...args: unknown[]) => unknown>(
-  fn: T,
+export const withErrorHandling = <Args extends unknown[], Return>(
+  fn: (...args: Args) => Return,
   context: string,
   category: ErrorCategory = ErrorCategory.SYSTEM
-): T => {
-  return ((...args: Parameters<T>): ReturnType<T> => {
+): ((...args: Args) => Return) => {
+  return (...args: Args): Return => {
     try {
-      const result = fn(...args) as ReturnType<T>;
+      const result = fn(...args) as Return;
 
       // Handle async functions
       if (result instanceof Promise) {
         return result.catch((error: unknown) => {
           handleError(error, context, category);
           throw error;
-        }) as ReturnType<T>;
+        }) as Return;
       }
 
       return result;
@@ -40,7 +40,7 @@ export const withErrorHandling = <T extends (...args: unknown[]) => unknown>(
       handleError(error, context, category);
       throw error;
     }
-  }) as T;
+  };
 };
 
 // Centralized error handling logic
@@ -180,11 +180,12 @@ const getNotificationType = (category: ErrorCategory): string => {
 
 // Store action wrapper for consistent error handling
 export const withGameActionErrorHandling = <
-  T extends (...args: unknown[]) => unknown,
+  Args extends unknown[],
+  Return,
 >(
-  action: T,
+  action: (...args: Args) => Return,
   actionName: string
-): T => {
+): ((...args: Args) => Return) => {
   return withErrorHandling(
     action,
     `Game Action: ${actionName}`,
@@ -193,10 +194,10 @@ export const withGameActionErrorHandling = <
 };
 
 // Validation wrapper
-export const withValidation = <T extends (...args: unknown[]) => unknown>(
-  fn: T,
+export const withValidation = <Args extends unknown[], Return>(
+  fn: (...args: Args) => Return,
   validationName: string
-): T => {
+): ((...args: Args) => Return) => {
   return withErrorHandling(
     fn,
     `Validation: ${validationName}`,
@@ -206,11 +207,12 @@ export const withValidation = <T extends (...args: unknown[]) => unknown>(
 
 // Network operation wrapper
 export const withNetworkErrorHandling = <
-  T extends (...args: unknown[]) => unknown,
+  Args extends unknown[],
+  Return,
 >(
-  fn: T,
+  fn: (...args: Args) => Return,
   operationName: string
-): T => {
+): ((...args: Args) => Return) => {
   return withErrorHandling(
     fn,
     `Network: ${operationName}`,
@@ -220,11 +222,12 @@ export const withNetworkErrorHandling = <
 
 // Component error handler
 export const withComponentErrorHandling = <
-  T extends (...args: unknown[]) => unknown,
+  Args extends unknown[],
+  Return,
 >(
-  fn: T,
+  fn: (...args: Args) => Return,
   componentName: string
-): T => {
+): ((...args: Args) => Return) => {
   return withErrorHandling(
     fn,
     `Component: ${componentName}`,
