@@ -8,7 +8,7 @@ import type {
 } from '../types/game';
 
 // Game configuration constants
-export const GAME_CONFIG = {
+export const gameConfig = {
   DAILY_UPDATE_INTERVAL: 30000, // 30 seconds = 1 game day
   RECRUITMENT_COST: 50,
   TUTORIAL_DELAY: 1000,
@@ -16,7 +16,7 @@ export const GAME_CONFIG = {
 } as const;
 
 // Enhanced daemon quirks with mechanical effects
-export const DAEMON_QUIRKS = [
+export const daemonQuirks = [
   {
     name: 'Process documentation enthusiast',
     effect: 'bureaucratic_bonus',
@@ -217,7 +217,7 @@ export const DAEMON_QUIRKS = [
 ];
 
 // Starter game data
-export const STARTER_DATA: StarterData = {
+export const starterData: StarterData = {
   starter_daemons: [
     {
       name: 'Belphegor-7734',
@@ -225,7 +225,7 @@ export const STARTER_DATA: StarterData = {
       health: 100,
       morale: 75,
       lifespanDays: 45,
-      quirks: [DAEMON_QUIRKS[0], DAEMON_QUIRKS[1]], // Loves paperwork, Afraid of printers
+      quirks: [daemonQuirks[0], daemonQuirks[1]], // Loves paperwork, Afraid of printers
       generation: 1,
       bloodline: 'House of Burning Spreadsheets',
       inheritedTraits: [],
@@ -242,7 +242,7 @@ export const STARTER_DATA: StarterData = {
       health: 100,
       morale: 60,
       lifespanDays: 60,
-      quirks: [DAEMON_QUIRKS[2], DAEMON_QUIRKS[3]], // Aggressive in meetings, Collects staplers
+      quirks: [daemonQuirks[2], daemonQuirks[3]], // Aggressive in meetings, Collects staplers
       generation: 1,
       bloodline: 'The Synergy Syndicate',
       inheritedTraits: [],
@@ -259,7 +259,7 @@ export const STARTER_DATA: StarterData = {
       health: 100,
       morale: 80,
       lifespanDays: 30,
-      quirks: [DAEMON_QUIRKS[4], DAEMON_QUIRKS[5]], // Excellent with Excel, Steals lunch from fridge
+      quirks: [daemonQuirks[4], daemonQuirks[5]], // Excellent with Excel, Steals lunch from fridge
       generation: 1,
       bloodline: 'Clan PowerPoint',
       inheritedTraits: [],
@@ -469,7 +469,7 @@ export const STARTER_DATA: StarterData = {
 };
 
 // Advanced rooms (separate from starter data)
-export const ADVANCED_ROOMS: Omit<Room, 'id'>[] = [
+export const advancedRooms: Omit<Room, 'id'>[] = [
     {
       name: 'Training Hall',
       level: 0,
@@ -583,7 +583,7 @@ export const ADVANCED_ROOMS: Omit<Room, 'id'>[] = [
   ];
 
 // Daemon bloodlines for legacy system
-export const DAEMON_BLOODLINES = [
+export const daemonBloodlines = [
   'House of Burning Spreadsheets',
   'House of Eternal Audits',
   'House of Divine Bureaucracy',
@@ -600,7 +600,7 @@ export const DAEMON_BLOODLINES = [
 ];
 
 // Recruitment bloodlines subset (used in daemon generation)
-export const RECRUITMENT_BLOODLINES = [
+export const recruitmentBloodlines = [
   'House of Burning Spreadsheets',
   'House of Eternal Audits',
   'House of Divine Bureaucracy',
@@ -608,7 +608,7 @@ export const RECRUITMENT_BLOODLINES = [
 ];
 
 // Inherited traits that can be passed down through generations
-export const INHERITED_TRAITS = [
+export const inheritedTraits = [
   'Veteran Negotiator (+10% mission success on diplomatic missions)',
   'Equipment Whisperer (+20% equipment durability)',
   'Corporate Bloodhound (+15% resource gathering)',
@@ -625,7 +625,7 @@ export const INHERITED_TRAITS = [
   'Equipment Bond (can use any equipment regardless of specialization)',
   'Generational Momentum (+5% mission success per generation)',
 ];
-export const DAEMON_NAMES = [
+export const daemonNames = [
   'Belphegor',
   'Malphas',
   'Vassago',
@@ -689,7 +689,7 @@ export const DAEMON_NAMES = [
 ];
 
 // Corporate events with expanded variety and strategic choices
-export const CORPORATE_EVENTS = [
+export const corporateEvents = [
   {
     id: 'performance_review',
     title: 'Quarterly Soul Performance Evaluation',
@@ -1379,7 +1379,7 @@ export const CORPORATE_EVENTS = [
 ];
 
 // Crafting recipes
-export const CRAFTING_RECIPES = [
+export const craftingRecipes = [
   {
     id: 'briefcase',
     name: 'Standard Briefcase',
@@ -1441,21 +1441,21 @@ export const CRAFTING_RECIPES = [
 ];
 
 // Mission success factors by specialization vs planet difficulty
-export const MISSION_SUCCESS_FACTORS = {
+export const missionSuccessFactors = {
   Easy: { Infiltration: 0.8, Combat: 0.7, Sabotage: 0.9 },
   Medium: { Infiltration: 0.6, Combat: 0.8, Sabotage: 0.7 },
   Hard: { Infiltration: 0.4, Combat: 0.9, Sabotage: 0.5 },
 };
 
 // Difficulty multipliers for rewards and casualties
-export const DIFFICULTY_MODIFIERS = {
+export const difficultyModifiers = {
   Easy: { rewardMultiplier: 1.0, casualtyChance: 0.1 },
   Medium: { rewardMultiplier: 1.5, casualtyChance: 0.25 },
   Hard: { rewardMultiplier: 2.0, casualtyChance: 0.4 },
 };
 
 // Corporate Tier System
-export const ASSOCIATE_TIER: CorporateTier = {
+export const associateTier: CorporateTier = {
   id: 'associate',
   name: 'Associate',
   level: 1,
@@ -1467,7 +1467,7 @@ export const ASSOCIATE_TIER: CorporateTier = {
   },
 };
 
-export const MANAGER_TIER: CorporateTier = {
+export const managerTier: CorporateTier = {
   id: 'manager',
   name: 'Manager',
   level: 2,
@@ -1482,7 +1482,7 @@ export const MANAGER_TIER: CorporateTier = {
   },
 };
 
-export const DIRECTOR_TIER: CorporateTier = {
+export const directorTier: CorporateTier = {
   id: 'director',
   name: 'Director',
   level: 3,
@@ -1497,7 +1497,7 @@ export const DIRECTOR_TIER: CorporateTier = {
   },
 };
 
-export const VP_TIER: CorporateTier = {
+export const vpTier: CorporateTier = {
   id: 'vice_president',
   name: 'Vice President',
   level: 4,
@@ -1513,7 +1513,7 @@ export const VP_TIER: CorporateTier = {
   },
 };
 
-export const BOARD_MEMBER_TIER: CorporateTier = {
+export const boardMemberTier: CorporateTier = {
   id: 'board_member',
   name: 'Board Member',
   level: 5,
@@ -1529,16 +1529,16 @@ export const BOARD_MEMBER_TIER: CorporateTier = {
   },
 };
 
-export const CORPORATE_TIERS = [
-  ASSOCIATE_TIER,
-  MANAGER_TIER,
-  DIRECTOR_TIER,
-  VP_TIER,
-  BOARD_MEMBER_TIER,
+export const corporateTiers = [
+  associateTier,
+  managerTier,
+  directorTier,
+  vpTier,
+  boardMemberTier,
 ];
 
 // Compliance System Templates
-export const COMPLIANCE_TEMPLATES: ComplianceTask[] = [
+export const complianceTemplates: ComplianceTask[] = [
   {
     id: 'performance_review_mandatory',
     type: 'performance_review',
@@ -1598,7 +1598,7 @@ export const COMPLIANCE_TEMPLATES: ComplianceTask[] = [
 ];
 
 // Surreal Corporate Events by Tier
-export const SURREAL_EVENTS = {
+export const surrealEvents = {
   ASSOCIATE: [
     {
       id: 'copier_jam',
@@ -1766,7 +1766,7 @@ export const SURREAL_EVENTS = {
 };
 
 // Corporate Rivals
-export const RIVAL_CORPORATIONS: CorporateRival[] = [
+export const rivalCorporations: CorporateRival[] = [
   {
     id: 'synergy_syndicate',
     name: 'The Synergy Syndicate',
@@ -1876,7 +1876,7 @@ export const RIVAL_CORPORATIONS: CorporateRival[] = [
 ];
 
 // Prestige Bonuses
-export const PRESTIGE_BONUSES: PrestigeBonus[] = [
+export const prestigeBonuses: PrestigeBonus[] = [
   {
     id: 'veteran_manager',
     name: 'Veteran Manager',
@@ -1934,7 +1934,7 @@ export const PRESTIGE_BONUSES: PrestigeBonus[] = [
 ];
 
 // Enhanced Equipment System - Rarity Definitions
-export const EQUIPMENT_RARITY_MODIFIERS = {
+export const equipmentRarityModifiers = {
   Common: { durabilityBonus: 0, effectMultiplier: 1.0, legacyBonusRate: 1.0 },
   Uncommon: { durabilityBonus: 10, effectMultiplier: 1.2, legacyBonusRate: 1.1 },
   Rare: { durabilityBonus: 20, effectMultiplier: 1.5, legacyBonusRate: 1.2 },
@@ -1943,7 +1943,7 @@ export const EQUIPMENT_RARITY_MODIFIERS = {
 } as const;
 
 // Equipment Set Definitions
-export const EQUIPMENT_SETS = {
+export const equipmentSets = {
   'Corporate Executive Suite': {
     pieces: ['Executive Briefcase', 'Power Tie', 'Golden Calculator'],
     setBonuses: [
@@ -1995,7 +1995,7 @@ export const EQUIPMENT_SETS = {
 } as const;
 
 // Enhanced Mission System
-export const MISSION_TEMPLATES = {
+export const missionTemplates = {
   conquest: {
     id: 'conquest',
     name: 'Corporate Conquest',
@@ -2230,7 +2230,7 @@ export const MISSION_TEMPLATES = {
 };
 
 // Dynamic Event Chains - Corporate Storytelling
-export const CORPORATE_EVENT_CHAINS = {
+export const corporateEventChains = {
   quarterly_review_cycle: {
     chainId: 'quarterly_review_cycle',
     events: [
@@ -2378,7 +2378,7 @@ export const CORPORATE_EVENT_CHAINS = {
 };
 
 // Mission Consequence Effects
-export const MISSION_CONSEQUENCES = {
+export const missionConsequences = {
   // Immediate consequences
   reduced_stability: {
     id: 'reduced_stability',
@@ -2470,7 +2470,7 @@ export const MISSION_CONSEQUENCES = {
 };
 
 // Procedural Mission Generation Based on Territory Control
-export const PROCEDURAL_MISSIONS = {
+export const proceduralMissions = {
   // Missions that become available after conquering planets
   territory_defense: {
     id: 'territory_defense',
@@ -2511,7 +2511,7 @@ export const PROCEDURAL_MISSIONS = {
 };
 
 // Ending Scenarios
-export const ENDING_SCENARIOS = {
+export const endingScenarios = {
   profit: {
     id: 'profit_maximizer',
     title: 'The Profit Maximizer',

@@ -1,7 +1,7 @@
 // stores/slices/missionSlice.ts - Mission management slice
 import type { StateCreator } from 'zustand';
 import type { Planet, Mission, MissionResult } from '../../types/game';
-import { STARTER_DATA } from '../../constants/gameData';
+import { starterData } from '../../constants/gameData';
 import { executeMissionLogic } from '../../utils/missionHelpers';
 import { generateId } from '../../utils/gameHelpers';
 import { logger } from '../../utils/logger';
@@ -42,7 +42,7 @@ export const createMissionSlice: StateCreator<
 > = (set, get) => ({
   // Initial state
   planets:
-    STARTER_DATA.planets.map(
+    starterData.planets.map(
       (p): Planet => ({
         ...p,
         id: `planet-${Math.random().toString(36).substr(2, 9)}`,

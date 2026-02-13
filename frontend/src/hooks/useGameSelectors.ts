@@ -1,7 +1,7 @@
 // hooks/useGameSelectors.ts - Optimized selectors to prevent unnecessary re-renders
 import { useMemo } from 'react';
 import { useGameStore } from '../stores/composedStore';
-import { DAEMON_BALANCE } from '../constants/gameBalance';
+import { daemonBalance } from '../constants/gameBalance';
 import { DashboardService } from '../services/DashboardService';
 
 // Memoized selectors to prevent unnecessary re-renders
@@ -36,10 +36,10 @@ export const useDaemonStats = () => {
     );
 
     const lowHealthCount = activeDaemons.filter(
-      d => d.health < DAEMON_BALANCE.THRESHOLDS.LOW_HEALTH
+      d => d.health < daemonBalance.THRESHOLDS.LOW_HEALTH
     ).length;
     const lowMoraleCount = activeDaemons.filter(
-      d => d.morale < DAEMON_BALANCE.THRESHOLDS.LOW_MORALE
+      d => d.morale < daemonBalance.THRESHOLDS.LOW_MORALE
     ).length;
 
     return {
@@ -123,9 +123,9 @@ export const useMissionReadyDaemons = () => {
     () =>
       activeDaemons.filter(
         daemon =>
-          daemon.health > DAEMON_BALANCE.THRESHOLDS.LOW_HEALTH &&
-          daemon.morale > DAEMON_BALANCE.THRESHOLDS.LOW_MORALE &&
-          daemon.lifespanDays > DAEMON_BALANCE.THRESHOLDS.CRITICAL_LIFESPAN
+          daemon.health > daemonBalance.THRESHOLDS.LOW_HEALTH &&
+          daemon.morale > daemonBalance.THRESHOLDS.LOW_MORALE &&
+          daemon.lifespanDays > daemonBalance.THRESHOLDS.CRITICAL_LIFESPAN
       ),
     [activeDaemons]
   );
@@ -139,9 +139,9 @@ export const useDaemonsNeedingAttention = () => {
     () =>
       activeDaemons.filter(
         daemon =>
-          daemon.health < DAEMON_BALANCE.THRESHOLDS.LOW_HEALTH ||
-          daemon.morale < DAEMON_BALANCE.THRESHOLDS.LOW_MORALE ||
-          daemon.lifespanDays <= DAEMON_BALANCE.THRESHOLDS.WARNING_LIFESPAN
+          daemon.health < daemonBalance.THRESHOLDS.LOW_HEALTH ||
+          daemon.morale < daemonBalance.THRESHOLDS.LOW_MORALE ||
+          daemon.lifespanDays <= daemonBalance.THRESHOLDS.WARNING_LIFESPAN
       ),
     [activeDaemons]
   );

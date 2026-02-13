@@ -1,14 +1,14 @@
 // components/ui/DesignSystem.tsx - Reusable components using design tokens
 import React, { forwardRef } from 'react';
 import {
-  COMPONENT_VARIANTS,
+  componentVariants,
   ANIMATIONS,
-  LAYOUT_PRESETS,
+  layoutPresets,
 } from '../../theme/tokens';
 
 // Enhanced Button component with variants
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: keyof typeof COMPONENT_VARIANTS.button;
+  variant?: keyof typeof componentVariants.button;
   size?: 'sm' | 'md' | 'lg';
   loading?: boolean;
   icon?: React.ReactNode;
@@ -46,7 +46,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         ref={ref}
         className={`
         ${baseClasses}
-        ${COMPONENT_VARIANTS.button[variant]}
+        ${componentVariants.button[variant]}
         ${sizeClasses[size]}
         ${className}
       `}
@@ -67,7 +67,7 @@ Button.displayName = 'Button';
 
 // Enhanced Badge component
 interface BadgeProps {
-  variant?: keyof typeof COMPONENT_VARIANTS.badge;
+  variant?: keyof typeof componentVariants.badge;
   children: React.ReactNode;
   className?: string;
 }
@@ -81,7 +81,7 @@ export const Badge: React.FC<BadgeProps> = ({
     <span
       className={`
         inline-flex items-center px-3 py-1 text-xs font-semibold rounded-full
-        ${COMPONENT_VARIANTS.badge[variant]}
+        ${componentVariants.badge[variant]}
         ${className}
       `}
     >
@@ -92,7 +92,7 @@ export const Badge: React.FC<BadgeProps> = ({
 
 // Enhanced Card component
 interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
-  variant?: keyof typeof COMPONENT_VARIANTS.card;
+  variant?: keyof typeof componentVariants.card;
   padding?: 'sm' | 'md' | 'lg';
   children: React.ReactNode;
 }
@@ -112,7 +112,7 @@ export const Card = forwardRef<HTMLDivElement, CardProps>(
       <div
         ref={ref}
         className={`
-        ${COMPONENT_VARIANTS.card[variant]}
+        ${componentVariants.card[variant]}
         ${paddingClasses[padding]}
         ${className}
       `}
@@ -157,17 +157,17 @@ export const ProgressBar: React.FC<ProgressBarProps> = ({
   const getBarColor = () => {
     if (variant === 'health') {
       return percentage >= 70
-        ? COMPONENT_VARIANTS.status.health.good
+        ? componentVariants.status.health.good
         : percentage >= 40
-          ? COMPONENT_VARIANTS.status.health.warning
-          : COMPONENT_VARIANTS.status.health.critical;
+          ? componentVariants.status.health.warning
+          : componentVariants.status.health.critical;
     }
     if (variant === 'morale') {
       return percentage >= 70
-        ? COMPONENT_VARIANTS.status.morale.good
+        ? componentVariants.status.morale.good
         : percentage >= 40
-          ? COMPONENT_VARIANTS.status.morale.warning
-          : COMPONENT_VARIANTS.status.morale.critical;
+          ? componentVariants.status.morale.warning
+          : componentVariants.status.morale.critical;
     }
     return 'bg-primary-500';
   };
@@ -213,11 +213,11 @@ export const StatusIndicator: React.FC<StatusIndicatorProps> = ({
 }) => {
   const getStatusColor = () => {
     if (variant === 'lifespan') {
-      return COMPONENT_VARIANTS.status.lifespan[status];
+      return componentVariants.status.lifespan[status];
     }
     return variant === 'health'
-      ? COMPONENT_VARIANTS.status.health[status]
-      : COMPONENT_VARIANTS.status.morale[status];
+      ? componentVariants.status.health[status]
+      : componentVariants.status.morale[status];
   };
 
   return (
@@ -240,21 +240,21 @@ export const Container: React.FC<{
   children: React.ReactNode;
   className?: string;
 }> = ({ children, className = '' }) => (
-  <div className={`${LAYOUT_PRESETS.container} ${className}`}>{children}</div>
+  <div className={`${layoutPresets.container} ${className}`}>{children}</div>
 );
 
 export const FlexBetween: React.FC<{
   children: React.ReactNode;
   className?: string;
 }> = ({ children, className = '' }) => (
-  <div className={`${LAYOUT_PRESETS.flexBetween} ${className}`}>{children}</div>
+  <div className={`${layoutPresets.flexBetween} ${className}`}>{children}</div>
 );
 
 export const GridResponsive: React.FC<{
   children: React.ReactNode;
   className?: string;
 }> = ({ children, className = '' }) => (
-  <div className={`${LAYOUT_PRESETS.gridResponsive} ${className}`}>
+  <div className={`${layoutPresets.gridResponsive} ${className}`}>
     {children}
   </div>
 );

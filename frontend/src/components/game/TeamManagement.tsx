@@ -3,7 +3,7 @@ import React from 'react';
 import { useGameStore } from '../../stores/composedStore';
 import Card from '../ui/Card';
 import { getLifespanColor, getProgressBarColor } from '../../utils/gameHelpers';
-import { CORPORATE_BALANCE, DAEMON_BALANCE } from '../../constants/gameBalance';
+import { corporateBalance, daemonBalance } from '../../constants/gameBalance';
 
 const TeamManagement: React.FC = () => {
   const {
@@ -103,7 +103,7 @@ const TeamManagement: React.FC = () => {
 
               <div className="flex gap-3">
                 {corporateTier.level >=
-                  CORPORATE_BALANCE.HR_REVIEW.MIN_TIER && (
+                  corporateBalance.HR_REVIEW.MIN_TIER && (
                   <button
                     onClick={() => conductHRReview(daemon.id)}
                     disabled={!isHRReviewAvailable()}
@@ -115,7 +115,7 @@ const TeamManagement: React.FC = () => {
                     title={
                       isHRReviewAvailable()
                         ? 'Conduct Quarterly Performance Review'
-                        : `Performance evaluations available every ${CORPORATE_BALANCE.HR_REVIEW.COOLDOWN_DAYS} days per corporate policy`
+                        : `Performance evaluations available every ${corporateBalance.HR_REVIEW.COOLDOWN_DAYS} days per corporate policy`
                     }
                   >
                     📊 Performance Review
@@ -226,10 +226,10 @@ const TeamManagement: React.FC = () => {
 
         <button
           onClick={refreshRecruitmentPool}
-          disabled={!canAfford(DAEMON_BALANCE.RECRUITMENT.BASE_COST)}
+          disabled={!canAfford(daemonBalance.RECRUITMENT.BASE_COST)}
           className="px-8 py-4 bg-daemon-secondary text-daemon-text-bright font-mono rounded-lg hover:bg-daemon-primary hover:shadow-infernal disabled:bg-daemon-surface disabled:text-daemon-text-dim disabled:cursor-not-allowed transition-all duration-200 uppercase tracking-wide font-semibold border border-daemon-secondary hover:border-daemon-primary disabled:border-daemon-text-dim"
         >
-          Expand Candidate Search ({DAEMON_BALANCE.RECRUITMENT.BASE_COST}{' '}
+          Expand Candidate Search ({daemonBalance.RECRUITMENT.BASE_COST}{' '}
           Credits)
         </button>
       </div>

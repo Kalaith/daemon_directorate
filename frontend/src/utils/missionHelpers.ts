@@ -7,10 +7,10 @@ import type {
   Equipment,
 } from '../types/game';
 import {
-  MISSION_TEMPLATES,
-  MISSION_CONSEQUENCES,
-  DAEMON_NAMES,
-  DAEMON_QUIRKS,
+  missionTemplates,
+  missionConsequences,
+  daemonNames,
+  daemonQuirks,
 } from '../constants/gameData';
 import {
   calculateMissionSuccessChance,
@@ -48,7 +48,7 @@ export const createMissionInstance = (
   generateId: () => string
 ): Mission => {
   const missionTemplate =
-    MISSION_TEMPLATES[missionType as keyof typeof MISSION_TEMPLATES];
+    missionTemplates[missionType as keyof typeof missionTemplates];
 
   if (!missionTemplate) {
     throw new Error(`Mission template not found for type: ${missionType}`);
@@ -73,7 +73,7 @@ export const createMissionInstance = (
     ],
     consequences: missionTemplate.failureConsequences.map(consId => {
       const consequence =
-        MISSION_CONSEQUENCES[consId as keyof typeof MISSION_CONSEQUENCES];
+        missionConsequences[consId as keyof typeof missionConsequences];
       return {
         id: generateId(),
         triggerCondition: 'failure' as const,
@@ -179,7 +179,7 @@ export const generateMissionNarrative = (
   success: boolean
 ): string => {
   const missionTemplate =
-    MISSION_TEMPLATES[mission.type as keyof typeof MISSION_TEMPLATES];
+    missionTemplates[mission.type as keyof typeof missionTemplates];
 
   if (success) {
     return `Mission accomplished! Your team successfully ${missionTemplate?.description.toLowerCase()} on ${planet.name}.`;
@@ -376,7 +376,7 @@ export const createSuccessorDaemon = (
     throw new Error('Daemon does not qualify for successor creation');
   }
 
-  const successorName = `${DAEMON_NAMES[Math.floor(Math.random() * DAEMON_NAMES.length)]}-${Math.floor(Math.random() * 9999) + 1000}`;
+  const successorName = `${daemonNames[Math.floor(Math.random() * daemonNames.length)]}-${Math.floor(Math.random() * 9999) + 1000}`;
   const inheritedTraits = [...originalDaemon.inheritedTraits];
   const stats = calculateSuccessorStats(originalDaemon);
 
@@ -392,7 +392,7 @@ export const createSuccessorDaemon = (
     health: stats.health,
     morale: stats.morale,
     lifespanDays: stats.lifespanDays,
-    quirks: DAEMON_QUIRKS.sort(() => 0.5 - Math.random()).slice(0, 2),
+    quirks: daemonQuirks.sort(() => 0.5 - Math.random()).slice(0, 2),
     assignments: [],
     equipment: null,
     isActive: true,

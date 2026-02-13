@@ -1,11 +1,11 @@
 // CorporateSatire.test.tsx - Test corporate satire enhancements
 import { describe, it, expect } from 'vitest';
 import {
-  DAEMON_QUIRKS,
-  CORPORATE_EVENTS,
-  STARTER_DATA,
+  daemonQuirks,
+  corporateEvents,
+  starterData,
 } from '../constants/gameData';
-import { DAEMON_BALANCE, CORPORATE_BALANCE } from '../constants/gameBalance';
+import { daemonBalance, corporateBalance } from '../constants/gameBalance';
 
 describe('Corporate Satire Theme Integration', () => {
   describe('Enhanced Daemon Quirks', () => {
@@ -29,7 +29,7 @@ describe('Corporate Satire Theme Integration', () => {
       ];
 
       corporateQuirkNames.forEach(expectedName => {
-        const quirk = DAEMON_QUIRKS.find(q => q.name === expectedName);
+        const quirk = daemonQuirks.find(q => q.name === expectedName);
         expect(quirk).toBeDefined();
         expect(quirk?.name).toBe(expectedName);
       });
@@ -45,13 +45,13 @@ describe('Corporate Satire Theme Integration', () => {
       ];
 
       corporateDescriptions.forEach(expectedDesc => {
-        const quirk = DAEMON_QUIRKS.find(q => q.description === expectedDesc);
+        const quirk = daemonQuirks.find(q => q.description === expectedDesc);
         expect(quirk).toBeDefined();
       });
     });
 
     it('should maintain quirk functionality while enhancing themes', () => {
-      DAEMON_QUIRKS.forEach(quirk => {
+      daemonQuirks.forEach(quirk => {
         expect(quirk).toHaveProperty('name');
         expect(quirk).toHaveProperty('effect');
         expect(quirk).toHaveProperty('value');
@@ -84,14 +84,14 @@ describe('Corporate Satire Theme Integration', () => {
       ];
 
       corporateEventTitles.forEach(expectedTitle => {
-        const event = CORPORATE_EVENTS.find(e => e.title === expectedTitle);
+        const event = corporateEvents.find(e => e.title === expectedTitle);
         expect(event).toBeDefined();
         expect(event?.title).toBe(expectedTitle);
       });
     });
 
     it('should have enhanced corporate event descriptions with proper terminology', () => {
-      const performanceReview = CORPORATE_EVENTS.find(
+      const performanceReview = corporateEvents.find(
         e => e.id === 'performance_review'
       );
       expect(performanceReview).toBeDefined();
@@ -101,7 +101,7 @@ describe('Corporate Satire Theme Integration', () => {
         'eternal employment contracts'
       );
 
-      const budgetEvent = CORPORATE_EVENTS.find(
+      const budgetEvent = corporateEvents.find(
         e => e.id === 'budget_restructuring'
       );
       expect(budgetEvent).toBeDefined();
@@ -115,7 +115,7 @@ describe('Corporate Satire Theme Integration', () => {
     });
 
     it('should have enhanced choice labels with corporate speak', () => {
-      const performanceReview = CORPORATE_EVENTS.find(
+      const performanceReview = corporateEvents.find(
         e => e.id === 'performance_review'
       );
       expect(performanceReview?.choices?.[0]?.label).toBe(
@@ -125,7 +125,7 @@ describe('Corporate Satire Theme Integration', () => {
         'Strategic Process Optimization'
       );
 
-      const budgetEvent = CORPORATE_EVENTS.find(
+      const budgetEvent = corporateEvents.find(
         e => e.id === 'budget_restructuring'
       );
       expect(budgetEvent?.choices?.[0]?.label).toBe(
@@ -137,7 +137,7 @@ describe('Corporate Satire Theme Integration', () => {
     });
 
     it('should have enhanced effect descriptions with corporate terminology', () => {
-      const performanceReview = CORPORATE_EVENTS.find(
+      const performanceReview = corporateEvents.find(
         e => e.id === 'performance_review'
       );
       const corporateAssetEffect =
@@ -154,7 +154,7 @@ describe('Corporate Satire Theme Integration', () => {
     });
 
     it('should maintain event structure while enhancing themes', () => {
-      CORPORATE_EVENTS.forEach(event => {
+      corporateEvents.forEach(event => {
         expect(event).toHaveProperty('id');
         expect(event).toHaveProperty('title');
         expect(event).toHaveProperty('description');
@@ -210,10 +210,10 @@ describe('Corporate Satire Theme Integration', () => {
 
     it('should maintain dark humor while being professional', () => {
       // Check that we maintain satirical elements
-      const auditEvent = CORPORATE_EVENTS.find(e => e.id === 'infernal_audit');
+      const auditEvent = corporateEvents.find(e => e.id === 'infernal_audit');
       expect(auditEvent?.description).toContain('Sarbanes-Oxley-Belphegor');
 
-      const trainingEvent = CORPORATE_EVENTS.find(
+      const trainingEvent = corporateEvents.find(
         e => e.id === 'mandatory_training'
       );
       expect(trainingEvent?.description).toContain(
@@ -221,7 +221,7 @@ describe('Corporate Satire Theme Integration', () => {
       );
 
       // Verify we have corporate buzzword satire
-      const mergerEvent = CORPORATE_EVENTS.find(
+      const mergerEvent = corporateEvents.find(
         e => e.id === 'corporate_merger'
       );
       expect(mergerEvent?.description).toContain('synergistic merger');
@@ -239,7 +239,7 @@ describe('Corporate Satire Theme Integration', () => {
       ];
 
       bloodlines.forEach(bloodline => {
-        const daemon = STARTER_DATA.starter_daemons.find(
+        const daemon = starterData.starter_daemons.find(
           d => d.bloodline === bloodline
         );
         expect(daemon).toBeDefined();
@@ -251,7 +251,7 @@ describe('Corporate Satire Theme Integration', () => {
       const planetNames = ['Xerox-7', 'Synergy-Prime', 'Productivity-Nine'];
 
       planetNames.forEach(name => {
-        const planet = STARTER_DATA.planets.find(p => p.name === name);
+        const planet = starterData.planets.find(p => p.name === name);
         expect(planet).toBeDefined();
         expect(planet?.name).toBe(name);
       });
@@ -265,7 +265,7 @@ describe('Corporate Satire Theme Integration', () => {
       ];
 
       resistanceTypes.forEach(resistance => {
-        const planet = STARTER_DATA.planets.find(
+        const planet = starterData.planets.find(
           p => p.resistance === resistance
         );
         expect(planet).toBeDefined();
@@ -281,7 +281,7 @@ describe('Corporate Satire Theme Integration', () => {
       ];
 
       equipmentNames.forEach(name => {
-        const equipment = STARTER_DATA.starter_equipment.find(
+        const equipment = starterData.starter_equipment.find(
           e => e.name === name
         );
         expect(equipment).toBeDefined();
@@ -292,32 +292,32 @@ describe('Corporate Satire Theme Integration', () => {
 
   describe('Game Balance Corporate Integration', () => {
     it('should have proper recruitment cost structure', () => {
-      expect(DAEMON_BALANCE.RECRUITMENT).toBeDefined();
-      expect(DAEMON_BALANCE.RECRUITMENT.BASE_COST).toBeDefined();
-      expect(typeof DAEMON_BALANCE.RECRUITMENT.BASE_COST).toBe('number');
-      expect(DAEMON_BALANCE.RECRUITMENT.BASE_COST).toBeGreaterThan(0);
+      expect(daemonBalance.RECRUITMENT).toBeDefined();
+      expect(daemonBalance.RECRUITMENT.BASE_COST).toBeDefined();
+      expect(typeof daemonBalance.RECRUITMENT.BASE_COST).toBe('number');
+      expect(daemonBalance.RECRUITMENT.BASE_COST).toBeGreaterThan(0);
     });
 
     it('should have HR review system properly configured', () => {
-      expect(CORPORATE_BALANCE.HR_REVIEW).toBeDefined();
-      expect(CORPORATE_BALANCE.HR_REVIEW.MIN_TIER).toBeDefined();
-      expect(CORPORATE_BALANCE.HR_REVIEW.COOLDOWN_DAYS).toBeDefined();
-      expect(typeof CORPORATE_BALANCE.HR_REVIEW.MIN_TIER).toBe('number');
-      expect(typeof CORPORATE_BALANCE.HR_REVIEW.COOLDOWN_DAYS).toBe('number');
+      expect(corporateBalance.HR_REVIEW).toBeDefined();
+      expect(corporateBalance.HR_REVIEW.MIN_TIER).toBeDefined();
+      expect(corporateBalance.HR_REVIEW.COOLDOWN_DAYS).toBeDefined();
+      expect(typeof corporateBalance.HR_REVIEW.MIN_TIER).toBe('number');
+      expect(typeof corporateBalance.HR_REVIEW.COOLDOWN_DAYS).toBe('number');
     });
 
     it('should maintain game balance while enhancing theme', () => {
       // Verify key balance constants exist
-      expect(DAEMON_BALANCE.THRESHOLDS).toBeDefined();
-      expect(DAEMON_BALANCE.RECRUITMENT).toBeDefined();
-      expect(DAEMON_BALANCE.LEGACY_REQUIREMENTS).toBeDefined();
-      expect(CORPORATE_BALANCE.EVENT_CHANCES).toBeDefined();
+      expect(daemonBalance.THRESHOLDS).toBeDefined();
+      expect(daemonBalance.RECRUITMENT).toBeDefined();
+      expect(daemonBalance.LEGACY_REQUIREMENTS).toBeDefined();
+      expect(corporateBalance.EVENT_CHANCES).toBeDefined();
     });
   });
 
   describe('Corporate Event Choices Functionality', () => {
     it('should have properly structured choice effects', () => {
-      const choiceEvents = CORPORATE_EVENTS.filter(e => e.type === 'choice');
+      const choiceEvents = corporateEvents.filter(e => e.type === 'choice');
 
       choiceEvents.forEach(event => {
         event.choices?.forEach(choice => {
@@ -338,7 +338,7 @@ describe('Corporate Satire Theme Integration', () => {
     });
 
     it('should have enhanced automatic event effects', () => {
-      const autoEvents = CORPORATE_EVENTS.filter(e => e.type === 'automatic');
+      const autoEvents = corporateEvents.filter(e => e.type === 'automatic');
 
       autoEvents.forEach(event => {
         event.effects?.forEach(effect => {
@@ -358,7 +358,7 @@ describe('Corporate Satire Theme Integration', () => {
       // Check that we don't have any old generic terms
       const genericTerms = ['daemon', 'hire', 'health', 'morale', 'lifespan'];
 
-      CORPORATE_EVENTS.forEach(event => {
+      corporateEvents.forEach(event => {
         genericTerms.forEach(term => {
           // Allow these terms in IDs and technical fields, but not in user-facing text
           expect(event.title.toLowerCase().includes(term)).toBe(false);
@@ -387,7 +387,7 @@ describe('Corporate Satire Theme Integration', () => {
     });
 
     it('should have appropriate length descriptions for readability', () => {
-      CORPORATE_EVENTS.forEach(event => {
+      corporateEvents.forEach(event => {
         // Titles should be concise but descriptive
         expect(event.title.length).toBeGreaterThan(10);
         expect(event.title.length).toBeLessThan(100);

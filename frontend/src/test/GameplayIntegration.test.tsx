@@ -2,8 +2,8 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
 import App from '../App';
-import { DAEMON_BALANCE, CORPORATE_BALANCE } from '../constants/gameBalance';
-import { STARTER_DATA } from '../constants/gameData';
+import { daemonBalance, corporateBalance } from '../constants/gameBalance';
+import { starterData } from '../constants/gameData';
 import type {
   CorporateEvent,
   CorporateRival,
@@ -30,7 +30,7 @@ const mockGameStore = {
   } satisfies GameResources,
 
   // Daemon management
-  daemons: STARTER_DATA.starter_daemons.map(daemon => ({
+  daemons: starterData.starter_daemons.map(daemon => ({
     ...daemon,
     id: `test-${daemon.name}`,
     isActive: true,
@@ -65,7 +65,7 @@ const mockGameStore = {
   } satisfies CorporateTier,
 
   // Planets and missions
-  planets: STARTER_DATA.planets.map(planet => ({
+  planets: starterData.planets.map(planet => ({
     ...planet,
     id: `test-${planet.name}`,
     conquered: false,
@@ -75,12 +75,12 @@ const mockGameStore = {
   availableProceduralMissions: [] as Mission[],
 
   // Equipment and rooms
-  equipment: STARTER_DATA.starter_equipment.map(eq => ({
+  equipment: starterData.starter_equipment.map(eq => ({
     ...eq,
     id: `test-${eq.name}`,
     assignedTo: null,
   })) as Equipment[],
-  rooms: STARTER_DATA.apartment_rooms.map(room => ({
+  rooms: starterData.apartment_rooms.map(room => ({
     ...room,
     id: `test-${room.name}`,
   })) as Room[],
@@ -203,9 +203,9 @@ describe('Daemon Directorate - Corporate Satire Gameplay', () => {
     it('should handle talent acquisition (recruitment)', async () => {
       mockGameStore.recruitmentPool = [
         {
-          ...STARTER_DATA.starter_daemons[0],
+          ...starterData.starter_daemons[0],
           id: 'recruit-1',
-          cost: DAEMON_BALANCE.RECRUITMENT.BASE_COST,
+          cost: daemonBalance.RECRUITMENT.BASE_COST,
         },
       ];
 
@@ -408,7 +408,7 @@ describe('Daemon Directorate - Corporate Satire Gameplay', () => {
       mockGameStore.currentTab = 'team';
 
       expect(mockGameStore.corporateTier.level).toBeGreaterThanOrEqual(
-        CORPORATE_BALANCE.HR_REVIEW.MIN_TIER
+        corporateBalance.HR_REVIEW.MIN_TIER
       );
     });
   });

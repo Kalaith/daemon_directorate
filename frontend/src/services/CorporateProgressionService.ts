@@ -5,7 +5,7 @@ import type {
   CorporateRival,
   DaemonLegacy,
 } from '../types/game';
-import { UI_CONSTANTS } from '../constants/gameBalance';
+import { uiConstants } from '../constants/gameBalance';
 
 export interface ProgressionRequirements {
   planetsControlled: RequirementStatus;
@@ -91,7 +91,7 @@ export class CorporateProgressionService {
    * Get the appropriate tier icon for a given level
    */
   static getTierIcon(level: number): string {
-    return UI_CONSTANTS.TIER_ICONS[level - 1] || UI_CONSTANTS.TIER_ICONS[0];
+    return uiConstants.TIER_ICONS[level - 1] || uiConstants.TIER_ICONS[0];
   }
 
   /**

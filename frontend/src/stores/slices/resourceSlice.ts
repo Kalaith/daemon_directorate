@@ -52,7 +52,7 @@ export interface ResourceActions {
 
 export type ResourceSlice = ResourceState & ResourceActions;
 
-const INITIAL_RESOURCES: GameResources = {
+const initialResources: GameResources = {
   credits: 500,
   soulEssence: 0,
   bureaucraticLeverage: 0,
@@ -66,7 +66,7 @@ export const createResourceSlice: StateCreator<
   ResourceSlice
 > = (set, get) => ({
   // Initial state
-  resources: INITIAL_RESOURCES,
+  resources: initialResources,
   resourceHistory: [],
 
   // Actions
@@ -277,7 +277,7 @@ export const createResourceSlice: StateCreator<
 
   resetResources: () => {
     set({
-      resources: INITIAL_RESOURCES,
+      resources: initialResources,
       resourceHistory: [],
     });
   },

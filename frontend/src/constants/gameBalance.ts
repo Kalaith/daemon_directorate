@@ -1,5 +1,5 @@
 // Game balance constants - centralized configuration for game mechanics
-export const MISSION_BALANCE = {
+export const missionBalance = {
   // Mission success bonuses by specialization and difficulty
   BONUSES: {
     EASY_INFILTRATION: 20,
@@ -37,7 +37,7 @@ export const MISSION_BALANCE = {
   } as const,
 } as const;
 
-export const DAEMON_BALANCE = {
+export const daemonBalance = {
   // Health and morale thresholds
   THRESHOLDS: {
     CRITICAL_LIFESPAN: 10,
@@ -113,7 +113,7 @@ export const DAEMON_BALANCE = {
   },
 } as const;
 
-export const ROOM_BALANCE = {
+export const roomBalance = {
   // Room upgrade costs and bonuses
   UPGRADE_MULTIPLIER: 1.5,
 
@@ -126,7 +126,7 @@ export const ROOM_BALANCE = {
   WAR_ROOM_MORALE_BONUS: 7,
 } as const;
 
-export const CORPORATE_BALANCE = {
+export const corporateBalance = {
   // HR Review system
   HR_REVIEW: {
     COOLDOWN_DAYS: 5,
@@ -162,7 +162,7 @@ export const CORPORATE_BALANCE = {
   },
 } as const;
 
-export const UI_CONSTANTS = {
+export const uiConstants = {
   // Percentage calculations
   PERCENTAGE_MULTIPLIER: 100,
 

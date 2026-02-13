@@ -3,10 +3,10 @@ import type { StateCreator } from 'zustand';
 import type { CoreGameActions } from '../../types/storeInterfaces';
 import type { ComposedGameStore } from '../composedStore';
 import { generateId } from '../../utils/gameHelpers';
-import { STARTER_DATA } from '../../constants/gameData';
+import { starterData } from '../../constants/gameData';
 
 // Using the same initial resources as resourceSlice
-const INITIAL_RESOURCES = {
+const initialResources = {
   credits: 500,
   soulEssence: 0,
   bureaucraticLeverage: 0,
@@ -26,20 +26,20 @@ export const createCoreSlice: StateCreator<
     const state = get();
     if (state.daemons.length === 0 && !state.gameStarted) {
       set(() => ({
-        resources: INITIAL_RESOURCES,
-        daemons: STARTER_DATA.starter_daemons.map(daemon => ({
+        resources: initialResources,
+        daemons: starterData.starter_daemons.map(daemon => ({
           ...daemon,
           id: generateId(),
           isActive: true,
           assignments: [],
           equipment: null,
         })),
-        equipment: STARTER_DATA.starter_equipment.map(equipment => ({
+        equipment: starterData.starter_equipment.map(equipment => ({
           ...equipment,
           id: generateId(),
           assignedTo: null,
         })),
-        rooms: STARTER_DATA.apartment_rooms.map(room => ({
+        rooms: starterData.apartment_rooms.map(room => ({
           ...room,
           id: generateId(),
         })),
@@ -54,25 +54,25 @@ export const createCoreSlice: StateCreator<
     const composedState = get();
 
     set(() => ({
-      resources: INITIAL_RESOURCES,
-      daemons: STARTER_DATA.starter_daemons.map(daemon => ({
+      resources: initialResources,
+      daemons: starterData.starter_daemons.map(daemon => ({
         ...daemon,
         id: generateId(),
         isActive: true,
         assignments: [],
         equipment: null,
       })),
-      equipment: STARTER_DATA.starter_equipment.map(equipment => ({
+      equipment: starterData.starter_equipment.map(equipment => ({
         ...equipment,
         id: generateId(),
         assignedTo: null,
       })),
-      rooms: STARTER_DATA.apartment_rooms.map(room => ({
+      rooms: starterData.apartment_rooms.map(room => ({
         ...room,
         id: generateId(),
       })),
       planets:
-        STARTER_DATA.planets.map(planet => ({
+        starterData.planets.map(planet => ({
           ...planet,
           id: generateId(),
           conquered: false,
@@ -91,7 +91,7 @@ export const createCoreSlice: StateCreator<
   resetToInitialState: () => {
     // Reset to clean initial state for testing - simplified
     set(() => ({
-      resources: INITIAL_RESOURCES,
+      resources: initialResources,
       daemons: [],
       equipment: [],
       gameStarted: false,

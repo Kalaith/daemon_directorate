@@ -2,12 +2,12 @@
 import type { StateCreator } from 'zustand';
 import type { Daemon, DaemonLegacy, LegacyStory } from '../../types/game';
 import {
-  STARTER_DATA,
-  DAEMON_NAMES,
-  DAEMON_QUIRKS,
-  RECRUITMENT_BLOODLINES,
+  starterData,
+  daemonNames,
+  daemonQuirks,
+  recruitmentBloodlines,
 } from '../../constants/gameData';
-import { DAEMON_BALANCE, CORPORATE_BALANCE } from '../../constants/gameBalance';
+import { daemonBalance, corporateBalance } from '../../constants/gameBalance';
 import {
   calculateSuccessorStats,
   shouldCreateSuccessor,
@@ -68,7 +68,7 @@ export const createDaemonSlice: StateCreator<
   DaemonSlice
 > = (set, get) => ({
   // Initial state
-  daemons: STARTER_DATA.starter_daemons.map(
+  daemons: starterData.starter_daemons.map(
     (daemon): Daemon => ({
       ...daemon,
       id: `daemon-${Math.random().toString(36).substr(2, 9)}`,
@@ -133,10 +133,10 @@ export const createDaemonSlice: StateCreator<
     const pool: Daemon[] = Array.from({ length: 3 }, () => {
       const specialization =
         specializations[Math.floor(Math.random() * specializations.length)];
-      const name = `${DAEMON_NAMES[Math.floor(Math.random() * DAEMON_NAMES.length)]}-${Math.floor(Math.random() * DAEMON_BALANCE.RECRUITMENT.NAMING.ID_RANGE) + DAEMON_BALANCE.RECRUITMENT.NAMING.ID_MIN}`;
+      const name = `${daemonNames[Math.floor(Math.random() * daemonNames.length)]}-${Math.floor(Math.random() * daemonBalance.RECRUITMENT.NAMING.ID_RANGE) + daemonBalance.RECRUITMENT.NAMING.ID_MIN}`;
       const bloodline =
-        RECRUITMENT_BLOODLINES[
-          Math.floor(Math.random() * RECRUITMENT_BLOODLINES.length)
+        recruitmentBloodlines[
+          Math.floor(Math.random() * recruitmentBloodlines.length)
         ];
 
       return {
@@ -144,16 +144,16 @@ export const createDaemonSlice: StateCreator<
         name,
         specialization,
         health:
-          Math.floor(Math.random() * DAEMON_BALANCE.RECRUITMENT.HEALTH.RANGE) +
-          DAEMON_BALANCE.RECRUITMENT.HEALTH.MIN,
+          Math.floor(Math.random() * daemonBalance.RECRUITMENT.HEALTH.RANGE) +
+          daemonBalance.RECRUITMENT.HEALTH.MIN,
         morale:
-          Math.floor(Math.random() * DAEMON_BALANCE.RECRUITMENT.MORALE.RANGE) +
-          DAEMON_BALANCE.RECRUITMENT.MORALE.MIN,
+          Math.floor(Math.random() * daemonBalance.RECRUITMENT.MORALE.RANGE) +
+          daemonBalance.RECRUITMENT.MORALE.MIN,
         lifespanDays:
           Math.floor(
-            Math.random() * DAEMON_BALANCE.RECRUITMENT.LIFESPAN.RANGE
-          ) + DAEMON_BALANCE.RECRUITMENT.LIFESPAN.MIN,
-        quirks: DAEMON_QUIRKS.sort(() => 0.5 - Math.random()).slice(0, 2),
+            Math.random() * daemonBalance.RECRUITMENT.LIFESPAN.RANGE
+          ) + daemonBalance.RECRUITMENT.LIFESPAN.MIN,
+        quirks: daemonQuirks.sort(() => 0.5 - Math.random()).slice(0, 2),
         assignments: [],
         equipment: null,
         isActive: false,
@@ -167,7 +167,7 @@ export const createDaemonSlice: StateCreator<
           equipmentCreated: 0,
           yearsServed: 0,
         },
-        cost: DAEMON_BALANCE.RECRUITMENT.BASE_COST,
+        cost: daemonBalance.RECRUITMENT.BASE_COST,
       };
     });
 
@@ -183,7 +183,7 @@ export const createDaemonSlice: StateCreator<
       description: `${daemon.name} completed their corporate lifecycle after ${daemon.legacy.successfulMissions} successful missions and ${daemon.legacy.planetsConquered} planetary conquests.`,
       category:
         daemon.legacy.successfulMissions >=
-        DAEMON_BALANCE.LEGACY_REQUIREMENTS.VETERAN_STATUS_MISSIONS
+        daemonBalance.LEGACY_REQUIREMENTS.VETERAN_STATUS_MISSIONS
           ? 'legendary'
           : 'tragic',
     });
@@ -194,7 +194,7 @@ export const createDaemonSlice: StateCreator<
     // Create successor if qualified
     if (shouldCreateSuccessor(daemon)) {
       // Using centralized generateId from gameHelpers
-      const successorName = `${DAEMON_NAMES[Math.floor(Math.random() * DAEMON_NAMES.length)]}-${Math.floor(Math.random() * DAEMON_BALANCE.RECRUITMENT.NAMING.ID_RANGE) + DAEMON_BALANCE.RECRUITMENT.NAMING.ID_MIN}`;
+      const successorName = `${daemonNames[Math.floor(Math.random() * daemonNames.length)]}-${Math.floor(Math.random() * daemonBalance.RECRUITMENT.NAMING.ID_RANGE) + daemonBalance.RECRUITMENT.NAMING.ID_MIN}`;
       const stats = calculateSuccessorStats(daemon);
 
       const successor: Daemon = {
@@ -204,7 +204,7 @@ export const createDaemonSlice: StateCreator<
         health: stats.health,
         morale: stats.morale,
         lifespanDays: stats.lifespanDays,
-        quirks: DAEMON_QUIRKS.sort(() => 0.5 - Math.random()).slice(0, 2),
+        quirks: daemonQuirks.sort(() => 0.5 - Math.random()).slice(0, 2),
         assignments: [],
         equipment: null,
         isActive: true,
@@ -253,21 +253,21 @@ export const createDaemonSlice: StateCreator<
     let moraleChange = 0;
     let lifespanChange = 0;
 
-    if (reviewOutcome < CORPORATE_BALANCE.HR_REVIEW.POSITIVE_CHANCE) {
+    if (reviewOutcome < corporateBalance.HR_REVIEW.POSITIVE_CHANCE) {
       // Positive review
-      healthChange = CORPORATE_BALANCE.HR_REVIEW.POSITIVE_HEALTH;
-      moraleChange = CORPORATE_BALANCE.HR_REVIEW.POSITIVE_MORALE;
+      healthChange = corporateBalance.HR_REVIEW.POSITIVE_HEALTH;
+      moraleChange = corporateBalance.HR_REVIEW.POSITIVE_MORALE;
     } else if (
       reviewOutcome <
-      CORPORATE_BALANCE.HR_REVIEW.POSITIVE_CHANCE +
-        CORPORATE_BALANCE.HR_REVIEW.NEUTRAL_CHANCE
+      corporateBalance.HR_REVIEW.POSITIVE_CHANCE +
+        corporateBalance.HR_REVIEW.NEUTRAL_CHANCE
     ) {
       // Neutral review - no changes
     } else {
       // Negative review
-      healthChange = CORPORATE_BALANCE.HR_REVIEW.NEGATIVE_HEALTH;
-      moraleChange = CORPORATE_BALANCE.HR_REVIEW.NEGATIVE_MORALE;
-      lifespanChange = CORPORATE_BALANCE.HR_REVIEW.NEGATIVE_LIFESPAN;
+      healthChange = corporateBalance.HR_REVIEW.NEGATIVE_HEALTH;
+      moraleChange = corporateBalance.HR_REVIEW.NEGATIVE_MORALE;
+      lifespanChange = corporateBalance.HR_REVIEW.NEGATIVE_LIFESPAN;
     }
 
     get().updateDaemonStats(daemonId, {
@@ -282,7 +282,7 @@ export const createDaemonSlice: StateCreator<
   isHRReviewAvailable: () => {
     const daysSinceLastReview =
       (Date.now() - get().lastHRReview) / (1000 * 60 * 60 * 24);
-    return daysSinceLastReview >= CORPORATE_BALANCE.HR_REVIEW.COOLDOWN_DAYS;
+    return daysSinceLastReview >= corporateBalance.HR_REVIEW.COOLDOWN_DAYS;
   },
 
   addLegacyStory: (

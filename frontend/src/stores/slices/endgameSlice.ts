@@ -21,7 +21,7 @@ export interface EndgameActions {
 
 export type EndgameSlice = EndgameSliceState & EndgameActions;
 
-const INITIAL_ENDGAME_STATE: EndgameState = {
+const initialEndgameState: EndgameState = {
   managementStyle: 'none',
   endingAchieved: false,
   endingType: '',
@@ -36,7 +36,7 @@ export const createEndgameSlice: StateCreator<
   EndgameSlice
 > = (set, get) => ({
   // Initial state
-  endgameState: INITIAL_ENDGAME_STATE,
+  endgameState: initialEndgameState,
   prestigeBonuses: [],
   totalRestarts: 0,
 
@@ -46,7 +46,7 @@ export const createEndgameSlice: StateCreator<
 
     set(state => ({
       endgameState: {
-        ...INITIAL_ENDGAME_STATE,
+        ...initialEndgameState,
         prestigeLevel: endgameState.prestigeLevel + 1,
         permanentBonuses: endgameState.permanentBonuses, // Keep bonuses
       },
@@ -83,7 +83,7 @@ export const createEndgameSlice: StateCreator<
 
     set({
       endgameState: {
-        ...INITIAL_ENDGAME_STATE,
+        ...initialEndgameState,
         prestigeLevel: endgameState.prestigeLevel,
         permanentBonuses: endgameState.permanentBonuses,
       },

@@ -2,7 +2,7 @@ import React from 'react';
 import { useGameStore } from '../../stores/composedStore';
 import Card from './Card';
 import type { EventChoice, EventEffect } from '../../types/game';
-import { UI_CONSTANTS } from '../../constants/gameBalance';
+import { uiConstants } from '../../constants/gameBalance';
 import { logger } from '../../utils/logger';
 
 export const CorporateEventModal: React.FC = () => {
@@ -83,11 +83,11 @@ export const CorporateEventModal: React.FC = () => {
       case 'equipment_durability':
         return `${sign}${value} Durability (all equipment)`;
       case 'recruitment_discount':
-        return `${Math.round(value * UI_CONSTANTS.PERCENTAGE_MULTIPLIER)}% recruitment discount`;
+        return `${Math.round(value * uiConstants.PERCENTAGE_MULTIPLIER)}% recruitment discount`;
       case 'equipment_discount':
-        return `${Math.round(value * UI_CONSTANTS.PERCENTAGE_MULTIPLIER)}% repair cost reduction`;
+        return `${Math.round(value * uiConstants.PERCENTAGE_MULTIPLIER)}% repair cost reduction`;
       case 'productivity_bonus':
-        return `${Math.round(value * UI_CONSTANTS.PERCENTAGE_MULTIPLIER)}% mission success bonus`;
+        return `${Math.round(value * uiConstants.PERCENTAGE_MULTIPLIER)}% mission success bonus`;
       case 'passive_income':
         return `+${value} credits per day`;
       case 'daemon_retirement':
@@ -100,7 +100,7 @@ export const CorporateEventModal: React.FC = () => {
   if (!meetsRequirements()) {
     return (
       <div
-        className={`${UI_CONSTANTS.CLASSES.MODAL_OVERLAY} z-${UI_CONSTANTS.Z_INDEX.MODAL}`}
+        className={`${uiConstants.CLASSES.MODAL_OVERLAY} z-${uiConstants.Z_INDEX.MODAL}`}
       >
         <Card className="max-w-md mx-4 p-6">
           <h2 className="text-xl font-bold text-red-400 mb-4">Access Denied</h2>
@@ -121,7 +121,7 @@ export const CorporateEventModal: React.FC = () => {
 
   return (
     <div
-      className={`${UI_CONSTANTS.CLASSES.MODAL_OVERLAY} z-${UI_CONSTANTS.Z_INDEX.MODAL}`}
+      className={`${uiConstants.CLASSES.MODAL_OVERLAY} z-${uiConstants.Z_INDEX.MODAL}`}
     >
       <Card className="max-w-2xl mx-4 p-6">
         <div className="flex items-center justify-between mb-4">

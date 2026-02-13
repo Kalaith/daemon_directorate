@@ -1,7 +1,7 @@
 // stores/slices/equipmentSlice.ts - Equipment management and crafting system
 import type { StateCreator } from 'zustand';
 import type { Equipment, EquipmentSetBonus } from '../../types/game';
-import { STARTER_DATA, EQUIPMENT_SETS } from '../../constants/gameData';
+import { starterData, equipmentSets } from '../../constants/gameData';
 
 // Helper function
 const generateId = () => Math.random().toString(36).substring(2, 15);
@@ -30,7 +30,7 @@ export interface EquipmentActions {
 export type EquipmentSlice = EquipmentState & EquipmentActions;
 
 // Initial equipment setup
-const INITIAL_EQUIPMENT: Equipment[] = [
+const initialEquipment: Equipment[] = [
   {
     id: 'starter_briefcase',
     name: 'Standard Issue Briefcase',
@@ -64,7 +64,7 @@ export const createEquipmentSlice: StateCreator<
   EquipmentSlice
 > = (set, get) => ({
   // Initial state
-  equipment: INITIAL_EQUIPMENT,
+  equipment: initialEquipment,
   totalEquipmentCrafted: 0,
   equipmentRepairCosts: {},
 
@@ -85,7 +85,7 @@ export const createEquipmentSlice: StateCreator<
 
   craftEquipment: (equipmentId: string) => {
     // Find equipment template
-    const template = STARTER_DATA.starter_equipment.find(eq => eq.name === equipmentId);
+    const template = starterData.starter_equipment.find(eq => eq.name === equipmentId);
     if (!template) {
       console.warn('Equipment template not found:', equipmentId);
       return false;
@@ -219,8 +219,8 @@ export const createEquipmentSlice: StateCreator<
 
     // Calculate bonuses for each set
     Object.entries(setGroups).forEach(([setName, items]) => {
-      if (!Object.prototype.hasOwnProperty.call(EQUIPMENT_SETS, setName)) return;
-      const setConfig = EQUIPMENT_SETS[setName as keyof typeof EQUIPMENT_SETS];
+      if (!Object.prototype.hasOwnProperty.call(equipmentSets, setName)) return;
+      const setConfig = equipmentSets[setName as keyof typeof equipmentSets];
       if (setConfig) {
         setConfig.setBonuses.forEach(bonus => {
           if (items.length >= bonus.requiredPieces) {

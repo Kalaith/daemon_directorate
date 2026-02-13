@@ -5,7 +5,7 @@ import type {
   CorporateRival,
   CorporateEvent,
 } from '../../types/game';
-import { CORPORATE_TIERS, CORPORATE_EVENTS } from '../../constants/gameData';
+import { corporateTiers, corporateEvents } from '../../constants/gameData';
 
 export interface CorporateState {
   corporateTier: CorporateTier;
@@ -56,7 +56,7 @@ export const createCorporateSlice: StateCreator<
   CorporateSlice
 > = (set, get) => ({
   // Initial state
-  corporateTier: CORPORATE_TIERS[0], // Start with Associate tier
+  corporateTier: corporateTiers[0], // Start with Associate tier
   promotionProgress: {},
   daysPassed: 0,
   corporateRivals: [],
@@ -94,10 +94,10 @@ export const createCorporateSlice: StateCreator<
 
   promoteToNextTier: () => {
     const { corporateTier, meetsRequirements } = get();
-    const currentIndex = CORPORATE_TIERS.findIndex(
+    const currentIndex = corporateTiers.findIndex(
       tier => tier.id === corporateTier.id
     );
-    const nextTier = CORPORATE_TIERS[currentIndex + 1];
+    const nextTier = corporateTiers[currentIndex + 1];
 
     if (!nextTier || !meetsRequirements(nextTier.requirements)) {
       return false;
@@ -308,10 +308,10 @@ export const createCorporateSlice: StateCreator<
   initializeRivals: () => {
     const state = get();
     if (state.corporateRivals.length === 0) {
-      // Import RIVAL_CORPORATIONS and add them
-      import('../../constants/gameData').then(({ RIVAL_CORPORATIONS }) => {
+      // Import rivalCorporations and add them
+      import('../../constants/gameData').then(({ rivalCorporations }) => {
         set(() => ({
-          corporateRivals: [...RIVAL_CORPORATIONS]
+          corporateRivals: [...rivalCorporations]
         }));
       }).catch(err => {
         console.warn('Failed to initialize rivals:', err);
@@ -321,7 +321,7 @@ export const createCorporateSlice: StateCreator<
 
   triggerRandomEvent: () => {
     const randomEventTemplate =
-      CORPORATE_EVENTS[Math.floor(Math.random() * CORPORATE_EVENTS.length)];
+      corporateEvents[Math.floor(Math.random() * corporateEvents.length)];
     const randomEvent: CorporateEvent = {
       ...randomEventTemplate,
       timestamp: Date.now(),

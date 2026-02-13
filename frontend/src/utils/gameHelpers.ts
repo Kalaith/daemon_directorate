@@ -1,9 +1,9 @@
 // Game utility functions - extracted business logic for reusability
 import type { Daemon, Planet, DifficultyLevel } from '../types/game';
 import {
-  DAEMON_BALANCE,
-  MISSION_BALANCE,
-  UI_CONSTANTS,
+  daemonBalance,
+  missionBalance,
+  uiConstants,
 } from '../constants/gameBalance';
 
 /**
@@ -35,25 +35,25 @@ export const getDifficultyMultiplier = (
  * UI Helper Functions
  */
 export const getLifespanColor = (days: number): string => {
-  if (days <= DAEMON_BALANCE.THRESHOLDS.CRITICAL_LIFESPAN)
-    return UI_CONSTANTS.COLORS.LIFESPAN.CRITICAL;
-  if (days <= DAEMON_BALANCE.THRESHOLDS.WARNING_LIFESPAN)
-    return UI_CONSTANTS.COLORS.LIFESPAN.WARNING;
-  return UI_CONSTANTS.COLORS.LIFESPAN.GOOD;
+  if (days <= daemonBalance.THRESHOLDS.CRITICAL_LIFESPAN)
+    return uiConstants.COLORS.LIFESPAN.CRITICAL;
+  if (days <= daemonBalance.THRESHOLDS.WARNING_LIFESPAN)
+    return uiConstants.COLORS.LIFESPAN.WARNING;
+  return uiConstants.COLORS.LIFESPAN.GOOD;
 };
 
 export const getProgressBarColor = (
   value: number,
   type: 'health' | 'morale'
 ): string => {
-  const colors = UI_CONSTANTS.COLORS[type === 'health' ? 'HEALTH' : 'MORALE'];
-  if (value >= DAEMON_BALANCE.THRESHOLDS.GOOD_HEALTH) return colors.GOOD;
-  if (value >= DAEMON_BALANCE.THRESHOLDS.LOW_HEALTH) return colors.WARNING;
+  const colors = uiConstants.COLORS[type === 'health' ? 'HEALTH' : 'MORALE'];
+  if (value >= daemonBalance.THRESHOLDS.GOOD_HEALTH) return colors.GOOD;
+  if (value >= daemonBalance.THRESHOLDS.LOW_HEALTH) return colors.WARNING;
   return colors.CRITICAL;
 };
 
 export const getTierIcon = (level: number): string => {
-  return UI_CONSTANTS.TIER_ICONS[level - 1] || UI_CONSTANTS.TIER_ICONS[0];
+  return uiConstants.TIER_ICONS[level - 1] || uiConstants.TIER_ICONS[0];
 };
 
 /**
@@ -69,13 +69,13 @@ export const calculateTeamCompositionBonus = (
 
   let bonus = 0;
   if (planet.difficulty === 'Easy' && hasInfiltrator) {
-    bonus += MISSION_BALANCE.BONUSES.EASY_INFILTRATION;
+    bonus += missionBalance.BONUSES.EASY_INFILTRATION;
   }
   if (planet.difficulty === 'Medium' && hasCombat) {
-    bonus += MISSION_BALANCE.BONUSES.MEDIUM_COMBAT;
+    bonus += missionBalance.BONUSES.MEDIUM_COMBAT;
   }
   if (planet.difficulty === 'Hard' && hasSaboteur) {
-    bonus += MISSION_BALANCE.BONUSES.HARD_SABOTAGE;
+    bonus += missionBalance.BONUSES.HARD_SABOTAGE;
   }
 
   return bonus;
@@ -88,11 +88,11 @@ export const calculateTeamStatsBonus = (team: Daemon[]): number => {
   const avgMorale = team.reduce((sum, d) => sum + d.morale, 0) / team.length;
 
   const healthBonus =
-    (avgHealth - MISSION_BALANCE.SUCCESS_BOUNDS.BASE) *
-    MISSION_BALANCE.MULTIPLIERS.HEALTH_IMPACT;
+    (avgHealth - missionBalance.SUCCESS_BOUNDS.BASE) *
+    missionBalance.MULTIPLIERS.HEALTH_IMPACT;
   const moraleBonus =
-    (avgMorale - MISSION_BALANCE.SUCCESS_BOUNDS.BASE) *
-    MISSION_BALANCE.MULTIPLIERS.MORALE_IMPACT;
+    (avgMorale - missionBalance.SUCCESS_BOUNDS.BASE) *
+    missionBalance.MULTIPLIERS.MORALE_IMPACT;
 
   return healthBonus + moraleBonus;
 };
@@ -100,7 +100,7 @@ export const calculateTeamStatsBonus = (team: Daemon[]): number => {
 export const calculateEquipmentBonus = (team: Daemon[]): number => {
   return (
     team.filter(daemon => daemon.equipment).length *
-    MISSION_BALANCE.BONUSES.EQUIPMENT_BONUS
+    missionBalance.BONUSES.EQUIPMENT_BONUS
   );
 };
 
@@ -108,7 +108,7 @@ export const calculateMissionSuccessChance = (
   team: Daemon[],
   planet: Planet
 ): number => {
-  let successChance = MISSION_BALANCE.SUCCESS_BOUNDS.BASE;
+  let successChance = missionBalance.SUCCESS_BOUNDS.BASE;
 
   // Apply various bonuses
   successChance += calculateTeamCompositionBonus(team, planet);
@@ -116,12 +116,12 @@ export const calculateMissionSuccessChance = (
   successChance += calculateEquipmentBonus(team);
 
   // Apply difficulty penalty
-  successChance += MISSION_BALANCE.DIFFICULTY_PENALTIES[planet.difficulty];
+  successChance += missionBalance.DIFFICULTY_PENALTIES[planet.difficulty];
 
   // Clamp to bounds
   return Math.max(
-    MISSION_BALANCE.SUCCESS_BOUNDS.MIN,
-    Math.min(MISSION_BALANCE.SUCCESS_BOUNDS.MAX, successChance)
+    missionBalance.SUCCESS_BOUNDS.MIN,
+    Math.min(missionBalance.SUCCESS_BOUNDS.MAX, successChance)
   );
 };
 
@@ -130,13 +130,13 @@ export const calculateMissionRewards = (
   success: boolean
 ): Record<string, number> => {
   const baseRewards: Record<string, number> = {
-    ...MISSION_BALANCE.BASE_REWARDS[difficulty],
+    ...missionBalance.BASE_REWARDS[difficulty],
   };
 
   if (!success) {
     Object.keys(baseRewards).forEach(key => {
       baseRewards[key] = Math.floor(
-        baseRewards[key] * MISSION_BALANCE.MULTIPLIERS.FAILURE_REWARD_RATIO
+        baseRewards[key] * missionBalance.MULTIPLIERS.FAILURE_REWARD_RATIO
       );
     });
   }
@@ -161,16 +161,16 @@ export const calculateMissionDamage = (
 } => {
   // Base damage calculation
   let healthLoss = generateRandomDamage(
-    DAEMON_BALANCE.MISSION_DAMAGE.MIN_HEALTH_LOSS,
-    DAEMON_BALANCE.MISSION_DAMAGE.MAX_HEALTH_LOSS
+    daemonBalance.MISSION_DAMAGE.MIN_HEALTH_LOSS,
+    daemonBalance.MISSION_DAMAGE.MAX_HEALTH_LOSS
   );
   let moraleLoss = generateRandomDamage(
-    DAEMON_BALANCE.MISSION_DAMAGE.MIN_MORALE_LOSS,
-    DAEMON_BALANCE.MISSION_DAMAGE.MAX_MORALE_LOSS
+    daemonBalance.MISSION_DAMAGE.MIN_MORALE_LOSS,
+    daemonBalance.MISSION_DAMAGE.MAX_MORALE_LOSS
   );
   let lifespanLoss = generateRandomDamage(
-    DAEMON_BALANCE.MISSION_DAMAGE.MIN_LIFESPAN_LOSS,
-    DAEMON_BALANCE.MISSION_DAMAGE.MAX_LIFESPAN_LOSS
+    daemonBalance.MISSION_DAMAGE.MIN_LIFESPAN_LOSS,
+    daemonBalance.MISSION_DAMAGE.MAX_LIFESPAN_LOSS
   );
 
   // Apply daemon-specific modifiers
@@ -223,11 +223,11 @@ export const calculateMissionDamage = (
 export const shouldCreateSuccessor = (daemon: Daemon): boolean => {
   return (
     daemon.legacy.successfulMissions >=
-      DAEMON_BALANCE.LEGACY_REQUIREMENTS.MIN_SUCCESSFUL_MISSIONS ||
+      daemonBalance.LEGACY_REQUIREMENTS.MIN_SUCCESSFUL_MISSIONS ||
     daemon.legacy.planetsConquered >=
-      DAEMON_BALANCE.LEGACY_REQUIREMENTS.MIN_PLANETS_CONQUERED ||
+      daemonBalance.LEGACY_REQUIREMENTS.MIN_PLANETS_CONQUERED ||
     daemon.generation >=
-      DAEMON_BALANCE.LEGACY_REQUIREMENTS.MIN_GENERATION_FOR_SUCCESSION
+      daemonBalance.LEGACY_REQUIREMENTS.MIN_GENERATION_FOR_SUCCESSION
   );
 };
 
@@ -243,19 +243,19 @@ export const calculateSuccessorStats = (
       100,
       80 +
         originalDaemon.generation *
-          DAEMON_BALANCE.INHERITANCE.SUCCESSOR_HEALTH_BONUS
+          daemonBalance.INHERITANCE.SUCCESSOR_HEALTH_BONUS
     ),
     morale: Math.min(
       100,
       70 +
         originalDaemon.generation *
-          DAEMON_BALANCE.INHERITANCE.SUCCESSOR_MORALE_BONUS
+          daemonBalance.INHERITANCE.SUCCESSOR_MORALE_BONUS
     ),
     lifespanDays: Math.min(
       80,
       40 +
         originalDaemon.generation *
-          DAEMON_BALANCE.INHERITANCE.SUCCESSOR_LIFESPAN_BONUS
+          daemonBalance.INHERITANCE.SUCCESSOR_LIFESPAN_BONUS
     ),
   };
 };

@@ -1,6 +1,6 @@
 import React from 'react';
 import { useGameStore } from '../../stores/composedStore';
-import { ENDING_SCENARIOS } from '../../constants/gameData';
+import { endingScenarios } from '../../constants/gameData';
 
 export const EndgameModal: React.FC = () => {
   const { endgameState, performCorporateRestructuring } = useGameStore();
@@ -8,8 +8,8 @@ export const EndgameModal: React.FC = () => {
   if (!endgameState?.endingAchieved) return null;
 
   const ending =
-    ENDING_SCENARIOS[
-      endgameState.managementStyle as keyof typeof ENDING_SCENARIOS
+    endingScenarios[
+      endgameState.managementStyle as keyof typeof endingScenarios
     ];
   if (!ending) return null;
 

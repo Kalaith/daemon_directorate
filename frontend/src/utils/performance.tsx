@@ -1,7 +1,7 @@
 // utils/performance.tsx - Performance monitoring and profiling utilities
 import React, { Profiler, useCallback, useEffect, useState } from 'react';
 import type { ReactNode } from 'react';
-import { PERFORMANCE_THRESHOLDS } from '../constants/performance';
+import { performanceThresholds } from '../constants/performance';
 
 // Performance metrics interface
 interface PerformanceMetric {
@@ -117,7 +117,7 @@ export const PerformanceProfiler: React.FC<PerformanceProfilerProps> = ({
   id,
   children,
   enableLogging = false,
-  warningThreshold = PERFORMANCE_THRESHOLDS.SLOW_COMPONENT_MS,
+  warningThreshold = performanceThresholds.SLOW_COMPONENT_MS,
 }) => {
   const onRenderCallback = useCallback(
     (

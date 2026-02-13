@@ -1,5 +1,5 @@
 // theme/tokens.ts - Design token system for consistent styling
-export const DESIGN_TOKENS = {
+export const designTokens = {
   // Color palette
   colors: {
     // Primary brand colors
@@ -160,7 +160,7 @@ export const DESIGN_TOKENS = {
 } as const;
 
 // Component variant system
-export const COMPONENT_VARIANTS = {
+export const componentVariants = {
   // Button variants
   button: {
     primary:
@@ -239,7 +239,7 @@ export const ANIMATIONS = {
 } as const;
 
 // Layout presets
-export const LAYOUT_PRESETS = {
+export const layoutPresets = {
   container: 'container mx-auto px-4',
   flexCenter: 'flex items-center justify-center',
   flexBetween: 'flex items-center justify-between',

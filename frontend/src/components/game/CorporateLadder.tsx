@@ -1,6 +1,6 @@
 import React from 'react';
 import { useGameStore } from '../../stores/composedStore';
-import { CORPORATE_TIERS } from '../../constants/gameData';
+import { corporateTiers } from '../../constants/gameData';
 import Card from '../ui/Card';
 import type { CorporateTier } from '../../types/game';
 import {
@@ -19,10 +19,10 @@ export const CorporateLadder: React.FC = () => {
     meetsRequirements,
   } = useGameStore();
 
-  const currentTierIndex = CORPORATE_TIERS.findIndex(
+  const currentTierIndex = corporateTiers.findIndex(
     tier => tier.id === corporateTier.id
   );
-  const nextTier = CORPORATE_TIERS[currentTierIndex + 1];
+  const nextTier = corporateTiers[currentTierIndex + 1];
 
   const getRequirementStatus = (
     requirements: CorporateTier['requirements']
@@ -67,7 +67,7 @@ export const CorporateLadder: React.FC = () => {
 
         {/* Tier Progression */}
         <div className="space-y-2">
-          {CORPORATE_TIERS.map((tier, index) => {
+          {corporateTiers.map((tier, index) => {
             const isCurrentTier = tier.id === corporateTier.id;
             const isUnlocked = index <= currentTierIndex;
             const isNextTier = index === currentTierIndex + 1;

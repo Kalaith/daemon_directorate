@@ -6,7 +6,7 @@ import type {
   Story,
   LegacyBook,
 } from '../types/game';
-import { DAEMON_BALANCE } from '../constants/gameBalance';
+import { daemonBalance } from '../constants/gameBalance';
 
 export interface DashboardStats {
   activeDaemons: Daemon[];
@@ -49,7 +49,7 @@ export class DashboardService {
 
     const totalBloodlines = Object.keys(legacyBook).length;
     const recentStories = hallOfInfamy.slice(
-      -DAEMON_BALANCE.MAX_RECENT_STORIES
+      -daemonBalance.MAX_RECENT_STORIES
     );
 
     return {
@@ -81,21 +81,21 @@ export class DashboardService {
 
   private static calculateCriticalLifespans(activeDaemons: Daemon[]): number {
     return activeDaemons.filter(
-      d => d.lifespanDays <= DAEMON_BALANCE.CRITICAL_LIFESPAN_THRESHOLD
+      d => d.lifespanDays <= daemonBalance.CRITICAL_LIFESPAN_THRESHOLD
     ).length;
   }
 
   static getHealthStatusClass(health: number): string {
-    if (health >= DAEMON_BALANCE.HEALTH_THRESHOLDS.GOOD)
+    if (health >= daemonBalance.HEALTH_THRESHOLDS.GOOD)
       return 'text-green-600';
-    if (health >= DAEMON_BALANCE.HEALTH_THRESHOLDS.WARNING)
+    if (health >= daemonBalance.HEALTH_THRESHOLDS.WARNING)
       return 'text-orange-600';
     return 'text-red-600';
   }
 
   static getMoraleStatusClass(morale: number): string {
-    if (morale >= DAEMON_BALANCE.MORALE_THRESHOLDS.GOOD) return 'text-teal-600';
-    if (morale >= DAEMON_BALANCE.MORALE_THRESHOLDS.WARNING)
+    if (morale >= daemonBalance.MORALE_THRESHOLDS.GOOD) return 'text-teal-600';
+    if (morale >= daemonBalance.MORALE_THRESHOLDS.WARNING)
       return 'text-orange-600';
     return 'text-red-600';
   }

@@ -1,7 +1,7 @@
 // stores/slices/apartmentSlice.ts - Apartment and room management
 import type { StateCreator } from 'zustand';
 import type { Room, RoomSynergyBonus, SpecializationType } from '../../types/game';
-import { ADVANCED_ROOMS } from '../../constants/gameData';
+import { advancedRooms } from '../../constants/gameData';
 
 export interface MemorialBonuses {
   experience_bonus: number;
@@ -38,7 +38,7 @@ export interface ApartmentActions {
 export type ApartmentSlice = ApartmentState & ApartmentActions;
 
 // Initial room setup
-const INITIAL_ROOMS: Room[] = [
+const initialRooms: Room[] = [
   {
     id: 'living_quarters',
     name: 'Living Quarters',
@@ -95,7 +95,7 @@ const INITIAL_ROOMS: Room[] = [
     unlocked: false,
   },
   // Advanced rooms from configuration
-  ...ADVANCED_ROOMS.map(room => ({
+  ...advancedRooms.map(room => ({
     id: room.name.toLowerCase().replace(/\s+/g, '_'),
     ...room
   }))
@@ -108,7 +108,7 @@ export const createApartmentSlice: StateCreator<
   ApartmentSlice
 > = (set, get) => ({
   // Initial state
-  rooms: INITIAL_ROOMS,
+  rooms: initialRooms,
   apartmentLevel: 1,
   totalRoomUpgrades: 0,
 
