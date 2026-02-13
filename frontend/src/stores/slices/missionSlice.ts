@@ -105,7 +105,7 @@ export const createMissionSlice: StateCreator<
       currentPlanet: planetId,
       selectedMissionType: missionType,
     });
-    
+
     // Open the mission modal for team selection
     get().setShowMissionModal(true);
   },

@@ -15,7 +15,7 @@ vi.mock('../../stores/composedStore', () => ({
 const confirmMock = vi.fn(() => true);
 Object.defineProperty(window, 'confirm', {
   value: confirmMock,
-  writable: true
+  writable: true,
 });
 
 describe('GameControls Component', () => {

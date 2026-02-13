@@ -4,14 +4,14 @@ import { useGameStore } from '../../stores/composedStore';
 import type { Room } from '../../types/game';
 
 const AdvancedRooms: React.FC = () => {
-  const { 
-    rooms, 
+  const {
+    rooms,
     unlockAdvancedRoom,
     processRecovery,
     processMissionPlanning,
     processEquipmentInnovation,
     getMemorialBonuses,
-    processAutomation
+    processAutomation,
   } = useGameStore();
 
   const advancedRooms = rooms.filter(room => room.roomType === 'advanced');
@@ -53,7 +53,7 @@ const AdvancedRooms: React.FC = () => {
   const getRoomDescription = (room: Room) => {
     const baseDesc = room.description || '';
     const levelBonus = room.level > 0 ? ` (Level ${room.level})` : '';
-    
+
     switch (room.name) {
       case 'Training Hall':
         return `${baseDesc} - Allows daemon specialization training${levelBonus}`;
@@ -74,8 +74,10 @@ const AdvancedRooms: React.FC = () => {
 
   return (
     <div className="space-y-4">
-      <h2 className="text-xl font-bold text-green-400 mb-4">Advanced HQ Rooms</h2>
-      
+      <h2 className="text-xl font-bold text-green-400 mb-4">
+        Advanced HQ Rooms
+      </h2>
+
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {advancedRooms.map(room => (
           <Card key={room.id} className="bg-gray-800 border-green-500/30">
@@ -122,7 +124,10 @@ const AdvancedRooms: React.FC = () => {
                       <button
                         onClick={() => handleRoomAction(room)}
                         className="px-3 py-1 bg-blue-600 hover:bg-blue-500 text-white text-sm rounded"
-                        disabled={room.assignedDaemons.length === 0 && room.name !== 'Training Hall'}
+                        disabled={
+                          room.assignedDaemons.length === 0 &&
+                          room.name !== 'Training Hall'
+                        }
                       >
                         {getRoomActionLabel(room)}
                       </button>
@@ -131,10 +136,15 @@ const AdvancedRooms: React.FC = () => {
 
                   {room.assignedDaemons.length > 0 && (
                     <div className="bg-gray-700/30 p-2 rounded">
-                      <p className="text-xs text-gray-400 mb-1">Assigned Daemons:</p>
+                      <p className="text-xs text-gray-400 mb-1">
+                        Assigned Daemons:
+                      </p>
                       <div className="flex flex-wrap gap-1">
                         {room.assignedDaemons.map((daemonId, index) => (
-                          <span key={index} className="bg-green-600/20 text-green-400 px-2 py-1 rounded text-xs">
+                          <span
+                            key={index}
+                            className="bg-green-600/20 text-green-400 px-2 py-1 rounded text-xs"
+                          >
                             Daemon {daemonId}
                           </span>
                         ))}
@@ -146,7 +156,9 @@ const AdvancedRooms: React.FC = () => {
                     <div className="pt-2 border-t border-gray-600">
                       <div className="flex justify-between items-center text-sm">
                         <span className="text-gray-400">Next Level:</span>
-                        <span className="text-yellow-400">{room.upgrade_cost} credits</span>
+                        <span className="text-yellow-400">
+                          {room.upgrade_cost} credits
+                        </span>
                       </div>
                     </div>
                   )}
@@ -171,13 +183,20 @@ const AdvancedRooms: React.FC = () => {
 
 const getRoomActionLabel = (room: Room): string => {
   switch (room.name) {
-    case 'Training Hall': return 'Train Daemons';
-    case 'Recovery Ward': return 'Heal All';
-    case 'War Room': return 'Plan Mission';
-    case 'R&D Lab': return 'Research';
-    case 'Memorial Chamber': return 'View Honors';
-    case 'Server Farm': return 'Run Automation';
-    default: return 'Activate';
+    case 'Training Hall':
+      return 'Train Daemons';
+    case 'Recovery Ward':
+      return 'Heal All';
+    case 'War Room':
+      return 'Plan Mission';
+    case 'R&D Lab':
+      return 'Research';
+    case 'Memorial Chamber':
+      return 'View Honors';
+    case 'Server Farm':
+      return 'Run Automation';
+    default:
+      return 'Activate';
   }
 };
 

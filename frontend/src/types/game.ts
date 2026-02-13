@@ -72,7 +72,11 @@ export interface EquipmentSetBonus {
 }
 
 export interface EquipmentModifier {
-  type: 'mission_speed' | 'durability_bonus' | 'experience_bonus' | 'resource_bonus';
+  type:
+    | 'mission_speed'
+    | 'durability_bonus'
+    | 'experience_bonus'
+    | 'resource_bonus';
   value: number;
   description: string;
 }
@@ -92,7 +96,7 @@ export interface Room {
   roomType?: 'utility' | 'operations' | 'living' | 'advanced';
   unlocked: boolean;
   synergyBonuses?: RoomSynergyBonus[];
-  
+
   // Advanced Room Features
   advancedFeatures?: {
     skillDevelopment?: boolean; // Training Hall
@@ -156,7 +160,7 @@ export interface Mission {
   objectives?: MissionObjective[];
   consequences?: MissionConsequence[];
   procedural?: boolean; // Generated based on conquered territories
-  
+
   // Enhanced Mission System
   chainId?: string; // For linked mission sequences
   prerequisiteMissions?: string[]; // Required completed missions
@@ -241,7 +245,7 @@ export interface CorporateEvent {
   requirements?: Partial<GameResources>;
   resolved?: boolean;
   chosenOption?: string;
-  
+
   // Dynamic Event Chains
   chainId?: string; // Links events in a storyline
   chainPosition?: number; // Position in the chain (0 = start)

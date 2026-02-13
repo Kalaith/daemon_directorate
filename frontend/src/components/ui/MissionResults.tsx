@@ -83,8 +83,9 @@ const MissionResults: React.FC = () => {
                 Operational Complexity:
               </div>
               <div className="text-xs text-gray-300">
-                Multi-objective mission parameters successfully processed. 
-                Strategic outcomes may influence future operational opportunities.
+                Multi-objective mission parameters successfully processed.
+                Strategic outcomes may influence future operational
+                opportunities.
               </div>
             </div>
 

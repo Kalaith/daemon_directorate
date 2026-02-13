@@ -303,7 +303,10 @@ export const HallOfInfamy: React.FC = () => {
           </div>
           <div>
             <div className="text-lg font-bold text-green-300">
-              {Math.max(0, ...Object.values(legacyBook || {}).map(l => l.generation))}
+              {Math.max(
+                0,
+                ...Object.values(legacyBook || {}).map(l => l.generation)
+              )}
             </div>
             <div className="text-xs text-gray-400">Max Generation</div>
           </div>

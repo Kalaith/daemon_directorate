@@ -102,8 +102,7 @@ const TeamManagement: React.FC = () => {
               </div>
 
               <div className="flex gap-3">
-                {corporateTier.level >=
-                  corporateBalance.HR_REVIEW.MIN_TIER && (
+                {corporateTier.level >= corporateBalance.HR_REVIEW.MIN_TIER && (
                   <button
                     onClick={() => conductHRReview(daemon.id)}
                     disabled={!isHRReviewAvailable()}

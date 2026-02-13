@@ -39,7 +39,9 @@ export class CorporateProgressionService {
       0,
       ...Object.values(legacyBook || {}).map(l => l.generation)
     );
-    const defeatedRivals = (corporateRivals || []).filter(r => r.defeated).length;
+    const defeatedRivals = (corporateRivals || []).filter(
+      r => r.defeated
+    ).length;
     const completedHRReviews = (promotionProgress || {}).hrReviews || 0;
     const complianceAudits = (promotionProgress || {}).complianceAudits || 0;
 

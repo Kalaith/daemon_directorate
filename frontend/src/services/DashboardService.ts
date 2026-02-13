@@ -48,9 +48,7 @@ export class DashboardService {
     );
 
     const totalBloodlines = Object.keys(legacyBook).length;
-    const recentStories = hallOfInfamy.slice(
-      -daemonBalance.MAX_RECENT_STORIES
-    );
+    const recentStories = hallOfInfamy.slice(-daemonBalance.MAX_RECENT_STORIES);
 
     return {
       activeDaemons,
@@ -86,8 +84,7 @@ export class DashboardService {
   }
 
   static getHealthStatusClass(health: number): string {
-    if (health >= daemonBalance.HEALTH_THRESHOLDS.GOOD)
-      return 'text-green-600';
+    if (health >= daemonBalance.HEALTH_THRESHOLDS.GOOD) return 'text-green-600';
     if (health >= daemonBalance.HEALTH_THRESHOLDS.WARNING)
       return 'text-orange-600';
     return 'text-red-600';

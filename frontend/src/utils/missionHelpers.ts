@@ -418,11 +418,11 @@ export const calculateEnhancedMissionSuccess = (
   mission: Mission
 ): number => {
   let baseChance = calculateMissionSuccessChance(selectedTeam, planet);
-  
+
   // Check specialized requirements
   if (mission.specializedRequirements) {
     const req = mission.specializedRequirements;
-    
+
     // Team size requirements
     if (req.daemonCount) {
       if (selectedTeam.length < req.daemonCount.min) {
@@ -432,7 +432,7 @@ export const calculateEnhancedMissionSuccess = (
         baseChance -= 15; // Penalty for oversized team
       }
     }
-    
+
     // Required specializations
     if (req.requiredSpecializations) {
       const teamSpecs = selectedTeam.map(d => d.specialization);
@@ -441,22 +441,25 @@ export const calculateEnhancedMissionSuccess = (
       );
       baseChance -= missingSpecs.length * 25; // Heavy penalty for missing required specs
     }
-    
+
     // Forbidden specializations
     if (req.forbiddenSpecializations) {
-      const forbiddenPresent = selectedTeam.filter(d => 
+      const forbiddenPresent = selectedTeam.filter(d =>
         req.forbiddenSpecializations!.includes(d.specialization)
       );
       baseChance -= forbiddenPresent.length * 20; // Penalty for forbidden specs
     }
-    
+
     // Equipment set requirements
     if (req.requiredEquipmentSets) {
       // This would check for equipment sets - implement with equipment store access
-      console.log('Equipment set requirements check needed', req.requiredEquipmentSets);
+      console.log(
+        'Equipment set requirements check needed',
+        req.requiredEquipmentSets
+      );
     }
   }
-  
+
   return Math.max(10, Math.min(90, baseChance));
 };
 
@@ -474,25 +477,33 @@ export const processMultiObjectiveMission = (
 } => {
   const chainMissions: string[] = [];
   const storylineData: Record<string, unknown> = {};
-  
+
   if (mission.branchingOutcomes) {
     if (result.success && mission.branchingOutcomes.successChainMissions) {
       chainMissions.push(...mission.branchingOutcomes.successChainMissions);
-    } else if (!result.success && mission.branchingOutcomes.failureChainMissions) {
+    } else if (
+      !result.success &&
+      mission.branchingOutcomes.failureChainMissions
+    ) {
       chainMissions.push(...mission.branchingOutcomes.failureChainMissions);
     }
-    
+
     // Check for partial success conditions
     if (mission.objectives) {
-      const completedObjectives = mission.objectives.filter(obj => obj.completed).length;
+      const completedObjectives = mission.objectives.filter(
+        obj => obj.completed
+      ).length;
       const totalObjectives = mission.objectives.length;
       const successRate = completedObjectives / totalObjectives;
-      
-      if (successRate > 0.3 && successRate < 0.7 && 
-          mission.branchingOutcomes.partialSuccessMissions) {
+
+      if (
+        successRate > 0.3 &&
+        successRate < 0.7 &&
+        mission.branchingOutcomes.partialSuccessMissions
+      ) {
         chainMissions.push(...mission.branchingOutcomes.partialSuccessMissions);
       }
-      
+
       storylineData.missionPerformance = {
         completedObjectives,
         totalObjectives,
@@ -500,19 +511,19 @@ export const processMultiObjectiveMission = (
         teamComposition: selectedTeam.map(d => ({
           id: d.id,
           specialization: d.specialization,
-          generation: d.generation
-        }))
+          generation: d.generation,
+        })),
       };
     }
   }
-  
+
   return {
     updatedResult: {
       ...result,
-      narrative: `${result.narrative}\n\nMission analysis: ${chainMissions.length > 0 ? 'Follow-up operations unlocked' : 'Mission concluded'}`
+      narrative: `${result.narrative}\n\nMission analysis: ${chainMissions.length > 0 ? 'Follow-up operations unlocked' : 'Mission concluded'}`,
     },
     chainMissions,
-    storylineData
+    storylineData,
   };
 };
 
@@ -530,35 +541,41 @@ export const calculateTeamSetBonuses = (
   const teamEquipment = selectedTeam
     .map(daemon => equipment.find(eq => eq.assignedTo === daemon.id))
     .filter(Boolean) as Equipment[];
-    
-  const setGroups = teamEquipment.reduce((acc, item) => {
-    if (item.setName) {
-      if (!acc[item.setName]) acc[item.setName] = [];
-      acc[item.setName].push(item);
-    }
-    return acc;
-  }, {} as Record<string, Equipment[]>);
-  
+
+  const setGroups = teamEquipment.reduce(
+    (acc, item) => {
+      if (item.setName) {
+        if (!acc[item.setName]) acc[item.setName] = [];
+        acc[item.setName].push(item);
+      }
+      return acc;
+    },
+    {} as Record<string, Equipment[]>
+  );
+
   let bonusSuccessChance = 0;
   const bonusRewards: Record<string, number> = {};
   const activeSetBonuses: string[] = [];
-  
+
   Object.entries(setGroups).forEach(([setName, items]) => {
-    if (items.length >= 2) { // Basic set bonus threshold
+    if (items.length >= 2) {
+      // Basic set bonus threshold
       bonusSuccessChance += 10;
       activeSetBonuses.push(`${setName} (${items.length} pieces)`);
-      
-      if (items.length >= 3) { // Full set bonus
+
+      if (items.length >= 3) {
+        // Full set bonus
         bonusSuccessChance += 15;
         bonusRewards.credits = (bonusRewards.credits || 0) + 100;
-        bonusRewards.bureaucraticLeverage = (bonusRewards.bureaucraticLeverage || 0) + 1;
+        bonusRewards.bureaucraticLeverage =
+          (bonusRewards.bureaucraticLeverage || 0) + 1;
       }
     }
   });
-  
+
   return {
     bonusSuccessChance,
     bonusRewards,
-    activeSetBonuses
+    activeSetBonuses,
   };
 };

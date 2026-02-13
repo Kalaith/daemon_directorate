@@ -85,7 +85,9 @@ export const createEquipmentSlice: StateCreator<
 
   craftEquipment: (equipmentId: string) => {
     // Find equipment template
-    const template = starterData.starter_equipment.find(eq => eq.name === equipmentId);
+    const template = starterData.starter_equipment.find(
+      eq => eq.name === equipmentId
+    );
     if (!template) {
       console.warn('Equipment template not found:', equipmentId);
       return false;
@@ -93,7 +95,7 @@ export const createEquipmentSlice: StateCreator<
 
     const craftingCost = 50; // Default cost
     const canAfford = get().canAfford(craftingCost);
-    
+
     if (!canAfford) {
       console.warn('Cannot afford crafting cost:', craftingCost);
       return false;
@@ -117,7 +119,7 @@ export const createEquipmentSlice: StateCreator<
       generation: 0,
       legacyBonus: 0,
       history: [],
-      setBonuses: template.setBonuses
+      setBonuses: template.setBonuses,
     };
 
     set(state => ({
@@ -125,7 +127,12 @@ export const createEquipmentSlice: StateCreator<
       totalEquipmentCrafted: state.totalEquipmentCrafted + 1,
     }));
 
-    console.log('Equipment crafted successfully:', equipmentId, 'Cost:', craftingCost);
+    console.log(
+      'Equipment crafted successfully:',
+      equipmentId,
+      'Cost:',
+      craftingCost
+    );
     return true;
   },
 
@@ -205,17 +212,22 @@ export const createEquipmentSlice: StateCreator<
 
   calculateSetBonuses: (daemonId: string) => {
     const state = get();
-    const daemonEquipment = state.equipment.filter(eq => eq.assignedTo === daemonId);
+    const daemonEquipment = state.equipment.filter(
+      eq => eq.assignedTo === daemonId
+    );
     const setBonuses: EquipmentSetBonus[] = [];
-    
+
     // Group equipment by set name
-    const setGroups = daemonEquipment.reduce((acc, item) => {
-      if (item.setName) {
-        if (!acc[item.setName]) acc[item.setName] = [];
-        acc[item.setName].push(item);
-      }
-      return acc;
-    }, {} as Record<string, Equipment[]>);
+    const setGroups = daemonEquipment.reduce(
+      (acc, item) => {
+        if (item.setName) {
+          if (!acc[item.setName]) acc[item.setName] = [];
+          acc[item.setName].push(item);
+        }
+        return acc;
+      },
+      {} as Record<string, Equipment[]>
+    );
 
     // Calculate bonuses for each set
     Object.entries(setGroups).forEach(([setName, items]) => {
@@ -228,7 +240,7 @@ export const createEquipmentSlice: StateCreator<
               setName,
               requiredPieces: bonus.requiredPieces,
               activeBonus: true,
-              effects: bonus.effects
+              effects: bonus.effects,
             });
           }
         });
@@ -247,17 +259,20 @@ export const createEquipmentSlice: StateCreator<
       equipment: state.equipment.map(item => {
         if (item.id === equipmentId) {
           const rarityUpgrade = {
-            'Common': 'Uncommon',
-            'Uncommon': 'Rare', 
-            'Rare': 'Legendary',
-            'Legendary': 'Cursed',
-            'Cursed': 'Cursed'
+            Common: 'Uncommon',
+            Uncommon: 'Rare',
+            Rare: 'Legendary',
+            Legendary: 'Cursed',
+            Cursed: 'Cursed',
           } as const;
-          
+
           return {
             ...item,
             rarity: rarityUpgrade[item.rarity] as Equipment['rarity'],
-            history: [...item.history, `Upgraded to ${rarityUpgrade[item.rarity]} quality`]
+            history: [
+              ...item.history,
+              `Upgraded to ${rarityUpgrade[item.rarity]} quality`,
+            ],
           };
         }
         return item;

@@ -89,10 +89,20 @@ export const createDaemonSlice: StateCreator<
       const newSelection = new Set(state.selectedDaemons);
       if (newSelection.has(daemonId)) {
         newSelection.delete(daemonId);
-        console.log('Deselected daemon:', daemonId, 'Total selected:', newSelection.size);
+        console.log(
+          'Deselected daemon:',
+          daemonId,
+          'Total selected:',
+          newSelection.size
+        );
       } else {
         newSelection.add(daemonId);
-        console.log('Selected daemon:', daemonId, 'Total selected:', newSelection.size);
+        console.log(
+          'Selected daemon:',
+          daemonId,
+          'Total selected:',
+          newSelection.size
+        );
       }
       return { selectedDaemons: newSelection };
     });
@@ -150,9 +160,8 @@ export const createDaemonSlice: StateCreator<
           Math.floor(Math.random() * daemonBalance.RECRUITMENT.MORALE.RANGE) +
           daemonBalance.RECRUITMENT.MORALE.MIN,
         lifespanDays:
-          Math.floor(
-            Math.random() * daemonBalance.RECRUITMENT.LIFESPAN.RANGE
-          ) + daemonBalance.RECRUITMENT.LIFESPAN.MIN,
+          Math.floor(Math.random() * daemonBalance.RECRUITMENT.LIFESPAN.RANGE) +
+          daemonBalance.RECRUITMENT.LIFESPAN.MIN,
         quirks: daemonQuirks.sort(() => 0.5 - Math.random()).slice(0, 2),
         assignments: [],
         equipment: null,

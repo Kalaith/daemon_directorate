@@ -168,7 +168,8 @@ export interface ZustandGameStore {
 
 // Combined GameStore interface - now much more manageable
 export interface GameStore
-  extends GameState,
+  extends
+    GameState,
     CoreGameActions,
     UIStateActions,
     ResourceActions,

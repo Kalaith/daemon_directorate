@@ -12,15 +12,20 @@ const Apartment: React.FC = () => {
   const basicRooms = rooms.filter(room => room.roomType !== 'advanced');
 
   const handleRoomUpgrade = (room: Room) => {
-    console.log('Attempting to upgrade room:', room.name, 'Cost:', room.upgrade_cost);
+    console.log(
+      'Attempting to upgrade room:',
+      room.name,
+      'Cost:',
+      room.upgrade_cost
+    );
     console.log('Can afford?', canAfford(room.upgrade_cost));
-    
+
     if (!canAfford(room.upgrade_cost)) {
       console.warn('Cannot afford room upgrade');
       alert('Insufficient credits for this upgrade');
       return;
     }
-    
+
     try {
       upgradeRoom(room.id || room.name);
       console.log('Room upgrade attempted');
@@ -76,7 +81,7 @@ const Apartment: React.FC = () => {
           </Card>
         ))}
       </div>
-      
+
       {/* Advanced Rooms Section */}
       <AdvancedRooms />
     </div>

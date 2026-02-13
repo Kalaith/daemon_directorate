@@ -41,7 +41,12 @@ const mockGameStore = {
   selectedDaemons: new Set<string>(),
 
   // UI state
-  currentTab: 'dashboard' as 'dashboard' | 'team' | 'missions' | 'apartment' | 'equipment',
+  currentTab: 'dashboard' as
+    | 'dashboard'
+    | 'team'
+    | 'missions'
+    | 'apartment'
+    | 'equipment',
   showTutorial: false,
   showMemorial: false,
   showMissionModal: false,
@@ -196,7 +201,9 @@ describe('Daemon Directorate - Corporate Satire Gameplay', () => {
 
       // Verify corporate terminology in stats display
       expect(screen.getAllByText('Corporeal Integrity')[0]).toBeInTheDocument();
-      expect(screen.getAllByText('Workplace Satisfaction')[0]).toBeInTheDocument();
+      expect(
+        screen.getAllByText('Workplace Satisfaction')[0]
+      ).toBeInTheDocument();
       expect(screen.getAllByText('Contract Duration:')[0]).toBeInTheDocument();
     });
 

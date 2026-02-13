@@ -4,14 +4,23 @@ import { useGameStore } from '../../stores/composedStore';
 import Card from '../ui/Card';
 
 const Equipment: React.FC = () => {
-  const { equipment, repairEquipment, craftItem, canAfford, resources } = useGameStore();
+  const { equipment, repairEquipment, craftItem, canAfford, resources } =
+    useGameStore();
 
-  const canAffordComplex = (costs: { credits?: number; rawMaterials?: number; bureaucraticLeverage?: number; soulEssence?: number }) => {
+  const canAffordComplex = (costs: {
+    credits?: number;
+    rawMaterials?: number;
+    bureaucraticLeverage?: number;
+    soulEssence?: number;
+  }) => {
     return (
       (costs.credits === undefined || resources.credits >= costs.credits) &&
-      (costs.rawMaterials === undefined || resources.rawMaterials >= costs.rawMaterials) &&
-      (costs.bureaucraticLeverage === undefined || resources.bureaucraticLeverage >= costs.bureaucraticLeverage) &&
-      (costs.soulEssence === undefined || resources.soulEssence >= costs.soulEssence)
+      (costs.rawMaterials === undefined ||
+        resources.rawMaterials >= costs.rawMaterials) &&
+      (costs.bureaucraticLeverage === undefined ||
+        resources.bureaucraticLeverage >= costs.bureaucraticLeverage) &&
+      (costs.soulEssence === undefined ||
+        resources.soulEssence >= costs.soulEssence)
     );
   };
 
@@ -41,13 +50,21 @@ const Equipment: React.FC = () => {
                 <span className="text-xs px-3 py-2 bg-daemon-surface border border-daemon-secondary text-daemon-text font-mono uppercase tracking-wide rounded-lg">
                   {item.type}
                 </span>
-                <span className={`text-xs px-2 py-1 rounded-lg font-mono font-semibold uppercase tracking-wide ${
-                  item.rarity === 'Common' ? 'bg-gray-600 text-gray-200' :
-                  item.rarity === 'Uncommon' ? 'bg-green-600 text-green-100' :
-                  item.rarity === 'Rare' ? 'bg-blue-600 text-blue-100' :
-                  item.rarity === 'Legendary' ? 'bg-purple-600 text-purple-100' :
-                  item.rarity === 'Cursed' ? 'bg-red-600 text-red-100' : 'bg-gray-600 text-gray-200'
-                }`}>
+                <span
+                  className={`text-xs px-2 py-1 rounded-lg font-mono font-semibold uppercase tracking-wide ${
+                    item.rarity === 'Common'
+                      ? 'bg-gray-600 text-gray-200'
+                      : item.rarity === 'Uncommon'
+                        ? 'bg-green-600 text-green-100'
+                        : item.rarity === 'Rare'
+                          ? 'bg-blue-600 text-blue-100'
+                          : item.rarity === 'Legendary'
+                            ? 'bg-purple-600 text-purple-100'
+                            : item.rarity === 'Cursed'
+                              ? 'bg-red-600 text-red-100'
+                              : 'bg-gray-600 text-gray-200'
+                  }`}
+                >
                   {item.rarity}
                 </span>
                 {item.setName && (
@@ -135,7 +152,9 @@ const Equipment: React.FC = () => {
               Standard Issue Briefcase
             </div>
             <div className="text-xs mb-2">
-              <span className="bg-gray-600 text-gray-200 px-2 py-1 rounded-lg font-mono font-semibold uppercase">Common</span>
+              <span className="bg-gray-600 text-gray-200 px-2 py-1 rounded-lg font-mono font-semibold uppercase">
+                Common
+              </span>
             </div>
             <div className="text-sm text-daemon-text mb-3">
               Infiltration - Blend In (+15 stealth)
@@ -154,7 +173,9 @@ const Equipment: React.FC = () => {
               Corporate Tie of Binding
             </div>
             <div className="text-xs mb-2">
-              <span className="bg-gray-600 text-gray-200 px-2 py-1 rounded-lg font-mono font-semibold uppercase">Common</span>
+              <span className="bg-gray-600 text-gray-200 px-2 py-1 rounded-lg font-mono font-semibold uppercase">
+                Common
+              </span>
             </div>
             <div className="text-sm text-daemon-text mb-3">
               Combat - Intimidate (+10 combat)
@@ -173,7 +194,9 @@ const Equipment: React.FC = () => {
               Cursed Calculator
             </div>
             <div className="text-xs mb-2">
-              <span className="bg-red-600 text-red-100 px-2 py-1 rounded-lg font-mono font-semibold uppercase">Cursed</span>
+              <span className="bg-red-600 text-red-100 px-2 py-1 rounded-lg font-mono font-semibold uppercase">
+                Cursed
+              </span>
             </div>
             <div className="text-sm text-daemon-text mb-3">
               Sabotage - Data Corruption (+20 sabotage)
@@ -186,15 +209,25 @@ const Equipment: React.FC = () => {
           {/* Enhanced Equipment */}
           <button
             onClick={() => craftItem('executive_briefcase')}
-            disabled={!canAffordComplex({ credits: 300, rawMaterials: 2, bureaucraticLeverage: 1 })}
+            disabled={
+              !canAffordComplex({
+                credits: 300,
+                rawMaterials: 2,
+                bureaucraticLeverage: 1,
+              })
+            }
             className="p-6 bg-daemon-surface border border-daemon-secondary rounded-lg hover:bg-daemon-panel hover:border-daemon-primary hover:shadow-infernal disabled:bg-daemon-dark disabled:border-daemon-text-dim disabled:cursor-not-allowed text-left transition-all duration-200"
           >
             <div className="font-header font-semibold text-daemon-text-bright text-lg mb-2">
               Executive Briefcase
             </div>
             <div className="text-xs mb-2 flex gap-2">
-              <span className="bg-blue-600 text-blue-100 px-2 py-1 rounded-lg font-mono font-semibold uppercase">Rare</span>
-              <span className="bg-daemon-primary text-daemon-text-bright px-2 py-1 rounded-lg font-mono text-xs">Executive Suite</span>
+              <span className="bg-blue-600 text-blue-100 px-2 py-1 rounded-lg font-mono font-semibold uppercase">
+                Rare
+              </span>
+              <span className="bg-daemon-primary text-daemon-text-bright px-2 py-1 rounded-lg font-mono text-xs">
+                Executive Suite
+              </span>
             </div>
             <div className="text-sm text-daemon-text mb-3">
               Infiltration - Corporate Authority (+20 infiltration)
@@ -206,15 +239,25 @@ const Equipment: React.FC = () => {
 
           <button
             onClick={() => craftItem('power_tie')}
-            disabled={!canAffordComplex({ credits: 275, rawMaterials: 1, soulEssence: 1 })}
+            disabled={
+              !canAffordComplex({
+                credits: 275,
+                rawMaterials: 1,
+                soulEssence: 1,
+              })
+            }
             className="p-6 bg-daemon-surface border border-daemon-secondary rounded-lg hover:bg-daemon-panel hover:border-daemon-primary hover:shadow-infernal disabled:bg-daemon-dark disabled:border-daemon-text-dim disabled:cursor-not-allowed text-left transition-all duration-200"
           >
             <div className="font-header font-semibold text-daemon-text-bright text-lg mb-2">
               Power Tie
             </div>
             <div className="text-xs mb-2 flex gap-2">
-              <span className="bg-blue-600 text-blue-100 px-2 py-1 rounded-lg font-mono font-semibold uppercase">Rare</span>
-              <span className="bg-daemon-primary text-daemon-text-bright px-2 py-1 rounded-lg font-mono text-xs">Executive Suite</span>
+              <span className="bg-blue-600 text-blue-100 px-2 py-1 rounded-lg font-mono font-semibold uppercase">
+                Rare
+              </span>
+              <span className="bg-daemon-primary text-daemon-text-bright px-2 py-1 rounded-lg font-mono text-xs">
+                Executive Suite
+              </span>
             </div>
             <div className="text-sm text-daemon-text mb-3">
               Combat - Executive Presence (+25 combat)
@@ -226,15 +269,25 @@ const Equipment: React.FC = () => {
 
           <button
             onClick={() => craftItem('golden_calculator')}
-            disabled={!canAffordComplex({ credits: 400, rawMaterials: 3, bureaucraticLeverage: 2 })}
+            disabled={
+              !canAffordComplex({
+                credits: 400,
+                rawMaterials: 3,
+                bureaucraticLeverage: 2,
+              })
+            }
             className="p-6 bg-daemon-surface border border-daemon-secondary rounded-lg hover:bg-daemon-panel hover:border-daemon-primary hover:shadow-infernal disabled:bg-daemon-dark disabled:border-daemon-text-dim disabled:cursor-not-allowed text-left transition-all duration-200"
           >
             <div className="font-header font-semibold text-daemon-text-bright text-lg mb-2">
               Golden Calculator
             </div>
             <div className="text-xs mb-2 flex gap-2">
-              <span className="bg-purple-600 text-purple-100 px-2 py-1 rounded-lg font-mono font-semibold uppercase">Legendary</span>
-              <span className="bg-daemon-primary text-daemon-text-bright px-2 py-1 rounded-lg font-mono text-xs">Executive Suite</span>
+              <span className="bg-purple-600 text-purple-100 px-2 py-1 rounded-lg font-mono font-semibold uppercase">
+                Legendary
+              </span>
+              <span className="bg-daemon-primary text-daemon-text-bright px-2 py-1 rounded-lg font-mono text-xs">
+                Executive Suite
+              </span>
             </div>
             <div className="text-sm text-daemon-text mb-3">
               Sabotage - Financial Manipulation (+30 sabotage)

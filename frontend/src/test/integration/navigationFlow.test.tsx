@@ -83,7 +83,9 @@ vi.mock('../../stores/composedStore', () => ({
     corporateRivals: [],
 
     // Actions
-    setCurrentTab: vi.fn((tab) => { mockCurrentTab = tab; }),
+    setCurrentTab: vi.fn(tab => {
+      mockCurrentTab = tab;
+    }),
     initializeGame: vi.fn(),
     triggerRandomEvent: vi.fn(),
     meetsRequirements: vi.fn().mockReturnValue(false),

@@ -177,10 +177,13 @@ export const useCorporate = () =>
   }));
 
 // Individual selectors to avoid object recreation
-export const useCorporateRivals = () => useGameStore(state => state.corporateRivals);
-export const useInitializeRivals = () => useGameStore(state => state.initializeRivals);
+export const useCorporateRivals = () =>
+  useGameStore(state => state.corporateRivals);
+export const useInitializeRivals = () =>
+  useGameStore(state => state.initializeRivals);
 export const useEngageRival = () => useGameStore(state => state.engageRival);
-export const useCalculateRivalSuccessChance = () => useGameStore(state => state.calculateRivalSuccessChance);
+export const useCalculateRivalSuccessChance = () =>
+  useGameStore(state => state.calculateRivalSuccessChance);
 
 // Store actions for external use
 export const gameActions = {

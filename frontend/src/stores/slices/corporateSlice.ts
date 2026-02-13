@@ -12,16 +12,19 @@ export interface CorporateState {
   promotionProgress: Record<string, number>;
   daysPassed: number;
   corporateRivals: CorporateRival[];
-  activeEventChains: Record<string, {
-    chainId: string;
-    currentPosition: number;
-    storylineData: Record<string, unknown>;
-    pendingEvents: {
-      eventId: string;
-      triggerDay: number;
-      condition?: string;
-    }[];
-  }>;
+  activeEventChains: Record<
+    string,
+    {
+      chainId: string;
+      currentPosition: number;
+      storylineData: Record<string, unknown>;
+      pendingEvents: {
+        eventId: string;
+        triggerDay: number;
+        condition?: string;
+      }[];
+    }
+  >;
 }
 
 export interface CorporateActions {
@@ -36,8 +39,11 @@ export interface CorporateActions {
   resolveEvent: (eventId: string, choiceIndex?: number) => void;
   startEventChain: (chainId: string) => void;
   processEventChains: () => void;
-  updateChainStorylineData: (chainId: string, data: Record<string, unknown>) => void;
-  
+  updateChainStorylineData: (
+    chainId: string,
+    data: Record<string, unknown>
+  ) => void;
+
   // Advanced Rival AI
   processRivalActions: () => void;
   executeRivalStrategy: (rivalId: string) => void;
@@ -148,12 +154,12 @@ export const createCorporateSlice: StateCreator<
       console.log(`Failed to defeat ${rival.name}. Rival grows stronger!`);
       set(s => ({
         corporateRivals: s.corporateRivals.map(r =>
-          r.id === rivalId 
-            ? { 
-                ...r, 
+          r.id === rivalId
+            ? {
+                ...r,
                 strength: Math.min(100, r.strength + 5),
-                relationshipWithPlayer: r.relationshipWithPlayer - 10
-              } 
+                relationshipWithPlayer: r.relationshipWithPlayer - 10,
+              }
             : r
         ),
       }));
@@ -167,7 +173,7 @@ export const createCorporateSlice: StateCreator<
 
     const tierBonus = state.corporateTier.level * 0.1;
     const strengthPenalty = rival.strength * 0.01;
-    
+
     return Math.max(0.1, Math.min(0.9, 0.5 + tierBonus - strengthPenalty));
   },
 
@@ -187,7 +193,7 @@ export const createCorporateSlice: StateCreator<
     if (!rival) return;
 
     const composedState = get();
-    
+
     switch (rival.currentStrategy.type) {
       case 'aggressive_expansion':
         // Try to claim territories/planets
@@ -199,7 +205,9 @@ export const createCorporateSlice: StateCreator<
         // Manipulate markets
         if ('addResources' in composedState) {
           composedState.addResources(-50);
-          console.log(`${rival.name} manipulates markets, reducing your income!`);
+          console.log(
+            `${rival.name} manipulates markets, reducing your income!`
+          );
         }
         break;
       case 'shadow_operations':
@@ -209,7 +217,9 @@ export const createCorporateSlice: StateCreator<
       case 'diplomatic_manipulation':
         // Influence player decisions
         if (rival.aiPersonality.cunning > 80) {
-          console.log(`${rival.name} attempts to influence your corporate decisions`);
+          console.log(
+            `${rival.name} attempts to influence your corporate decisions`
+          );
         }
         break;
     }
@@ -227,16 +237,14 @@ export const createCorporateSlice: StateCreator<
     const rival = state.corporateRivals.find(r => r.id === rivalId);
     if (!rival) return;
 
-    const attackSuccess = Math.random() < (rival.strength / 150);
+    const attackSuccess = Math.random() < rival.strength / 150;
     const composedState = get();
-    
+
     if (attackSuccess && 'addResources' in composedState) {
-      composedState.addResources( 
-        -100 - rival.strength,
-        0,
-        -10
+      composedState.addResources(-100 - rival.strength, 0, -10);
+      console.log(
+        `${rival.name} launches successful hostile action against your operations!`
       );
-      console.log(`${rival.name} launches successful hostile action against your operations!`);
     }
   },
 
@@ -245,22 +253,24 @@ export const createCorporateSlice: StateCreator<
     const rival = state.corporateRivals.find(r => r.id === rivalId);
     if (!rival) return;
 
-    const espionageSuccess = Math.random() < (rival.aiPersonality.cunning / 100);
-    
+    const espionageSuccess = Math.random() < rival.aiPersonality.cunning / 100;
+
     if (espionageSuccess) {
       // Spy on player operations
-      console.log(`${rival.name} successfully gathers intelligence on your operations`);
-      
+      console.log(
+        `${rival.name} successfully gathers intelligence on your operations`
+      );
+
       set(s => ({
         corporateRivals: s.corporateRivals.map(r =>
-          r.id === rivalId 
-            ? { 
-                ...r, 
+          r.id === rivalId
+            ? {
+                ...r,
                 resources: {
                   ...r.resources,
-                  intelligence: Math.min(100, r.resources.intelligence + 10)
-                }
-              } 
+                  intelligence: Math.min(100, r.resources.intelligence + 10),
+                },
+              }
             : r
         ),
       }));
@@ -273,14 +283,20 @@ export const createCorporateSlice: StateCreator<
     if (!rival) return;
 
     // AI adapts strategy based on current situation
-    
+
     type RivalStrategyType = CorporateRival['currentStrategy']['type'];
     let newStrategy: RivalStrategyType = rival.currentStrategy.type;
-    
+
     // Strategy selection based on personality and situation
-    if (rival.relationshipWithPlayer < -50 && rival.aiPersonality.aggression > 60) {
+    if (
+      rival.relationshipWithPlayer < -50 &&
+      rival.aiPersonality.aggression > 60
+    ) {
       newStrategy = 'aggressive_expansion';
-    } else if (rival.resources.intelligence > 60 && rival.aiPersonality.cunning > 70) {
+    } else if (
+      rival.resources.intelligence > 60 &&
+      rival.aiPersonality.cunning > 70
+    ) {
       newStrategy = 'shadow_operations';
     } else if (rival.aiPersonality.ambition > 80) {
       newStrategy = 'economic_dominance';
@@ -289,16 +305,18 @@ export const createCorporateSlice: StateCreator<
     if (newStrategy !== rival.currentStrategy.type) {
       set(s => ({
         corporateRivals: s.corporateRivals.map(r =>
-          r.id === rivalId 
-            ? { 
+          r.id === rivalId
+            ? {
                 ...r,
                 currentStrategy: {
                   type: newStrategy,
                   priority: Math.floor(Math.random() * 5) + 5,
                   duration: Math.floor(Math.random() * 20) + 10,
-                  targetPlayer: newStrategy === 'aggressive_expansion' || newStrategy === 'shadow_operations'
-                }
-              } 
+                  targetPlayer:
+                    newStrategy === 'aggressive_expansion' ||
+                    newStrategy === 'shadow_operations',
+                },
+              }
             : r
         ),
       }));
@@ -309,13 +327,15 @@ export const createCorporateSlice: StateCreator<
     const state = get();
     if (state.corporateRivals.length === 0) {
       // Import rivalCorporations and add them
-      import('../../constants/gameData').then(({ rivalCorporations }) => {
-        set(() => ({
-          corporateRivals: [...rivalCorporations]
-        }));
-      }).catch(err => {
-        console.warn('Failed to initialize rivals:', err);
-      });
+      import('../../constants/gameData')
+        .then(({ rivalCorporations }) => {
+          set(() => ({
+            corporateRivals: [...rivalCorporations],
+          }));
+        })
+        .catch(err => {
+          console.warn('Failed to initialize rivals:', err);
+        });
     }
   },
 
@@ -352,9 +372,9 @@ export const createCorporateSlice: StateCreator<
           chainId,
           currentPosition: 0,
           storylineData: {},
-          pendingEvents: []
-        }
-      }
+          pendingEvents: [],
+        },
+      },
     }));
   },
 
@@ -364,7 +384,7 @@ export const createCorporateSlice: StateCreator<
       const pendingToday = chain.pendingEvents.filter(
         pe => pe.triggerDay <= state.daysPassed
       );
-      
+
       pendingToday.forEach(event => {
         // Trigger the event
         const composedState = get();
@@ -383,14 +403,17 @@ export const createCorporateSlice: StateCreator<
             ...chain,
             pendingEvents: chain.pendingEvents.filter(
               pe => pe.triggerDay > s.daysPassed
-            )
-          }
-        }
+            ),
+          },
+        },
       }));
     });
   },
 
-  updateChainStorylineData: (chainId: string, data: Record<string, unknown>) => {
+  updateChainStorylineData: (
+    chainId: string,
+    data: Record<string, unknown>
+  ) => {
     set(state => ({
       activeEventChains: {
         ...state.activeEventChains,
@@ -398,10 +421,10 @@ export const createCorporateSlice: StateCreator<
           ...state.activeEventChains[chainId],
           storylineData: {
             ...state.activeEventChains[chainId]?.storylineData,
-            ...data
-          }
-        }
-      }
+            ...data,
+          },
+        },
+      },
     }));
   },
 });

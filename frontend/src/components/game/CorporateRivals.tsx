@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import { 
-  useCorporateRivals, 
-  useInitializeRivals, 
-  useEngageRival, 
+import {
+  useCorporateRivals,
+  useInitializeRivals,
+  useEngageRival,
   useCalculateRivalSuccessChance,
-  useGameStore 
+  useGameStore,
 } from '../../stores/composedStore';
 import Card from '../ui/Card';
 import type { CorporateRival } from '../../types/game';
@@ -15,7 +15,7 @@ export const CorporateRivals: React.FC = () => {
   const engageRival = useEngageRival();
   const calculateRivalSuccessChance = useCalculateRivalSuccessChance();
   const corporateTier = useGameStore(state => state.corporateTier);
-  
+
   const [selectedRival, setSelectedRival] = useState<string | null>(null);
 
   React.useEffect(() => {
@@ -31,7 +31,9 @@ export const CorporateRivals: React.FC = () => {
   }, [corporateRivals.length, initializeRivals]);
 
   const activeRivals = (corporateRivals || []).filter(rival => !rival.defeated);
-  const defeatedRivals = (corporateRivals || []).filter(rival => rival.defeated);
+  const defeatedRivals = (corporateRivals || []).filter(
+    rival => rival.defeated
+  );
 
   const getThreatColor = (threat: string) => {
     const colors = {
@@ -80,82 +82,106 @@ export const CorporateRivals: React.FC = () => {
         <div className="space-y-4">
           {/* AI Personality Analysis */}
           <div className="bg-gray-800 p-4 rounded">
-            <h4 className="font-semibold text-blue-400 mb-3">AI Personality Profile</h4>
+            <h4 className="font-semibold text-blue-400 mb-3">
+              AI Personality Profile
+            </h4>
             <div className="grid grid-cols-2 gap-3">
               <div>
                 <div className="text-sm text-gray-400">Aggression</div>
                 <div className="w-full bg-gray-700 rounded h-2">
-                  <div 
-                    className="h-2 bg-red-500 rounded" 
+                  <div
+                    className="h-2 bg-red-500 rounded"
                     style={{ width: `${rival.aiPersonality.aggression}%` }}
                   />
                 </div>
-                <div className="text-xs text-gray-400">{rival.aiPersonality.aggression}/100</div>
+                <div className="text-xs text-gray-400">
+                  {rival.aiPersonality.aggression}/100
+                </div>
               </div>
               <div>
                 <div className="text-sm text-gray-400">Cunning</div>
                 <div className="w-full bg-gray-700 rounded h-2">
-                  <div 
-                    className="h-2 bg-purple-500 rounded" 
+                  <div
+                    className="h-2 bg-purple-500 rounded"
                     style={{ width: `${rival.aiPersonality.cunning}%` }}
                   />
                 </div>
-                <div className="text-xs text-gray-400">{rival.aiPersonality.cunning}/100</div>
+                <div className="text-xs text-gray-400">
+                  {rival.aiPersonality.cunning}/100
+                </div>
               </div>
               <div>
                 <div className="text-sm text-gray-400">Ambition</div>
                 <div className="w-full bg-gray-700 rounded h-2">
-                  <div 
-                    className="h-2 bg-yellow-500 rounded" 
+                  <div
+                    className="h-2 bg-yellow-500 rounded"
                     style={{ width: `${rival.aiPersonality.ambition}%` }}
                   />
                 </div>
-                <div className="text-xs text-gray-400">{rival.aiPersonality.ambition}/100</div>
+                <div className="text-xs text-gray-400">
+                  {rival.aiPersonality.ambition}/100
+                </div>
               </div>
               <div>
                 <div className="text-sm text-gray-400">Adaptability</div>
                 <div className="w-full bg-gray-700 rounded h-2">
-                  <div 
-                    className="h-2 bg-green-500 rounded" 
+                  <div
+                    className="h-2 bg-green-500 rounded"
                     style={{ width: `${rival.aiPersonality.adaptability}%` }}
                   />
                 </div>
-                <div className="text-xs text-gray-400">{rival.aiPersonality.adaptability}/100</div>
+                <div className="text-xs text-gray-400">
+                  {rival.aiPersonality.adaptability}/100
+                </div>
               </div>
             </div>
           </div>
 
           {/* Current Strategy */}
           <div className="bg-gray-800 p-4 rounded">
-            <h4 className="font-semibold text-orange-400 mb-3">Current Strategy</h4>
+            <h4 className="font-semibold text-orange-400 mb-3">
+              Current Strategy
+            </h4>
             <div className="flex items-center space-x-2 mb-2">
-              <span className="text-2xl">{getStrategyIcon(rival.currentStrategy.type)}</span>
+              <span className="text-2xl">
+                {getStrategyIcon(rival.currentStrategy.type)}
+              </span>
               <span className="text-white font-medium">
                 {rival.currentStrategy.type.replace('_', ' ').toUpperCase()}
               </span>
             </div>
             <div className="text-sm text-gray-400 mb-2">
-              Priority: {rival.currentStrategy.priority}/10 | Duration: {rival.currentStrategy.duration} days
+              Priority: {rival.currentStrategy.priority}/10 | Duration:{' '}
+              {rival.currentStrategy.duration} days
             </div>
             <div className="text-sm text-gray-300">
-              {rival.currentStrategy.targetPlayer && '🎯 Targeting player operations'}
+              {rival.currentStrategy.targetPlayer &&
+                '🎯 Targeting player operations'}
             </div>
           </div>
 
           {/* Resources & Assets */}
           <div className="bg-gray-800 p-4 rounded">
-            <h4 className="font-semibold text-green-400 mb-3">Corporate Assets</h4>
+            <h4 className="font-semibold text-green-400 mb-3">
+              Corporate Assets
+            </h4>
             <div className="grid grid-cols-3 gap-4 text-center">
               <div>
-                <div className="text-lg font-bold text-green-400">${rival.resources.credits}</div>
+                <div className="text-lg font-bold text-green-400">
+                  ${rival.resources.credits}
+                </div>
                 <div className="text-xs text-gray-400">Credits</div>
               </div>
               <div>
-                <div className="text-lg font-bold text-blue-400">{rival.resources.influence}</div>
+                <div className="text-lg font-bold text-blue-400">
+                  {rival.resources.influence}
+                </div>
                 <div className="text-xs text-gray-400">Influence</div>
               </div>
               <div>
-                <div className="text-lg font-bold text-purple-400">{rival.resources.intelligence}</div>
+                <div className="text-lg font-bold text-purple-400">
+                  {rival.resources.intelligence}
+                </div>
                 <div className="text-xs text-gray-400">Intelligence</div>
               </div>
             </div>
@@ -163,18 +189,27 @@ export const CorporateRivals: React.FC = () => {
 
           {/* Active Operations */}
           <div className="bg-gray-800 p-4 rounded">
-            <h4 className="font-semibold text-red-400 mb-3">Active Operations</h4>
+            <h4 className="font-semibold text-red-400 mb-3">
+              Active Operations
+            </h4>
             {rival.activeOperations.length > 0 ? (
               <div className="space-y-2">
                 {rival.activeOperations.map((op, index) => (
                   <div key={index} className="bg-gray-700 p-2 rounded text-sm">
                     <div className="flex justify-between items-start">
-                      <span className="text-white font-medium">{op.type.replace('_', ' ')}</span>
+                      <span className="text-white font-medium">
+                        {op.type.replace('_', ' ')}
+                      </span>
                       <span className="text-gray-400">{op.duration}d</span>
                     </div>
-                    <div className="text-gray-400 text-xs">Target: {op.targetId}</div>
+                    <div className="text-gray-400 text-xs">
+                      Target: {op.targetId}
+                    </div>
                     <div className="text-xs mt-1">
-                      Success Chance: <span className="text-yellow-400">{op.successChance}%</span>
+                      Success Chance:{' '}
+                      <span className="text-yellow-400">
+                        {op.successChance}%
+                      </span>
                     </div>
                   </div>
                 ))}
@@ -186,27 +221,34 @@ export const CorporateRivals: React.FC = () => {
 
           {/* Relationship Status */}
           <div className="bg-gray-800 p-4 rounded">
-            <h4 className="font-semibold text-gray-300 mb-3">Relationship Status</h4>
+            <h4 className="font-semibold text-gray-300 mb-3">
+              Relationship Status
+            </h4>
             <div className="flex items-center space-x-2">
               <div className="flex-1 bg-gray-700 rounded h-3">
-                <div 
+                <div
                   className={`h-3 rounded transition-all duration-300 ${
-                    rival.relationshipWithPlayer > 0 
-                      ? 'bg-green-500' 
+                    rival.relationshipWithPlayer > 0
+                      ? 'bg-green-500'
                       : rival.relationshipWithPlayer < -25
-                      ? 'bg-red-500'
-                      : 'bg-yellow-500'
+                        ? 'bg-red-500'
+                        : 'bg-yellow-500'
                   }`}
-                  style={{ 
+                  style={{
                     width: `${Math.abs(rival.relationshipWithPlayer)}%`,
-                    marginLeft: rival.relationshipWithPlayer < 0 ? 'auto' : '0'
+                    marginLeft: rival.relationshipWithPlayer < 0 ? 'auto' : '0',
                   }}
                 />
               </div>
-              <span className={`text-sm font-medium ${
-                rival.relationshipWithPlayer > 0 ? 'text-green-400' : 
-                rival.relationshipWithPlayer < -25 ? 'text-red-400' : 'text-yellow-400'
-              }`}>
+              <span
+                className={`text-sm font-medium ${
+                  rival.relationshipWithPlayer > 0
+                    ? 'text-green-400'
+                    : rival.relationshipWithPlayer < -25
+                      ? 'text-red-400'
+                      : 'text-yellow-400'
+                }`}
+              >
                 {rival.relationshipWithPlayer}/100
               </span>
             </div>
@@ -257,15 +299,16 @@ export const CorporateRivals: React.FC = () => {
                           <p className="text-sm text-gray-300 mb-2">
                             Specialty: {rival.specialty}
                           </p>
-                          
+
                           {/* Enhanced Info */}
                           <div className="flex items-center space-x-2 text-xs mb-2">
                             <span className="text-gray-400">Strategy:</span>
                             <span className="text-orange-300">
-                              {getStrategyIcon(rival.currentStrategy?.type)} {rival.currentStrategy?.type?.replace('_', ' ')}
+                              {getStrategyIcon(rival.currentStrategy?.type)}{' '}
+                              {rival.currentStrategy?.type?.replace('_', ' ')}
                             </span>
                           </div>
-                          
+
                           <div className="flex items-center space-x-4 text-sm">
                             <div className="flex items-center space-x-1">
                               <span>Threat Level:</span>
@@ -281,8 +324,16 @@ export const CorporateRivals: React.FC = () => {
                               </span>
                             </div>
                             <div>
-                              <span className="text-gray-400">Relationship:</span>
-                              <span className={rival.relationshipWithPlayer > 0 ? 'text-green-400' : 'text-red-400'}>
+                              <span className="text-gray-400">
+                                Relationship:
+                              </span>
+                              <span
+                                className={
+                                  rival.relationshipWithPlayer > 0
+                                    ? 'text-green-400'
+                                    : 'text-red-400'
+                                }
+                              >
                                 {rival.relationshipWithPlayer}
                               </span>
                             </div>
@@ -316,16 +367,20 @@ export const CorporateRivals: React.FC = () => {
                     <div className="mt-3 p-3 bg-gray-800 rounded">
                       <div className="grid grid-cols-4 gap-2 text-xs">
                         <div>
-                          <span className="text-red-400">Aggr:</span> {rival.aiPersonality?.aggression || 50}
+                          <span className="text-red-400">Aggr:</span>{' '}
+                          {rival.aiPersonality?.aggression || 50}
                         </div>
                         <div>
-                          <span className="text-purple-400">Cun:</span> {rival.aiPersonality?.cunning || 50}
+                          <span className="text-purple-400">Cun:</span>{' '}
+                          {rival.aiPersonality?.cunning || 50}
                         </div>
                         <div>
-                          <span className="text-yellow-400">Amb:</span> {rival.aiPersonality?.ambition || 50}
+                          <span className="text-yellow-400">Amb:</span>{' '}
+                          {rival.aiPersonality?.ambition || 50}
                         </div>
                         <div>
-                          <span className="text-green-400">Adp:</span> {rival.aiPersonality?.adaptability || 50}
+                          <span className="text-green-400">Adp:</span>{' '}
+                          {rival.aiPersonality?.adaptability || 50}
                         </div>
                       </div>
                     </div>
@@ -337,11 +392,18 @@ export const CorporateRivals: React.FC = () => {
                           🚨 Active Operations: {rival.activeOperations.length}
                         </h5>
                         <div className="text-xs text-gray-300">
-                          {rival.activeOperations.slice(0, 2).map((op, index: number) => (
-                            <div key={index}>• {op.type.replace('_', ' ')} (Target: {op.targetId})</div>
-                          ))}
+                          {rival.activeOperations
+                            .slice(0, 2)
+                            .map((op, index: number) => (
+                              <div key={index}>
+                                • {op.type.replace('_', ' ')} (Target:{' '}
+                                {op.targetId})
+                              </div>
+                            ))}
                           {rival.activeOperations.length > 2 && (
-                            <div className="text-gray-400">... and {rival.activeOperations.length - 2} more</div>
+                            <div className="text-gray-400">
+                              ... and {rival.activeOperations.length - 2} more
+                            </div>
                           )}
                         </div>
                       </div>
@@ -354,10 +416,12 @@ export const CorporateRivals: React.FC = () => {
                       </h5>
                       <ul className="text-xs text-gray-300 space-y-1">
                         <li>
-                          • -{rival.strength / 20}% mission success rate due to corporate interference
+                          • -{rival.strength / 20}% mission success rate due to
+                          corporate interference
                         </li>
                         <li>
-                          • +{rival.strength / 10}% equipment costs due to supply chain disruption
+                          • +{rival.strength / 10}% equipment costs due to
+                          supply chain disruption
                         </li>
                         <li>• Periodic hostile takeover attempts</li>
                       </ul>
@@ -435,7 +499,8 @@ export const CorporateRivals: React.FC = () => {
               <div>
                 <div className="text-lg font-bold text-orange-300">
                   {Math.round(
-                    (defeatedRivals.length / (corporateRivals.length || 1)) * 100
+                    (defeatedRivals.length / (corporateRivals.length || 1)) *
+                      100
                   )}
                   %
                 </div>
@@ -453,10 +518,18 @@ export const CorporateRivals: React.FC = () => {
               <li>
                 • Rival corporations have dynamic AI that adapts to your actions
               </li>
-              <li>• Each rival has unique personality traits affecting their behavior</li>
+              <li>
+                • Each rival has unique personality traits affecting their
+                behavior
+              </li>
               <li>• Monitor their active operations to anticipate threats</li>
-              <li>• Building positive relationships can reduce hostile activities</li>
-              <li>• Defeating rivals grants significant corporate acquisition bonuses</li>
+              <li>
+                • Building positive relationships can reduce hostile activities
+              </li>
+              <li>
+                • Defeating rivals grants significant corporate acquisition
+                bonuses
+              </li>
             </ul>
           </div>
         </div>
@@ -464,8 +537,8 @@ export const CorporateRivals: React.FC = () => {
 
       {/* Rival Detail Modal */}
       {selectedRival && (
-        <RivalDetailModal 
-          rival={corporateRivals.find(r => r.id === selectedRival)!} 
+        <RivalDetailModal
+          rival={corporateRivals.find(r => r.id === selectedRival)!}
         />
       )}
     </Card>

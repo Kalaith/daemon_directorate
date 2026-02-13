@@ -6,9 +6,13 @@ import type * as matchers from '@testing-library/jest-dom/matchers';
 
 declare module 'vitest' {
   // eslint-disable-next-line @typescript-eslint/no-empty-object-type
-  interface Assertion<T = unknown>
-    extends matchers.TestingLibraryMatchers<T, void> {}
+  interface Assertion<T = unknown> extends matchers.TestingLibraryMatchers<
+    T,
+    void
+  > {}
   // eslint-disable-next-line @typescript-eslint/no-empty-object-type
-  interface AsymmetricMatchersContaining
-    extends matchers.TestingLibraryMatchers<unknown, void> {}
+  interface AsymmetricMatchersContaining extends matchers.TestingLibraryMatchers<
+    unknown,
+    void
+  > {}
 }

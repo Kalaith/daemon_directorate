@@ -470,117 +470,117 @@ export const starterData: StarterData = {
 
 // Advanced rooms (separate from starter data)
 export const advancedRooms: Omit<Room, 'id'>[] = [
-    {
-      name: 'Training Hall',
-      level: 0,
-      bonus: 'Skill Development & Specialization Changes',
-      upgrade_cost: 800,
-      assignedDaemons: [],
-      maxAssignments: 3,
-      roomType: 'advanced',
-      unlocked: false,
-      advancedFeatures: {
-        skillDevelopment: true,
-      },
-      specialRequirements: {
-        requiredTier: 2,
-        requiredRooms: ['Living Quarters'],
-        requiredResources: { bureaucraticLeverage: 3 },
-      },
+  {
+    name: 'Training Hall',
+    level: 0,
+    bonus: 'Skill Development & Specialization Changes',
+    upgrade_cost: 800,
+    assignedDaemons: [],
+    maxAssignments: 3,
+    roomType: 'advanced',
+    unlocked: false,
+    advancedFeatures: {
+      skillDevelopment: true,
     },
-    {
-      name: 'Recovery Ward',
-      level: 0,
-      bonus: 'Faster healing and lifespan extension',
-      upgrade_cost: 1000,
-      assignedDaemons: [],
-      maxAssignments: 2,
-      roomType: 'advanced',
-      unlocked: false,
-      advancedFeatures: {
-        healingBonus: 25,
-      },
-      specialRequirements: {
-        requiredTier: 2,
-        requiredResources: { soulEssence: 2, credits: 500 },
-      },
+    specialRequirements: {
+      requiredTier: 2,
+      requiredRooms: ['Living Quarters'],
+      requiredResources: { bureaucraticLeverage: 3 },
     },
-    {
-      name: 'War Room',
-      level: 0,
-      bonus: 'Mission planning bonuses and intelligence',
-      upgrade_cost: 1200,
-      assignedDaemons: [],
-      maxAssignments: 2,
-      specialization: 'Combat',
-      roomType: 'advanced',
-      unlocked: false,
-      advancedFeatures: {
-        missionPlanning: true,
-      },
-      specialRequirements: {
-        requiredTier: 3,
-        requiredRooms: ['Command Center'],
-        requiredResources: { bureaucraticLeverage: 5 },
-      },
+  },
+  {
+    name: 'Recovery Ward',
+    level: 0,
+    bonus: 'Faster healing and lifespan extension',
+    upgrade_cost: 1000,
+    assignedDaemons: [],
+    maxAssignments: 2,
+    roomType: 'advanced',
+    unlocked: false,
+    advancedFeatures: {
+      healingBonus: 25,
     },
-    {
-      name: 'R&D Lab',
-      level: 0,
-      bonus: 'Equipment innovation and prototyping',
-      upgrade_cost: 1500,
-      assignedDaemons: [],
-      maxAssignments: 2,
-      specialization: 'Sabotage',
-      roomType: 'advanced',
-      unlocked: false,
-      advancedFeatures: {
-        equipmentInnovation: true,
-      },
-      specialRequirements: {
-        requiredTier: 3,
-        requiredRooms: ['Item Forge'],
-        requiredResources: { rawMaterials: 5, soulEssence: 3 },
-      },
+    specialRequirements: {
+      requiredTier: 2,
+      requiredResources: { soulEssence: 2, credits: 500 },
     },
-    {
-      name: 'Memorial Chamber',
-      level: 0,
-      bonus: 'Bonuses from honored deceased daemons',
-      upgrade_cost: 2000,
-      assignedDaemons: [],
-      maxAssignments: 1,
-      roomType: 'advanced',
-      unlocked: false,
-      advancedFeatures: {
-        memorialBonus: true,
-      },
-      specialRequirements: {
-        requiredTier: 4,
-        requiredRooms: ['Living Quarters', 'Command Center'],
-        requiredResources: { soulEssence: 5 },
-      },
+  },
+  {
+    name: 'War Room',
+    level: 0,
+    bonus: 'Mission planning bonuses and intelligence',
+    upgrade_cost: 1200,
+    assignedDaemons: [],
+    maxAssignments: 2,
+    specialization: 'Combat',
+    roomType: 'advanced',
+    unlocked: false,
+    advancedFeatures: {
+      missionPlanning: true,
     },
-    {
-      name: 'Server Farm',
-      level: 0,
-      bonus: 'Bureaucratic automation and digital warfare',
-      upgrade_cost: 2500,
-      assignedDaemons: [],
-      maxAssignments: 2,
-      specialization: 'Infiltration',
-      roomType: 'advanced',
-      unlocked: false,
-      advancedFeatures: {
-        automation: true,
-      },
-      specialRequirements: {
-        requiredTier: 4,
-        requiredRooms: ['Command Center', 'Item Forge'],
-        requiredResources: { bureaucraticLeverage: 8, rawMaterials: 4 },
-      },
+    specialRequirements: {
+      requiredTier: 3,
+      requiredRooms: ['Command Center'],
+      requiredResources: { bureaucraticLeverage: 5 },
     },
-  ];
+  },
+  {
+    name: 'R&D Lab',
+    level: 0,
+    bonus: 'Equipment innovation and prototyping',
+    upgrade_cost: 1500,
+    assignedDaemons: [],
+    maxAssignments: 2,
+    specialization: 'Sabotage',
+    roomType: 'advanced',
+    unlocked: false,
+    advancedFeatures: {
+      equipmentInnovation: true,
+    },
+    specialRequirements: {
+      requiredTier: 3,
+      requiredRooms: ['Item Forge'],
+      requiredResources: { rawMaterials: 5, soulEssence: 3 },
+    },
+  },
+  {
+    name: 'Memorial Chamber',
+    level: 0,
+    bonus: 'Bonuses from honored deceased daemons',
+    upgrade_cost: 2000,
+    assignedDaemons: [],
+    maxAssignments: 1,
+    roomType: 'advanced',
+    unlocked: false,
+    advancedFeatures: {
+      memorialBonus: true,
+    },
+    specialRequirements: {
+      requiredTier: 4,
+      requiredRooms: ['Living Quarters', 'Command Center'],
+      requiredResources: { soulEssence: 5 },
+    },
+  },
+  {
+    name: 'Server Farm',
+    level: 0,
+    bonus: 'Bureaucratic automation and digital warfare',
+    upgrade_cost: 2500,
+    assignedDaemons: [],
+    maxAssignments: 2,
+    specialization: 'Infiltration',
+    roomType: 'advanced',
+    unlocked: false,
+    advancedFeatures: {
+      automation: true,
+    },
+    specialRequirements: {
+      requiredTier: 4,
+      requiredRooms: ['Command Center', 'Item Forge'],
+      requiredResources: { bureaucraticLeverage: 8, rawMaterials: 4 },
+    },
+  },
+];
 
 // Daemon bloodlines for legacy system
 export const daemonBloodlines = [
@@ -1936,9 +1936,17 @@ export const prestigeBonuses: PrestigeBonus[] = [
 // Enhanced Equipment System - Rarity Definitions
 export const equipmentRarityModifiers = {
   Common: { durabilityBonus: 0, effectMultiplier: 1.0, legacyBonusRate: 1.0 },
-  Uncommon: { durabilityBonus: 10, effectMultiplier: 1.2, legacyBonusRate: 1.1 },
+  Uncommon: {
+    durabilityBonus: 10,
+    effectMultiplier: 1.2,
+    legacyBonusRate: 1.1,
+  },
   Rare: { durabilityBonus: 20, effectMultiplier: 1.5, legacyBonusRate: 1.2 },
-  Legendary: { durabilityBonus: 40, effectMultiplier: 2.0, legacyBonusRate: 1.5 },
+  Legendary: {
+    durabilityBonus: 40,
+    effectMultiplier: 2.0,
+    legacyBonusRate: 1.5,
+  },
   Cursed: { durabilityBonus: -10, effectMultiplier: 2.5, legacyBonusRate: 2.0 },
 } as const;
 
@@ -1949,49 +1957,91 @@ export const equipmentSets = {
     setBonuses: [
       {
         requiredPieces: 2,
-        effects: [{ type: 'bureaucratic_leverage_bonus', value: 1, description: '+1 daily bureaucratic leverage' }]
+        effects: [
+          {
+            type: 'bureaucratic_leverage_bonus',
+            value: 1,
+            description: '+1 daily bureaucratic leverage',
+          },
+        ],
       },
       {
         requiredPieces: 3,
         effects: [
-          { type: 'mission_success_bonus', value: 15, description: '+15% mission success rate' },
-          { type: 'resource_generation_bonus', value: 0.2, description: '+20% resource generation' }
-        ]
-      }
-    ]
+          {
+            type: 'mission_success_bonus',
+            value: 15,
+            description: '+15% mission success rate',
+          },
+          {
+            type: 'resource_generation_bonus',
+            value: 0.2,
+            description: '+20% resource generation',
+          },
+        ],
+      },
+    ],
   },
   'Infiltration Specialist Kit': {
     pieces: ['Shadow Briefcase', 'Stealth Tie', 'Encrypted Calculator'],
     setBonuses: [
       {
         requiredPieces: 2,
-        effects: [{ type: 'infiltration_bonus', value: 10, description: '+10 infiltration missions success rate' }]
+        effects: [
+          {
+            type: 'infiltration_bonus',
+            value: 10,
+            description: '+10 infiltration missions success rate',
+          },
+        ],
       },
       {
         requiredPieces: 3,
         effects: [
-          { type: 'stealth_missions_unlock', value: 1, description: 'Unlocks advanced stealth missions' },
-          { type: 'equipment_durability_bonus', value: 20, description: '+20% equipment durability' }
-        ]
-      }
-    ]
+          {
+            type: 'stealth_missions_unlock',
+            value: 1,
+            description: 'Unlocks advanced stealth missions',
+          },
+          {
+            type: 'equipment_durability_bonus',
+            value: 20,
+            description: '+20% equipment durability',
+          },
+        ],
+      },
+    ],
   },
   'Combat Command Gear': {
     pieces: ['Tactical Briefcase', 'Combat Tie', 'Battle Calculator'],
     setBonuses: [
       {
         requiredPieces: 2,
-        effects: [{ type: 'combat_bonus', value: 15, description: '+15 combat mission effectiveness' }]
+        effects: [
+          {
+            type: 'combat_bonus',
+            value: 15,
+            description: '+15 combat mission effectiveness',
+          },
+        ],
       },
       {
         requiredPieces: 3,
         effects: [
-          { type: 'team_damage_reduction', value: 25, description: '-25% team damage in missions' },
-          { type: 'aggressive_missions_unlock', value: 1, description: 'Unlocks high-risk/high-reward missions' }
-        ]
-      }
-    ]
-  }
+          {
+            type: 'team_damage_reduction',
+            value: 25,
+            description: '-25% team damage in missions',
+          },
+          {
+            type: 'aggressive_missions_unlock',
+            value: 1,
+            description: 'Unlocks high-risk/high-reward missions',
+          },
+        ],
+      },
+    ],
+  },
 } as const;
 
 // Enhanced Mission System
@@ -2132,15 +2182,16 @@ export const missionTemplates = {
   infiltration_specialist: {
     id: 'infiltration_specialist',
     name: 'Deep Cover Operations',
-    description: 'Long-term infiltration requiring specialized daemon combinations',
+    description:
+      'Long-term infiltration requiring specialized daemon combinations',
     baseDuration: 120,
     primaryObjective: {
       type: 'primary' as const,
       description: 'Establish long-term corporate presence',
-      requirements: { 
-        minTeamSize: 2, 
+      requirements: {
+        minTeamSize: 2,
         specialization: 'Infiltration' as const,
-        requiredSpecializations: ['Infiltration', 'Sabotage']
+        requiredSpecializations: ['Infiltration', 'Sabotage'],
       },
       rewards: { credits: 300, bureaucraticLeverage: 4, soulEssence: 1 },
     },
@@ -2168,10 +2219,10 @@ export const missionTemplates = {
     primaryObjective: {
       type: 'primary' as const,
       description: 'Neutralize heavily fortified position',
-      requirements: { 
-        minTeamSize: 3, 
+      requirements: {
+        minTeamSize: 3,
         specialization: 'Combat' as const,
-        forbiddenSpecializations: ['Infiltration']
+        forbiddenSpecializations: ['Infiltration'],
       },
       rewards: { credits: 500, rawMaterials: 3 },
     },
@@ -2189,7 +2240,11 @@ export const missionTemplates = {
         rewards: { morale: 15, bureaucraticLeverage: 2 },
       },
     ],
-    failureConsequences: ['heavy_casualties', 'equipment_loss', 'tactical_failure'],
+    failureConsequences: [
+      'heavy_casualties',
+      'equipment_loss',
+      'tactical_failure',
+    ],
   },
   multi_phase: {
     id: 'multi_phase',
@@ -2199,11 +2254,16 @@ export const missionTemplates = {
     primaryObjective: {
       type: 'primary' as const,
       description: 'Complete all operational phases',
-      requirements: { 
+      requirements: {
         minTeamSize: 4,
-        requiredSpecializations: ['Infiltration', 'Combat', 'Sabotage']
+        requiredSpecializations: ['Infiltration', 'Combat', 'Sabotage'],
       },
-      rewards: { credits: 800, bureaucraticLeverage: 6, soulEssence: 2, rawMaterials: 2 },
+      rewards: {
+        credits: 800,
+        bureaucraticLeverage: 6,
+        soulEssence: 2,
+        rawMaterials: 2,
+      },
     },
     secondaryObjectives: [
       {
@@ -2225,7 +2285,11 @@ export const missionTemplates = {
         rewards: { futureOpportunities: ['complete_restructuring'] },
       },
     ],
-    failureConsequences: ['partial_completion', 'resource_waste', 'operational_exposure'],
+    failureConsequences: [
+      'partial_completion',
+      'resource_waste',
+      'operational_exposure',
+    ],
   },
 };
 
@@ -2237,78 +2301,151 @@ export const corporateEventChains = {
       {
         id: 'pre_review_preparation',
         title: 'Quarterly Review Preparation',
-        description: 'Corporate management announces upcoming quarterly performance assessments. Preparation activities are recommended to optimize evaluation outcomes.',
+        description:
+          'Corporate management announces upcoming quarterly performance assessments. Preparation activities are recommended to optimize evaluation outcomes.',
         type: 'choice' as const,
         chainPosition: 0,
         triggerDelay: 0,
         choices: [
           {
             label: 'Intensive Preparation Campaign',
-            description: 'Invest significant resources in preparation activities',
+            description:
+              'Invest significant resources in preparation activities',
             effects: [
-              { type: 'credits', value: -150, description: 'Preparation investment costs' },
-              { type: 'morale', value: -5, description: 'Increased workplace pressure' },
-              { type: 'review_preparation_bonus', value: 20, description: 'Enhanced review performance potential' },
+              {
+                type: 'credits',
+                value: -150,
+                description: 'Preparation investment costs',
+              },
+              {
+                type: 'morale',
+                value: -5,
+                description: 'Increased workplace pressure',
+              },
+              {
+                type: 'review_preparation_bonus',
+                value: 20,
+                description: 'Enhanced review performance potential',
+              },
             ],
           },
           {
             label: 'Standard Preparation Protocol',
             description: 'Follow established preparation procedures',
             effects: [
-              { type: 'credits', value: -75, description: 'Standard preparation costs' },
-              { type: 'review_preparation_bonus', value: 10, description: 'Adequate review preparation' },
+              {
+                type: 'credits',
+                value: -75,
+                description: 'Standard preparation costs',
+              },
+              {
+                type: 'review_preparation_bonus',
+                value: 10,
+                description: 'Adequate review preparation',
+              },
             ],
           },
           {
             label: 'Minimal Preparation Strategy',
             description: 'Focus resources on operational priorities',
             effects: [
-              { type: 'credits', value: 25, description: 'Resource optimization savings' },
-              { type: 'review_preparation_penalty', value: -10, description: 'Reduced review performance potential' },
+              {
+                type: 'credits',
+                value: 25,
+                description: 'Resource optimization savings',
+              },
+              {
+                type: 'review_preparation_penalty',
+                value: -10,
+                description: 'Reduced review performance potential',
+              },
             ],
           },
         ],
         followUpEvents: [
-          { eventId: 'quarterly_review_results', condition: 'choice_0', delay: 7 },
-          { eventId: 'quarterly_review_results', condition: 'choice_1', delay: 7 },
-          { eventId: 'quarterly_review_results', condition: 'choice_2', delay: 7 },
+          {
+            eventId: 'quarterly_review_results',
+            condition: 'choice_0',
+            delay: 7,
+          },
+          {
+            eventId: 'quarterly_review_results',
+            condition: 'choice_1',
+            delay: 7,
+          },
+          {
+            eventId: 'quarterly_review_results',
+            condition: 'choice_2',
+            delay: 7,
+          },
         ],
       },
       {
         id: 'quarterly_review_results',
         title: 'Quarterly Performance Assessment Results',
-        description: 'Corporate leadership has completed the quarterly performance evaluation. Results will impact operational parameters and advancement opportunities.',
+        description:
+          'Corporate leadership has completed the quarterly performance evaluation. Results will impact operational parameters and advancement opportunities.',
         type: 'automatic' as const,
         chainPosition: 1,
         effects: [
-          { type: 'bureaucratic_leverage', value: 3, description: 'Performance recognition bonus' },
-          { type: 'reputation', value: 15, description: 'Enhanced corporate standing' },
+          {
+            type: 'bureaucratic_leverage',
+            value: 3,
+            description: 'Performance recognition bonus',
+          },
+          {
+            type: 'reputation',
+            value: 15,
+            description: 'Enhanced corporate standing',
+          },
         ],
         followUpEvents: [
-          { eventId: 'post_review_opportunities', condition: 'success', delay: 3 },
+          {
+            eventId: 'post_review_opportunities',
+            condition: 'success',
+            delay: 3,
+          },
         ],
       },
       {
         id: 'post_review_opportunities',
         title: 'Post-Review Strategic Opportunities',
-        description: 'Strong quarterly performance has unlocked additional strategic initiatives and resource allocation opportunities.',
+        description:
+          'Strong quarterly performance has unlocked additional strategic initiatives and resource allocation opportunities.',
         type: 'choice' as const,
         chainPosition: 2,
         choices: [
           {
             label: 'Expansion Initiative',
-            description: 'Leverage strong performance for territorial expansion',
+            description:
+              'Leverage strong performance for territorial expansion',
             effects: [
-              { type: 'new_planets_unlocked', value: 2, description: 'Additional expansion opportunities' },
-              { type: 'bureaucratic_leverage', value: -2, description: 'Political capital investment' },
+              {
+                type: 'new_planets_unlocked',
+                value: 2,
+                description: 'Additional expansion opportunities',
+              },
+              {
+                type: 'bureaucratic_leverage',
+                value: -2,
+                description: 'Political capital investment',
+              },
             ],
           },
           {
             label: 'Resource Optimization',
             description: 'Focus on improving operational efficiency',
             effects: [
-              { type: 'passive_income_bonus', value: 25, description: 'Daily resource generation bonus' },
-              { type: 'efficiency_upgrade', value: 1, description: 'Permanent efficiency enhancement' },
+              {
+                type: 'passive_income_bonus',
+                value: 25,
+                description: 'Daily resource generation bonus',
+              },
+              {
+                type: 'efficiency_upgrade',
+                value: 1,
+                description: 'Permanent efficiency enhancement',
+              },
             ],
           },
         ],
@@ -2321,38 +2458,69 @@ export const corporateEventChains = {
       {
         id: 'merger_announcement',
         title: 'Strategic Merger Announcement',
-        description: 'Executive leadership announces strategic merger negotiations with a major competitor. This consolidation will significantly impact operational structures.',
+        description:
+          'Executive leadership announces strategic merger negotiations with a major competitor. This consolidation will significantly impact operational structures.',
         type: 'automatic' as const,
         chainPosition: 0,
         effects: [
-          { type: 'uncertainty_penalty', value: -5, description: 'Organizational uncertainty impact' },
-          { type: 'merger_preparation_time', value: 14, description: 'Preparation period activated' },
+          {
+            type: 'uncertainty_penalty',
+            value: -5,
+            description: 'Organizational uncertainty impact',
+          },
+          {
+            type: 'merger_preparation_time',
+            value: 14,
+            description: 'Preparation period activated',
+          },
         ],
         followUpEvents: [
-          { eventId: 'merger_preparation_phase', condition: 'success', delay: 5 },
+          {
+            eventId: 'merger_preparation_phase',
+            condition: 'success',
+            delay: 5,
+          },
         ],
       },
       {
         id: 'merger_preparation_phase',
         title: 'Merger Integration Preparation',
-        description: 'Due diligence processes and integration planning require significant departmental coordination and resource allocation.',
+        description:
+          'Due diligence processes and integration planning require significant departmental coordination and resource allocation.',
         type: 'choice' as const,
         chainPosition: 1,
         choices: [
           {
             label: 'Aggressive Integration Strategy',
-            description: 'Lead integration efforts to secure advantageous position',
+            description:
+              'Lead integration efforts to secure advantageous position',
             effects: [
-              { type: 'bureaucratic_leverage', value: -3, description: 'Political capital investment' },
-              { type: 'merger_leadership_position', value: 1, description: 'Enhanced post-merger authority' },
+              {
+                type: 'bureaucratic_leverage',
+                value: -3,
+                description: 'Political capital investment',
+              },
+              {
+                type: 'merger_leadership_position',
+                value: 1,
+                description: 'Enhanced post-merger authority',
+              },
             ],
           },
           {
             label: 'Defensive Positioning',
             description: 'Focus on protecting current operational integrity',
             effects: [
-              { type: 'current_operations_protection', value: 1, description: 'Operational continuity assurance' },
-              { type: 'credits', value: 100, description: 'Cost-saving through defensive strategy' },
+              {
+                type: 'current_operations_protection',
+                value: 1,
+                description: 'Operational continuity assurance',
+              },
+              {
+                type: 'credits',
+                value: 100,
+                description: 'Cost-saving through defensive strategy',
+              },
             ],
           },
         ],
@@ -2364,13 +2532,26 @@ export const corporateEventChains = {
       {
         id: 'merger_completion',
         title: 'Merger Integration Complete',
-        description: 'The strategic merger has been successfully completed. New operational parameters and enhanced capabilities are now available.',
+        description:
+          'The strategic merger has been successfully completed. New operational parameters and enhanced capabilities are now available.',
         type: 'automatic' as const,
         chainPosition: 2,
         effects: [
-          { type: 'corporate_tier_advancement', value: 1, description: 'Accelerated tier progression opportunity' },
-          { type: 'new_daemon_archetypes', value: 2, description: 'Access to specialized daemon types' },
-          { type: 'expanded_mission_types', value: 3, description: 'Advanced mission categories unlocked' },
+          {
+            type: 'corporate_tier_advancement',
+            value: 1,
+            description: 'Accelerated tier progression opportunity',
+          },
+          {
+            type: 'new_daemon_archetypes',
+            value: 2,
+            description: 'Access to specialized daemon types',
+          },
+          {
+            type: 'expanded_mission_types',
+            value: 3,
+            description: 'Advanced mission categories unlocked',
+          },
         ],
       },
     ],

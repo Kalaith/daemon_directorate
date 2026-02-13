@@ -30,8 +30,8 @@ const Missions: React.FC = () => {
                   planet.difficulty === 'Easy'
                     ? 'bg-green-900/50 text-green-400 border border-green-500/30'
                     : planet.difficulty === 'Medium'
-                    ? 'bg-yellow-900/50 text-yellow-400 border border-yellow-500/30'
-                    : 'bg-red-900/50 text-red-400 border border-red-500/30'
+                      ? 'bg-yellow-900/50 text-yellow-400 border border-yellow-500/30'
+                      : 'bg-red-900/50 text-red-400 border border-red-500/30'
                 }`}
               >
                 {planet.difficulty}
