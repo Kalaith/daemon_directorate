@@ -192,20 +192,11 @@
   /* Corporate themed elements */
   .corporate-header {
     color: var(--color-text);
-    background: linear-gradient(
-      135deg,
-      var(--color-slate-900),
-      var(--color-charcoal-800)
-    );
+    background: linear-gradient(135deg, var(--color-slate-900), var(--color-charcoal-800));
   }
 
   .infernal-border {
-    border-image: linear-gradient(
-        45deg,
-        var(--color-primary),
-        var(--color-error)
-      )
-      1;
+    border-image: linear-gradient(45deg, var(--color-primary), var(--color-error)) 1;
   }
 
   /* Memorial styling */

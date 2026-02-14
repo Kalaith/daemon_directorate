@@ -36,12 +36,9 @@ export class BusinessRuleError extends GameError {
 
 export class SystemError extends GameError {
   constructor(message: string, originalError?: Error) {
-    super(
-      message,
-      'system',
-      'An unexpected error occurred. Please try again.',
-      { originalError: originalError?.message }
-    );
+    super(message, 'system', 'An unexpected error occurred. Please try again.', {
+      originalError: originalError?.message,
+    });
     this.name = 'SystemError';
   }
 }
@@ -56,11 +53,7 @@ export const handleGameError = (
 
   if (error instanceof GameError) {
     const notificationType: NotificationType =
-      error.type === 'validation'
-        ? 'warning'
-        : error.type === 'business'
-          ? 'info'
-          : 'error';
+      error.type === 'validation' ? 'warning' : error.type === 'business' ? 'info' : 'error';
 
     addNotification(error.userMessage, notificationType);
   } else if (error instanceof Error) {
@@ -103,19 +96,11 @@ export const validateRequired = (value: unknown, fieldName: string): void => {
   }
 };
 
-export const validateString = (
-  value: unknown,
-  fieldName: string,
-  minLength = 0
-): string => {
+export const validateString = (value: unknown, fieldName: string, minLength = 0): string => {
   validateRequired(value, fieldName);
 
   if (typeof value !== 'string') {
-    throw new ValidationError(
-      `${fieldName} must be a string`,
-      fieldName,
-      value
-    );
+    throw new ValidationError(`${fieldName} must be a string`, fieldName, value);
   }
 
   if (value.length < minLength) {
@@ -138,58 +123,33 @@ export const validateNumber = (
   validateRequired(value, fieldName);
 
   if (typeof value !== 'number' || !isFinite(value)) {
-    throw new ValidationError(
-      `${fieldName} must be a valid number`,
-      fieldName,
-      value
-    );
+    throw new ValidationError(`${fieldName} must be a valid number`, fieldName, value);
   }
 
   if (min !== undefined && value < min) {
-    throw new ValidationError(
-      `${fieldName} must be at least ${min}`,
-      fieldName,
-      value
-    );
+    throw new ValidationError(`${fieldName} must be at least ${min}`, fieldName, value);
   }
 
   if (max !== undefined && value > max) {
-    throw new ValidationError(
-      `${fieldName} must be at most ${max}`,
-      fieldName,
-      value
-    );
+    throw new ValidationError(`${fieldName} must be at most ${max}`, fieldName, value);
   }
 
   return value;
 };
 
-export const validatePositiveNumber = (
-  value: unknown,
-  fieldName: string
-): number => {
+export const validatePositiveNumber = (value: unknown, fieldName: string): number => {
   return validateNumber(value, fieldName, 0);
 };
 
-export const validatePercentage = (
-  value: unknown,
-  fieldName: string
-): number => {
+export const validatePercentage = (value: unknown, fieldName: string): number => {
   return validateNumber(value, fieldName, 0, 100);
 };
 
-export const validateArrayNotEmpty = <T>(
-  value: unknown,
-  fieldName: string
-): T[] => {
+export const validateArrayNotEmpty = <T>(value: unknown, fieldName: string): T[] => {
   validateRequired(value, fieldName);
 
   if (!Array.isArray(value)) {
-    throw new ValidationError(
-      `${fieldName} must be an array`,
-      fieldName,
-      value
-    );
+    throw new ValidationError(`${fieldName} must be an array`, fieldName, value);
   }
 
   if (value.length === 0) {
@@ -232,10 +192,7 @@ export const validateMissionCanBeStarted = (
   }
 
   if (!planet) {
-    throw new BusinessRuleError(
-      'No planet selected',
-      'Please select a planet for the mission'
-    );
+    throw new BusinessRuleError('No planet selected', 'Please select a planet for the mission');
   }
 
   if (planet.conquered) {

@@ -10,10 +10,7 @@ export interface EndgameSliceState {
 
 export interface EndgameActions {
   performCorporateRestructuring: () => void;
-  triggerEnding: (
-    managementStyle: EndgameState['managementStyle'],
-    endingType: string
-  ) => void;
+  triggerEnding: (managementStyle: EndgameState['managementStyle'], endingType: string) => void;
   addPrestigeBonus: (bonus: PrestigeBonus) => void;
   resetToNewGame: () => void;
   calculatePrestigeMultiplier: () => number;
@@ -54,10 +51,7 @@ export const createEndgameSlice: StateCreator<
     }));
   },
 
-  triggerEnding: (
-    managementStyle: EndgameState['managementStyle'],
-    endingType: string
-  ) => {
+  triggerEnding: (managementStyle: EndgameState['managementStyle'], endingType: string) => {
     set(state => ({
       endgameState: {
         ...state.endgameState,

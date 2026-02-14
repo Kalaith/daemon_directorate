@@ -1,10 +1,6 @@
 // CorporateSatire.test.tsx - Test corporate satire enhancements
 import { describe, it, expect } from 'vitest';
-import {
-  daemonQuirks,
-  corporateEvents,
-  starterData,
-} from '../constants/gameData';
+import { daemonQuirks, corporateEvents, starterData } from '../constants/gameData';
 import { daemonBalance, corporateBalance } from '../constants/gameBalance';
 
 describe('Corporate Satire Theme Integration', () => {
@@ -91,63 +87,37 @@ describe('Corporate Satire Theme Integration', () => {
     });
 
     it('should have enhanced corporate event descriptions with proper terminology', () => {
-      const performanceReview = corporateEvents.find(
-        e => e.id === 'performance_review'
-      );
+      const performanceReview = corporateEvents.find(e => e.id === 'performance_review');
       expect(performanceReview).toBeDefined();
       expect(performanceReview?.description).toContain('productivity metrics');
       expect(performanceReview?.description).toContain('suffering quotas');
-      expect(performanceReview?.description).toContain(
-        'eternal employment contracts'
-      );
+      expect(performanceReview?.description).toContain('eternal employment contracts');
 
-      const budgetEvent = corporateEvents.find(
-        e => e.id === 'budget_restructuring'
-      );
+      const budgetEvent = corporateEvents.find(e => e.id === 'budget_restructuring');
       expect(budgetEvent).toBeDefined();
-      expect(budgetEvent?.description).toContain(
-        'Infernal Accounting Division'
-      );
-      expect(budgetEvent?.description).toContain(
-        'strategic budget optimization'
-      );
+      expect(budgetEvent?.description).toContain('Infernal Accounting Division');
+      expect(budgetEvent?.description).toContain('strategic budget optimization');
       expect(budgetEvent?.description).toContain('stakeholder review');
     });
 
     it('should have enhanced choice labels with corporate speak', () => {
-      const performanceReview = corporateEvents.find(
-        e => e.id === 'performance_review'
-      );
-      expect(performanceReview?.choices?.[0]?.label).toBe(
-        'Embrace the Bureaucratic Excellence'
-      );
-      expect(performanceReview?.choices?.[1]?.label).toBe(
-        'Strategic Process Optimization'
-      );
+      const performanceReview = corporateEvents.find(e => e.id === 'performance_review');
+      expect(performanceReview?.choices?.[0]?.label).toBe('Embrace the Bureaucratic Excellence');
+      expect(performanceReview?.choices?.[1]?.label).toBe('Strategic Process Optimization');
 
-      const budgetEvent = corporateEvents.find(
-        e => e.id === 'budget_restructuring'
-      );
-      expect(budgetEvent?.choices?.[0]?.label).toBe(
-        'Execute Strategic Budget Proposal'
-      );
-      expect(budgetEvent?.choices?.[1]?.label).toBe(
-        'Demonstrate Fiduciary Stewardship'
-      );
+      const budgetEvent = corporateEvents.find(e => e.id === 'budget_restructuring');
+      expect(budgetEvent?.choices?.[0]?.label).toBe('Execute Strategic Budget Proposal');
+      expect(budgetEvent?.choices?.[1]?.label).toBe('Demonstrate Fiduciary Stewardship');
     });
 
     it('should have enhanced effect descriptions with corporate terminology', () => {
-      const performanceReview = corporateEvents.find(
-        e => e.id === 'performance_review'
-      );
-      const corporateAssetEffect =
-        performanceReview?.choices?.[0]?.effects?.[0];
+      const performanceReview = corporateEvents.find(e => e.id === 'performance_review');
+      const corporateAssetEffect = performanceReview?.choices?.[0]?.effects?.[0];
       expect(corporateAssetEffect?.description).toBe(
         'Corporate assets experience workplace satisfaction reduction'
       );
 
-      const politicalCapitalEffect =
-        performanceReview?.choices?.[0]?.effects?.[1];
+      const politicalCapitalEffect = performanceReview?.choices?.[0]?.effects?.[1];
       expect(politicalCapitalEffect?.description).toBe(
         'Enhance political capital within infernal hierarchy'
       );
@@ -213,17 +183,11 @@ describe('Corporate Satire Theme Integration', () => {
       const auditEvent = corporateEvents.find(e => e.id === 'infernal_audit');
       expect(auditEvent?.description).toContain('Sarbanes-Oxley-Belphegor');
 
-      const trainingEvent = corporateEvents.find(
-        e => e.id === 'mandatory_training'
-      );
-      expect(trainingEvent?.description).toContain(
-        'Multi-Dimensional Corporate Environments'
-      );
+      const trainingEvent = corporateEvents.find(e => e.id === 'mandatory_training');
+      expect(trainingEvent?.description).toContain('Multi-Dimensional Corporate Environments');
 
       // Verify we have corporate buzzword satire
-      const mergerEvent = corporateEvents.find(
-        e => e.id === 'corporate_merger'
-      );
+      const mergerEvent = corporateEvents.find(e => e.id === 'corporate_merger');
       expect(mergerEvent?.description).toContain('synergistic merger');
       expect(mergerEvent?.description).toContain('vertical integration');
       expect(mergerEvent?.description).toContain('stakeholder value');
@@ -239,9 +203,7 @@ describe('Corporate Satire Theme Integration', () => {
       ];
 
       bloodlines.forEach(bloodline => {
-        const daemon = starterData.starter_daemons.find(
-          d => d.bloodline === bloodline
-        );
+        const daemon = starterData.starter_daemons.find(d => d.bloodline === bloodline);
         expect(daemon).toBeDefined();
         expect(daemon?.bloodline).toBe(bloodline);
       });
@@ -258,16 +220,10 @@ describe('Corporate Satire Theme Integration', () => {
     });
 
     it('should have corporate-themed resistance factions', () => {
-      const resistanceTypes = [
-        'Militant Accountants',
-        'Executive Board',
-        'Union Demons',
-      ];
+      const resistanceTypes = ['Militant Accountants', 'Executive Board', 'Union Demons'];
 
       resistanceTypes.forEach(resistance => {
-        const planet = starterData.planets.find(
-          p => p.resistance === resistance
-        );
+        const planet = starterData.planets.find(p => p.resistance === resistance);
         expect(planet).toBeDefined();
         expect(planet?.resistance).toBe(resistance);
       });
@@ -281,9 +237,7 @@ describe('Corporate Satire Theme Integration', () => {
       ];
 
       equipmentNames.forEach(name => {
-        const equipment = starterData.starter_equipment.find(
-          e => e.name === name
-        );
+        const equipment = starterData.starter_equipment.find(e => e.name === name);
         expect(equipment).toBeDefined();
         expect(equipment?.name).toBe(name);
       });
@@ -362,9 +316,7 @@ describe('Corporate Satire Theme Integration', () => {
         genericTerms.forEach(term => {
           // Allow these terms in IDs and technical fields, but not in user-facing text
           expect(event.title.toLowerCase().includes(term)).toBe(false);
-          expect(
-            event.description.toLowerCase().includes(' ' + term + ' ')
-          ).toBe(false);
+          expect(event.description.toLowerCase().includes(' ' + term + ' ')).toBe(false);
         });
       });
     });

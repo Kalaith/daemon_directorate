@@ -217,11 +217,7 @@ describe('Navigation Flow Tests', () => {
     renderWithProviders(<App />);
 
     // Navigate through tabs and verify state doesn't break
-    const tabs = [
-      'Team Management',
-      'Planetary Operations',
-      'Corporate Dashboard',
-    ];
+    const tabs = ['Team Management', 'Planetary Operations', 'Corporate Dashboard'];
 
     for (const tabName of tabs) {
       const tabButton = screen.getByText(tabName);

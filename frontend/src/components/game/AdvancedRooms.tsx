@@ -74,9 +74,7 @@ const AdvancedRooms: React.FC = () => {
 
   return (
     <div className="space-y-4">
-      <h2 className="text-xl font-bold text-green-400 mb-4">
-        Advanced HQ Rooms
-      </h2>
+      <h2 className="text-xl font-bold text-green-400 mb-4">Advanced HQ Rooms</h2>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {advancedRooms.map(room => (
@@ -85,17 +83,13 @@ const AdvancedRooms: React.FC = () => {
               <div className="flex justify-between items-start">
                 <div>
                   <h3 className="font-semibold text-green-400">{room.name}</h3>
-                  <p className="text-sm text-gray-300 mt-1">
-                    {getRoomDescription(room)}
-                  </p>
+                  <p className="text-sm text-gray-300 mt-1">{getRoomDescription(room)}</p>
                 </div>
                 <div className="text-right">
                   <div className="text-sm text-blue-400">
                     Level {room.level}/{room.maxLevel || 5}
                   </div>
-                  <div className="text-xs text-gray-400">
-                    Efficiency: {room.efficiency || 50}%
-                  </div>
+                  <div className="text-xs text-gray-400">Efficiency: {room.efficiency || 50}%</div>
                 </div>
               </div>
 
@@ -125,8 +119,7 @@ const AdvancedRooms: React.FC = () => {
                         onClick={() => handleRoomAction(room)}
                         className="px-3 py-1 bg-blue-600 hover:bg-blue-500 text-white text-sm rounded"
                         disabled={
-                          room.assignedDaemons.length === 0 &&
-                          room.name !== 'Training Hall'
+                          room.assignedDaemons.length === 0 && room.name !== 'Training Hall'
                         }
                       >
                         {getRoomActionLabel(room)}
@@ -136,9 +129,7 @@ const AdvancedRooms: React.FC = () => {
 
                   {room.assignedDaemons.length > 0 && (
                     <div className="bg-gray-700/30 p-2 rounded">
-                      <p className="text-xs text-gray-400 mb-1">
-                        Assigned Daemons:
-                      </p>
+                      <p className="text-xs text-gray-400 mb-1">Assigned Daemons:</p>
                       <div className="flex flex-wrap gap-1">
                         {room.assignedDaemons.map((daemonId, index) => (
                           <span
@@ -156,9 +147,7 @@ const AdvancedRooms: React.FC = () => {
                     <div className="pt-2 border-t border-gray-600">
                       <div className="flex justify-between items-center text-sm">
                         <span className="text-gray-400">Next Level:</span>
-                        <span className="text-yellow-400">
-                          {room.upgrade_cost} credits
-                        </span>
+                        <span className="text-yellow-400">{room.upgrade_cost} credits</span>
                       </div>
                     </div>
                   )}

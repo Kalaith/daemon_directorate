@@ -11,8 +11,7 @@ import { getTierIcon } from '../../utils/gameHelpers';
 import { DashboardService } from '../../services/DashboardService';
 
 const Dashboard: React.FC = () => {
-  const { activeMission, daemons, daysPassed, legacyBook, hallOfInfamy } =
-    useGameStore();
+  const { activeMission, daemons, daysPassed, legacyBook, hallOfInfamy } = useGameStore();
 
   const dashboardStats = useMemo(
     () =>
@@ -50,27 +49,19 @@ const Dashboard: React.FC = () => {
             <span className="text-daemon-gold text-sm font-semibold uppercase tracking-wider mr-2">
               Executive
             </span>
-            <div className="text-3xl mb-2 text-daemon-gold">
-              {getTierIcon(1)}
-            </div>
-            <h3 className="font-header text-daemon-text-bright font-bold">
-              Middle Management
-            </h3>
+            <div className="text-3xl mb-2 text-daemon-gold">{getTierIcon(1)}</div>
+            <h3 className="font-header text-daemon-text-bright font-bold">Middle Management</h3>
             <p className="text-sm text-daemon-text-muted">Corporate Tier 1</p>
           </div>
         </Card>
 
         <Card className="bg-daemon-panel border border-daemon-secondary">
           <div className="text-center">
-            <div className="text-2xl font-mono text-daemon-text-bright font-bold">
-              {daysPassed}
-            </div>
+            <div className="text-2xl font-mono text-daemon-text-bright font-bold">{daysPassed}</div>
             <p className="text-sm text-daemon-text-muted uppercase tracking-wide">
               Days in Operation
             </p>
-            <div className="text-xs text-daemon-text-dim mt-1">
-              Corporate Survival Record
-            </div>
+            <div className="text-xs text-daemon-text-dim mt-1">Corporate Survival Record</div>
           </div>
         </Card>
 
@@ -79,28 +70,18 @@ const Dashboard: React.FC = () => {
             <div className="text-2xl font-mono text-daemon-text-bright font-bold">
               {activeComplianceTasks.length}
             </div>
-            <p className="text-sm text-daemon-text-muted uppercase tracking-wide">
-              Active Tasks
-            </p>
+            <p className="text-sm text-daemon-text-muted uppercase tracking-wide">Active Tasks</p>
             <div className="text-xs text-daemon-text-dim mt-1">
-              {DashboardService.getComplianceStatusText(
-                overdueComplianceTasks.length
-              )}
+              {DashboardService.getComplianceStatusText(overdueComplianceTasks.length)}
             </div>
           </div>
         </Card>
 
         <Card className="bg-daemon-panel border border-daemon-secondary">
           <div className="text-center">
-            <div className="text-2xl font-mono text-daemon-silver font-bold">
-              {totalBloodlines}
-            </div>
-            <p className="text-sm text-daemon-text-muted uppercase tracking-wide">
-              Bloodlines
-            </p>
-            <div className="text-xs text-daemon-text-dim mt-1">
-              Legacy Dynasties
-            </div>
+            <div className="text-2xl font-mono text-daemon-silver font-bold">{totalBloodlines}</div>
+            <p className="text-sm text-daemon-text-muted uppercase tracking-wide">Bloodlines</p>
+            <div className="text-xs text-daemon-text-dim mt-1">Legacy Dynasties</div>
           </div>
         </Card>
       </div>
@@ -109,15 +90,11 @@ const Dashboard: React.FC = () => {
       <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
         {/* Mission Status */}
         <Card className="bg-daemon-panel border-l-4 border-l-daemon-primary">
-          <h3 className="font-header text-lg text-daemon-text-bright mb-4">
-            Mission Status
-          </h3>
+          <h3 className="font-header text-lg text-daemon-text-bright mb-4">Mission Status</h3>
           <div className="text-sm mb-4">
             {activeMission ? (
               <div className="bg-daemon-warning/20 border border-daemon-warning text-daemon-warning px-3 py-2 rounded">
-                <span className="font-semibold uppercase tracking-wide">
-                  Mission in Progress:
-                </span>{' '}
+                <span className="font-semibold uppercase tracking-wide">Mission in Progress:</span>{' '}
                 Active deployment detected
               </div>
             ) : (
@@ -127,19 +104,15 @@ const Dashboard: React.FC = () => {
             )}
           </div>
           <div className="bg-daemon-surface border border-daemon-secondary rounded p-3 text-sm text-daemon-text">
-            <strong className="text-daemon-text-bright uppercase tracking-wide">
-              MEMO:
-            </strong>{' '}
-            Productivity metrics indicate room for improvement. Please optimize
-            daemon utilization for maximum corporate synergy.
+            <strong className="text-daemon-text-bright uppercase tracking-wide">MEMO:</strong>{' '}
+            Productivity metrics indicate room for improvement. Please optimize daemon utilization
+            for maximum corporate synergy.
           </div>
         </Card>
 
         {/* Team Overview */}
         <Card className="bg-daemon-panel border border-daemon-secondary">
-          <h3 className="font-header text-lg text-daemon-text-bright mb-4">
-            Team Overview
-          </h3>
+          <h3 className="font-header text-lg text-daemon-text-bright mb-4">Team Overview</h3>
           <div className="space-y-3">
             <div className="flex justify-between">
               <span className="text-daemon-text-muted font-medium uppercase tracking-wide text-xs">
@@ -184,18 +157,14 @@ const Dashboard: React.FC = () => {
 
         {/* Corporate Events */}
         <Card className="bg-daemon-panel border border-daemon-secondary">
-          <h3 className="font-header text-lg text-daemon-text-bright mb-4">
-            Corporate Events
-          </h3>
+          <h3 className="font-header text-lg text-daemon-text-bright mb-4">Corporate Events</h3>
           <div className="text-sm mb-4">
             {latestEvent ? (
               <div className="bg-daemon-danger/20 border border-daemon-danger rounded p-3">
                 <div className="font-semibold text-daemon-danger uppercase tracking-wide">
                   {latestEvent.title}
                 </div>
-                <div className="text-daemon-text mt-1">
-                  {latestEvent.description}
-                </div>
+                <div className="text-daemon-text mt-1">{latestEvent.description}</div>
               </div>
             ) : (
               <div className="text-daemon-text-muted">
@@ -241,9 +210,7 @@ const Dashboard: React.FC = () => {
                 <h4 className="font-semibold text-daemon-text-bright text-sm uppercase tracking-wide">
                   {story.title}
                 </h4>
-                <p className="text-xs text-daemon-text mt-1">
-                  {story.description}
-                </p>
+                <p className="text-xs text-daemon-text mt-1">{story.description}</p>
                 <div className="text-xs text-daemon-text-muted mt-2 uppercase tracking-wider">
                   {story.category}
                 </div>

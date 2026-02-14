@@ -1,10 +1,6 @@
 // stores/slices/corporateSlice.ts - Corporate progression system
 import type { StateCreator } from 'zustand';
-import type {
-  CorporateTier,
-  CorporateRival,
-  CorporateEvent,
-} from '../../types/game';
+import type { CorporateTier, CorporateRival, CorporateEvent } from '../../types/game';
 import { corporateTiers, corporateEvents } from '../../constants/gameData';
 
 export interface CorporateState {
@@ -39,10 +35,7 @@ export interface CorporateActions {
   resolveEvent: (eventId: string, choiceIndex?: number) => void;
   startEventChain: (chainId: string) => void;
   processEventChains: () => void;
-  updateChainStorylineData: (
-    chainId: string,
-    data: Record<string, unknown>
-  ) => void;
+  updateChainStorylineData: (chainId: string, data: Record<string, unknown>) => void;
 
   // Advanced Rival AI
   processRivalActions: () => void;
@@ -100,9 +93,7 @@ export const createCorporateSlice: StateCreator<
 
   promoteToNextTier: () => {
     const { corporateTier, meetsRequirements } = get();
-    const currentIndex = corporateTiers.findIndex(
-      tier => tier.id === corporateTier.id
-    );
+    const currentIndex = corporateTiers.findIndex(tier => tier.id === corporateTier.id);
     const nextTier = corporateTiers[currentIndex + 1];
 
     if (!nextTier || !meetsRequirements(nextTier.requirements)) {
@@ -205,9 +196,7 @@ export const createCorporateSlice: StateCreator<
         // Manipulate markets
         if ('addResources' in composedState) {
           composedState.addResources(-50);
-          console.log(
-            `${rival.name} manipulates markets, reducing your income!`
-          );
+          console.log(`${rival.name} manipulates markets, reducing your income!`);
         }
         break;
       case 'shadow_operations':
@@ -217,9 +206,7 @@ export const createCorporateSlice: StateCreator<
       case 'diplomatic_manipulation':
         // Influence player decisions
         if (rival.aiPersonality.cunning > 80) {
-          console.log(
-            `${rival.name} attempts to influence your corporate decisions`
-          );
+          console.log(`${rival.name} attempts to influence your corporate decisions`);
         }
         break;
     }
@@ -242,9 +229,7 @@ export const createCorporateSlice: StateCreator<
 
     if (attackSuccess && 'addResources' in composedState) {
       composedState.addResources(-100 - rival.strength, 0, -10);
-      console.log(
-        `${rival.name} launches successful hostile action against your operations!`
-      );
+      console.log(`${rival.name} launches successful hostile action against your operations!`);
     }
   },
 
@@ -257,9 +242,7 @@ export const createCorporateSlice: StateCreator<
 
     if (espionageSuccess) {
       // Spy on player operations
-      console.log(
-        `${rival.name} successfully gathers intelligence on your operations`
-      );
+      console.log(`${rival.name} successfully gathers intelligence on your operations`);
 
       set(s => ({
         corporateRivals: s.corporateRivals.map(r =>
@@ -288,15 +271,9 @@ export const createCorporateSlice: StateCreator<
     let newStrategy: RivalStrategyType = rival.currentStrategy.type;
 
     // Strategy selection based on personality and situation
-    if (
-      rival.relationshipWithPlayer < -50 &&
-      rival.aiPersonality.aggression > 60
-    ) {
+    if (rival.relationshipWithPlayer < -50 && rival.aiPersonality.aggression > 60) {
       newStrategy = 'aggressive_expansion';
-    } else if (
-      rival.resources.intelligence > 60 &&
-      rival.aiPersonality.cunning > 70
-    ) {
+    } else if (rival.resources.intelligence > 60 && rival.aiPersonality.cunning > 70) {
       newStrategy = 'shadow_operations';
     } else if (rival.aiPersonality.ambition > 80) {
       newStrategy = 'economic_dominance';
@@ -313,8 +290,7 @@ export const createCorporateSlice: StateCreator<
                   priority: Math.floor(Math.random() * 5) + 5,
                   duration: Math.floor(Math.random() * 20) + 10,
                   targetPlayer:
-                    newStrategy === 'aggressive_expansion' ||
-                    newStrategy === 'shadow_operations',
+                    newStrategy === 'aggressive_expansion' || newStrategy === 'shadow_operations',
                 },
               }
             : r
@@ -340,8 +316,7 @@ export const createCorporateSlice: StateCreator<
   },
 
   triggerRandomEvent: () => {
-    const randomEventTemplate =
-      corporateEvents[Math.floor(Math.random() * corporateEvents.length)];
+    const randomEventTemplate = corporateEvents[Math.floor(Math.random() * corporateEvents.length)];
     const randomEvent: CorporateEvent = {
       ...randomEventTemplate,
       timestamp: Date.now(),
@@ -381,9 +356,7 @@ export const createCorporateSlice: StateCreator<
   processEventChains: () => {
     const state = get();
     Object.values(state.activeEventChains).forEach(chain => {
-      const pendingToday = chain.pendingEvents.filter(
-        pe => pe.triggerDay <= state.daysPassed
-      );
+      const pendingToday = chain.pendingEvents.filter(pe => pe.triggerDay <= state.daysPassed);
 
       pendingToday.forEach(event => {
         // Trigger the event
@@ -401,19 +374,14 @@ export const createCorporateSlice: StateCreator<
           ...s.activeEventChains,
           [chain.chainId]: {
             ...chain,
-            pendingEvents: chain.pendingEvents.filter(
-              pe => pe.triggerDay > s.daysPassed
-            ),
+            pendingEvents: chain.pendingEvents.filter(pe => pe.triggerDay > s.daysPassed),
           },
         },
       }));
     });
   },
 
-  updateChainStorylineData: (
-    chainId: string,
-    data: Record<string, unknown>
-  ) => {
+  updateChainStorylineData: (chainId: string, data: Record<string, unknown>) => {
     set(state => ({
       activeEventChains: {
         ...state.activeEventChains,

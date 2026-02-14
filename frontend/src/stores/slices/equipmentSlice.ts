@@ -85,9 +85,7 @@ export const createEquipmentSlice: StateCreator<
 
   craftEquipment: (equipmentId: string) => {
     // Find equipment template
-    const template = starterData.starter_equipment.find(
-      eq => eq.name === equipmentId
-    );
+    const template = starterData.starter_equipment.find(eq => eq.name === equipmentId);
     if (!template) {
       console.warn('Equipment template not found:', equipmentId);
       return false;
@@ -127,12 +125,7 @@ export const createEquipmentSlice: StateCreator<
       totalEquipmentCrafted: state.totalEquipmentCrafted + 1,
     }));
 
-    console.log(
-      'Equipment crafted successfully:',
-      equipmentId,
-      'Cost:',
-      craftingCost
-    );
+    console.log('Equipment crafted successfully:', equipmentId, 'Cost:', craftingCost);
     return true;
   },
 
@@ -212,9 +205,7 @@ export const createEquipmentSlice: StateCreator<
 
   calculateSetBonuses: (daemonId: string) => {
     const state = get();
-    const daemonEquipment = state.equipment.filter(
-      eq => eq.assignedTo === daemonId
-    );
+    const daemonEquipment = state.equipment.filter(eq => eq.assignedTo === daemonId);
     const setBonuses: EquipmentSetBonus[] = [];
 
     // Group equipment by set name
@@ -269,10 +260,7 @@ export const createEquipmentSlice: StateCreator<
           return {
             ...item,
             rarity: rarityUpgrade[item.rarity] as Equipment['rarity'],
-            history: [
-              ...item.history,
-              `Upgraded to ${rarityUpgrade[item.rarity]} quality`,
-            ],
+            history: [...item.history, `Upgraded to ${rarityUpgrade[item.rarity]} quality`],
           };
         }
         return item;

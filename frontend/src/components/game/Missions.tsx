@@ -11,8 +11,8 @@ const Missions: React.FC = () => {
         Planetary Conquest Operations
       </h2>
       <p className="text-daemon-text mb-8 bg-daemon-surface p-6 rounded-lg border border-daemon-secondary">
-        Select target planets for corporate expansion. Mission success depends
-        on team composition and equipment readiness.
+        Select target planets for corporate expansion. Mission success depends on team composition
+        and equipment readiness.
       </p>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -68,9 +68,7 @@ const Missions: React.FC = () => {
               <div className="text-sm text-daemon-text-muted font-mono uppercase tracking-wide mb-2">
                 Expected Rewards:
               </div>
-              <div className="text-daemon-text-bright font-mono font-semibold">
-                {planet.reward}
-              </div>
+              <div className="text-daemon-text-bright font-mono font-semibold">{planet.reward}</div>
             </div>
 
             <button

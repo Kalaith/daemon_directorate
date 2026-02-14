@@ -1,24 +1,15 @@
 // Game utility functions - extracted business logic for reusability
 import type { Daemon, Planet, DifficultyLevel } from '../types/game';
-import {
-  daemonBalance,
-  missionBalance,
-  uiConstants,
-} from '../constants/gameBalance';
+import { daemonBalance, missionBalance, uiConstants } from '../constants/gameBalance';
 
 /**
  * Core Utility Functions
  */
 export const generateId = (): string => {
-  return (
-    Math.random().toString(36).substring(2, 15) +
-    Math.random().toString(36).substring(2, 15)
-  );
+  return Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
 };
 
-export const getDifficultyMultiplier = (
-  difficulty: 'Easy' | 'Medium' | 'Hard'
-): number => {
+export const getDifficultyMultiplier = (difficulty: 'Easy' | 'Medium' | 'Hard'): number => {
   switch (difficulty) {
     case 'Easy':
       return 0.7;
@@ -37,15 +28,11 @@ export const getDifficultyMultiplier = (
 export const getLifespanColor = (days: number): string => {
   if (days <= daemonBalance.THRESHOLDS.CRITICAL_LIFESPAN)
     return uiConstants.COLORS.LIFESPAN.CRITICAL;
-  if (days <= daemonBalance.THRESHOLDS.WARNING_LIFESPAN)
-    return uiConstants.COLORS.LIFESPAN.WARNING;
+  if (days <= daemonBalance.THRESHOLDS.WARNING_LIFESPAN) return uiConstants.COLORS.LIFESPAN.WARNING;
   return uiConstants.COLORS.LIFESPAN.GOOD;
 };
 
-export const getProgressBarColor = (
-  value: number,
-  type: 'health' | 'morale'
-): string => {
+export const getProgressBarColor = (value: number, type: 'health' | 'morale'): string => {
   const colors = uiConstants.COLORS[type === 'health' ? 'HEALTH' : 'MORALE'];
   if (value >= daemonBalance.THRESHOLDS.GOOD_HEALTH) return colors.GOOD;
   if (value >= daemonBalance.THRESHOLDS.LOW_HEALTH) return colors.WARNING;
@@ -59,10 +46,7 @@ export const getTierIcon = (level: number): string => {
 /**
  * Mission Calculation Functions
  */
-export const calculateTeamCompositionBonus = (
-  team: Daemon[],
-  planet: Planet
-): number => {
+export const calculateTeamCompositionBonus = (team: Daemon[], planet: Planet): number => {
   const hasInfiltrator = team.some(d => d.specialization === 'Infiltration');
   const hasCombat = team.some(d => d.specialization === 'Combat');
   const hasSaboteur = team.some(d => d.specialization === 'Sabotage');
@@ -88,26 +72,18 @@ export const calculateTeamStatsBonus = (team: Daemon[]): number => {
   const avgMorale = team.reduce((sum, d) => sum + d.morale, 0) / team.length;
 
   const healthBonus =
-    (avgHealth - missionBalance.SUCCESS_BOUNDS.BASE) *
-    missionBalance.MULTIPLIERS.HEALTH_IMPACT;
+    (avgHealth - missionBalance.SUCCESS_BOUNDS.BASE) * missionBalance.MULTIPLIERS.HEALTH_IMPACT;
   const moraleBonus =
-    (avgMorale - missionBalance.SUCCESS_BOUNDS.BASE) *
-    missionBalance.MULTIPLIERS.MORALE_IMPACT;
+    (avgMorale - missionBalance.SUCCESS_BOUNDS.BASE) * missionBalance.MULTIPLIERS.MORALE_IMPACT;
 
   return healthBonus + moraleBonus;
 };
 
 export const calculateEquipmentBonus = (team: Daemon[]): number => {
-  return (
-    team.filter(daemon => daemon.equipment).length *
-    missionBalance.BONUSES.EQUIPMENT_BONUS
-  );
+  return team.filter(daemon => daemon.equipment).length * missionBalance.BONUSES.EQUIPMENT_BONUS;
 };
 
-export const calculateMissionSuccessChance = (
-  team: Daemon[],
-  planet: Planet
-): number => {
+export const calculateMissionSuccessChance = (team: Daemon[], planet: Planet): number => {
   let successChance = missionBalance.SUCCESS_BOUNDS.BASE;
 
   // Apply various bonuses
@@ -206,12 +182,8 @@ export const calculateMissionDamage = (
       healthMultiplier *
       quirkMultiplier
   );
-  moraleLoss = Math.round(
-    moraleLoss * difficultyMultiplier * healthMultiplier * quirkMultiplier
-  );
-  lifespanLoss = Math.round(
-    lifespanLoss * difficultyMultiplier * quirkMultiplier
-  );
+  moraleLoss = Math.round(moraleLoss * difficultyMultiplier * healthMultiplier * quirkMultiplier);
+  lifespanLoss = Math.round(lifespanLoss * difficultyMultiplier * quirkMultiplier);
 
   return {
     healthLoss: Math.max(0, healthLoss),
@@ -222,12 +194,9 @@ export const calculateMissionDamage = (
 
 export const shouldCreateSuccessor = (daemon: Daemon): boolean => {
   return (
-    daemon.legacy.successfulMissions >=
-      daemonBalance.LEGACY_REQUIREMENTS.MIN_SUCCESSFUL_MISSIONS ||
-    daemon.legacy.planetsConquered >=
-      daemonBalance.LEGACY_REQUIREMENTS.MIN_PLANETS_CONQUERED ||
-    daemon.generation >=
-      daemonBalance.LEGACY_REQUIREMENTS.MIN_GENERATION_FOR_SUCCESSION
+    daemon.legacy.successfulMissions >= daemonBalance.LEGACY_REQUIREMENTS.MIN_SUCCESSFUL_MISSIONS ||
+    daemon.legacy.planetsConquered >= daemonBalance.LEGACY_REQUIREMENTS.MIN_PLANETS_CONQUERED ||
+    daemon.generation >= daemonBalance.LEGACY_REQUIREMENTS.MIN_GENERATION_FOR_SUCCESSION
   );
 };
 
@@ -241,21 +210,15 @@ export const calculateSuccessorStats = (
   return {
     health: Math.min(
       100,
-      80 +
-        originalDaemon.generation *
-          daemonBalance.INHERITANCE.SUCCESSOR_HEALTH_BONUS
+      80 + originalDaemon.generation * daemonBalance.INHERITANCE.SUCCESSOR_HEALTH_BONUS
     ),
     morale: Math.min(
       100,
-      70 +
-        originalDaemon.generation *
-          daemonBalance.INHERITANCE.SUCCESSOR_MORALE_BONUS
+      70 + originalDaemon.generation * daemonBalance.INHERITANCE.SUCCESSOR_MORALE_BONUS
     ),
     lifespanDays: Math.min(
       80,
-      40 +
-        originalDaemon.generation *
-          daemonBalance.INHERITANCE.SUCCESSOR_LIFESPAN_BONUS
+      40 + originalDaemon.generation * daemonBalance.INHERITANCE.SUCCESSOR_LIFESPAN_BONUS
     ),
   };
 };
@@ -301,9 +264,5 @@ export const memoize = <T extends (...args: any[]) => any>(fn: T): T => {
 };
 
 // Memoized versions of expensive calculations
-export const memoizedCalculateMissionSuccessChance = memoize(
-  calculateMissionSuccessChance
-);
-export const memoizedCalculateTeamCompositionBonus = memoize(
-  calculateTeamCompositionBonus
-);
+export const memoizedCalculateMissionSuccessChance = memoize(calculateMissionSuccessChance);
+export const memoizedCalculateTeamCompositionBonus = memoize(calculateTeamCompositionBonus);

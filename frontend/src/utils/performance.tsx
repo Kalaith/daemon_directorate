@@ -53,16 +53,11 @@ class PerformanceMonitor {
     const componentMetrics = this.metrics.get(componentId) || [];
     if (componentMetrics.length === 0) return 0;
 
-    const totalTime = componentMetrics.reduce(
-      (sum, metric) => sum + metric.actualDuration,
-      0
-    );
+    const totalTime = componentMetrics.reduce((sum, metric) => sum + metric.actualDuration, 0);
     return totalTime / componentMetrics.length;
   }
 
-  getSlowComponents(
-    threshold: number = 16
-  ): Array<{ id: string; averageTime: number }> {
+  getSlowComponents(threshold: number = 16): Array<{ id: string; averageTime: number }> {
     const slowComponents: Array<{ id: string; averageTime: number }> = [];
 
     for (const [id] of this.metrics) {
@@ -239,9 +234,9 @@ export const useMemoryMonitor = () => {
 // Performance monitoring dashboard component
 export const PerformanceDashboard: React.FC = () => {
   const [isVisible, setIsVisible] = useState(false);
-  const [slowComponents, setSlowComponents] = useState<
-    Array<{ id: string; averageTime: number }>
-  >([]);
+  const [slowComponents, setSlowComponents] = useState<Array<{ id: string; averageTime: number }>>(
+    []
+  );
   const memoryInfo = useMemoryMonitor();
 
   useEffect(() => {
@@ -288,18 +283,9 @@ export const PerformanceDashboard: React.FC = () => {
             <div className="mb-4">
               <h4 className="font-semibold mb-2">Memory Usage</h4>
               <div className="text-sm space-y-1">
-                <div>
-                  Used: {(memoryInfo.usedJSHeapSize / 1024 / 1024).toFixed(1)}{' '}
-                  MB
-                </div>
-                <div>
-                  Total: {(memoryInfo.totalJSHeapSize / 1024 / 1024).toFixed(1)}{' '}
-                  MB
-                </div>
-                <div>
-                  Limit: {(memoryInfo.jsHeapSizeLimit / 1024 / 1024).toFixed(1)}{' '}
-                  MB
-                </div>
+                <div>Used: {(memoryInfo.usedJSHeapSize / 1024 / 1024).toFixed(1)} MB</div>
+                <div>Total: {(memoryInfo.totalJSHeapSize / 1024 / 1024).toFixed(1)} MB</div>
+                <div>Limit: {(memoryInfo.jsHeapSizeLimit / 1024 / 1024).toFixed(1)} MB</div>
                 <div className="w-full bg-gray-200 rounded-full h-2">
                   <div
                     className="bg-blue-600 h-2 rounded-full transition-all"
@@ -316,9 +302,7 @@ export const PerformanceDashboard: React.FC = () => {
           <div className="mb-4">
             <h4 className="font-semibold mb-2">Slow Components (&gt;16ms)</h4>
             {slowComponents.length === 0 ? (
-              <p className="text-sm text-gray-500">
-                No slow components detected
-              </p>
+              <p className="text-sm text-gray-500">No slow components detected</p>
             ) : (
               <div className="space-y-1 max-h-32 overflow-y-auto">
                 {slowComponents.map(({ id, averageTime }) => (
@@ -401,7 +385,5 @@ if (import.meta.env.MODE === 'development') {
     }
   ).analyzeBundleSize = analyzeBundleSize;
 
-  console.log(
-    '🚀 Performance monitoring enabled. Use window.performanceMonitor for debugging.'
-  );
+  console.log('🚀 Performance monitoring enabled. Use window.performanceMonitor for debugging.');
 }

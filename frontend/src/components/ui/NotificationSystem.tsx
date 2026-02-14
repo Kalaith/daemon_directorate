@@ -13,21 +13,18 @@ const NotificationSystem: React.FC = () => {
   const [notifications, setNotifications] = useState<Notification[]>([]);
 
   // Function to add a notification (can be called from other components)
-  const addNotification = useCallback(
-    (notification: Omit<Notification, 'id'>) => {
-      const id = Date.now().toString();
-      const newNotification = { ...notification, id };
+  const addNotification = useCallback((notification: Omit<Notification, 'id'>) => {
+    const id = Date.now().toString();
+    const newNotification = { ...notification, id };
 
-      setNotifications(prev => [...prev, newNotification]);
+    setNotifications(prev => [...prev, newNotification]);
 
-      // Auto-remove after duration (default 5 seconds)
-      const duration = notification.duration || 5000;
-      setTimeout(() => {
-        removeNotification(id);
-      }, duration);
-    },
-    []
-  );
+    // Auto-remove after duration (default 5 seconds)
+    const duration = notification.duration || 5000;
+    setTimeout(() => {
+      removeNotification(id);
+    }, duration);
+  }, []);
 
   const removeNotification = (id: string) => {
     setNotifications(prev => prev.filter(notif => notif.id !== id));
@@ -35,12 +32,10 @@ const NotificationSystem: React.FC = () => {
 
   // Expose the addNotification function globally for easy access
   useEffect(() => {
-    (
-      window as Window & { addNotification?: typeof addNotification }
-    ).addNotification = addNotification;
+    (window as Window & { addNotification?: typeof addNotification }).addNotification =
+      addNotification;
     return () => {
-      delete (window as Window & { addNotification?: typeof addNotification })
-        .addNotification;
+      delete (window as Window & { addNotification?: typeof addNotification }).addNotification;
     };
   }, [addNotification]);
 
@@ -87,16 +82,12 @@ const NotificationSystem: React.FC = () => {
         >
           <div className="flex items-start justify-between">
             <div className="flex items-start space-x-3">
-              <span className="text-lg font-bold mt-0.5">
-                {getIconForType(notification.type)}
-              </span>
+              <span className="text-lg font-bold mt-0.5">{getIconForType(notification.type)}</span>
               <div className="flex-1">
                 <h4 className="font-semibold text-sm text-daemon-text-bright uppercase tracking-wide">
                   {notification.title}
                 </h4>
-                <p className="text-xs mt-1 text-daemon-text">
-                  {notification.message}
-                </p>
+                <p className="text-xs mt-1 text-daemon-text">{notification.message}</p>
               </div>
             </div>
             <button

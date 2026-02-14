@@ -44,8 +44,7 @@ const TeamStatsCard = memo(() => {
   const stats = useDaemonStats();
 
   const statusText = useMemo(() => {
-    if (stats.criticalLifespans > 0)
-      return `${stats.criticalLifespans} Critical!`;
+    if (stats.criticalLifespans > 0) return `${stats.criticalLifespans} Critical!`;
     if (stats.lowHealthCount > 0) return `${stats.lowHealthCount} Need Care`;
     if (stats.lowMoraleCount > 0) return `${stats.lowMoraleCount} Low Morale`;
     return 'Team Status Good';
@@ -92,10 +91,7 @@ const OptimizedDashboard: React.FC = memo(() => {
   }, [triggerRandomEvent, addNotification]);
 
   // Memoized tier icon
-  const tierIcon = useMemo(
-    () => getTierIcon(corporateTier.level),
-    [corporateTier.level]
-  );
+  const tierIcon = useMemo(() => getTierIcon(corporateTier.level), [corporateTier.level]);
 
   // Memoized dashboard sections
   const statusCards = useMemo(
@@ -146,12 +142,10 @@ const OptimizedDashboard: React.FC = memo(() => {
   const resourceWarnings = useMemo(() => {
     const warnings = [];
     if (resourcesStatus.warnings.lowCredits) warnings.push('Low Credits');
-    if (resourcesStatus.warnings.lowSoulEssence)
-      warnings.push('Low Soul Essence');
+    if (resourcesStatus.warnings.lowSoulEssence) warnings.push('Low Soul Essence');
     if (resourcesStatus.warnings.lowBureaucraticLeverage)
       warnings.push('Low Bureaucratic Leverage');
-    if (resourcesStatus.warnings.lowRawMaterials)
-      warnings.push('Low Raw Materials');
+    if (resourcesStatus.warnings.lowRawMaterials) warnings.push('Low Raw Materials');
     return warnings;
   }, [resourcesStatus.warnings]);
 

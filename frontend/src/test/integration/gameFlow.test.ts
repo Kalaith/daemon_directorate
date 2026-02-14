@@ -47,15 +47,11 @@ describe('Game Flow Integration', () => {
       expect(result.current.daemons.length).toBe(initialDaemonCount + 1);
 
       // Should have spent credits
-      expect(result.current.resources.credits).toBe(
-        initialCredits - recruitmentCandidate.cost
-      );
+      expect(result.current.resources.credits).toBe(initialCredits - recruitmentCandidate.cost);
 
       // Recruitment pool should be smaller
       expect(
-        result.current.recruitmentPool.find(
-          d => d.id === recruitmentCandidate.id
-        )
+        result.current.recruitmentPool.find(d => d.id === recruitmentCandidate.id)
       ).toBeUndefined();
     }
   });

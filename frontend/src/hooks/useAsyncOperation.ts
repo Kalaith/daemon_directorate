@@ -145,8 +145,7 @@ export const useAsyncOperation = <T, P extends unknown[] = []>(
 
         return result;
       } catch (error) {
-        const errorObj =
-          error instanceof Error ? error : new Error(String(error));
+        const errorObj = error instanceof Error ? error : new Error(String(error));
 
         if (!signal.aborted) {
           setState(prev => ({
@@ -286,8 +285,7 @@ export const useBatchOperation = <T>(
         });
       }
     } catch (error) {
-      const errorObj =
-        error instanceof Error ? error : new Error(String(error));
+      const errorObj = error instanceof Error ? error : new Error(String(error));
       setState(prev => ({
         ...prev,
         loading: false,

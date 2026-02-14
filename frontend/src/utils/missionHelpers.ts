@@ -1,11 +1,5 @@
 // Mission-specific helper functions - extracted from the massive executeMission function
-import type {
-  Daemon,
-  Planet,
-  Mission,
-  MissionResult,
-  Equipment,
-} from '../types/game';
+import type { Daemon, Planet, Mission, MissionResult, Equipment } from '../types/game';
 import {
   missionTemplates,
   missionConsequences,
@@ -47,8 +41,7 @@ export const createMissionInstance = (
   selectedDaemons: Set<string>,
   generateId: () => string
 ): Mission => {
-  const missionTemplate =
-    missionTemplates[missionType as keyof typeof missionTemplates];
+  const missionTemplate = missionTemplates[missionType as keyof typeof missionTemplates];
 
   if (!missionTemplate) {
     throw new Error(`Mission template not found for type: ${missionType}`);
@@ -72,8 +65,7 @@ export const createMissionInstance = (
       })),
     ],
     consequences: missionTemplate.failureConsequences.map(consId => {
-      const consequence =
-        missionConsequences[consId as keyof typeof missionConsequences];
+      const consequence = missionConsequences[consId as keyof typeof missionConsequences];
       return {
         id: generateId(),
         triggerCondition: 'failure' as const,
@@ -92,18 +84,10 @@ export const executeMissionLogic = (
   context: MissionExecutionContext,
   generateId: () => string
 ): MissionExecutionResult => {
-  const {
-    selectedDaemons,
-    currentPlanet,
-    daemons,
-    planets,
-    selectedMissionType,
-  } = context;
+  const { selectedDaemons, currentPlanet, daemons, planets, selectedMissionType } = context;
 
   if (selectedDaemons.size === 0 || !currentPlanet) {
-    throw new Error(
-      'Invalid mission parameters: no team selected or planet specified'
-    );
+    throw new Error('Invalid mission parameters: no team selected or planet specified');
   }
 
   const planet = planets.find(p => p.id === currentPlanet);
@@ -145,12 +129,7 @@ export const executeMissionLogic = (
   };
 
   // Update daemons with mission effects
-  const updatedDaemons = updateDaemonsAfterMission(
-    daemons,
-    selectedTeam,
-    success,
-    planet
-  );
+  const updatedDaemons = updateDaemonsAfterMission(daemons, selectedTeam, success, planet);
 
   // Update planet state
   const updatedPlanets = updatePlanetAfterMission(
@@ -178,8 +157,7 @@ export const generateMissionNarrative = (
   planet: Planet,
   success: boolean
 ): string => {
-  const missionTemplate =
-    missionTemplates[mission.type as keyof typeof missionTemplates];
+  const missionTemplate = missionTemplates[mission.type as keyof typeof missionTemplates];
 
   if (success) {
     return `Mission accomplished! Your team successfully ${missionTemplate?.description.toLowerCase()} on ${planet.name}.`;
@@ -198,19 +176,14 @@ export const updateDaemonsAfterMission = (
   planet: Planet
 ): Daemon[] => {
   return allDaemons.map(daemon => {
-    const isOnMission = missionTeam.some(
-      teamMember => teamMember.id === daemon.id
-    );
+    const isOnMission = missionTeam.some(teamMember => teamMember.id === daemon.id);
 
     if (!isOnMission) {
       return daemon;
     }
 
     // Calculate damage based on daemon stats and planet difficulty
-    const damage = calculateMissionDamage(
-      daemon,
-      getDifficultyMultiplier(planet.difficulty)
-    );
+    const damage = calculateMissionDamage(daemon, getDifficultyMultiplier(planet.difficulty));
 
     // Update legacy statistics
     const updatedLegacy = { ...daemon.legacy };
@@ -250,27 +223,17 @@ export const updatePlanetAfterMission = (
     let presenceChange = 0;
 
     if (success) {
-      stabilityChange =
-        missionType === 'diplomacy'
-          ? 10
-          : missionType === 'sabotage'
-            ? -15
-            : -5;
+      stabilityChange = missionType === 'diplomacy' ? 10 : missionType === 'sabotage' ? -15 : -5;
       presenceChange = 15;
     } else {
-      stabilityChange =
-        missionType === 'conquest' ? -10 : missionType === 'sabotage' ? 5 : 0;
+      stabilityChange = missionType === 'conquest' ? -10 : missionType === 'sabotage' ? 5 : 0;
       presenceChange = -5;
     }
 
     return {
       ...planet,
-      conquered:
-        success && missionType === 'conquest' ? true : planet.conquered,
-      stability: Math.max(
-        0,
-        Math.min(100, (planet.stability || 50) + stabilityChange)
-      ),
+      conquered: success && missionType === 'conquest' ? true : planet.conquered,
+      stability: Math.max(0, Math.min(100, (planet.stability || 50) + stabilityChange)),
       corporatePresence: Math.max(
         0,
         Math.min(100, (planet.corporatePresence || 0) + presenceChange)
@@ -313,9 +276,7 @@ export const evaluateMissionObjectives = (
 
     if (
       objective.requirements.specialization &&
-      !selectedTeam.some(
-        d => d.specialization === objective.requirements.specialization
-      )
+      !selectedTeam.some(d => d.specialization === objective.requirements.specialization)
     ) {
       canComplete = false;
     }
@@ -323,10 +284,7 @@ export const evaluateMissionObjectives = (
     if (
       objective.requirements.equipment &&
       !objective.requirements.equipment.some(equipName =>
-        equipment.some(
-          e =>
-            e.name === equipName && selectedTeam.some(d => d.equipment === e.id)
-        )
+        equipment.some(e => e.name === equipName && selectedTeam.some(d => d.equipment === e.id))
       )
     ) {
       canComplete = false;
@@ -357,10 +315,8 @@ export const evaluateMissionObjectives = (
       credits: (result.rewards.credits || 0) + bonusRewards.credits,
       soulEssence: (result.rewards.soulEssence || 0) + bonusRewards.soulEssence,
       bureaucraticLeverage:
-        (result.rewards.bureaucraticLeverage || 0) +
-        bonusRewards.bureaucraticLeverage,
-      rawMaterials:
-        (result.rewards.rawMaterials || 0) + bonusRewards.rawMaterials,
+        (result.rewards.bureaucraticLeverage || 0) + bonusRewards.bureaucraticLeverage,
+      rawMaterials: (result.rewards.rawMaterials || 0) + bonusRewards.rawMaterials,
     },
   };
 };
@@ -368,10 +324,7 @@ export const evaluateMissionObjectives = (
 /**
  * Creates successor daemon when a daemon dies with legacy
  */
-export const createSuccessorDaemon = (
-  originalDaemon: Daemon,
-  generateId: () => string
-): Daemon => {
+export const createSuccessorDaemon = (originalDaemon: Daemon, generateId: () => string): Daemon => {
   if (!shouldCreateSuccessor(originalDaemon)) {
     throw new Error('Daemon does not qualify for successor creation');
   }
@@ -436,9 +389,7 @@ export const calculateEnhancedMissionSuccess = (
     // Required specializations
     if (req.requiredSpecializations) {
       const teamSpecs = selectedTeam.map(d => d.specialization);
-      const missingSpecs = req.requiredSpecializations.filter(
-        spec => !teamSpecs.includes(spec)
-      );
+      const missingSpecs = req.requiredSpecializations.filter(spec => !teamSpecs.includes(spec));
       baseChance -= missingSpecs.length * 25; // Heavy penalty for missing required specs
     }
 
@@ -453,10 +404,7 @@ export const calculateEnhancedMissionSuccess = (
     // Equipment set requirements
     if (req.requiredEquipmentSets) {
       // This would check for equipment sets - implement with equipment store access
-      console.log(
-        'Equipment set requirements check needed',
-        req.requiredEquipmentSets
-      );
+      console.log('Equipment set requirements check needed', req.requiredEquipmentSets);
     }
   }
 
@@ -481,18 +429,13 @@ export const processMultiObjectiveMission = (
   if (mission.branchingOutcomes) {
     if (result.success && mission.branchingOutcomes.successChainMissions) {
       chainMissions.push(...mission.branchingOutcomes.successChainMissions);
-    } else if (
-      !result.success &&
-      mission.branchingOutcomes.failureChainMissions
-    ) {
+    } else if (!result.success && mission.branchingOutcomes.failureChainMissions) {
       chainMissions.push(...mission.branchingOutcomes.failureChainMissions);
     }
 
     // Check for partial success conditions
     if (mission.objectives) {
-      const completedObjectives = mission.objectives.filter(
-        obj => obj.completed
-      ).length;
+      const completedObjectives = mission.objectives.filter(obj => obj.completed).length;
       const totalObjectives = mission.objectives.length;
       const successRate = completedObjectives / totalObjectives;
 
@@ -567,8 +510,7 @@ export const calculateTeamSetBonuses = (
         // Full set bonus
         bonusSuccessChance += 15;
         bonusRewards.credits = (bonusRewards.credits || 0) + 100;
-        bonusRewards.bureaucraticLeverage =
-          (bonusRewards.bureaucraticLeverage || 0) + 1;
+        bonusRewards.bureaucraticLeverage = (bonusRewards.bureaucraticLeverage || 0) + 1;
       }
     }
   });

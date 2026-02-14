@@ -57,11 +57,7 @@ class StructuredLogger {
   }
 
   // Core logging method
-  private log(
-    level: LogLevel,
-    message: string,
-    context: LogContext = {}
-  ): void {
+  private log(level: LogLevel, message: string, context: LogContext = {}): void {
     if (level < this.config.minLevel) {
       return;
     }
@@ -135,11 +131,7 @@ class StructuredLogger {
   }
 
   // Performance logging
-  logPerformance(
-    operation: string,
-    duration: number,
-    context?: LogContext
-  ): void {
+  logPerformance(operation: string, duration: number, context?: LogContext): void {
     this.info(`Performance: ${operation}`, {
       ...context,
       component: context?.component || 'Performance',
@@ -152,11 +144,7 @@ class StructuredLogger {
   }
 
   // Game-specific logging methods
-  logGameAction(
-    action: string,
-    details: Record<string, unknown>,
-    context?: LogContext
-  ): void {
+  logGameAction(action: string, details: Record<string, unknown>, context?: LogContext): void {
     this.info(`Game Action: ${action}`, {
       ...context,
       component: 'GameAction',
@@ -165,11 +153,7 @@ class StructuredLogger {
     });
   }
 
-  logMissionEvent(
-    missionId: string,
-    event: string,
-    details: Record<string, unknown>
-  ): void {
+  logMissionEvent(missionId: string, event: string, details: Record<string, unknown>): void {
     this.info(`Mission Event: ${event}`, {
       component: 'Mission',
       action: event,

@@ -1,11 +1,5 @@
 // contexts/NotificationContext.tsx - Proper notification system using React Context
-import React, {
-  createContext,
-  useContext,
-  useState,
-  useCallback,
-  useEffect,
-} from 'react';
+import React, { createContext, useContext, useState, useCallback, useEffect } from 'react';
 import type { ReactNode } from 'react';
 import { generateId } from '../utils/gameHelpers';
 
@@ -28,27 +22,19 @@ interface NotificationContextType {
   clearAllNotifications: () => void;
 }
 
-const NotificationContext = createContext<NotificationContextType | undefined>(
-  undefined
-);
+const NotificationContext = createContext<NotificationContextType | undefined>(undefined);
 
 // eslint-disable-next-line react-refresh/only-export-components
 export const useNotifications = () => {
   const context = useContext(NotificationContext);
   if (!context) {
-    throw new Error(
-      'useNotifications must be used within a NotificationProvider'
-    );
+    throw new Error('useNotifications must be used within a NotificationProvider');
   }
   return context;
 };
 
 // Auto-removal hook for individual notifications
-const useAutoRemove = (
-  id: string,
-  duration: number,
-  removeNotification: (id: string) => void
-) => {
+const useAutoRemove = (id: string, duration: number, removeNotification: (id: string) => void) => {
   useEffect(() => {
     if (duration <= 0) return; // Don't auto-remove if duration is 0 or negative
 
@@ -134,35 +120,28 @@ const NotificationItem: React.FC<{
   );
 };
 
-export const NotificationProvider: React.FC<{ children: ReactNode }> = ({
-  children,
-}) => {
+export const NotificationProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [notifications, setNotifications] = useState<Notification[]>([]);
 
-  const addNotification = useCallback(
-    (notification: Omit<Notification, 'id'>) => {
-      const id = generateId(); // Using centralized ID generation
-      const newNotification: Notification = {
-        ...notification,
-        id,
-        duration: notification.duration ?? 5000, // Default 5 seconds
-      };
+  const addNotification = useCallback((notification: Omit<Notification, 'id'>) => {
+    const id = generateId(); // Using centralized ID generation
+    const newNotification: Notification = {
+      ...notification,
+      id,
+      duration: notification.duration ?? 5000, // Default 5 seconds
+    };
 
-      setNotifications(prev => {
-        // Limit to maximum 5 notifications to prevent UI overflow
-        const updated = [newNotification, ...prev].slice(0, 5);
-        return updated;
-      });
+    setNotifications(prev => {
+      // Limit to maximum 5 notifications to prevent UI overflow
+      const updated = [newNotification, ...prev].slice(0, 5);
+      return updated;
+    });
 
-      return id;
-    },
-    []
-  );
+    return id;
+  }, []);
 
   const removeNotification = useCallback((id: string) => {
-    setNotifications(prev =>
-      prev.filter(notification => notification.id !== id)
-    );
+    setNotifications(prev => prev.filter(notification => notification.id !== id));
   }, []);
 
   const clearAllNotifications = useCallback(() => {

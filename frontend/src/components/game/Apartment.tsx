@@ -12,12 +12,7 @@ const Apartment: React.FC = () => {
   const basicRooms = rooms.filter(room => room.roomType !== 'advanced');
 
   const handleRoomUpgrade = (room: Room) => {
-    console.log(
-      'Attempting to upgrade room:',
-      room.name,
-      'Cost:',
-      room.upgrade_cost
-    );
+    console.log('Attempting to upgrade room:', room.name, 'Cost:', room.upgrade_cost);
     console.log('Can afford?', canAfford(room.upgrade_cost));
 
     if (!canAfford(room.upgrade_cost)) {
@@ -41,10 +36,9 @@ const Apartment: React.FC = () => {
         Corporate Housing Division
       </h2>
       <p className="text-daemon-text mb-8 bg-daemon-surface p-6 rounded-lg border border-daemon-secondary">
-        Welcome to your soul-crushing cubicle — now with 15% more despair
-        absorption. Your assigned pit doubles as your office. Upgrades may
-        slightly raise morale, or at least keep the screams from echoing quite
-        so much.
+        Welcome to your soul-crushing cubicle — now with 15% more despair absorption. Your assigned
+        pit doubles as your office. Upgrades may slightly raise morale, or at least keep the screams
+        from echoing quite so much.
       </p>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
@@ -54,9 +48,7 @@ const Apartment: React.FC = () => {
             className="bg-daemon-panel border-daemon-secondary hover:border-daemon-primary hover:shadow-infernal transition-all duration-200"
           >
             <div className="flex justify-between items-start mb-6">
-              <h3 className="font-header font-bold text-xl text-daemon-text-bright">
-                {room.name}
-              </h3>
+              <h3 className="font-header font-bold text-xl text-daemon-text-bright">{room.name}</h3>
               <span className="px-4 py-2 bg-daemon-secondary border border-daemon-secondary text-daemon-text-bright text-sm rounded-lg font-mono font-semibold uppercase tracking-wide">
                 Level {room.level}
               </span>
@@ -66,9 +58,7 @@ const Apartment: React.FC = () => {
               <div className="text-sm text-daemon-text-muted font-mono uppercase tracking-wide mb-2">
                 Productivity Enhancement:
               </div>
-              <div className="text-daemon-text-bright font-mono font-semibold">
-                {room.bonus}
-              </div>
+              <div className="text-daemon-text-bright font-mono font-semibold">{room.bonus}</div>
             </div>
 
             <button

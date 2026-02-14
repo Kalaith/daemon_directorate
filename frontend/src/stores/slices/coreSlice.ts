@@ -15,12 +15,7 @@ const initialResources = {
 
 export type CoreSlice = CoreGameActions;
 
-export const createCoreSlice: StateCreator<
-  ComposedGameStore,
-  [],
-  [],
-  CoreSlice
-> = (set, get) => ({
+export const createCoreSlice: StateCreator<ComposedGameStore, [], [], CoreSlice> = (set, get) => ({
   initializeGame: () => {
     // Initialize game with starter data (called on first load)
     const state = get();

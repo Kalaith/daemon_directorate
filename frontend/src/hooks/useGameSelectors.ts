@@ -57,9 +57,7 @@ export const useComplianceStatus = () => {
   const daysPassed = useGameStore(state => state.daysPassed);
 
   return useMemo(() => {
-    const activeComplianceTasks = complianceTasks.filter(
-      task => !task.completed
-    );
+    const activeComplianceTasks = complianceTasks.filter(task => !task.completed);
     const overdueComplianceTasks = activeComplianceTasks.filter(
       task => daysPassed >= task.deadline
     );
@@ -97,18 +95,14 @@ export const useResourcesStatus = () => {
   const resources = useGameStore(state => state.resources);
 
   return useMemo(() => {
-    const isResourceLow = (amount: number, threshold: number) =>
-      amount < threshold;
+    const isResourceLow = (amount: number, threshold: number) => amount < threshold;
 
     return {
       resources,
       warnings: {
         lowCredits: isResourceLow(resources.credits, 100),
         lowSoulEssence: isResourceLow(resources.soulEssence, 5),
-        lowBureaucraticLeverage: isResourceLow(
-          resources.bureaucraticLeverage,
-          3
-        ),
+        lowBureaucraticLeverage: isResourceLow(resources.bureaucraticLeverage, 3),
         lowRawMaterials: isResourceLow(resources.rawMaterials, 2),
       },
     };

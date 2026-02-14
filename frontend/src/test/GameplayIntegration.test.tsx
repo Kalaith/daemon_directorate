@@ -41,12 +41,7 @@ const mockGameStore = {
   selectedDaemons: new Set<string>(),
 
   // UI state
-  currentTab: 'dashboard' as
-    | 'dashboard'
-    | 'team'
-    | 'missions'
-    | 'apartment'
-    | 'equipment',
+  currentTab: 'dashboard' as 'dashboard' | 'team' | 'missions' | 'apartment' | 'equipment',
   showTutorial: false,
   showMemorial: false,
   showMissionModal: false,
@@ -153,9 +148,7 @@ describe('Daemon Directorate - Corporate Satire Gameplay', () => {
 
       // Check for corporate satire elements in the UI
       expect(screen.getByText(/daemon directorate/i)).toBeInTheDocument();
-      expect(
-        screen.getByText(/excellence through eternal suffering/i)
-      ).toBeInTheDocument();
+      expect(screen.getByText(/excellence through eternal suffering/i)).toBeInTheDocument();
     });
 
     it('should initialize with starter corporate assets (daemons)', () => {
@@ -165,9 +158,7 @@ describe('Daemon Directorate - Corporate Satire Gameplay', () => {
       expect(mockGameStore.daemons).toHaveLength(3);
       expect(mockGameStore.daemons[0].name).toBe('Belphegor-7734');
       expect(mockGameStore.daemons[0].specialization).toBe('Infiltration');
-      expect(mockGameStore.daemons[0].bloodline).toBe(
-        'House of Burning Spreadsheets'
-      );
+      expect(mockGameStore.daemons[0].bloodline).toBe('House of Burning Spreadsheets');
     });
 
     it('should start with proper corporate resources', () => {
@@ -191,9 +182,7 @@ describe('Daemon Directorate - Corporate Satire Gameplay', () => {
 
       // Check for enhanced corporate terminology
       expect(screen.getByText('Active Corporate Assets')).toBeInTheDocument();
-      expect(
-        screen.getByText('Talent Acquisition Pipeline')
-      ).toBeInTheDocument();
+      expect(screen.getByText('Talent Acquisition Pipeline')).toBeInTheDocument();
     });
 
     it('should show corporate asset stats with proper terminology', () => {
@@ -201,9 +190,7 @@ describe('Daemon Directorate - Corporate Satire Gameplay', () => {
 
       // Verify corporate terminology in stats display
       expect(screen.getAllByText('Corporeal Integrity')[0]).toBeInTheDocument();
-      expect(
-        screen.getAllByText('Workplace Satisfaction')[0]
-      ).toBeInTheDocument();
+      expect(screen.getAllByText('Workplace Satisfaction')[0]).toBeInTheDocument();
       expect(screen.getAllByText('Contract Duration:')[0]).toBeInTheDocument();
     });
 
@@ -260,13 +247,9 @@ describe('Daemon Directorate - Corporate Satire Gameplay', () => {
     it('should display corporate housing interface', () => {
       render(<App />);
 
-      expect(
-        screen.getByText('Corporate Housing Division')
-      ).toBeInTheDocument();
+      expect(screen.getByText('Corporate Housing Division')).toBeInTheDocument();
       expect(screen.getByText(/soul-crushing cubicle/i)).toBeInTheDocument();
-      expect(
-        screen.getByText(/15% more despair absorption/i)
-      ).toBeInTheDocument();
+      expect(screen.getByText(/15% more despair absorption/i)).toBeInTheDocument();
     });
 
     it('should allow budget requests for facility upgrades', async () => {
@@ -315,8 +298,7 @@ describe('Daemon Directorate - Corporate Satire Gameplay', () => {
       mockGameStore.showMissionResults = true;
       mockGameStore.missionResult = {
         success: true,
-        narrative:
-          'Quarterly objectives met through strategic synergy optimization.',
+        narrative: 'Quarterly objectives met through strategic synergy optimization.',
         successChance: 75,
         casualties: [],
         rewards: { credits: 200, soulEssence: 1 },
@@ -326,9 +308,7 @@ describe('Daemon Directorate - Corporate Satire Gameplay', () => {
       render(<App />);
 
       // Check for enhanced corporate mission results terminology
-      expect(
-        screen.getByText('Performance Evaluation Report')
-      ).toBeInTheDocument();
+      expect(screen.getByText('Performance Evaluation Report')).toBeInTheDocument();
       expect(screen.getByText('QUARTERLY OBJECTIVES MET')).toBeInTheDocument();
       expect(screen.getByText('KPI Achievement Odds:')).toBeInTheDocument();
       expect(screen.getByText('Personnel Attrition:')).toBeInTheDocument();
@@ -348,14 +328,12 @@ describe('Daemon Directorate - Corporate Satire Gameplay', () => {
         choices: [
           {
             label: 'Embrace the Bureaucratic Excellence',
-            description:
-              'Demonstrate unwavering commitment to corporate compliance procedures',
+            description: 'Demonstrate unwavering commitment to corporate compliance procedures',
             effects: [
               {
                 type: 'morale',
                 value: -5,
-                description:
-                  'Corporate assets experience workplace satisfaction reduction',
+                description: 'Corporate assets experience workplace satisfaction reduction',
               },
             ],
           },
@@ -366,15 +344,9 @@ describe('Daemon Directorate - Corporate Satire Gameplay', () => {
 
       // Verify enhanced corporate event terminology
       expect(screen.getByText('Corporate Directive')).toBeInTheDocument();
-      expect(
-        screen.getByText('Quarterly Soul Performance Evaluation')
-      ).toBeInTheDocument();
-      expect(
-        screen.getByText(/productivity metrics and suffering quotas/i)
-      ).toBeInTheDocument();
-      expect(
-        screen.getByText('Embrace the Bureaucratic Excellence')
-      ).toBeInTheDocument();
+      expect(screen.getByText('Quarterly Soul Performance Evaluation')).toBeInTheDocument();
+      expect(screen.getByText(/productivity metrics and suffering quotas/i)).toBeInTheDocument();
+      expect(screen.getByText('Embrace the Bureaucratic Excellence')).toBeInTheDocument();
     });
 
     it('should handle corporate event choices with proper consequences', async () => {
@@ -389,9 +361,7 @@ describe('Daemon Directorate - Corporate Satire Gameplay', () => {
           {
             label: 'Test Choice',
             description: 'Test choice description',
-            effects: [
-              { type: 'credits', value: 100, description: 'Test reward' },
-            ],
+            effects: [{ type: 'credits', value: 100, description: 'Test reward' }],
           },
         ],
       };
@@ -409,9 +379,7 @@ describe('Daemon Directorate - Corporate Satire Gameplay', () => {
     it('should track corporate tier advancement', () => {
       expect(mockGameStore.corporateTier.name).toBe('Associate');
       expect(mockGameStore.corporateTier.level).toBe(1);
-      expect(mockGameStore.corporateTier.unlocks.mechanics).toContain(
-        'basic_missions'
-      );
+      expect(mockGameStore.corporateTier.unlocks.mechanics).toContain('basic_missions');
     });
 
     it('should unlock HR reviews at Manager tier', () => {
@@ -428,12 +396,8 @@ describe('Daemon Directorate - Corporate Satire Gameplay', () => {
 
   describe('Resource Management - Corporate Economics', () => {
     it('should properly track bureaucratic leverage', () => {
-      expect(typeof mockGameStore.resources.bureaucraticLeverage).toBe(
-        'number'
-      );
-      expect(
-        mockGameStore.resources.bureaucraticLeverage
-      ).toBeGreaterThanOrEqual(0);
+      expect(typeof mockGameStore.resources.bureaucraticLeverage).toBe('number');
+      expect(mockGameStore.resources.bureaucraticLeverage).toBeGreaterThanOrEqual(0);
     });
 
     it('should handle soul essence transactions', () => {

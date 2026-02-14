@@ -72,11 +72,7 @@ export interface EquipmentSetBonus {
 }
 
 export interface EquipmentModifier {
-  type:
-    | 'mission_speed'
-    | 'durability_bonus'
-    | 'experience_bonus'
-    | 'resource_bonus';
+  type: 'mission_speed' | 'durability_bonus' | 'experience_bonus' | 'resource_bonus';
   value: number;
   description: string;
 }
@@ -374,10 +370,7 @@ export interface GameState {
 }
 
 export interface StarterData {
-  starter_daemons: Omit<
-    Daemon,
-    'id' | 'assignments' | 'equipment' | 'isActive'
-  >[];
+  starter_daemons: Omit<Daemon, 'id' | 'assignments' | 'equipment' | 'isActive'>[];
   starter_equipment: Omit<Equipment, 'id' | 'assignedTo'>[];
   planets: Omit<Planet, 'id' | 'conquered' | 'lastMission'>[];
   apartment_rooms: Omit<Room, 'id'>[];
@@ -575,11 +568,6 @@ export interface UnlockedContent {
 // Type aliases for clarity
 export type DifficultyLevel = 'Easy' | 'Medium' | 'Hard';
 export type SpecializationType = 'Infiltration' | 'Combat' | 'Sabotage';
-export type TabType =
-  | 'dashboard'
-  | 'team'
-  | 'missions'
-  | 'apartment'
-  | 'equipment';
+export type TabType = 'dashboard' | 'team' | 'missions' | 'apartment' | 'equipment';
 export type NotificationType = 'success' | 'error' | 'warning' | 'info';
 export type ManagementStyle = 'profit' | 'cult' | 'compliance' | 'collapse';

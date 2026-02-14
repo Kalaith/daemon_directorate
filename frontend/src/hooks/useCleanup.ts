@@ -38,27 +38,21 @@ export const useInterval = (callback: () => void, delay: number | null) => {
 export const useTimers = () => {
   const timersRef = useRef<Set<NodeJS.Timeout>>(new Set());
 
-  const addTimeout = useCallback(
-    (callback: () => void, delay: number): NodeJS.Timeout => {
-      const timeoutId = setTimeout(() => {
-        callback();
-        timersRef.current.delete(timeoutId);
-      }, delay);
+  const addTimeout = useCallback((callback: () => void, delay: number): NodeJS.Timeout => {
+    const timeoutId = setTimeout(() => {
+      callback();
+      timersRef.current.delete(timeoutId);
+    }, delay);
 
-      timersRef.current.add(timeoutId);
-      return timeoutId;
-    },
-    []
-  );
+    timersRef.current.add(timeoutId);
+    return timeoutId;
+  }, []);
 
-  const addInterval = useCallback(
-    (callback: () => void, delay: number): NodeJS.Timeout => {
-      const intervalId = setInterval(callback, delay);
-      timersRef.current.add(intervalId);
-      return intervalId;
-    },
-    []
-  );
+  const addInterval = useCallback((callback: () => void, delay: number): NodeJS.Timeout => {
+    const intervalId = setInterval(callback, delay);
+    timersRef.current.add(intervalId);
+    return intervalId;
+  }, []);
 
   const clearTimer = useCallback((timerId: NodeJS.Timeout) => {
     clearTimeout(timerId);
@@ -188,16 +182,13 @@ export const useWebSocket = (url: string | null) => {
     }
   }, []);
 
-  const send = useCallback(
-    (data: string | ArrayBufferLike | Blob | ArrayBufferView) => {
-      if (socketRef.current?.readyState === WebSocket.OPEN) {
-        socketRef.current.send(data);
-        return true;
-      }
-      return false;
-    },
-    []
-  );
+  const send = useCallback((data: string | ArrayBufferLike | Blob | ArrayBufferView) => {
+    if (socketRef.current?.readyState === WebSocket.OPEN) {
+      socketRef.current.send(data);
+      return true;
+    }
+    return false;
+  }, []);
 
   useEffect(() => {
     if (url) {
@@ -287,9 +278,9 @@ export const useResizeObserver = (
 // Hook for managing DOM cleanup
 export const useDOMCleanup = () => {
   const elementsRef = useRef<Set<Element>>(new Set());
-  const listenersRef = useRef<
-    Map<Element, Map<string, EventListenerOrEventListenerObject>>
-  >(new Map());
+  const listenersRef = useRef<Map<Element, Map<string, EventListenerOrEventListenerObject>>>(
+    new Map()
+  );
 
   const registerElement = useCallback((element: Element) => {
     elementsRef.current.add(element);

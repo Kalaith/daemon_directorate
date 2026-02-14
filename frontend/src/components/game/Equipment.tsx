@@ -4,8 +4,7 @@ import { useGameStore } from '../../stores/composedStore';
 import Card from '../ui/Card';
 
 const Equipment: React.FC = () => {
-  const { equipment, repairEquipment, craftItem, canAfford, resources } =
-    useGameStore();
+  const { equipment, repairEquipment, craftItem, canAfford, resources } = useGameStore();
 
   const canAffordComplex = (costs: {
     credits?: number;
@@ -15,12 +14,10 @@ const Equipment: React.FC = () => {
   }) => {
     return (
       (costs.credits === undefined || resources.credits >= costs.credits) &&
-      (costs.rawMaterials === undefined ||
-        resources.rawMaterials >= costs.rawMaterials) &&
+      (costs.rawMaterials === undefined || resources.rawMaterials >= costs.rawMaterials) &&
       (costs.bureaucraticLeverage === undefined ||
         resources.bureaucraticLeverage >= costs.bureaucraticLeverage) &&
-      (costs.soulEssence === undefined ||
-        resources.soulEssence >= costs.soulEssence)
+      (costs.soulEssence === undefined || resources.soulEssence >= costs.soulEssence)
     );
   };
 
@@ -31,8 +28,8 @@ const Equipment: React.FC = () => {
           Equipment Depot
         </h2>
         <p className="text-daemon-text mb-8 bg-daemon-surface p-6 rounded-lg border border-daemon-secondary">
-          Manage corporate-issued equipment and supplies. Note: Equipment
-          degradation is normal and expected.
+          Manage corporate-issued equipment and supplies. Note: Equipment degradation is normal and
+          expected.
         </p>
       </div>
 
@@ -138,9 +135,7 @@ const Equipment: React.FC = () => {
         <h3 className="text-xl font-header font-semibold text-daemon-text-bright mb-6 uppercase tracking-wide">
           Item Forge
         </h3>
-        <p className="text-daemon-text mb-6">
-          Craft new equipment using planetary resources:
-        </p>
+        <p className="text-daemon-text mb-6">Craft new equipment using planetary resources:</p>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           <button
@@ -177,9 +172,7 @@ const Equipment: React.FC = () => {
                 Common
               </span>
             </div>
-            <div className="text-sm text-daemon-text mb-3">
-              Combat - Intimidate (+10 combat)
-            </div>
+            <div className="text-sm text-daemon-text mb-3">Combat - Intimidate (+10 combat)</div>
             <div className="text-sm text-daemon-text-bright font-mono font-semibold uppercase tracking-wide">
               Cost: 75 Credits
             </div>

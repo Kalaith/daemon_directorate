@@ -28,9 +28,7 @@ export const analyzeBundleSize = async () => {
 
   // Simple bundle analysis - in real app would use webpack-bundle-analyzer
   const scripts = Array.from(document.querySelectorAll('script[src]'));
-  const styles = Array.from(
-    document.querySelectorAll('link[rel="stylesheet"]')
-  );
+  const styles = Array.from(document.querySelectorAll('link[rel="stylesheet"]'));
 
   return {
     scripts: scripts.length,
@@ -57,7 +55,5 @@ export const initializePerformanceMonitoring = () => {
     }
   ).analyzeBundleSize = analyzeBundleSize;
 
-  console.log(
-    '🚀 Performance monitoring enabled. Use window.performanceMonitor for debugging.'
-  );
+  console.log('🚀 Performance monitoring enabled. Use window.performanceMonitor for debugging.');
 };

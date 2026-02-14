@@ -6,13 +6,8 @@ import { uiConstants } from '../../constants/gameBalance';
 import { logger } from '../../utils/logger';
 
 export const CorporateEventModal: React.FC = () => {
-  const {
-    showEventModal,
-    currentEvent,
-    setShowEventModal,
-    resolveEvent,
-    resources,
-  } = useGameStore();
+  const { showEventModal, currentEvent, setShowEventModal, resolveEvent, resources } =
+    useGameStore();
 
   if (!showEventModal || !currentEvent) return null;
 
@@ -42,12 +37,10 @@ export const CorporateEventModal: React.FC = () => {
   const meetsRequirements = (): boolean => {
     if (!currentEvent.requirements) return true;
 
-    return Object.entries(currentEvent.requirements).every(
-      ([resource, required]) => {
-        const resourceKey = resource as keyof typeof resources;
-        return resources[resourceKey] >= required;
-      }
-    );
+    return Object.entries(currentEvent.requirements).every(([resource, required]) => {
+      const resourceKey = resource as keyof typeof resources;
+      return resources[resourceKey] >= required;
+    });
   };
 
   const handleChoice = (choiceIndex: number) => {
@@ -99,9 +92,7 @@ export const CorporateEventModal: React.FC = () => {
 
   if (!meetsRequirements()) {
     return (
-      <div
-        className={`${uiConstants.CLASSES.MODAL_OVERLAY} z-${uiConstants.Z_INDEX.MODAL}`}
-      >
+      <div className={`${uiConstants.CLASSES.MODAL_OVERLAY} z-${uiConstants.Z_INDEX.MODAL}`}>
         <Card className="max-w-md mx-4 p-6">
           <h2 className="text-xl font-bold text-red-400 mb-4">Access Denied</h2>
           <p className="text-gray-300 mb-4">{currentEvent.description}</p>
@@ -120,40 +111,25 @@ export const CorporateEventModal: React.FC = () => {
   }
 
   return (
-    <div
-      className={`${uiConstants.CLASSES.MODAL_OVERLAY} z-${uiConstants.Z_INDEX.MODAL}`}
-    >
+    <div className={`${uiConstants.CLASSES.MODAL_OVERLAY} z-${uiConstants.Z_INDEX.MODAL}`}>
       <Card className="max-w-2xl mx-4 p-6">
         <div className="flex items-center justify-between mb-4">
-          <h2 className="text-xl font-bold text-orange-400">
-            Corporate Directive
-          </h2>
+          <h2 className="text-xl font-bold text-orange-400">Corporate Directive</h2>
           <div className="text-sm text-gray-400">
-            {currentEvent.type === 'choice'
-              ? 'Decision Required'
-              : 'Mandatory Compliance'}
+            {currentEvent.type === 'choice' ? 'Decision Required' : 'Mandatory Compliance'}
           </div>
         </div>
 
-        <h3 className="text-lg font-semibold text-teal-400 mb-3">
-          {currentEvent.title}
-        </h3>
+        <h3 className="text-lg font-semibold text-teal-400 mb-3">{currentEvent.title}</h3>
 
-        <p className="text-gray-300 mb-6 leading-relaxed">
-          {currentEvent.description}
-        </p>
+        <p className="text-gray-300 mb-6 leading-relaxed">{currentEvent.description}</p>
 
         {currentEvent.type === 'automatic' && currentEvent.effects && (
           <div className="space-y-4">
-            <h4 className="font-semibold text-yellow-400">
-              Immediate Effects:
-            </h4>
+            <h4 className="font-semibold text-yellow-400">Immediate Effects:</h4>
             <div className="bg-gray-800 p-4 rounded">
               {currentEvent.effects.map((effect, index) => (
-                <div
-                  key={index}
-                  className="flex justify-between items-center py-1"
-                >
+                <div key={index} className="flex justify-between items-center py-1">
                   <span className="text-gray-300">{effect.description}</span>
                   <span
                     className={`font-mono ${effect.value >= 0 ? 'text-green-400' : 'text-red-400'}`}
@@ -174,9 +150,7 @@ export const CorporateEventModal: React.FC = () => {
 
         {currentEvent.type === 'choice' && currentEvent.choices && (
           <div className="space-y-4">
-            <h4 className="font-semibold text-yellow-400">
-              Choose Your Response:
-            </h4>
+            <h4 className="font-semibold text-yellow-400">Choose Your Response:</h4>
             {currentEvent.choices.map((choice, index) => (
               <div
                 key={index}
@@ -185,9 +159,7 @@ export const CorporateEventModal: React.FC = () => {
                 <div className="flex justify-between items-start mb-3">
                   <div>
                     <h5 className="font-semibold text-white">{choice.label}</h5>
-                    <p className="text-gray-400 text-sm mt-1">
-                      {choice.description}
-                    </p>
+                    <p className="text-gray-400 text-sm mt-1">{choice.description}</p>
                   </div>
                 </div>
 
@@ -200,9 +172,7 @@ export const CorporateEventModal: React.FC = () => {
                       key={effectIndex}
                       className="flex justify-between items-center py-1 text-sm"
                     >
-                      <span className="text-gray-300">
-                        {effect.description}
-                      </span>
+                      <span className="text-gray-300">{effect.description}</span>
                       <span
                         className={`font-mono ${effect.value >= 0 ? 'text-green-400' : 'text-red-400'}`}
                       >
@@ -221,9 +191,7 @@ export const CorporateEventModal: React.FC = () => {
                       : 'bg-gray-700 text-gray-500 cursor-not-allowed'
                   }`}
                 >
-                  {canAffordChoice(choice)
-                    ? 'Select This Option'
-                    : 'Cannot Afford'}
+                  {canAffordChoice(choice) ? 'Select This Option' : 'Cannot Afford'}
                 </button>
               </div>
             ))}

@@ -134,10 +134,9 @@ const TeamManagement: React.FC = () => {
           Talent Acquisition Pipeline
         </h3>
         <p className="text-daemon-text mb-8 bg-daemon-surface p-6 rounded-lg border border-daemon-secondary">
-          Human Resources has completed background checks, psychological
-          evaluations, and mandatory soul quality assessments. All candidates
-          demonstrate adequate suffering tolerance metrics and have executed the
-          standard eternal employment agreement with non-disclosure clauses.
+          Human Resources has completed background checks, psychological evaluations, and mandatory
+          soul quality assessments. All candidates demonstrate adequate suffering tolerance metrics
+          and have executed the standard eternal employment agreement with non-disclosure clauses.
         </p>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
@@ -228,8 +227,7 @@ const TeamManagement: React.FC = () => {
           disabled={!canAfford(daemonBalance.RECRUITMENT.BASE_COST)}
           className="px-8 py-4 bg-daemon-secondary text-daemon-text-bright font-mono rounded-lg hover:bg-daemon-primary hover:shadow-infernal disabled:bg-daemon-surface disabled:text-daemon-text-dim disabled:cursor-not-allowed transition-all duration-200 uppercase tracking-wide font-semibold border border-daemon-secondary hover:border-daemon-primary disabled:border-daemon-text-dim"
         >
-          Expand Candidate Search ({daemonBalance.RECRUITMENT.BASE_COST}{' '}
-          Credits)
+          Expand Candidate Search ({daemonBalance.RECRUITMENT.BASE_COST} Credits)
         </button>
       </div>
     </div>

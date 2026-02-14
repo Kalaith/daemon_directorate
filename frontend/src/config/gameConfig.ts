@@ -128,10 +128,7 @@ class ConfigManager {
       throw new Error('Invalid configuration path');
     }
 
-    let target: Record<string, unknown> = this.config as unknown as Record<
-      string,
-      unknown
-    >;
+    let target: Record<string, unknown> = this.config as unknown as Record<string, unknown>;
     for (const key of keys) {
       if (!target[key] || typeof target[key] !== 'object') {
         target[key] = {};
@@ -179,17 +176,11 @@ class ConfigManager {
   // Validate configuration structure
   private validateConfig(config: GameConfig): GameConfig {
     // Basic validation - in a real app, would use a schema validator like Zod
-    if (
-      !config.performance ||
-      typeof config.performance.maxFrameRate !== 'number'
-    ) {
+    if (!config.performance || typeof config.performance.maxFrameRate !== 'number') {
       throw new Error('Invalid performance configuration');
     }
 
-    if (
-      !config.balance ||
-      typeof config.balance.maxDaemonsActive !== 'number'
-    ) {
+    if (!config.balance || typeof config.balance.maxDaemonsActive !== 'number') {
       throw new Error('Invalid balance configuration');
     }
 

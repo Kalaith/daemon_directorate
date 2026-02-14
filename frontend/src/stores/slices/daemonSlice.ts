@@ -38,10 +38,7 @@ export interface DaemonActions {
   isHRReviewAvailable: () => boolean;
 
   // Legacy system
-  addLegacyStory: (
-    daemonId: string,
-    story: Omit<LegacyStory, 'id' | 'timestamp'>
-  ) => void;
+  addLegacyStory: (daemonId: string, story: Omit<LegacyStory, 'id' | 'timestamp'>) => void;
   generateLegacyLegend: (bloodline: string) => void;
   createNewLegacy: (daemon: Daemon) => DaemonLegacy;
 
@@ -89,20 +86,10 @@ export const createDaemonSlice: StateCreator<
       const newSelection = new Set(state.selectedDaemons);
       if (newSelection.has(daemonId)) {
         newSelection.delete(daemonId);
-        console.log(
-          'Deselected daemon:',
-          daemonId,
-          'Total selected:',
-          newSelection.size
-        );
+        console.log('Deselected daemon:', daemonId, 'Total selected:', newSelection.size);
       } else {
         newSelection.add(daemonId);
-        console.log(
-          'Selected daemon:',
-          daemonId,
-          'Total selected:',
-          newSelection.size
-        );
+        console.log('Selected daemon:', daemonId, 'Total selected:', newSelection.size);
       }
       return { selectedDaemons: newSelection };
     });
@@ -141,13 +128,10 @@ export const createDaemonSlice: StateCreator<
     const specializations = ['Infiltration', 'Combat', 'Sabotage'] as const;
 
     const pool: Daemon[] = Array.from({ length: 3 }, () => {
-      const specialization =
-        specializations[Math.floor(Math.random() * specializations.length)];
+      const specialization = specializations[Math.floor(Math.random() * specializations.length)];
       const name = `${daemonNames[Math.floor(Math.random() * daemonNames.length)]}-${Math.floor(Math.random() * daemonBalance.RECRUITMENT.NAMING.ID_RANGE) + daemonBalance.RECRUITMENT.NAMING.ID_MIN}`;
       const bloodline =
-        recruitmentBloodlines[
-          Math.floor(Math.random() * recruitmentBloodlines.length)
-        ];
+        recruitmentBloodlines[Math.floor(Math.random() * recruitmentBloodlines.length)];
 
       return {
         id: generateId(),
@@ -268,8 +252,7 @@ export const createDaemonSlice: StateCreator<
       moraleChange = corporateBalance.HR_REVIEW.POSITIVE_MORALE;
     } else if (
       reviewOutcome <
-      corporateBalance.HR_REVIEW.POSITIVE_CHANCE +
-        corporateBalance.HR_REVIEW.NEUTRAL_CHANCE
+      corporateBalance.HR_REVIEW.POSITIVE_CHANCE + corporateBalance.HR_REVIEW.NEUTRAL_CHANCE
     ) {
       // Neutral review - no changes
     } else {
@@ -289,15 +272,11 @@ export const createDaemonSlice: StateCreator<
   },
 
   isHRReviewAvailable: () => {
-    const daysSinceLastReview =
-      (Date.now() - get().lastHRReview) / (1000 * 60 * 60 * 24);
+    const daysSinceLastReview = (Date.now() - get().lastHRReview) / (1000 * 60 * 60 * 24);
     return daysSinceLastReview >= corporateBalance.HR_REVIEW.COOLDOWN_DAYS;
   },
 
-  addLegacyStory: (
-    daemonId: string,
-    story: Omit<LegacyStory, 'id' | 'timestamp'>
-  ) => {
+  addLegacyStory: (daemonId: string, story: Omit<LegacyStory, 'id' | 'timestamp'>) => {
     const daemon = get().getDaemonById(daemonId);
     if (!daemon) return;
 
@@ -337,10 +316,7 @@ export const createDaemonSlice: StateCreator<
         daemon.id === daemonId
           ? {
               ...daemon,
-              assignments: [
-                ...daemon.assignments.filter(a => a !== roomId),
-                roomId,
-              ],
+              assignments: [...daemon.assignments.filter(a => a !== roomId), roomId],
             }
           : daemon
       ),
@@ -369,9 +345,7 @@ export const createDaemonSlice: StateCreator<
   },
 
   getDaemonsBySpecialization: (specialization: string) => {
-    return get().daemons.filter(
-      daemon => daemon.specialization === specialization
-    );
+    return get().daemons.filter(daemon => daemon.specialization === specialization);
   },
 
   updateDaemonStats: (

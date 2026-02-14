@@ -24,23 +24,17 @@ const Tutorial: React.FC = () => {
         <div className="mb-8 text-daemon-text space-y-4">
           <p>
             Congratulations on your promotion to{' '}
-            <span className="text-daemon-gold font-semibold font-header">
-              Middle Management
-            </span>{' '}
-            in the Infernal Corporate Hierarchy!
+            <span className="text-daemon-gold font-semibold font-header">Middle Management</span> in
+            the Infernal Corporate Hierarchy!
           </p>
           <p>
-            Your job: Manage daemon operatives, conquer planets, and maintain
-            your apartment HQ. Remember - all daemons have finite lifespans, and
-            equipment degrades with use.
+            Your job: Manage daemon operatives, conquer planets, and maintain your apartment HQ.
+            Remember - all daemons have finite lifespans, and equipment degrades with use.
           </p>
           <p>
-            Success is measured not by infinite growth, but by creating
-            memorable daemon dynasties before inevitable{' '}
-            <span className="text-daemon-danger font-semibold">
-              corporate restructuring
-            </span>
-            .
+            Success is measured not by infinite growth, but by creating memorable daemon dynasties
+            before inevitable{' '}
+            <span className="text-daemon-danger font-semibold">corporate restructuring</span>.
           </p>
         </div>
         <button

@@ -27,15 +27,13 @@ export const daemonQuirks = [
     name: 'Equipment anxiety disorder',
     effect: 'office_penalty',
     value: -5,
-    description:
-      '-5% operational efficiency in technology-dependent environments',
+    description: '-5% operational efficiency in technology-dependent environments',
   },
   {
     name: 'Assertive stakeholder engagement style',
     effect: 'combat_bonus',
     value: 15,
-    description:
-      '+15% tactical effectiveness during confrontational negotiations',
+    description: '+15% tactical effectiveness during confrontational negotiations',
   },
   {
     name: 'Office supply procurement specialist',
@@ -65,29 +63,25 @@ export const daemonQuirks = [
     name: 'Strategic inventory accumulation',
     effect: 'resource_bonus',
     value: 10,
-    description:
-      '+10% operational resource acquisition through stockpiling expertise',
+    description: '+10% operational resource acquisition through stockpiling expertise',
   },
   {
     name: 'Alternative wellness methodology practitioner',
     effect: 'stress_reduction',
     value: 5,
-    description:
-      '+5 daily workplace satisfaction through unconventional therapy techniques',
+    description: '+5 daily workplace satisfaction through unconventional therapy techniques',
   },
   {
     name: 'Information architecture perfectionist',
     effect: 'infiltration_bonus',
     value: 15,
-    description:
-      '+15% covert operations success through superior organizational skills',
+    description: '+15% covert operations success through superior organizational skills',
   },
   {
     name: 'Beverage quality control deficiency',
     effect: 'team_morale_penalty',
     value: -2,
-    description:
-      '-2 workplace satisfaction for all corporate assets in facility',
+    description: '-2 workplace satisfaction for all corporate assets in facility',
   },
   {
     name: 'Interpersonal engagement optimization specialist',
@@ -99,22 +93,19 @@ export const daemonQuirks = [
     name: 'Comprehensive risk assessment methodology',
     effect: 'analysis_bonus',
     value: 1,
-    description:
-      '+1 Bureaucratic Leverage from post-failure process improvement analysis',
+    description: '+1 Bureaucratic Leverage from post-failure process improvement analysis',
   },
   {
     name: 'Workspace optimization syndrome',
     effect: 'efficiency_bonus',
     value: 5,
-    description:
-      '+5% facility productivity through continuous improvement initiatives',
+    description: '+5% facility productivity through continuous improvement initiatives',
   },
   {
     name: 'Pressure-activated consumption disorder',
     effect: 'health_drain',
     value: -2,
-    description:
-      '-2 corporeal integrity per day when workplace satisfaction below 50%',
+    description: '-2 corporeal integrity per day when workplace satisfaction below 50%',
   },
   {
     name: 'Formal communication protocol adherence',
@@ -127,22 +118,19 @@ export const daemonQuirks = [
     name: 'Cybersecurity hypervigilance disorder',
     effect: 'tech_penalty',
     value: -10,
-    description:
-      '-10% operational efficiency with digital infrastructure due to trust issues',
+    description: '-10% operational efficiency with digital infrastructure due to trust issues',
   },
   {
     name: 'Typography quality assurance specialist',
     effect: 'perfectionist',
     value: 10,
-    description:
-      '+10% operational success rate but +1 day duration due to aesthetic standards',
+    description: '+10% operational success rate but +1 day duration due to aesthetic standards',
   },
   {
     name: 'Environmental comfort requirement syndrome',
     effect: 'comfort_dependent',
     value: -1,
-    description:
-      '-1 contract duration day unless facility has climate optimization systems',
+    description: '-1 contract duration day unless facility has climate optimization systems',
   },
   {
     name: 'Comprehensive oversight methodology',
@@ -162,8 +150,7 @@ export const daemonQuirks = [
     name: 'Traditional methodology preference',
     effect: 'analog_specialist',
     value: 20,
-    description:
-      '+20% effectiveness using manual processes, -50% with digital equipment',
+    description: '+20% effectiveness using manual processes, -50% with digital equipment',
   },
   {
     name: 'Collaborative session dependency syndrome',
@@ -190,15 +177,13 @@ export const daemonQuirks = [
     name: 'Authentication credential maintenance negligence',
     effect: 'security_risk',
     value: 0.1,
-    description:
-      '10% probability of triggering cybersecurity compliance review events',
+    description: '10% probability of triggering cybersecurity compliance review events',
   },
   {
     name: 'Personal time off accumulation specialist',
     effect: 'longevity_bonus',
     value: 5,
-    description:
-      '+5 initial contract duration days through strategic leave management',
+    description: '+5 initial contract duration days through strategic leave management',
   },
   {
     name: 'Talent acquisition quality assurance paranoia',
@@ -211,8 +196,7 @@ export const daemonQuirks = [
     name: 'Performance evaluation optimization enthusiasm',
     effect: 'review_enthusiast',
     value: 10,
-    description:
-      '+10% probability of beneficial corporate development opportunities',
+    description: '+10% probability of beneficial corporate development opportunities',
   },
 ];
 
@@ -699,14 +683,12 @@ export const corporateEvents = [
     choices: [
       {
         label: 'Embrace the Bureaucratic Excellence',
-        description:
-          'Demonstrate unwavering commitment to corporate compliance procedures',
+        description: 'Demonstrate unwavering commitment to corporate compliance procedures',
         effects: [
           {
             type: 'morale',
             value: -5,
-            description:
-              'Corporate assets experience workplace satisfaction reduction',
+            description: 'Corporate assets experience workplace satisfaction reduction',
           },
           {
             type: 'bureaucraticLeverage',
@@ -717,14 +699,12 @@ export const corporateEvents = [
       },
       {
         label: 'Strategic Process Optimization',
-        description:
-          'Leverage regulatory ambiguities for competitive advantage',
+        description: 'Leverage regulatory ambiguities for competitive advantage',
         effects: [
           {
             type: 'morale',
             value: 10,
-            description:
-              'Corporate assets exhibit enhanced workplace satisfaction metrics',
+            description: 'Corporate assets exhibit enhanced workplace satisfaction metrics',
           },
           {
             type: 'credits',
@@ -776,8 +756,7 @@ export const corporateEvents = [
           {
             type: 'bureaucraticLeverage',
             value: 1,
-            description:
-              'Enhanced reputation for fiscal discipline among stakeholders',
+            description: 'Enhanced reputation for fiscal discipline among stakeholders',
           },
         ],
       },
@@ -798,14 +777,12 @@ export const corporateEvents = [
           {
             type: 'soulEssence',
             value: -1,
-            description:
-              'Leverage metaphysical assets for competitive advantage',
+            description: 'Leverage metaphysical assets for competitive advantage',
           },
           {
             type: 'morale',
             value: 15,
-            description:
-              'Corporate assets demonstrate exceptional loyalty metrics',
+            description: 'Corporate assets demonstrate exceptional loyalty metrics',
           },
           {
             type: 'credits',
@@ -822,8 +799,7 @@ export const corporateEvents = [
           {
             type: 'bureaucraticLeverage',
             value: 2,
-            description:
-              'Expand strategic network within infernal business ecosystem',
+            description: 'Expand strategic network within infernal business ecosystem',
           },
           {
             type: 'daemon_retirement',
@@ -897,8 +873,7 @@ export const corporateEvents = [
       {
         type: 'equipment_discount',
         value: 0.3,
-        description:
-          'Opportunistic procurement discount on infrastructure maintenance',
+        description: 'Opportunistic procurement discount on infrastructure maintenance',
       },
     ],
   },
@@ -917,8 +892,7 @@ export const corporateEvents = [
           {
             type: 'morale',
             value: -5,
-            description:
-              'Mandatory professional development impact on productivity metrics',
+            description: 'Mandatory professional development impact on productivity metrics',
           },
           {
             type: 'bureaucraticLeverage',
@@ -928,27 +902,23 @@ export const corporateEvents = [
           {
             type: 'productivity_bonus',
             value: 0.1,
-            description:
-              'Temporary operational efficiency enhancement from cultural training',
+            description: 'Temporary operational efficiency enhancement from cultural training',
           },
         ],
       },
       {
         label: 'Pursue Alternative Priorities',
-        description:
-          'Optimize time allocation through strategic absence management',
+        description: 'Optimize time allocation through strategic absence management',
         effects: [
           {
             type: 'morale',
             value: 8,
-            description:
-              'Corporate assets value leadership decisiveness over compliance theater',
+            description: 'Corporate assets value leadership decisiveness over compliance theater',
           },
           {
             type: 'hr_investigation',
             value: 1,
-            description:
-              'Enhanced Human Resources monitoring protocols activated',
+            description: 'Enhanced Human Resources monitoring protocols activated',
           },
         ],
       },
@@ -983,8 +953,7 @@ export const corporateEvents = [
     choices: [
       {
         label: 'Pursue Executive Advancement',
-        description:
-          'Deploy accumulated bureaucratic influence for hierarchical advancement',
+        description: 'Deploy accumulated bureaucratic influence for hierarchical advancement',
         effects: [
           {
             type: 'bureaucraticLeverage',
@@ -1005,8 +974,7 @@ export const corporateEvents = [
       },
       {
         label: 'Maintain Current Positioning',
-        description:
-          'Continue focus on operational excellence within existing scope',
+        description: 'Continue focus on operational excellence within existing scope',
         effects: [
           {
             type: 'morale',
@@ -1027,27 +995,23 @@ export const corporateEvents = [
     choices: [
       {
         label: 'Execute Strategic Networking',
-        description:
-          'Maximize relationship-building opportunities with senior stakeholders',
+        description: 'Maximize relationship-building opportunities with senior stakeholders',
         effects: [
           {
             type: 'bureaucraticLeverage',
             value: 2,
-            description:
-              'Expand professional network within corporate hierarchy',
+            description: 'Expand professional network within corporate hierarchy',
           },
           {
             type: 'credits',
             value: -30,
-            description:
-              'Professional appearance and networking investment costs',
+            description: 'Professional appearance and networking investment costs',
           },
         ],
       },
       {
         label: 'Optimize Productivity Focus',
-        description:
-          'Prioritize operational efficiency over social engagement activities',
+        description: 'Prioritize operational efficiency over social engagement activities',
         effects: [
           {
             type: 'research_progress',
@@ -1057,21 +1021,18 @@ export const corporateEvents = [
           {
             type: 'morale',
             value: -3,
-            description:
-              'Corporate assets experience social disconnect indicators',
+            description: 'Corporate assets experience social disconnect indicators',
           },
         ],
       },
       {
         label: 'Assume Event Leadership Role',
-        description:
-          'Demonstrate proactive management capabilities through event coordination',
+        description: 'Demonstrate proactive management capabilities through event coordination',
         effects: [
           {
             type: 'morale',
             value: 12,
-            description:
-              'Corporate assets exhibit enhanced loyalty and appreciation metrics',
+            description: 'Corporate assets exhibit enhanced loyalty and appreciation metrics',
           },
           {
             type: 'bureaucraticLeverage',
@@ -1081,8 +1042,7 @@ export const corporateEvents = [
           {
             type: 'stress',
             value: 1,
-            description:
-              'Single corporate asset experiences stress-related productivity impact',
+            description: 'Single corporate asset experiences stress-related productivity impact',
           },
         ],
       },
@@ -1121,8 +1081,7 @@ export const corporateEvents = [
       },
       {
         label: 'Counter-Acquisition',
-        description:
-          'Launch your own acquisition of the threatening corporation',
+        description: 'Launch your own acquisition of the threatening corporation',
         effects: [
           { type: 'credits', value: -800, description: 'Acquisition costs' },
           {
@@ -1139,8 +1098,7 @@ export const corporateEvents = [
       },
       {
         label: 'Poison Pill Strategy',
-        description:
-          'Make the company less attractive through strategic debt and obligations',
+        description: 'Make the company less attractive through strategic debt and obligations',
         effects: [
           {
             type: 'credits',
@@ -1209,8 +1167,7 @@ export const corporateEvents = [
       },
       {
         label: 'Strategic Resignation',
-        description:
-          'Resign strategically to maintain influence while avoiding coup',
+        description: 'Resign strategically to maintain influence while avoiding coup',
         effects: [
           {
             type: 'corporate_tier_reduction',
@@ -1241,8 +1198,7 @@ export const corporateEvents = [
     choices: [
       {
         label: 'Counter-Intelligence Operation',
-        description:
-          'Launch a counter-intelligence operation to track the spies',
+        description: 'Launch a counter-intelligence operation to track the spies',
         effects: [
           {
             type: 'raw_materials',
@@ -1278,8 +1234,7 @@ export const corporateEvents = [
           {
             type: 'daemon_paranoia',
             value: -10,
-            description:
-              'Reduced workplace satisfaction from security measures',
+            description: 'Reduced workplace satisfaction from security measures',
           },
         ],
       },
@@ -1316,8 +1271,7 @@ export const corporateEvents = [
     choices: [
       {
         label: 'Legal Defense',
-        description:
-          'Hire the best corporate lawyers to defend against charges',
+        description: 'Hire the best corporate lawyers to defend against charges',
         effects: [
           { type: 'credits', value: -600, description: 'Legal fees' },
           {
@@ -1529,13 +1483,7 @@ export const boardMemberTier: CorporateTier = {
   },
 };
 
-export const corporateTiers = [
-  associateTier,
-  managerTier,
-  directorTier,
-  vpTier,
-  boardMemberTier,
-];
+export const corporateTiers = [associateTier, managerTier, directorTier, vpTier, boardMemberTier];
 
 // Compliance System Templates
 export const complianceTemplates: ComplianceTask[] = [
@@ -1651,8 +1599,7 @@ export const surrealEvents = {
     {
       id: 'team_building_disaster',
       title: 'Trust Fall Catastrophe',
-      description:
-        'Mandatory team building exercise results in actual casualties.',
+      description: 'Mandatory team building exercise results in actual casualties.',
       type: 'choice' as const,
       tierLevel: 2,
       choices: [
@@ -1687,8 +1634,7 @@ export const surrealEvents = {
     {
       id: 'planetary_merger',
       title: 'Interdimensional Restructuring',
-      description:
-        'Corporate has decided to merge three planets into one department.',
+      description: 'Corporate has decided to merge three planets into one department.',
       type: 'automatic' as const,
       tierLevel: 3,
       effects: [
@@ -1705,8 +1651,7 @@ export const surrealEvents = {
     {
       id: 'rival_acquisition',
       title: 'Hostile Takeover Defense',
-      description:
-        'A rival corporation attempts to acquire your soul essence reserves.',
+      description: 'A rival corporation attempts to acquire your soul essence reserves.',
       type: 'choice' as const,
       tierLevel: 4,
       choices: [
@@ -1745,8 +1690,7 @@ export const surrealEvents = {
     {
       id: 'reality_restructure',
       title: 'Reality Reorganization Initiative',
-      description:
-        'The Board has voted to restructure the fundamental nature of existence.',
+      description: 'The Board has voted to restructure the fundamental nature of existence.',
       type: 'automatic' as const,
       tierLevel: 5,
       effects: [
@@ -1832,11 +1776,7 @@ export const rivalCorporations: CorporateRival[] = [
     activeOperations: [],
     relationshipWithPlayer: -50,
     lastActionDay: 0,
-    strategicGoals: [
-      'dominate_resources',
-      'eliminate_competition',
-      'maximize_efficiency',
-    ],
+    strategicGoals: ['dominate_resources', 'eliminate_competition', 'maximize_efficiency'],
   },
   {
     id: 'chaos_consulting',
@@ -1867,11 +1807,7 @@ export const rivalCorporations: CorporateRival[] = [
     activeOperations: [],
     relationshipWithPlayer: 10,
     lastActionDay: 0,
-    strategicGoals: [
-      'disrupt_status_quo',
-      'gather_intelligence',
-      'create_opportunities',
-    ],
+    strategicGoals: ['disrupt_status_quo', 'gather_intelligence', 'create_opportunities'],
   },
 ];
 
@@ -2071,11 +2007,7 @@ export const missionTemplates = {
         rewards: { credits: 150, soulEssence: 1 },
       },
     ],
-    failureConsequences: [
-      'reduced_stability',
-      'corporate_retaliation',
-      'reputation_loss',
-    ],
+    failureConsequences: ['reduced_stability', 'corporate_retaliation', 'reputation_loss'],
   },
   sabotage: {
     id: 'sabotage',
@@ -2102,11 +2034,7 @@ export const missionTemplates = {
         rewards: { credits: 200, experience: 50 },
       },
     ],
-    failureConsequences: [
-      'exposure_risk',
-      'security_increase',
-      'rival_attention',
-    ],
+    failureConsequences: ['exposure_risk', 'security_increase', 'rival_attention'],
   },
   diplomacy: {
     id: 'diplomacy',
@@ -2127,11 +2055,7 @@ export const missionTemplates = {
         rewards: { reputation: 25, futureOpportunities: ['joint_ventures'] },
       },
     ],
-    failureConsequences: [
-      'diplomatic_incident',
-      'alliance_breakdown',
-      'credibility_loss',
-    ],
+    failureConsequences: ['diplomatic_incident', 'alliance_breakdown', 'credibility_loss'],
   },
   reconnaissance: {
     id: 'reconnaissance',
@@ -2173,17 +2097,12 @@ export const missionTemplates = {
         rewards: { reputation: 15, bureaucraticLeverage: 1 },
       },
     ],
-    failureConsequences: [
-      'asset_lost',
-      'security_escalation',
-      'extraction_blacklist',
-    ],
+    failureConsequences: ['asset_lost', 'security_escalation', 'extraction_blacklist'],
   },
   infiltration_specialist: {
     id: 'infiltration_specialist',
     name: 'Deep Cover Operations',
-    description:
-      'Long-term infiltration requiring specialized daemon combinations',
+    description: 'Long-term infiltration requiring specialized daemon combinations',
     baseDuration: 120,
     primaryObjective: {
       type: 'primary' as const,
@@ -2240,11 +2159,7 @@ export const missionTemplates = {
         rewards: { morale: 15, bureaucraticLeverage: 2 },
       },
     ],
-    failureConsequences: [
-      'heavy_casualties',
-      'equipment_loss',
-      'tactical_failure',
-    ],
+    failureConsequences: ['heavy_casualties', 'equipment_loss', 'tactical_failure'],
   },
   multi_phase: {
     id: 'multi_phase',
@@ -2285,11 +2200,7 @@ export const missionTemplates = {
         rewards: { futureOpportunities: ['complete_restructuring'] },
       },
     ],
-    failureConsequences: [
-      'partial_completion',
-      'resource_waste',
-      'operational_exposure',
-    ],
+    failureConsequences: ['partial_completion', 'resource_waste', 'operational_exposure'],
   },
 };
 
@@ -2309,8 +2220,7 @@ export const corporateEventChains = {
         choices: [
           {
             label: 'Intensive Preparation Campaign',
-            description:
-              'Invest significant resources in preparation activities',
+            description: 'Invest significant resources in preparation activities',
             effects: [
               {
                 type: 'credits',
@@ -2417,8 +2327,7 @@ export const corporateEventChains = {
         choices: [
           {
             label: 'Expansion Initiative',
-            description:
-              'Leverage strong performance for territorial expansion',
+            description: 'Leverage strong performance for territorial expansion',
             effects: [
               {
                 type: 'new_planets_unlocked',
@@ -2492,8 +2401,7 @@ export const corporateEventChains = {
         choices: [
           {
             label: 'Aggressive Integration Strategy',
-            description:
-              'Lead integration efforts to secure advantageous position',
+            description: 'Lead integration efforts to secure advantageous position',
             effects: [
               {
                 type: 'bureaucratic_leverage',
@@ -2696,8 +2604,7 @@ export const endingScenarios = {
   profit: {
     id: 'profit_maximizer',
     title: 'The Profit Maximizer',
-    description:
-      'You have optimized every aspect of your operation for maximum revenue.',
+    description: 'You have optimized every aspect of your operation for maximum revenue.',
     unlocks: ['efficiency_bonuses', 'resource_multipliers'],
   },
   cult: {

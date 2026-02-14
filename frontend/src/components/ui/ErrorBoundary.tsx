@@ -76,12 +76,10 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
         <div className="min-h-screen bg-red-50 flex items-center justify-center p-4">
           <div className="max-w-md w-full bg-white rounded-lg shadow-lg p-6 text-center">
             <div className="text-6xl mb-4">💀</div>
-            <h1 className="text-2xl font-bold text-red-800 mb-4">
-              Critical System Error
-            </h1>
+            <h1 className="text-2xl font-bold text-red-800 mb-4">Critical System Error</h1>
             <p className="text-red-600 mb-6">
-              The Daemon Directorate has encountered a fatal error and cannot
-              continue. Your corporate empire may be in jeopardy.
+              The Daemon Directorate has encountered a fatal error and cannot continue. Your
+              corporate empire may be in jeopardy.
             </p>
             <div className="space-y-2 mb-6">
               <button
@@ -99,9 +97,7 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
             </div>
             {process.env.NODE_ENV === 'development' && (
               <details className="text-left text-sm bg-gray-100 p-3 rounded">
-                <summary className="font-medium cursor-pointer">
-                  Technical Details
-                </summary>
+                <summary className="font-medium cursor-pointer">Technical Details</summary>
                 <pre className="mt-2 text-xs overflow-auto">
                   {error?.message}
                   {error?.stack}
@@ -120,12 +116,10 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
           <div className="flex items-center mb-3">
             <div className="text-2xl mr-3">⚠️</div>
             <div>
-              <h3 className="font-bold text-yellow-800">
-                Feature Temporarily Unavailable
-              </h3>
+              <h3 className="font-bold text-yellow-800">Feature Temporarily Unavailable</h3>
               <p className="text-yellow-600 text-sm">
-                {context ? `The ${context} feature` : 'This feature'} has
-                encountered an error and cannot be displayed.
+                {context ? `The ${context} feature` : 'This feature'} has encountered an error and
+                cannot be displayed.
               </p>
             </div>
           </div>
@@ -178,9 +172,7 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
 }
 
 // Convenience wrapper components
-export const AppErrorBoundary: React.FC<{ children: ReactNode }> = ({
-  children,
-}) => (
+export const AppErrorBoundary: React.FC<{ children: ReactNode }> = ({ children }) => (
   <ErrorBoundary level="app" context="Application">
     {children}
   </ErrorBoundary>

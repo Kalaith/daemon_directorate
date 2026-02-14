@@ -4,9 +4,7 @@ import React from 'react';
 const TailwindConversionExample: React.FC = () => {
   return (
     <div className="space-y-8 p-6">
-      <h2 className="text-2xl font-semibold text-text mb-4">
-        Tailwind CSS Conversion Examples
-      </h2>
+      <h2 className="text-2xl font-semibold text-text mb-4">Tailwind CSS Conversion Examples</h2>
 
       {/* Daemon Card Example - converted from .daemon-card CSS class */}
       <div className="bg-surface border border-border rounded-lg p-4 transition-all duration-normal hover:border-primary hover:shadow-md">
@@ -20,25 +18,15 @@ const TailwindConversionExample: React.FC = () => {
         {/* Progress bars example */}
         <div className="grid grid-cols-2 gap-2 mb-3">
           <div className="flex flex-col gap-1">
-            <span className="text-xs text-text-secondary font-medium">
-              Health
-            </span>
+            <span className="text-xs text-text-secondary font-medium">Health</span>
             <div className="progress-bar">
-              <div
-                className="progress-fill health"
-                style={{ width: '75%' }}
-              ></div>
+              <div className="progress-fill health" style={{ width: '75%' }}></div>
             </div>
           </div>
           <div className="flex flex-col gap-1">
-            <span className="text-xs text-text-secondary font-medium">
-              Morale
-            </span>
+            <span className="text-xs text-text-secondary font-medium">Morale</span>
             <div className="progress-bar">
-              <div
-                className="progress-fill morale"
-                style={{ width: '60%' }}
-              ></div>
+              <div className="progress-fill morale" style={{ width: '60%' }}></div>
             </div>
           </div>
         </div>
@@ -120,13 +108,9 @@ const TailwindConversionExample: React.FC = () => {
       <div className="bg-bg-7 p-4 rounded-base border border-border">
         <h4 className="font-semibold mb-2">Conversion Strategy:</h4>
         <ul className="text-sm text-text-secondary space-y-1 list-disc list-inside">
-          <li>
-            Replace layout utilities (flex, grid, spacing) with Tailwind classes
-          </li>
+          <li>Replace layout utilities (flex, grid, spacing) with Tailwind classes</li>
           <li>Convert simple component styles to Tailwind utilities</li>
-          <li>
-            Keep complex components (.progress-bar, .status-dot) as custom CSS
-          </li>
+          <li>Keep complex components (.progress-bar, .status-dot) as custom CSS</li>
           <li>Use CSS custom properties with Tailwind's color system</li>
           <li>Maintain game-specific styling in custom CSS where needed</li>
         </ul>

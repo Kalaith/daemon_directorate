@@ -76,10 +76,7 @@ export interface UIActions {
 
 export type UISlice = UIState & UIActions;
 
-export const createUISlice: StateCreator<UISlice, [], [], UISlice> = (
-  set,
-  get
-) => ({
+export const createUISlice: StateCreator<UISlice, [], [], UISlice> = (set, get) => ({
   // Initial state
   currentTab: 'dashboard',
   showTutorial: false,

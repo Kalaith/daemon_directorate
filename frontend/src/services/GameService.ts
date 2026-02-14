@@ -1,16 +1,7 @@
 // services/GameService.ts - Service layer abstraction for game operations
-import type {
-  Daemon,
-  Planet,
-  GameResources,
-  Mission,
-  MissionResult,
-} from '../types/game';
+import type { Daemon, Planet, GameResources, Mission, MissionResult } from '../types/game';
 import type { ZustandGameStore } from '../types/storeInterfaces';
-import {
-  withErrorHandling,
-  ErrorCategory,
-} from '../utils/standardErrorHandling';
+import { withErrorHandling, ErrorCategory } from '../utils/standardErrorHandling';
 
 interface GameServiceInterface {
   // Daemon operations
@@ -44,14 +35,10 @@ class GameService implements GameServiceInterface {
   recruitDaemon = withErrorHandling(
     async (daemonId: string): Promise<Daemon> => {
       const state = this.store.getState();
-      const candidate = state.recruitmentPool.find(
-        (d: Daemon) => d.id === daemonId
-      );
+      const candidate = state.recruitmentPool.find((d: Daemon) => d.id === daemonId);
 
       if (!candidate) {
-        throw new Error(
-          `Daemon with id ${daemonId} not found in recruitment pool`
-        );
+        throw new Error(`Daemon with id ${daemonId} not found in recruitment pool`);
       }
 
       if (!this.store.getState().canAfford(candidate.cost || 100)) {
@@ -219,9 +206,7 @@ class GameService implements GameServiceInterface {
 }
 
 // Factory function to create service instance
-export const createGameService = (
-  storeInstance: ZustandGameStore
-): GameServiceInterface => {
+export const createGameService = (storeInstance: ZustandGameStore): GameServiceInterface => {
   return new GameService(storeInstance);
 };
 

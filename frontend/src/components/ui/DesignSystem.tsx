@@ -1,10 +1,6 @@
 // components/ui/DesignSystem.tsx - Reusable components using design tokens
 import React, { forwardRef } from 'react';
-import {
-  componentVariants,
-  ANIMATIONS,
-  layoutPresets,
-} from '../../theme/tokens';
+import { componentVariants, ANIMATIONS, layoutPresets } from '../../theme/tokens';
 
 // Enhanced Button component with variants
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
@@ -72,11 +68,7 @@ interface BadgeProps {
   className?: string;
 }
 
-export const Badge: React.FC<BadgeProps> = ({
-  variant = 'neutral',
-  children,
-  className = '',
-}) => {
+export const Badge: React.FC<BadgeProps> = ({ variant = 'neutral', children, className = '' }) => {
   return (
     <span
       className={`
@@ -98,10 +90,7 @@ interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 export const Card = forwardRef<HTMLDivElement, CardProps>(
-  (
-    { variant = 'default', padding = 'md', children, className = '', ...props },
-    ref
-  ) => {
+  ({ variant = 'default', padding = 'md', children, className = '', ...props }, ref) => {
     const paddingClasses = {
       sm: 'p-4',
       md: 'p-6',
@@ -183,9 +172,7 @@ export const ProgressBar: React.FC<ProgressBarProps> = ({
           </span>
         </div>
       )}
-      <div
-        className={`w-full bg-neutral-200 rounded-full ${sizeClasses[size]}`}
-      >
+      <div className={`w-full bg-neutral-200 rounded-full ${sizeClasses[size]}`}>
         <div
           className={`${getBarColor()} ${sizeClasses[size]} rounded-full ${ANIMATIONS.transition.normal}`}
           style={{ width: `${percentage}%` }}
@@ -254,9 +241,7 @@ export const GridResponsive: React.FC<{
   children: React.ReactNode;
   className?: string;
 }> = ({ children, className = '' }) => (
-  <div className={`${layoutPresets.gridResponsive} ${className}`}>
-    {children}
-  </div>
+  <div className={`${layoutPresets.gridResponsive} ${className}`}>{children}</div>
 );
 
 export const Stack: React.FC<{
@@ -281,9 +266,7 @@ export const Stack: React.FC<{
   const flexClass = direction === 'horizontal' ? 'flex' : '';
 
   return (
-    <div
-      className={`${flexClass} ${spacingClasses[direction][spacing]} ${className}`}
-    >
+    <div className={`${flexClass} ${spacingClasses[direction][spacing]} ${className}`}>
       {children}
     </div>
   );

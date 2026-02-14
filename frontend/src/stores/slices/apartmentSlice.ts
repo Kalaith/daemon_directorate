@@ -1,10 +1,6 @@
 // stores/slices/apartmentSlice.ts - Apartment and room management
 import type { StateCreator } from 'zustand';
-import type {
-  Room,
-  RoomSynergyBonus,
-  SpecializationType,
-} from '../../types/game';
+import type { Room, RoomSynergyBonus, SpecializationType } from '../../types/game';
 import { advancedRooms } from '../../constants/gameData';
 
 export interface MemorialBonuses {
@@ -31,10 +27,7 @@ export interface ApartmentActions {
   getRoomSynergies: () => RoomSynergyBonus[];
   unlockAdvancedRoom: (roomName: string) => boolean;
   canUnlockAdvancedRoom: (roomName: string) => boolean;
-  processTraining: (
-    daemonId: string,
-    newSpecialization: SpecializationType
-  ) => void;
+  processTraining: (daemonId: string, newSpecialization: SpecializationType) => void;
   processRecovery: (daemonId: string) => void;
   processMissionPlanning: () => number;
   processEquipmentInnovation: () => string | null;
@@ -131,9 +124,7 @@ export const createApartmentSlice: StateCreator<
     }
 
     const canAfford =
-      'canAfford' in composedState
-        ? composedState.canAfford(room.upgrade_cost)
-        : false;
+      'canAfford' in composedState ? composedState.canAfford(room.upgrade_cost) : false;
     if (!canAfford) {
       console.warn('Cannot afford room upgrade:', room.upgrade_cost);
       return;
@@ -229,8 +220,7 @@ export const createApartmentSlice: StateCreator<
 
   calculateRoomEfficiency: (room: Room) => {
     const baseEfficiency = 50 + room.level * 10;
-    const assignmentBonus =
-      (room.assignedDaemons.length / room.maxAssignments) * 20;
+    const assignmentBonus = (room.assignedDaemons.length / room.maxAssignments) * 20;
     return Math.min(100, baseEfficiency + assignmentBonus);
   },
 
@@ -265,9 +255,7 @@ export const createApartmentSlice: StateCreator<
     if (!canUnlock) return false;
 
     set(state => ({
-      rooms: state.rooms.map(room =>
-        room.name === roomName ? { ...room, unlocked: true } : room
-      ),
+      rooms: state.rooms.map(room => (room.name === roomName ? { ...room, unlocked: true } : room)),
     }));
     return true;
   },
@@ -281,10 +269,7 @@ export const createApartmentSlice: StateCreator<
     return true;
   },
 
-  processTraining: (
-    daemonId: string,
-    newSpecialization: SpecializationType
-  ) => {
+  processTraining: (daemonId: string, newSpecialization: SpecializationType) => {
     // Implementation would update daemon specialization
     console.log(`Training ${daemonId} to ${newSpecialization}`);
   },

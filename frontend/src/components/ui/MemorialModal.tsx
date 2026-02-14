@@ -48,8 +48,8 @@ const MemorialModal: React.FC = () => {
               Corporate Legacy:
             </span>
             <span className="text-daemon-text font-mono ml-2">
-              Their dedication to bureaucratic excellence will be remembered in
-              the employee handbook.
+              Their dedication to bureaucratic excellence will be remembered in the employee
+              handbook.
             </span>
           </div>
         </div>

@@ -19,9 +19,7 @@ export const CorporateLadder: React.FC = () => {
     meetsRequirements,
   } = useGameStore();
 
-  const currentTierIndex = corporateTiers.findIndex(
-    tier => tier.id === corporateTier.id
-  );
+  const currentTierIndex = corporateTiers.findIndex(tier => tier.id === corporateTier.id);
   const nextTier = corporateTiers[currentTierIndex + 1];
 
   const getRequirementStatus = (
@@ -54,9 +52,7 @@ export const CorporateLadder: React.FC = () => {
       <div className="space-y-4">
         {/* Current Tier */}
         <div className="text-center p-6 bg-daemon-surface border-2 border-daemon-gold rounded-lg shadow-gold">
-          <div className="text-3xl mb-2 text-daemon-gold">
-            {getTierIcon(corporateTier.level)}
-          </div>
+          <div className="text-3xl mb-2 text-daemon-gold">{getTierIcon(corporateTier.level)}</div>
           <h3 className="text-xl font-header font-bold text-daemon-text-bright">
             {corporateTier.name}
           </h3>
@@ -162,30 +158,28 @@ export const CorporateLadder: React.FC = () => {
               Promotion to {nextTier.name} Requirements:
             </h4>
             <div className="space-y-2">
-              {Object.entries(getRequirementStatus(nextTier.requirements)).map(
-                ([key, status]) => {
-                  if (status.required === 0) return null;
+              {Object.entries(getRequirementStatus(nextTier.requirements)).map(([key, status]) => {
+                if (status.required === 0) return null;
 
-                  return (
-                    <div
-                      key={key}
-                      className={`flex justify-between items-center p-3 rounded-lg border ${
-                        status.met
-                          ? 'bg-daemon-success/20 border-daemon-success text-daemon-success'
-                          : 'bg-daemon-danger/20 border-daemon-danger text-daemon-danger'
-                      }`}
-                    >
-                      <span className="text-sm font-mono uppercase tracking-wide">
-                        {CorporateProgressionService.formatRequirementKey(key)}:
-                      </span>
-                      <span className="text-sm font-mono font-semibold">
-                        {status.current} / {status.required}
-                        {status.met ? ' ✓' : ' ✗'}
-                      </span>
-                    </div>
-                  );
-                }
-              )}
+                return (
+                  <div
+                    key={key}
+                    className={`flex justify-between items-center p-3 rounded-lg border ${
+                      status.met
+                        ? 'bg-daemon-success/20 border-daemon-success text-daemon-success'
+                        : 'bg-daemon-danger/20 border-daemon-danger text-daemon-danger'
+                    }`}
+                  >
+                    <span className="text-sm font-mono uppercase tracking-wide">
+                      {CorporateProgressionService.formatRequirementKey(key)}:
+                    </span>
+                    <span className="text-sm font-mono font-semibold">
+                      {status.current} / {status.required}
+                      {status.met ? ' ✓' : ' ✗'}
+                    </span>
+                  </div>
+                );
+              })}
             </div>
 
             {meetsRequirements(nextTier.requirements) && (

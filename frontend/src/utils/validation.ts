@@ -83,11 +83,7 @@ class Validator {
     }
 
     // Pattern validation for strings
-    if (
-      schema.type === 'string' &&
-      typeof value === 'string' &&
-      schema.pattern
-    ) {
+    if (schema.type === 'string' && typeof value === 'string' && schema.pattern) {
       if (!schema.pattern.test(value)) {
         errors.push(schema.message || `${context.path} format is invalid`);
       }
@@ -133,11 +129,7 @@ class Validator {
     };
   }
 
-  private validateType(
-    value: unknown,
-    schema: Schema,
-    context: ValidationContext
-  ): string | null {
+  private validateType(value: unknown, schema: Schema, context: ValidationContext): string | null {
     const actualType = Array.isArray(value) ? 'array' : typeof value;
 
     if (actualType !== schema.type) {
@@ -239,8 +231,7 @@ export const GameSchemas = {
       required: true,
       min: 0,
       max: 999999999,
-      validator: (value: unknown) =>
-        typeof value === 'number' && Number.isInteger(value),
+      validator: (value: unknown) => typeof value === 'number' && Number.isInteger(value),
       message: 'Resource amount must be a positive integer',
     },
 
@@ -249,18 +240,14 @@ export const GameSchemas = {
       required: true,
       min: 1,
       max: gameConfig.get('balance.maxDaemonsActive') as number,
-      validator: (value: unknown) =>
-        typeof value === 'number' && Number.isInteger(value),
+      validator: (value: unknown) => typeof value === 'number' && Number.isInteger(value),
       message: `Team size must be between 1 and ${gameConfig.get('balance.maxDaemonsActive')} daemons`,
     },
   },
 };
 
 // Validation utility functions
-export const validateInput = <T = unknown>(
-  value: unknown,
-  schema: Schema
-): T => {
+export const validateInput = <T = unknown>(value: unknown, schema: Schema): T => {
   const result = validator.validate<T>(value, schema);
 
   if (!result.isValid) {
@@ -279,34 +266,24 @@ export const validateInputSafe = <T = unknown>(
 
 // Game-specific validation functions
 export const GameValidators = {
-  validateDaemon: (daemon: unknown) =>
-    validateInput(daemon, GameSchemas.daemon),
-  validateResources: (resources: unknown) =>
-    validateInput(resources, GameSchemas.resources),
-  validateMission: (mission: unknown) =>
-    validateInput(mission, GameSchemas.mission),
-  validatePlanet: (planet: unknown) =>
-    validateInput(planet, GameSchemas.planet),
+  validateDaemon: (daemon: unknown) => validateInput(daemon, GameSchemas.daemon),
+  validateResources: (resources: unknown) => validateInput(resources, GameSchemas.resources),
+  validateMission: (mission: unknown) => validateInput(mission, GameSchemas.mission),
+  validatePlanet: (planet: unknown) => validateInput(planet, GameSchemas.planet),
 
   // Safe versions that return validation results
-  validateDaemonSafe: (daemon: unknown) =>
-    validateInputSafe(daemon, GameSchemas.daemon),
+  validateDaemonSafe: (daemon: unknown) => validateInputSafe(daemon, GameSchemas.daemon),
   validateResourcesSafe: (resources: unknown) =>
     validateInputSafe(resources, GameSchemas.resources),
-  validateMissionSafe: (mission: unknown) =>
-    validateInputSafe(mission, GameSchemas.mission),
-  validatePlanetSafe: (planet: unknown) =>
-    validateInputSafe(planet, GameSchemas.planet),
+  validateMissionSafe: (mission: unknown) => validateInputSafe(mission, GameSchemas.mission),
+  validatePlanetSafe: (planet: unknown) => validateInputSafe(planet, GameSchemas.planet),
 
   // User input validators
-  validateDaemonName: (name: unknown) =>
-    validateInput(name, GameSchemas.userInput.daemonName),
-  validatePlanetName: (name: unknown) =>
-    validateInput(name, GameSchemas.userInput.planetName),
+  validateDaemonName: (name: unknown) => validateInput(name, GameSchemas.userInput.daemonName),
+  validatePlanetName: (name: unknown) => validateInput(name, GameSchemas.userInput.planetName),
   validateResourceAmount: (amount: unknown) =>
     validateInput(amount, GameSchemas.userInput.resourceAmount),
-  validateTeamSize: (size: unknown) =>
-    validateInput(size, GameSchemas.userInput.teamSize),
+  validateTeamSize: (size: unknown) => validateInput(size, GameSchemas.userInput.teamSize),
 };
 
 // React hook for validation

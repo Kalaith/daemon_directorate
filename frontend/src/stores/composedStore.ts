@@ -3,29 +3,14 @@ import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import { subscribeWithSelector } from 'zustand/middleware';
 import { createDaemonSlice, type DaemonSlice } from './slices/daemonSlice';
-import {
-  createResourceSlice,
-  type ResourceSlice,
-} from './slices/resourceSlice';
+import { createResourceSlice, type ResourceSlice } from './slices/resourceSlice';
 import { createMissionSlice, type MissionSlice } from './slices/missionSlice';
 import { createUISlice, type UISlice } from './slices/uiSlice';
-import {
-  createCorporateSlice,
-  type CorporateSlice,
-} from './slices/corporateSlice';
-import {
-  createComplianceSlice,
-  type ComplianceSlice,
-} from './slices/complianceSlice';
+import { createCorporateSlice, type CorporateSlice } from './slices/corporateSlice';
+import { createComplianceSlice, type ComplianceSlice } from './slices/complianceSlice';
 import { createEndgameSlice, type EndgameSlice } from './slices/endgameSlice';
-import {
-  createApartmentSlice,
-  type ApartmentSlice,
-} from './slices/apartmentSlice';
-import {
-  createEquipmentSlice,
-  type EquipmentSlice,
-} from './slices/equipmentSlice';
+import { createApartmentSlice, type ApartmentSlice } from './slices/apartmentSlice';
+import { createEquipmentSlice, type EquipmentSlice } from './slices/equipmentSlice';
 import { createCoreSlice, type CoreSlice } from './slices/coreSlice';
 
 // Combined store type
@@ -177,10 +162,8 @@ export const useCorporate = () =>
   }));
 
 // Individual selectors to avoid object recreation
-export const useCorporateRivals = () =>
-  useGameStore(state => state.corporateRivals);
-export const useInitializeRivals = () =>
-  useGameStore(state => state.initializeRivals);
+export const useCorporateRivals = () => useGameStore(state => state.corporateRivals);
+export const useInitializeRivals = () => useGameStore(state => state.initializeRivals);
 export const useEngageRival = () => useGameStore(state => state.engageRival);
 export const useCalculateRivalSuccessChance = () =>
   useGameStore(state => state.calculateRivalSuccessChance);

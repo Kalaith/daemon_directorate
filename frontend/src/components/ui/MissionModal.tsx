@@ -30,17 +30,14 @@ const MissionModal: React.FC = () => {
 
         <div className="mb-8">
           <h3 className="font-header font-semibold text-daemon-text-bright mb-4 text-lg">
-            Operation:{' '}
-            <span className="text-daemon-primary font-mono">{planet.name}</span>
+            Operation: <span className="text-daemon-primary font-mono">{planet.name}</span>
           </h3>
           <div className="grid grid-cols-2 gap-4 text-sm text-daemon-text bg-daemon-surface p-4 rounded-lg border border-daemon-secondary">
             <div>
               <span className="text-daemon-text-muted font-mono uppercase tracking-wide">
                 Target:
               </span>{' '}
-              <span className="text-daemon-text-bright font-mono font-semibold">
-                {planet.type}
-              </span>
+              <span className="text-daemon-text-bright font-mono font-semibold">{planet.type}</span>
             </div>
             <div>
               <span className="text-daemon-text-muted font-mono uppercase tracking-wide">
@@ -68,8 +65,8 @@ const MissionModal: React.FC = () => {
             </div>
           </div>
           <p className="mt-4 text-daemon-text bg-daemon-surface p-4 rounded-lg border border-daemon-secondary">
-            Select operatives for deployment. Mission success depends on team
-            composition and equipment readiness.
+            Select operatives for deployment. Mission success depends on team composition and
+            equipment readiness.
           </p>
         </div>
 
@@ -79,36 +76,24 @@ const MissionModal: React.FC = () => {
           </h4>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="p-4 bg-daemon-surface rounded-lg border border-daemon-secondary">
-              <h5 className="font-semibold text-daemon-text-bright mb-2">
-                Corporate Conquest
-              </h5>
+              <h5 className="font-semibold text-daemon-text-bright mb-2">Corporate Conquest</h5>
               <p className="text-sm text-daemon-text mb-2">
                 Standard territorial acquisition operation
               </p>
-              <p className="text-xs text-daemon-text-muted">
-                Requirements: 2+ operatives
-              </p>
+              <p className="text-xs text-daemon-text-muted">Requirements: 2+ operatives</p>
             </div>
 
             <div className="p-4 bg-daemon-surface rounded-lg border border-daemon-secondary">
-              <h5 className="font-semibold text-daemon-text-bright mb-2">
-                Deep Cover Operations
-              </h5>
-              <p className="text-sm text-daemon-text mb-2">
-                Long-term infiltration mission
-              </p>
+              <h5 className="font-semibold text-daemon-text-bright mb-2">Deep Cover Operations</h5>
+              <p className="text-sm text-daemon-text mb-2">Long-term infiltration mission</p>
               <p className="text-xs text-daemon-text-muted">
                 Requirements: Infiltration + Sabotage specialists
               </p>
             </div>
 
             <div className="p-4 bg-daemon-surface rounded-lg border border-daemon-secondary">
-              <h5 className="font-semibold text-daemon-text-bright mb-2">
-                Tactical Assault
-              </h5>
-              <p className="text-sm text-daemon-text mb-2">
-                High-intensity combat operation
-              </p>
+              <h5 className="font-semibold text-daemon-text-bright mb-2">Tactical Assault</h5>
+              <p className="text-sm text-daemon-text mb-2">High-intensity combat operation</p>
               <p className="text-xs text-daemon-text-muted">
                 Requirements: 3+ Combat specialists only
               </p>

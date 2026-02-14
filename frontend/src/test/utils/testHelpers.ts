@@ -4,10 +4,7 @@ import type { RenderOptions } from '@testing-library/react';
 import type { ReactElement } from 'react';
 
 // Simple render function - just wrapping regular render for now
-export const renderWithProviders = (
-  ui: ReactElement,
-  options?: RenderOptions
-) => {
+export const renderWithProviders = (ui: ReactElement, options?: RenderOptions) => {
   return render(ui, options);
 };
 

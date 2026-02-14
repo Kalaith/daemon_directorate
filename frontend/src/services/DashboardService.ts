@@ -1,11 +1,5 @@
 // services/DashboardService.ts - Dashboard business logic
-import type {
-  Daemon,
-  CorporateEvent,
-  ComplianceTask,
-  Story,
-  LegacyBook,
-} from '../types/game';
+import type { Daemon, CorporateEvent, ComplianceTask, Story, LegacyBook } from '../types/game';
 import { daemonBalance } from '../constants/gameBalance';
 
 export interface DashboardStats {
@@ -36,13 +30,9 @@ export class DashboardService {
     const criticalLifespans = this.calculateCriticalLifespans(activeDaemons);
 
     const latestEvent =
-      corporateEvents.length > 0
-        ? corporateEvents[corporateEvents.length - 1]
-        : null;
+      corporateEvents.length > 0 ? corporateEvents[corporateEvents.length - 1] : null;
 
-    const activeComplianceTasks = complianceTasks.filter(
-      task => !task.completed
-    );
+    const activeComplianceTasks = complianceTasks.filter(task => !task.completed);
     const overdueComplianceTasks = activeComplianceTasks.filter(
       task => daysPassed >= task.deadline
     );
@@ -78,29 +68,23 @@ export class DashboardService {
   }
 
   private static calculateCriticalLifespans(activeDaemons: Daemon[]): number {
-    return activeDaemons.filter(
-      d => d.lifespanDays <= daemonBalance.CRITICAL_LIFESPAN_THRESHOLD
-    ).length;
+    return activeDaemons.filter(d => d.lifespanDays <= daemonBalance.CRITICAL_LIFESPAN_THRESHOLD)
+      .length;
   }
 
   static getHealthStatusClass(health: number): string {
     if (health >= daemonBalance.HEALTH_THRESHOLDS.GOOD) return 'text-green-600';
-    if (health >= daemonBalance.HEALTH_THRESHOLDS.WARNING)
-      return 'text-orange-600';
+    if (health >= daemonBalance.HEALTH_THRESHOLDS.WARNING) return 'text-orange-600';
     return 'text-red-600';
   }
 
   static getMoraleStatusClass(morale: number): string {
     if (morale >= daemonBalance.MORALE_THRESHOLDS.GOOD) return 'text-teal-600';
-    if (morale >= daemonBalance.MORALE_THRESHOLDS.WARNING)
-      return 'text-orange-600';
+    if (morale >= daemonBalance.MORALE_THRESHOLDS.WARNING) return 'text-orange-600';
     return 'text-red-600';
   }
 
-  static getComplianceStatusClass(
-    overdueCount: number,
-    activeCount: number
-  ): string {
+  static getComplianceStatusClass(overdueCount: number, activeCount: number): string {
     if (overdueCount > 0) return 'from-red-600 to-pink-600';
     if (activeCount > 0) return 'from-yellow-600 to-orange-600';
     return 'from-green-600 to-emerald-600';

@@ -1,10 +1,5 @@
 // utils/standardErrorHandling.ts - Standardized error handling across all layers
-import {
-  GameError,
-  ValidationError,
-  BusinessRuleError,
-  SystemError,
-} from './errorHandling';
+import { GameError, ValidationError, BusinessRuleError, SystemError } from './errorHandling';
 
 // Error categories for consistent handling
 export const ErrorCategory = {
@@ -44,11 +39,7 @@ export const withErrorHandling = <Args extends unknown[], Return>(
 };
 
 // Centralized error handling logic
-export const handleError = (
-  error: unknown,
-  context: string,
-  category: ErrorCategory
-): void => {
+export const handleError = (error: unknown, context: string, category: ErrorCategory): void => {
   const gameError = normalizeError(error, context, category);
 
   // Log error for debugging
@@ -62,11 +53,7 @@ export const handleError = (
 };
 
 // Convert any error to GameError
-const normalizeError = (
-  error: unknown,
-  context: string,
-  category: ErrorCategory
-): GameError => {
+const normalizeError = (error: unknown, context: string, category: ErrorCategory): GameError => {
   if (error instanceof GameError) {
     return error;
   }
@@ -86,11 +73,7 @@ const normalizeError = (
 };
 
 // Structured logging
-const logError = (
-  error: GameError,
-  context: string,
-  category: ErrorCategory
-): void => {
+const logError = (error: GameError, context: string, category: ErrorCategory): void => {
   const logData = {
     context,
     category,
@@ -118,11 +101,7 @@ const logError = (
 };
 
 // Error reporting (would integrate with services like Sentry)
-const reportError = (
-  error: GameError,
-  context: string,
-  category: ErrorCategory
-): void => {
+const reportError = (error: GameError, context: string, category: ErrorCategory): void => {
   // Suppress unused parameter warnings - these will be used when error reporting is implemented
   void error;
   void context;
@@ -183,11 +162,7 @@ export const withGameActionErrorHandling = <Args extends unknown[], Return>(
   action: (...args: Args) => Return,
   actionName: string
 ): ((...args: Args) => Return) => {
-  return withErrorHandling(
-    action,
-    `Game Action: ${actionName}`,
-    ErrorCategory.BUSINESS_RULE
-  );
+  return withErrorHandling(action, `Game Action: ${actionName}`, ErrorCategory.BUSINESS_RULE);
 };
 
 // Validation wrapper
@@ -195,11 +170,7 @@ export const withValidation = <Args extends unknown[], Return>(
   fn: (...args: Args) => Return,
   validationName: string
 ): ((...args: Args) => Return) => {
-  return withErrorHandling(
-    fn,
-    `Validation: ${validationName}`,
-    ErrorCategory.VALIDATION
-  );
+  return withErrorHandling(fn, `Validation: ${validationName}`, ErrorCategory.VALIDATION);
 };
 
 // Network operation wrapper
@@ -207,11 +178,7 @@ export const withNetworkErrorHandling = <Args extends unknown[], Return>(
   fn: (...args: Args) => Return,
   operationName: string
 ): ((...args: Args) => Return) => {
-  return withErrorHandling(
-    fn,
-    `Network: ${operationName}`,
-    ErrorCategory.NETWORK
-  );
+  return withErrorHandling(fn, `Network: ${operationName}`, ErrorCategory.NETWORK);
 };
 
 // Component error handler
@@ -219,11 +186,7 @@ export const withComponentErrorHandling = <Args extends unknown[], Return>(
   fn: (...args: Args) => Return,
   componentName: string
 ): ((...args: Args) => Return) => {
-  return withErrorHandling(
-    fn,
-    `Component: ${componentName}`,
-    ErrorCategory.SYSTEM
-  );
+  return withErrorHandling(fn, `Component: ${componentName}`, ErrorCategory.SYSTEM);
 };
 
 // Retry wrapper with exponential backoff
@@ -255,11 +218,7 @@ export const withRetry = <T extends (...args: unknown[]) => unknown>(
       }
     }
 
-    handleError(
-      lastError,
-      `${context} (after ${maxRetries} attempts)`,
-      ErrorCategory.SYSTEM
-    );
+    handleError(lastError, `${context} (after ${maxRetries} attempts)`, ErrorCategory.SYSTEM);
     throw lastError;
   }) as T;
 };
@@ -267,10 +226,7 @@ export const withRetry = <T extends (...args: unknown[]) => unknown>(
 // Error boundary integration
 export const createErrorBoundaryHandler = (context: string) => {
   return (error: Error) => {
-    const gameError = new SystemError(
-      `Component error in ${context}: ${error.message}`,
-      error
-    );
+    const gameError = new SystemError(`Component error in ${context}: ${error.message}`, error);
 
     handleError(gameError, `Error Boundary: ${context}`, ErrorCategory.SYSTEM);
   };

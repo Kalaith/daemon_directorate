@@ -1,10 +1,5 @@
 // services/CorporateProgressionService.ts - Business logic for corporate tier progression
-import type {
-  CorporateTier,
-  Planet,
-  CorporateRival,
-  DaemonLegacy,
-} from '../types/game';
+import type { CorporateTier, Planet, CorporateRival, DaemonLegacy } from '../types/game';
 import { uiConstants } from '../constants/gameBalance';
 
 export interface ProgressionRequirements {
@@ -35,13 +30,8 @@ export class CorporateProgressionService {
     promotionProgress: Record<string, number>
   ): ProgressionRequirements {
     const conqueredPlanets = (planets || []).filter(p => p.conquered).length;
-    const maxGeneration = Math.max(
-      0,
-      ...Object.values(legacyBook || {}).map(l => l.generation)
-    );
-    const defeatedRivals = (corporateRivals || []).filter(
-      r => r.defeated
-    ).length;
+    const maxGeneration = Math.max(0, ...Object.values(legacyBook || {}).map(l => l.generation));
+    const defeatedRivals = (corporateRivals || []).filter(r => r.defeated).length;
     const completedHRReviews = (promotionProgress || {}).hrReviews || 0;
     const complianceAudits = (promotionProgress || {}).complianceAudits || 0;
 
@@ -49,9 +39,7 @@ export class CorporateProgressionService {
       planetsControlled: {
         current: conqueredPlanets,
         required: requirements.planetsControlled || 0,
-        met:
-          !requirements.planetsControlled ||
-          conqueredPlanets >= requirements.planetsControlled,
+        met: !requirements.planetsControlled || conqueredPlanets >= requirements.planetsControlled,
       },
       daysLived: {
         current: daysPassed,
@@ -61,30 +49,23 @@ export class CorporateProgressionService {
       legacyGenerations: {
         current: maxGeneration,
         required: requirements.legacyGenerations || 0,
-        met:
-          !requirements.legacyGenerations ||
-          maxGeneration >= requirements.legacyGenerations,
+        met: !requirements.legacyGenerations || maxGeneration >= requirements.legacyGenerations,
       },
       defeatedRivals: {
         current: defeatedRivals,
         required: requirements.defeatedRivals || 0,
-        met:
-          !requirements.defeatedRivals ||
-          defeatedRivals >= requirements.defeatedRivals,
+        met: !requirements.defeatedRivals || defeatedRivals >= requirements.defeatedRivals,
       },
       completedHRReviews: {
         current: completedHRReviews,
         required: requirements.completedHRReviews || 0,
         met:
-          !requirements.completedHRReviews ||
-          completedHRReviews >= requirements.completedHRReviews,
+          !requirements.completedHRReviews || completedHRReviews >= requirements.completedHRReviews,
       },
       complianceAudits: {
         current: complianceAudits,
         required: requirements.complianceAudits || 0,
-        met:
-          !requirements.complianceAudits ||
-          complianceAudits >= requirements.complianceAudits,
+        met: !requirements.complianceAudits || complianceAudits >= requirements.complianceAudits,
       },
     };
   }
@@ -99,9 +80,7 @@ export class CorporateProgressionService {
   /**
    * Check if all requirements are met for a tier
    */
-  static meetsAllRequirements(
-    requirementStatus: ProgressionRequirements
-  ): boolean {
+  static meetsAllRequirements(requirementStatus: ProgressionRequirements): boolean {
     return Object.values(requirementStatus).every(status => status.met);
   }
 
@@ -115,17 +94,13 @@ export class CorporateProgressionService {
   /**
    * Calculate promotion progress percentage
    */
-  static calculatePromotionProgress(
-    requirementStatus: ProgressionRequirements
-  ): number {
+  static calculatePromotionProgress(requirementStatus: ProgressionRequirements): number {
     const totalRequirements = Object.values(requirementStatus).filter(
       status => status.required > 0
     );
     if (totalRequirements.length === 0) return 100;
 
     const metRequirements = totalRequirements.filter(status => status.met);
-    return Math.round(
-      (metRequirements.length / totalRequirements.length) * 100
-    );
+    return Math.round((metRequirements.length / totalRequirements.length) * 100);
   }
 }

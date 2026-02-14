@@ -46,10 +46,7 @@ export interface UIStateActions {
 export interface ResourceActions {
   canAfford: (cost: number | Partial<GameResources>) => boolean;
   spendCredits: (amount: number) => boolean;
-  spendResourceBatch: (
-    costs: Partial<GameResources>,
-    reason?: string
-  ) => boolean;
+  spendResourceBatch: (costs: Partial<GameResources>, reason?: string) => boolean;
   addResources: (
     credits?: number,
     soulEssence?: number,
@@ -79,10 +76,7 @@ export interface MissionActions {
   executeMission: (missionType?: string) => MissionResult;
   generateProceduralMissions: () => void;
   processMissionConsequences: (consequences: MissionConsequence[]) => void;
-  evaluateMissionObjectives: (
-    mission: Mission,
-    result: MissionResult
-  ) => MissionResult;
+  evaluateMissionObjectives: (mission: Mission, result: MissionResult) => MissionResult;
 }
 
 // Room and apartment management actions
@@ -125,10 +119,7 @@ export interface ComplianceActions {
 
 // Legacy system actions
 export interface LegacyActions {
-  addLegacyStory: (
-    daemonId: string,
-    story: Omit<LegacyStory, 'id' | 'timestamp'>
-  ) => void;
+  addLegacyStory: (daemonId: string, story: Omit<LegacyStory, 'id' | 'timestamp'>) => void;
   generateLegacyLegend: (bloodline: string) => void;
   createNewLegacy: (daemon: Daemon) => DaemonLegacy;
 }
@@ -136,10 +127,7 @@ export interface LegacyActions {
 // Surreal events actions
 export interface SurrealEventActions {
   triggerSurrealEvent: () => void;
-  showEventWithEscalatedAbsurdity: (
-    event: SurrealEvent,
-    tierLevel: number
-  ) => void;
+  showEventWithEscalatedAbsurdity: (event: SurrealEvent, tierLevel: number) => void;
 }
 
 // Endgame system actions
