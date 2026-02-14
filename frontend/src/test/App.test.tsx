@@ -84,9 +84,11 @@ const createMockState = () => ({
   meetsRequirements: vi.fn().mockReturnValue(false),
 });
 
+type MockState = ReturnType<typeof createMockState>;
+
 // Mock the game store
 vi.mock('../stores/composedStore', () => ({
-  useGameStore: <T>(selector?: (state: ReturnType<typeof createMockState>) => T) => {
+  useGameStore: (selector?: (state: MockState) => unknown) => {
     const state = createMockState();
     return selector ? selector(state) : state;
   },
