@@ -121,7 +121,9 @@ const mockGameStore = {
 
 // Mock the store hook
 vi.mock('../stores/composedStore', () => ({
-  useGameStore: vi.fn(() => mockGameStore),
+  useGameStore: vi.fn((selector?: (state: typeof mockGameStore) => unknown) =>
+    selector ? selector(mockGameStore) : mockGameStore
+  ),
   useCorporate: vi.fn(() => ({
     corporateTier: mockGameStore.corporateTier,
     corporateRivals: mockGameStore.corporateRivals,
@@ -130,6 +132,10 @@ vi.mock('../stores/composedStore', () => ({
     calculateRivalSuccessChance: mockGameStore.calculateRivalSuccessChance,
     processRivalActions: mockGameStore.processRivalActions,
   })),
+  useCorporateRivals: vi.fn(() => mockGameStore.corporateRivals),
+  useInitializeRivals: vi.fn(() => mockGameStore.initializeRivals),
+  useEngageRival: vi.fn(() => mockGameStore.engageRival),
+  useCalculateRivalSuccessChance: vi.fn(() => mockGameStore.calculateRivalSuccessChance),
 }));
 
 describe('Daemon Directorate - Corporate Satire Gameplay', () => {

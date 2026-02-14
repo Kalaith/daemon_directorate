@@ -8,88 +8,93 @@ import App from '../../App';
 // Mock the stores with stateful tab management
 let mockCurrentTab = 'dashboard';
 
-vi.mock('../../stores/composedStore', () => ({
-  useGameStore: () => ({
-    // UI State
-    currentTab: mockCurrentTab,
-    showTutorial: false,
-    showMemorial: false,
-    showMissionModal: false,
-    showMissionResults: false,
-    showEventModal: false,
-    selectedDaemons: new Set(),
-    currentPlanet: null,
-    memorialDaemon: null,
-    missionResults: null,
-    currentEvent: null,
-    notifications: [],
+const createMockState = () => ({
+  // UI State
+  currentTab: mockCurrentTab,
+  showTutorial: false,
+  showMemorial: false,
+  showMissionModal: false,
+  showMissionResults: false,
+  showEventModal: false,
+  selectedDaemons: new Set(),
+  currentPlanet: null,
+  memorialDaemon: null,
+  missionResults: null,
+  currentEvent: null,
+  notifications: [],
 
-    // Game State
-    activeMission: null,
-    daemons: [],
-    corporateEvents: [],
-    corporateTier: {
-      id: 'associate',
-      name: 'Associate',
-      level: 1,
-      requirements: {},
-      unlocks: {
-        resources: [],
-        mechanics: [],
-        apartmentRooms: [],
-        eventTypes: [],
-      },
-    },
-    complianceTasks: [],
-    daysPassed: 0,
-    legacyBook: {},
-    hallOfInfamy: [],
-    resources: {
-      credits: 500,
-      soulEssence: 0,
-      bureaucraticLeverage: 0,
-      rawMaterials: 0,
-    },
-    equipment: [],
-    rooms: [],
-    planets: [],
-    recruitmentPool: [],
-    gameModifiers: {
-      passiveIncome: 0,
-      recruitmentDiscount: 0,
-      equipmentRepairDiscount: 0,
-      missionSuccessBonus: 0,
-      missionSpeedBonus: 0,
-      equipmentDurabilityBonus: 0,
-      daemonHealthBonus: 0,
-      daemonMoraleBonus: 0,
-    },
-    gameStarted: false,
-    tutorialCompleted: false,
-    promotionProgress: {},
-    complianceDeadlines: {},
-    endgameState: {
-      hasTriggered: false,
-      managementStyle: null,
-      finalScore: 0,
-      achievements: [],
-    },
-    unlockedContent: {
+  // Game State
+  activeMission: null,
+  daemons: [],
+  corporateEvents: [],
+  corporateTier: {
+    id: 'associate',
+    name: 'Associate',
+    level: 1,
+    requirements: {},
+    unlocks: {
+      resources: [],
+      mechanics: [],
       apartmentRooms: [],
-      equipmentTypes: [],
-      daemonTypes: [],
       eventTypes: [],
     },
-    corporateRivals: [],
+  },
+  complianceTasks: [],
+  daysPassed: 0,
+  legacyBook: {},
+  hallOfInfamy: [],
+  resources: {
+    credits: 500,
+    soulEssence: 0,
+    bureaucraticLeverage: 0,
+    rawMaterials: 0,
+  },
+  equipment: [],
+  rooms: [],
+  planets: [],
+  recruitmentPool: [],
+  gameModifiers: {
+    passiveIncome: 0,
+    recruitmentDiscount: 0,
+    equipmentRepairDiscount: 0,
+    missionSuccessBonus: 0,
+    missionSpeedBonus: 0,
+    equipmentDurabilityBonus: 0,
+    daemonHealthBonus: 0,
+    daemonMoraleBonus: 0,
+  },
+  gameStarted: false,
+  tutorialCompleted: false,
+  promotionProgress: {},
+  complianceDeadlines: {},
+  endgameState: {
+    hasTriggered: false,
+    managementStyle: null,
+    finalScore: 0,
+    achievements: [],
+  },
+  unlockedContent: {
+    apartmentRooms: [],
+    equipmentTypes: [],
+    daemonTypes: [],
+    eventTypes: [],
+  },
+  corporateRivals: [],
 
-    // Actions
-    setCurrentTab: vi.fn(tab => {
-      mockCurrentTab = tab;
-    }),
-    initializeGame: vi.fn(),
-    triggerRandomEvent: vi.fn(),
-    meetsRequirements: vi.fn().mockReturnValue(false),
+  // Actions
+  setCurrentTab: vi.fn(tab => {
+    mockCurrentTab = tab;
   }),
+  initializeGame: vi.fn(),
+  triggerRandomEvent: vi.fn(),
+  meetsRequirements: vi.fn().mockReturnValue(false),
+});
+
+vi.mock('../../stores/composedStore', () => ({
+  useGameStore: <T>(selector?: (state: ReturnType<typeof createMockState>) => T) => {
+    const state = createMockState();
+    return selector ? selector(state) : state;
+  },
   useCorporate: () => ({
     corporateTier: {
       id: 'associate',
@@ -109,6 +114,10 @@ vi.mock('../../stores/composedStore', () => ({
     calculateRivalSuccessChance: vi.fn(),
     processRivalActions: vi.fn(),
   }),
+  useCorporateRivals: () => [],
+  useInitializeRivals: () => vi.fn(),
+  useEngageRival: () => vi.fn(),
+  useCalculateRivalSuccessChance: () => vi.fn(() => 75),
 }));
 
 describe('Navigation Flow Tests', () => {
