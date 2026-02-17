@@ -88,6 +88,7 @@ const createMockState = () => ({
   initializeGame: vi.fn(),
   triggerRandomEvent: vi.fn(),
   meetsRequirements: vi.fn().mockReturnValue(false),
+  canAfford: vi.fn().mockReturnValue(true),
 });
 
 type MockState = ReturnType<typeof createMockState>;
