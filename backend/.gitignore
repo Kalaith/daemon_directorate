@@ -1,0 +1,5 @@
+/.idea
+/vendor
+/backend/vendor
+/vendor.zip
+/.env
